@@ -2,6 +2,7 @@ import type { App, Plugin } from 'vue';
 import { FBadge } from './components/Badge';
 import { FButton } from './components/Button';
 import { FCheckbox } from './components/Checkbox';
+import { FCompoundButton } from './components/CompoundButton';
 import { FCounterBadge } from './components/CounterBadge';
 import { FDivider } from './components/Divider';
 import { FField } from './components/Field';
@@ -35,6 +36,7 @@ export const FluentVue: Plugin = {
     app.component('FInput', FInput);
     app.component('FSelect', FSelect);
     app.component('FCheckbox', FCheckbox);
+    app.component('FCompoundButton', FCompoundButton);
     app.component('FCounterBadge', FCounterBadge);
     app.component('FDivider', FDivider);
     app.component('FField', FField);
