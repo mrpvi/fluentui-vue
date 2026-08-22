@@ -1,5 +1,8 @@
 export interface RatingItemProps {
-  /** Positive whole-number position represented by this item. */
+  /**
+   * Positive whole-number position represented by this item.
+   * FRatingItem is intended for composition inside FRating or FRatingDisplay.
+   */
   value?: number;
 }
 

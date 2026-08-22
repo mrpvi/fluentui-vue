@@ -17,6 +17,8 @@ import {
   FLink,
   FPresenceBadge,
   FProgressBar,
+  FRating,
+  FRatingDisplay,
   FRadio,
   FRadioGroup,
   FSkeleton,
@@ -53,6 +55,9 @@ const standaloneRadio = ref(false);
 const radioSubmission = ref('');
 const sliderValue = ref(40);
 const sliderControlled = ref(35);
+const ratingValue = ref(3);
+const controlledRatingValue = ref(2);
+const controlledRatingAttempt = ref<number | null>(null);
 const selectableCard = ref(false);
 const controlledCard = ref(true);
 const imageFixture =
@@ -85,6 +90,10 @@ function submitSpinForm(event: Event) {
   const form = event.currentTarget as HTMLFormElement;
   spinFormData.value = String(new FormData(form).get('quantity'));
 }
+
+function ratingItemLabel(value: number) {
+  return `${value} stars`;
+}
 </script>
 
 <template>
@@ -96,8 +105,8 @@ function submitSpinForm(event: Event) {
         <p>
           Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, Image, Badge,
           Spinner, ProgressBar, SpinButton, SearchBox, Switch, Radio, RadioGroup, Select, Skeleton,
-          Slider, and Card components translated from Fluent UI React v9 to Vue props, slots, emits,
-          and semantic HTML.
+          Slider, Rating, RatingDisplay, and Card components translated from Fluent UI React v9 to
+          Vue props, slots, emits, and semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -1460,6 +1469,191 @@ function submitSpinForm(event: Event) {
       </div>
     </section>
 
+    <section id="rating">
+      <h2>Rating</h2>
+      <div class="rating-samples">
+        <div class="rating-group">
+          <h3>Interactive ratings</h3>
+          <div class="rating-stack">
+            <div class="rating-example">
+              <FLabel id="rating-default-label">Product rating</FLabel>
+              <FRating
+                v-model="ratingValue"
+                class="rating-default"
+                aria-labelledby="rating-default-label"
+                name="product-rating"
+              />
+              <small>Selected: {{ ratingValue }}</small>
+            </div>
+            <div class="rating-example">
+              <FLabel id="rating-half-label">Half-star rating</FLabel>
+              <FRating
+                class="rating-half"
+                aria-labelledby="rating-half-label"
+                :default-value="2.5"
+                :item-label="ratingItemLabel"
+                name="half-rating"
+                :step="0.5"
+              />
+            </div>
+            <div class="rating-example">
+              <FLabel id="rating-controlled-label">Controlled rollback rating</FLabel>
+              <FRating
+                class="rating-controlled"
+                aria-labelledby="rating-controlled-label"
+                :model-value="controlledRatingValue"
+                name="controlled-rating"
+                @update:model-value="controlledRatingAttempt = $event"
+              />
+              <small>Attempted: {{ controlledRatingAttempt ?? 'none' }}</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="rating-group">
+          <h3>Native form, states, and Field</h3>
+          <div class="rating-state-grid">
+            <form class="rating-form" @submit.prevent>
+              <FLabel id="rating-form-label">Order rating</FLabel>
+              <FRating
+                class="rating-form-control"
+                aria-labelledby="rating-form-label"
+                :default-value="2"
+                name="order-rating"
+              />
+              <div class="row">
+                <FButton type="reset">Reset order rating</FButton>
+                <FButton type="submit">Submit order rating</FButton>
+              </div>
+            </form>
+            <div class="rating-example">
+              <FLabel id="rating-readonly-label">Read-only rating</FLabel>
+              <FRating
+                class="rating-readonly"
+                aria-labelledby="rating-readonly-label"
+                :default-value="3"
+                read-only
+              />
+            </div>
+            <div class="rating-example">
+              <FLabel id="rating-disabled-label" disabled>Disabled rating</FLabel>
+              <FRating
+                class="rating-disabled"
+                aria-labelledby="rating-disabled-label"
+                :default-value="4"
+                disabled
+              />
+            </div>
+            <FField
+              class="rating-field"
+              label="Required service rating"
+              hint="Choose one to five stars."
+              required
+            >
+              <FRating class="rating-field-control" name="service-rating" />
+            </FField>
+            <div class="rating-example">
+              <form id="rating-external-form" class="rating-external-form" @submit.prevent></form>
+              <FLabel id="rating-external-label">External required rating</FLabel>
+              <FRating
+                class="rating-external-control"
+                aria-labelledby="rating-external-label"
+                :default-value="2"
+                form="rating-external-form"
+                name="external-rating"
+                required
+              />
+              <FButton type="reset" form="rating-external-form">Reset external rating</FButton>
+            </div>
+          </div>
+        </div>
+
+        <div class="rating-group">
+          <h3>Interactive colors and sizes</h3>
+          <div class="rating-matrix">
+            <FRating
+              v-for="color in ['neutral', 'brand', 'marigold'] as const"
+              :key="color"
+              :class="`rating-color-${color}`"
+              :color="color"
+              :default-value="3"
+              :aria-label="`${color} rating`"
+            />
+            <FRating
+              v-for="size in ['small', 'medium', 'large', 'extra-large'] as const"
+              :key="size"
+              :class="`rating-size-${size}`"
+              :default-value="4"
+              :size="size"
+              :aria-label="`${size} rating`"
+            />
+          </div>
+        </div>
+
+        <div class="rating-group">
+          <h3>Rating displays</h3>
+          <div class="rating-display-grid">
+            <FRatingDisplay
+              class="rating-display-value-count"
+              :value="4.2"
+              :count="1160"
+              aria-label="4.2 out of 5 from 1,160 ratings"
+            />
+            <FRatingDisplay
+              class="rating-display-compact"
+              compact
+              color="marigold"
+              :value="3.8"
+              :count="86"
+              aria-label="3.8 out of 5 from 86 ratings"
+            />
+            <FRatingDisplay
+              class="rating-display-custom"
+              :value="4"
+              aria-label="Custom heart rating display"
+            >
+              <template #icon="{ fill }"
+                ><span aria-hidden="true">{{ fill > 0 ? '♥' : '♡' }}</span></template
+              >
+              <template #value-text="{ value }">Custom {{ value }}</template>
+            </FRatingDisplay>
+            <div dir="ltr">
+              <FRating
+                class="rating-ltr"
+                :default-value="3.5"
+                :step="0.5"
+                aria-label="LTR rating"
+              />
+            </div>
+            <div dir="rtl">
+              <FRating
+                class="rating-rtl"
+                :default-value="3.5"
+                :step="0.5"
+                aria-label="RTL rating"
+              />
+            </div>
+            <FRatingDisplay
+              v-for="color in ['neutral', 'brand', 'marigold'] as const"
+              :key="`display-${color}`"
+              :class="`rating-display-color-${color}`"
+              :color="color"
+              :value="3.5"
+              :aria-label="`${color} rating display`"
+            />
+            <FRatingDisplay
+              v-for="size in ['small', 'medium', 'large', 'extra-large'] as const"
+              :key="`display-${size}`"
+              :class="`rating-display-size-${size}`"
+              :size="size"
+              :value="4.5"
+              :aria-label="`${size} rating display`"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section>
       <h2>Button</h2>
       <div class="row">
@@ -2090,6 +2284,47 @@ section {
 
 .progress-bar-field-grid .fui-Field {
   align-content: start;
+}
+
+.rating-samples,
+.rating-group,
+.rating-stack,
+.rating-example,
+.rating-form,
+.rating-matrix,
+.rating-display-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.rating-samples {
+  gap: 1.5rem;
+}
+
+.rating-stack,
+.rating-state-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+}
+
+.rating-state-grid {
+  display: grid;
+  align-items: start;
+  gap: 1rem;
+}
+
+.rating-example,
+.rating-form {
+  align-content: start;
+  justify-items: start;
+  padding: 1rem;
+  background: var(--fui-color-neutral-background-2);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+}
+
+.rating-matrix,
+.rating-display-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), max-content));
+  align-items: center;
 }
 
 .spin-button-grid,

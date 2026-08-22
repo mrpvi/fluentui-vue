@@ -693,6 +693,196 @@ test('Spinner reduced motion simplifies the animated tail', async ({ page, brows
   );
 });
 
+test('Rating supports radios, keyboard, native forms, reset, and controlled rollback', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#rating');
+  const rating = section.getByRole('radiogroup', { name: 'Product rating' });
+  const radios = rating.getByRole('radio');
+  await expect(radios).toHaveCount(5);
+  await expect(radios.nth(2)).toBeChecked();
+
+  await radios.nth(3).click();
+  await expect(radios.nth(3)).toBeChecked();
+  await expect(section.getByText('Selected: 4')).toBeVisible();
+
+  await radios.nth(3).focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(radios.nth(4)).toBeFocused();
+  await expect(radios.nth(4)).toBeChecked();
+
+  const form = section.locator('.rating-form');
+  const formRadios = form.getByRole('radio');
+  await expect(formRadios.nth(1)).toBeChecked();
+  await formRadios.nth(4).click();
+  await expect(formRadios.nth(4)).toBeChecked();
+  expect(
+    await form.evaluate((element) => new FormData(element as HTMLFormElement).get('order-rating')),
+  ).toBe('5');
+  await form.getByRole('button', { name: 'Reset order rating' }).click();
+  await expect(formRadios.nth(1)).toBeChecked();
+  expect(
+    await form.evaluate((element) => new FormData(element as HTMLFormElement).get('order-rating')),
+  ).toBe('2');
+
+  const externalForm = section.locator('#rating-external-form');
+  const external = section.getByRole('radiogroup', { name: 'External required rating' });
+  const externalRadios = external.getByRole('radio');
+  await expect(external).toHaveAttribute('aria-required', 'true');
+  await expect(externalRadios.first()).toHaveAttribute('form', 'rating-external-form');
+  await expect(externalRadios.first()).toHaveAttribute('required', '');
+  expect(
+    await externalForm.evaluate((element) =>
+      new FormData(element as HTMLFormElement).get('external-rating'),
+    ),
+  ).toBe('2');
+  await externalRadios.nth(4).click();
+  await section.getByRole('button', { name: 'Reset external rating' }).click();
+  await expect(externalRadios.nth(1)).toBeChecked();
+  expect(
+    await externalRadios
+      .first()
+      .evaluate((input) => (input as HTMLInputElement).validity.valueMissing),
+  ).toBe(false);
+
+  const controlled = section.getByRole('radiogroup', { name: 'Controlled rollback rating' });
+  const controlledRadios = controlled.getByRole('radio');
+  await expect(controlledRadios.nth(1)).toBeChecked();
+  await controlledRadios.nth(4).click();
+  await expect(section.getByText('Attempted: 5')).toBeVisible();
+  await expect(controlledRadios.nth(1)).toBeChecked();
+  await expect(controlledRadios.nth(4)).not.toBeChecked();
+});
+
+test('Rating supports half values, pointer preview, read-only, disabled, Field, and RTL', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#rating');
+  const half = section.getByRole('radiogroup', { name: 'Half-star rating' });
+  const halfRadios = half.getByRole('radio');
+  await expect(halfRadios).toHaveCount(10);
+  await expect(half.getByRole('radio', { name: '2.5 stars' })).toBeChecked();
+
+  const previewTarget = half.getByRole('radio', { name: '4.5 stars' });
+  await previewTarget.hover({ position: { x: 2, y: 2 } });
+  await expect(half).toHaveClass(/fui-Rating--previewing/);
+  await expect(half.locator('.fui-RatingItem').nth(4)).toHaveClass(/fui-RatingItem--fill-half/);
+  await page.mouse.move(0, 0);
+  await expect(half).not.toHaveClass(/fui-Rating--previewing/);
+  await expect(half.locator('.fui-RatingItem').nth(2)).toHaveClass(/fui-RatingItem--fill-half/);
+
+  const readonly = section.getByRole('radiogroup', { name: 'Read-only rating' });
+  await expect(readonly).toHaveAttribute('aria-readonly', 'true');
+  await expect(readonly.getByRole('radio')).toHaveCount(0);
+  await expect(readonly.locator('.fui-RatingItem--fill-full')).toHaveCount(3);
+
+  const disabled = section.getByRole('radiogroup', { name: 'Disabled rating' });
+  await expect(disabled).toHaveAttribute('aria-disabled', 'true');
+  await expect(disabled.getByRole('radio').first()).toBeDisabled();
+
+  const field = section.locator('.rating-field');
+  const fieldRating = field.getByRole('radiogroup', { name: 'Required service rating' });
+  const fieldLabelId = await field.locator('label').getAttribute('id');
+  const fieldHintId = await field.locator('.fui-Field__hint').getAttribute('id');
+  expect(fieldLabelId).not.toBeNull();
+  expect(fieldHintId).not.toBeNull();
+  await expect(fieldRating).toHaveAttribute('aria-labelledby', fieldLabelId!);
+  await expect(fieldRating).toHaveAttribute('aria-describedby', fieldHintId!);
+  await expect(fieldRating).toHaveAttribute('aria-required', 'true');
+
+  const marigold = section.getByRole('radiogroup', { name: 'marigold rating' });
+  const firstItem = marigold.locator('.fui-RatingItem').first();
+  const ltrBox = await firstItem.boundingBox();
+  expect(ltrBox).not.toBeNull();
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  const rtlItems = await marigold
+    .locator('.fui-RatingItem')
+    .evaluateAll((items) => items.map((item) => item.getBoundingClientRect().x));
+  expect(rtlItems[0]).toBeGreaterThan(rtlItems[rtlItems.length - 1]);
+  const halfFilled = section.locator('.rating-display-size-extra-large .fui-RatingItem--fill-half');
+  const halfFilledBox = await halfFilled.boundingBox();
+  const selectedHalfBox = await halfFilled.locator('.fui-RatingItem__selectedIcon').boundingBox();
+  expect(halfFilledBox).not.toBeNull();
+  expect(selectedHalfBox).not.toBeNull();
+  expect(selectedHalfBox!.width).toBeCloseTo(halfFilledBox!.width / 2, 0);
+});
+
+test('RatingDisplay preserves labels, count, compact mode, colors, and sizes', async ({ page }) => {
+  await page.goto('/');
+
+  const section = page.locator('#rating');
+  const valueCount = section.getByRole('img', { name: '4.2 out of 5 from 1,160 ratings' });
+  await expect(valueCount.locator('.fui-RatingItem')).toHaveCount(5);
+  await expect(valueCount.locator('.fui-RatingDisplay__valueText')).toHaveText('4.2');
+  await expect(valueCount.locator('.fui-RatingDisplay__countText')).toHaveText('1,160');
+
+  const compact = section.getByRole('img', { name: '3.8 out of 5 from 86 ratings' });
+  await expect(compact.locator('.fui-RatingItem')).toHaveCount(1);
+  await expect(compact.locator('.fui-RatingItem')).toHaveClass(/fui-RatingItem--marigold/);
+  await expect(compact.locator('.fui-RatingItem')).toHaveClass(/fui-RatingItem--fill-full/);
+
+  const expectedSizes = {
+    small: 12,
+    medium: 16,
+    large: 20,
+    'extra-large': 28,
+  } as const;
+  for (const [size, dimension] of Object.entries(expectedSizes)) {
+    const item = section.locator(`.rating-display-size-${size} .fui-RatingItem`).first();
+    const box = await item.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.width).toBe(dimension);
+    expect(box!.height).toBe(dimension);
+  }
+
+  const colors = ['neutral', 'brand', 'marigold'] as const;
+  const selectedColors: string[] = [];
+  for (const color of colors) {
+    selectedColors.push(
+      await section
+        .locator(`.rating-display-color-${color} .fui-RatingItem__selectedIcon`)
+        .first()
+        .evaluate((element) => getComputedStyle(element).color),
+    );
+  }
+  expect(new Set(selectedColors).size).toBe(3);
+});
+
+test('Rating focus, reduced motion, and forced colors retain browser-rendered safeguards', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Media emulation and computed styles are Chromium-only.');
+
+  await page.emulateMedia({ reducedMotion: 'reduce', forcedColors: 'active' });
+  await page.goto('/');
+  const section = page.locator('#rating');
+  const rating = section.getByRole('radiogroup', { name: 'Product rating' });
+  const radio = rating.getByRole('radio').first();
+  await radio.focus();
+  const item = radio.locator('xpath=..');
+  expect(await item.evaluate((element) => getComputedStyle(element, '::after').borderStyle)).toBe(
+    'solid',
+  );
+  const selectedIcon = rating.locator('.fui-RatingItem__selectedIcon').first();
+  await expect(selectedIcon).toHaveCSS('color', 'rgb(0, 0, 0)');
+  await expect(selectedIcon).toHaveCSS('transition-duration', '0s');
+  const disabledIcon = section.locator('.rating-disabled .fui-RatingItem__selectedIcon').first();
+  const grayText = await page.evaluate(() => {
+    const probe = document.createElement('span');
+    probe.style.color = 'GrayText';
+    document.body.append(probe);
+    const color = getComputedStyle(probe).color;
+    probe.remove();
+    return color;
+  });
+  await expect(disabledIcon).toHaveCSS('color', grayText);
+});
+
 test('ProgressBar preserves real-browser dimensions, semantics, colors, and Field integration', async ({
   page,
 }) => {
@@ -2001,15 +2191,13 @@ test('custom Input adornments remain interactive and exposed', async ({ page }) 
   await page.goto('/');
 
   const amount = page.getByPlaceholder('Amount');
+  const clear = amount.locator('xpath=..').getByRole('button', { name: 'Clear', exact: true });
   await amount.fill('125');
-  await page.getByRole('button', { name: 'Clear' }).click();
+  await clear.click();
 
   await expect(amount).toHaveValue('');
   await expect(amount).toBeFocused();
-  await expect(page.getByRole('button', { name: 'Clear' })).not.toHaveAttribute(
-    'aria-hidden',
-    'true',
-  );
+  await expect(clear).not.toHaveAttribute('aria-hidden', 'true');
 });
 
 test('forced-color styles retain system-color state rules', async ({ page, browserName }) => {

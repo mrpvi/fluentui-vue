@@ -61,6 +61,7 @@ const rootAttrs = computed(() => {
     class: _class,
     style: _style,
     role: _role,
+    'aria-label': consumerLabel,
     'aria-labelledby': consumerLabelledBy,
     ...rest
   } = fieldControlProps.value;
@@ -76,8 +77,10 @@ const rootAttrs = computed(() => {
     'aria-labelledby':
       typeof consumerLabelledBy === 'string'
         ? consumerLabelledBy
-        : generatedLabelledBy || undefined,
-    'aria-label': attrs['aria-label'] as string | undefined,
+        : typeof consumerLabel === 'string'
+          ? undefined
+          : generatedLabelledBy || undefined,
+    'aria-label': consumerLabel as string | undefined,
   };
 });
 const emptyName = computed(() => {
@@ -95,6 +98,8 @@ provide(ratingItemContextKey, {
   interactive: computed(() => false),
   disabled: computed(() => false),
   readOnly: computed(() => true),
+  required: computed(() => false),
+  inputAttrs: computed(() => ({})),
   compact: computed(() => props.compact),
   itemLabel: computed(() => (value: number) => `${value}`),
 });
@@ -134,7 +139,7 @@ defineExpose({ element: root });
       class="fui-RatingDisplay__valueText"
       aria-hidden="true"
     >
-      <slot name="value-text" :value="value">{{ value }}</slot>
+      <slot name="value-text" :value="normalizedValue">{{ normalizedValue }}</slot>
     </span>
     <span
       v-if="hasCountText"

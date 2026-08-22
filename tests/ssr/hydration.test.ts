@@ -159,6 +159,49 @@ describe('hydration', () => {
     );
     expect(fieldProgress?.querySelector('.fui-ProgressBar__bar--warning')).not.toBeNull();
 
+    const rating = container.querySelector<HTMLElement>('.ssr-rating');
+    expect(rating?.getAttribute('role')).toBe('radiogroup');
+    expect(rating?.querySelectorAll('input[type="radio"]')).toHaveLength(10);
+    expect(
+      [...(rating?.querySelectorAll<HTMLInputElement>('input[type="radio"]') ?? [])]
+        .filter((input) => input.checked)
+        .map((input) => input.value),
+    ).toEqual(['2.5']);
+
+    const fieldRating = container.querySelector<HTMLElement>('.ssr-field-rating');
+    expect(fieldRating?.getAttribute('aria-labelledby')).toBe(
+      fieldRating?.closest('.fui-Field')?.querySelector<HTMLElement>('label')?.id,
+    );
+    expect(fieldRating?.getAttribute('aria-describedby')).toBe(
+      fieldRating?.closest('.fui-Field')?.querySelector<HTMLElement>('.fui-Field__hint')?.id,
+    );
+    expect(fieldRating?.getAttribute('aria-required')).toBe('true');
+    expect(fieldRating?.querySelector<HTMLInputElement>('input')?.required).toBe(true);
+
+    const readOnlyRating = container.querySelector<HTMLElement>('.ssr-readonly-rating');
+    expect(readOnlyRating?.getAttribute('aria-readonly')).toBe('true');
+    expect(readOnlyRating?.querySelectorAll('input')).toHaveLength(0);
+    const disabledRating = container.querySelector<HTMLElement>('.ssr-disabled-rating');
+    expect(disabledRating?.getAttribute('aria-disabled')).toBe('true');
+    expect(disabledRating?.querySelector<HTMLInputElement>('input')?.disabled).toBe(true);
+
+    const ratingDisplay = container.querySelector<HTMLElement>('.ssr-rating-display');
+    expect(ratingDisplay?.getAttribute('role')).toBe('img');
+    expect(ratingDisplay?.getAttribute('aria-label')).toBe('Server rating display');
+    expect(ratingDisplay?.querySelector('.fui-RatingDisplay__valueText')?.textContent).toBe('4.5');
+    expect(ratingDisplay?.querySelector('.fui-RatingDisplay__countText')?.textContent).toBe(
+      '1,160',
+    );
+    expect(ratingDisplay?.querySelectorAll('.fui-RatingItem')).toHaveLength(5);
+
+    const compactRatingDisplay = container.querySelector<HTMLElement>(
+      '.ssr-compact-rating-display',
+    );
+    expect(compactRatingDisplay?.querySelectorAll('.fui-RatingItem')).toHaveLength(1);
+    expect(compactRatingDisplay?.querySelector('.fui-RatingItem')?.className).toContain(
+      'fui-RatingItem--marigold',
+    );
+
     const skeleton = container.querySelector<HTMLElement>('.ssr-skeleton');
     expect(skeleton?.getAttribute('role')).toBe('progressbar');
     expect(skeleton?.getAttribute('aria-busy')).toBe('true');

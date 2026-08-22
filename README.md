@@ -22,6 +22,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 - `FSelect` — adapted from `@fluentui/react-select` 9.5.5
 - `FSpinButton` — adapted from `@fluentui/react-spinbutton` 9.6.5
 - `FSearchBox` — adapted from `@fluentui/react-search` 9.4.6
+- `FRating`, `FRatingItem`, and `FRatingDisplay` — adapted from `@fluentui/react-rating` 9.4.4
 - `FText` — adapted from `@fluentui/react-text` 9.6.19
 - `FLabel` — adapted from `@fluentui/react-label` 9.4.4
 - `FField` — adapted from `@fluentui/react-field` 9.5.4
@@ -143,6 +144,9 @@ import {
   FLink,
   FPresenceBadge,
   FProgressBar,
+  FRating,
+  FRatingDisplay,
+  FRatingItem,
   FRadio,
   FRadioGroup,
   FSkeleton,
@@ -156,6 +160,9 @@ import {
   FText,
   FTextarea,
   type CheckboxValue,
+  type RatingColor,
+  type RatingSize,
+  type RatingStep,
 } from '@local/fluent-vue';
 import { ref } from 'vue';
 
@@ -187,6 +194,8 @@ const companion = ref('dog');
   <FPresenceBadge status="available" aria-label="Available for support" />
   <FSpinner label="Loading account" size="large" />
   <FProgressBar :value="0.6" aria-label="Account setup progress" />
+  <FRating :default-value="3" aria-label="Account experience rating" />
+  <FRatingDisplay :value="4.5" :count="1160" aria-label="4.5 out of 5 from 1,160 ratings" />
   <FSpinButton :default-value="1" :min="0" :max="10" aria-label="Quantity" />
   <FSearchBox aria-label="Search account settings" placeholder="Search settings" />
   <FSwitch label="Enable notifications" />
@@ -566,6 +575,35 @@ The fixed root is a `<div role="progressbar">`. Determinate bars expose managed 
 Top-level `class`, `style`, native, ARIA, data attributes, and listeners are forwarded to the root, while the managed role and determinate value attributes cannot be overridden. The root exposes its native `element`, defines no component events, and is not focusable unless a consumer explicitly adds focusability, which is normally inappropriate.
 
 Indeterminate motion uses the released three-second linear slide. Under `prefers-reduced-motion: reduce`, it changes to an opacity pulse without translation. Forced-colors mode uses `CanvasText` for the track and `Highlight` for the bar. The upstream React root and bar slot objects are translated to a fixed semantic Vue structure; `indeterminateMotion={null}` is represented by `:indeterminate-motion="false"`. Fluent's internal custom-style hook is intentionally omitted in favor of fallthrough classes, styles, and CSS token overrides.
+
+## Rating family
+
+`FRating` is an interactive native-radio rating control, `FRatingItem` is its context-aware composition primitive, and `FRatingDisplay` is a non-interactive rating summary. They are adapted from `@fluentui/react-rating@9.4.4`.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { FField, FRating, FRatingDisplay } from '@local/fluent-vue';
+
+const rating = ref(3);
+</script>
+
+<template>
+  <FField label="Rate this item" hint="Choose one to five stars." required>
+    <FRating v-model="rating" name="product-rating" />
+  </FField>
+  <FRating :default-value="2.5" :step="0.5" aria-label="Detailed rating" />
+  <FRatingDisplay :value="4.2" :count="1160" aria-label="4.2 out of 5 from 1,160 ratings" />
+</template>
+```
+
+`FRating` supports controlled `modelValue` and initialization-only `defaultValue`, `max`, `step` (`1 | 0.5`), `color`, `size`, `name`, `itemLabel`, `disabled`, and `readOnly`. Explicitly binding `undefined` is controlled. Invalid runtime `max` and `step` values safely fall back to the released defaults. The fixed root is a managed `role="radiogroup"`; selectable values are native radios, preserving browser keyboard behavior, checked state, constraint validation, form data, form reset, and external `form="id"` ownership. `required`, `form`, and `autocomplete` route to each native radio, while Field labeling, descriptions, invalid state, and required state remain on the correct semantic targets. Consumer mouseover and mouseleave listeners compose with hover preview behavior. The root exposes `element` and `focus()`.
+
+The default slot may contain exported `FRatingItem` children, which are intended for composition only inside `FRating` or `FRatingDisplay`. The `selected-icon` and `unselected-icon` slots receive `{ value, fill }`; their wrappers are decorative, so they must not contain interactive or accessible naming content.
+
+`FRatingDisplay` renders a fixed `role="img"` with full or compact icon presentation, optional localized count text, and `color`, `size`, and `max` variants. Its visible value text and fallback accessible name use the same normalized/clamped value. Explicit `aria-label` suppresses generated `aria-labelledby`; explicit `aria-labelledby` remains authoritative; generated value/count IDs are used only when no consumer or Field name exists. The `icon`, `value-text`, and `count-text` slots are presentation-only and must not contain interactive controls inside the image-role subtree. The root exposes `element`.
+
+Both components use deterministic Vue IDs for SSR/hydration, logical RTL styling, forced-color focus/state colors, and reduced-motion safeguards. React slot objects become typed Vue slots and fixed native semantics; no React or React icon runtime is bundled.
 
 ## SpinButton
 

@@ -69,15 +69,18 @@ defineExpose({
     <template v-if="interactive">
       <input
         v-if="step === 0.5"
+        v-bind="context?.inputAttrs.value"
         class="fui-RatingItem__halfValueInput"
         type="radio"
         :name="context?.name.value"
         :value="value - 0.5"
         :checked="context?.value.value === value - 0.5"
         :disabled="disabled || readOnly"
+        :required="context?.required.value"
         :aria-label="itemLabel(value - 0.5)"
       />
       <input
+        v-bind="context?.inputAttrs.value"
         class="fui-RatingItem__fullValueInput"
         :class="{ 'fui-RatingItem__fullValueInput--upper-half': step === 0.5 }"
         type="radio"
@@ -85,6 +88,7 @@ defineExpose({
         :value="value"
         :checked="context?.value.value === value"
         :disabled="disabled || readOnly"
+        :required="context?.required.value"
         :aria-label="itemLabel(value)"
       />
     </template>

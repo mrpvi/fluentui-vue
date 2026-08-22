@@ -47,7 +47,7 @@ Status legend:
 18. ✅ **Slider → `FSlider`** — definition-of-done gates complete for `@fluentui/react-slider@9.6.5`
 19. ✅ **SpinButton → `FSpinButton`** — definition-of-done gates complete for `@fluentui/react-spinbutton@9.6.5`
 20. ✅ **SearchBox → `FSearchBox`** — definition-of-done gates complete for `@fluentui/react-search@9.4.6`
-21. ❌ **Rating family**
+21. ✅ **Rating family** — definition-of-done gates complete for `@fluentui/react-rating@9.4.4`
     - `FRating`
     - `FRatingItem`
     - `FRatingDisplay`
@@ -319,14 +319,7 @@ These components come last because they combine overlays, focus management, navi
 
 ## Immediate next development batch
 
-The next practical batch is:
-
-1. Complete definition-of-done integration for `FSelect`
-2. `FSpinButton`
-3. `FSearchBox`
-4. Rating family
-
-Radio, Switch, and Slider are complete; the remaining form-control implementations should finish their quality gates before advancing to more complex control families.
+The current form-control completion batch is finished through the Rating family. The next incomplete roadmap work begins with the remaining Button family, but it requires a separate approved request.
 
 ## Rules for updating this roadmap
 

@@ -103,6 +103,38 @@ test('ProgressBar fixtures expose determinate, indeterminate, and Field-derived 
   );
 });
 
+test('Rating fixtures expose accessible radio, Field, disabled, read-only, and display semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const rating = page.getByRole('radiogroup', { name: 'Product rating' });
+  await expect(rating.getByRole('radio')).toHaveCount(5);
+  await expect(rating.getByRole('radio').nth(2)).toBeChecked();
+
+  const half = page.getByRole('radiogroup', { name: 'Half-star rating' });
+  await expect(half.getByRole('radio')).toHaveCount(10);
+  await expect(half.getByRole('radio', { name: '2.5 stars' })).toBeChecked();
+
+  await expect(page.getByRole('radiogroup', { name: 'Disabled rating' })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
+  await expect(page.getByRole('radiogroup', { name: 'Read-only rating' })).toHaveAttribute(
+    'aria-readonly',
+    'true',
+  );
+
+  const field = page.locator('.rating-field');
+  const fieldRating = field.getByRole('radiogroup', { name: 'Required service rating' });
+  await expect(fieldRating).toHaveAttribute('aria-required', 'true');
+  await expect(fieldRating).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
+  await expect(fieldRating.getByRole('radio').first()).toHaveAttribute('required', '');
+
+  await expect(page.getByRole('img', { name: '4.2 out of 5 from 1,160 ratings' })).toBeVisible();
+  await expect(page.getByRole('img', { name: '3.8 out of 5 from 86 ratings' })).toBeVisible();
+});
+
 test('Card fixtures expose group names and native selectable checkbox semantics', async ({
   page,
 }) => {

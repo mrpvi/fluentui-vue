@@ -29,8 +29,9 @@ const generatedName = `fui-rating-${useId()}`;
 const initialValue = props.defaultValue ?? 0;
 const internalValue = ref(initialValue);
 const previewValue = ref<number | undefined>(undefined);
-const isControlled = useIsPropProvided('modelValue');
+const isControlled = useIsPropProvided('modelValue') || useIsPropProvided('model-value');
 let form: HTMLFormElement | null = null;
+let resetTimer: ReturnType<typeof setTimeout> | undefined;
 
 function normalizedMaxValue(max: number): number {
   if (Number.isInteger(max) && max > 1) {
@@ -45,16 +46,28 @@ function normalizedMaxValue(max: number): number {
   return 5;
 }
 
+function normalizedStepValue(step: unknown): 0.5 | 1 {
+  if (step === 0.5 || step === 1) {
+    return step;
+  }
+
+  if (import.meta.env.DEV) {
+    console.error(`[FRating] The prop 'step' must be 0.5 or 1. Received step: ${String(step)}`);
+  }
+  return 1;
+}
+
 function normalizeValue(value: number | undefined): number {
   if (value === undefined || !Number.isFinite(value)) {
     return 0;
   }
 
-  const stepped = Math.round(value / props.step) * props.step;
+  const stepped = Math.round(value / normalizedStep.value) * normalizedStep.value;
   return Math.min(normalizedMax.value, Math.max(0, stepped));
 }
 
 const normalizedMax = computed(() => normalizedMaxValue(props.max));
+const normalizedStep = computed(() => normalizedStepValue(props.step));
 const currentValue = computed(() =>
   normalizeValue(isControlled ? props.modelValue : internalValue.value),
 );
@@ -63,6 +76,23 @@ const interactive = computed(() => !props.readOnly);
 const fieldControlProps = useFieldControlProps(
   () => ({ ...attrs, id: attrs.id as string | undefined }),
   { supportsRequired: false },
+);
+const required = computed(
+  () =>
+    attrs.required !== false &&
+    (attrs.required !== undefined ||
+      fieldControlProps.value['aria-required'] === true ||
+      fieldControlProps.value['aria-required'] === 'true'),
+);
+const inputAttrs = computed(() => {
+  const { form, autocomplete } = attrs;
+  return { form, autocomplete };
+});
+const consumerMouseOver = computed(
+  () => attrs.onMouseover as ((event: MouseEvent) => void) | undefined,
+);
+const consumerMouseLeave = computed(
+  () => attrs.onMouseleave as ((event: MouseEvent) => void) | undefined,
 );
 const classes = computed(() => [
   'fui-Rating',
@@ -84,6 +114,9 @@ const rootAttrs = computed(() => {
     name: _name,
     disabled: _disabled,
     readonly: _readonly,
+    required: _required,
+    form: _form,
+    autocomplete: _autocomplete,
     onChange: _onChange,
     onMouseover: _onMouseover,
     onMouseleave: _onMouseleave,
@@ -135,20 +168,20 @@ function handleChange(event: Event) {
 }
 
 function handleMouseOver(event: MouseEvent) {
-  if (props.disabled || props.readOnly || !isOwnRadio(event.target)) {
-    return;
+  if (!props.disabled && !props.readOnly && isOwnRadio(event.target)) {
+    const nextValue = Number(event.target.value);
+    previewValue.value = Number.isFinite(nextValue) ? nextValue : undefined;
   }
-
-  const nextValue = Number(event.target.value);
-  previewValue.value = Number.isFinite(nextValue) ? nextValue : undefined;
+  consumerMouseOver.value?.(event);
 }
 
-function clearPreview() {
+function handleMouseLeave(event: MouseEvent) {
   previewValue.value = undefined;
+  consumerMouseLeave.value?.(event);
 }
 
 function handleFormReset() {
-  setTimeout(() => {
+  resetTimer = setTimeout(() => {
     previewValue.value = undefined;
     if (isControlled) {
       syncNativeState();
@@ -163,13 +196,15 @@ function handleFormReset() {
 provide(ratingItemContextKey, {
   color: computed(() => props.color),
   size: computed(() => props.size),
-  step: computed(() => props.step),
+  step: normalizedStep,
   value: currentValue,
   previewValue: computed(() => previewValue.value),
   name: resolvedName,
   interactive,
   disabled: computed(() => props.disabled),
   readOnly: computed(() => props.readOnly),
+  required,
+  inputAttrs,
   compact: computed(() => false),
   itemLabel: computed(() => props.itemLabel),
 });
@@ -182,10 +217,15 @@ onMounted(() => {
     syncNativeState();
   }
 
-  form = root.value?.closest('form') ?? null;
+  form = root.value?.querySelector<HTMLInputElement>('input[type="radio"]')?.form ?? null;
   form?.addEventListener('reset', handleFormReset);
 });
-onBeforeUnmount(() => form?.removeEventListener('reset', handleFormReset));
+onBeforeUnmount(() => {
+  form?.removeEventListener('reset', handleFormReset);
+  if (resetTimer !== undefined) {
+    clearTimeout(resetTimer);
+  }
+});
 
 defineExpose({
   element: root,
@@ -210,9 +250,10 @@ defineExpose({
     role="radiogroup"
     :aria-disabled="disabled || undefined"
     :aria-readonly="readOnly || undefined"
+    :aria-required="required || undefined"
     @change="handleChange"
     @mouseover="handleMouseOver"
-    @mouseleave="clearPreview"
+    @mouseleave="handleMouseLeave"
   >
     <slot>
       <FRatingItem v-for="itemValue in normalizedMax" :key="itemValue" :value="itemValue">

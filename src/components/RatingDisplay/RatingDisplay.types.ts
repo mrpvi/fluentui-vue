@@ -18,9 +18,9 @@ export interface RatingDisplayProps {
 export interface RatingDisplaySlots {
   /** Decorative icon used by all rating items. */
   icon?: (props: { value: number; fill: number }) => unknown;
-  /** Visible value text. */
-  'value-text'?: (props: { value: number | undefined }) => unknown;
-  /** Visible formatted count text. */
+  /** Visible, non-interactive value text using the normalized display value. */
+  'value-text'?: (props: { value: number }) => unknown;
+  /** Visible, non-interactive formatted count text. */
   'count-text'?: (props: {
     count: number | undefined;
     formattedCount: string | undefined;

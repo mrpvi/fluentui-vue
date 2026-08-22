@@ -61,6 +61,23 @@ describe('SSR rendering', () => {
       /aria-label="Server indeterminate progress" class="fui-ProgressBar fui-ProgressBar--rounded fui-ProgressBar--medium ssr-indeterminate-progress"[^>]*role="progressbar"><div class="fui-ProgressBar__indeterminateMotion"><div class="fui-ProgressBar__bar fui-ProgressBar__bar--indeterminate"><\/div><\/div><\/div>/,
     );
     expect(firstRender).toContain('fui-ProgressBar__bar--warning');
+    expect(firstRender).toContain(
+      'class="fui-Rating fui-Rating--neutral fui-Rating--extra-large ssr-rating"',
+    );
+    expect(firstRender).toContain('name="ssr-rating"');
+    expect(firstRender).toContain('value="2.5" checked');
+    expect(firstRender).toContain('aria-required="true"');
+    expect(firstRender).toContain('fui-Rating--disabled ssr-disabled-rating');
+    expect(firstRender).toContain('aria-readonly="true"');
+    expect(firstRender).toContain(
+      'class="fui-RatingDisplay fui-RatingDisplay--neutral fui-RatingDisplay--medium ssr-rating-display"',
+    );
+    expect(firstRender).toContain('aria-label="Server rating display"');
+    expect(firstRender).toMatch(/fui-RatingDisplay__valueText[^>]*><!--\[-->4\.5<!--\]--><\/span>/);
+    expect(firstRender).toMatch(
+      /fui-RatingDisplay__countText[^>]*><!--\[-->1,160<!--\]--><\/span>/,
+    );
+    expect(firstRender).toContain('fui-RatingDisplay--compact ssr-compact-rating-display');
     expect(firstRender).toMatch(
       /class="fui-Slider fui-Slider--medium fui-Slider--horizontal ssr-slider" style="--fui-Slider--progress:80%;--fui-Slider--steps-percent:10%;"><input aria-label="Server volume" id="fui-slider-[^"]+" class="fui-Slider__input" type="range" min="-0.5" max="0.5" step="0.1" value="0.3">/,
     );

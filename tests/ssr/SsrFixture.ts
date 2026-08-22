@@ -16,6 +16,8 @@ import {
   FLink,
   FPresenceBadge,
   FProgressBar,
+  FRating,
+  FRatingDisplay,
   FRadio,
   FRadioGroup,
   FSkeleton,
@@ -264,6 +266,47 @@ export const SsrFixture = defineComponent({
               }),
           },
         ),
+        h(FRating, {
+          class: 'ssr-rating',
+          defaultValue: 2.5,
+          step: 0.5,
+          name: 'ssr-rating',
+          'aria-label': 'Server rating',
+        }),
+        h(
+          FField,
+          { label: 'Server field rating', hint: 'Choose a server rating.', required: true },
+          {
+            default: () =>
+              h(FRating, { class: 'ssr-field-rating', defaultValue: 4, name: 'ssr-field-rating' }),
+          },
+        ),
+        h(FRating, {
+          class: 'ssr-readonly-rating',
+          defaultValue: 3,
+          readOnly: true,
+          'aria-label': 'Server read-only rating',
+        }),
+        h(FRating, {
+          class: 'ssr-disabled-rating',
+          defaultValue: 2,
+          disabled: true,
+          'aria-label': 'Server disabled rating',
+        }),
+        h(FRatingDisplay, {
+          class: 'ssr-rating-display',
+          value: 4.5,
+          count: 1160,
+          'aria-label': 'Server rating display',
+        }),
+        h(FRatingDisplay, {
+          class: 'ssr-compact-rating-display',
+          value: 3.8,
+          count: 86,
+          compact: true,
+          color: 'marigold',
+          'aria-label': 'Server compact rating display',
+        }),
         h(FLink, { href: '#details' }, () => 'View details'),
         h(FButton, { appearance: 'primary' }, () => 'Continue'),
       ]);

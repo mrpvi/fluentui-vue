@@ -43,6 +43,17 @@ describe('FRatingDisplay', () => {
     );
   });
 
+  it('uses normalized visible text and slot data for invalid and clamped values', () => {
+    const high = mount(RatingDisplay, { props: { value: 8, max: 5 } });
+    expect(high.get('.fui-RatingDisplay__valueText').text()).toBe('5');
+
+    const invalid = mount(RatingDisplay, {
+      props: { value: Number.NaN },
+      slots: { 'value-text': ({ value }: { value: number }) => `Normalized ${value}` },
+    });
+    expect(invalid.get('.fui-RatingDisplay__valueText').text()).toBe('Normalized 0');
+  });
+
   it('renders only one fully filled item in compact mode', () => {
     const wrapper = mount(RatingDisplay, { props: { compact: true, value: 2.5 } });
     expect(wrapper.findAllComponents(RatingItem)).toHaveLength(1);
@@ -77,7 +88,7 @@ describe('FRatingDisplay', () => {
       slots: {
         icon: ({ value, fill }: { value: number; fill: number }) =>
           h('span', { class: 'custom-icon' }, `${value}:${fill}`),
-        'value-text': ({ value }: { value: number | undefined }) => `Score ${value}`,
+        'value-text': ({ value }: { value: number }) => `Score ${value}`,
         'count-text': ({ formattedCount }: { formattedCount: string | undefined }) =>
           `${formattedCount} reviews`,
       },
@@ -109,6 +120,15 @@ describe('FRatingDisplay', () => {
     expect(wrapper.attributes('aria-label')).toBe('Four of five stars');
     expect(wrapper.attributes('aria-labelledby')).toBe('external-label');
     expect(wrapper.attributes('title')).toBe('Summary');
+  });
+
+  it('does not let generated text labels override an explicit aria-label', () => {
+    const wrapper = mount(RatingDisplay, {
+      props: { value: 4.2, count: 1160 },
+      attrs: { 'aria-label': '4.2 out of 5 from 1,160 ratings' },
+    });
+    expect(wrapper.attributes('aria-label')).toBe('4.2 out of 5 from 1,160 ratings');
+    expect(wrapper.attributes('aria-labelledby')).toBeUndefined();
   });
 
   it('integrates Field labels and descriptions', () => {

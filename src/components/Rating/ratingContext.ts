@@ -11,6 +11,8 @@ export interface RatingItemContextValue {
   interactive: ComputedRef<boolean>;
   disabled: ComputedRef<boolean>;
   readOnly: ComputedRef<boolean>;
+  required: ComputedRef<boolean>;
+  inputAttrs: ComputedRef<Record<string, unknown>>;
   compact: ComputedRef<boolean>;
   itemLabel: ComputedRef<(value: number) => string>;
 }

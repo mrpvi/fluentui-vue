@@ -72,6 +72,9 @@ describe('FRating family', () => {
     expect(wrapper.emitted('update:modelValue')).toHaveLength(1);
     expect(wrapper.emitted('change')).toHaveLength(1);
 
+    const kebab = mount(Rating, { props: { 'model-value': 2 } });
+    expect(checkedValues(kebab)).toEqual([2]);
+
     const empty = mount(Rating, { props: { modelValue: undefined, defaultValue: 3 } });
     expect(checkedValues(empty)).toEqual([]);
     await empty.get('input[value="2"]').setValue(true);
@@ -248,13 +251,59 @@ describe('FRating family', () => {
     expect(generated.findAll('.custom-unselected')).toHaveLength(4);
   });
 
-  it('warns and falls back for invalid maximums', () => {
+  it('warns and falls back for invalid maximums and runtime steps', () => {
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
-    const wrapper = mount(Rating, { props: { max: 1 } });
+    const wrapper = mount(Rating, { props: { max: 1, step: 0.25 as 0.5 } });
     expect(wrapper.findAllComponents(RatingItem)).toHaveLength(5);
+    expect(wrapper.findAll('input')).toHaveLength(5);
     expect(consoleError).toHaveBeenCalledWith(
       "[FRating] The prop 'max' must be a whole number greater than 1. Received max: 1",
     );
+    expect(consoleError).toHaveBeenCalledWith(
+      "[FRating] The prop 'step' must be 0.5 or 1. Received step: 0.25",
+    );
+  });
+
+  it('routes native radio attrs, required state, external form ownership, and pointer listeners', async () => {
+    const mouseover = vi.fn();
+    const mouseleave = vi.fn();
+    const wrapper = mount(
+      {
+        render: () =>
+          h('div', [
+            h('form', { id: 'external-rating-form' }),
+            h(Rating, {
+              defaultValue: 2,
+              name: 'external-score',
+              form: 'external-rating-form',
+              required: true,
+              autocomplete: 'off',
+              onMouseover: mouseover,
+              onMouseleave: mouseleave,
+            }),
+          ]),
+      },
+      { attachTo: document.body },
+    );
+    const group = wrapper.get('[role="radiogroup"]');
+    const inputs = wrapper.findAll<HTMLInputElement>('input[type="radio"]');
+    expect(group.attributes('form')).toBeUndefined();
+    expect(group.attributes('required')).toBeUndefined();
+    expect(group.attributes('aria-required')).toBe('true');
+    expect(inputs.every((input) => input.attributes('form') === 'external-rating-form')).toBe(true);
+    expect(inputs.every((input) => input.attributes('required') !== undefined)).toBe(true);
+    expect(inputs.every((input) => input.attributes('autocomplete') === 'off')).toBe(true);
+    expect(new FormData(wrapper.get('form').element).get('external-score')).toBe('2');
+
+    await wrapper.get('input[value="4"]').trigger('mouseover');
+    await group.trigger('mouseleave');
+    expect(mouseover).toHaveBeenCalledOnce();
+    expect(mouseleave).toHaveBeenCalledOnce();
+
+    await wrapper.get('input[value="4"]').setValue(true);
+    wrapper.get('form').element.reset();
+    await vi.waitFor(() => expect(checkedValues(wrapper)).toEqual([2]));
+    wrapper.unmount();
   });
 
   it('exposes roots and useful focus operations', () => {

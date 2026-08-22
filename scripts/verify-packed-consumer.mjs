@@ -53,6 +53,9 @@ import {
   FLink,
   FPresenceBadge,
   FProgressBar,
+  FRating,
+  FRatingDisplay,
+  FRatingItem,
   FSkeleton,
   FSkeletonItem,
   FSlider,
@@ -82,6 +85,9 @@ import {
   type PresenceBadgeStatus,
   type ProgressBarColor,
   type ProgressBarThickness,
+  type RatingColor,
+  type RatingSize,
+  type RatingStep,
   type SkeletonAnimation,
   type SkeletonSize,
   type SliderSize,
@@ -117,6 +123,10 @@ const imageShape: ImageShape = 'rounded';
 const presenceStatus: PresenceBadgeStatus = 'available';
 const progressColor: ProgressBarColor = 'success';
 const progressThickness: ProgressBarThickness = 'large';
+const ratingColor: RatingColor = 'marigold';
+const ratingSize: RatingSize = 'large';
+const ratingStep: RatingStep = 0.5;
+const ratingValue = ref(2.5);
 const skeletonAnimation: SkeletonAnimation = 'pulse';
 const skeletonSize: SkeletonSize = 48;
 const sliderSize: SliderSize = 'small';
@@ -247,6 +257,26 @@ createApp({
       h(FProgressBar, {
         indeterminateMotion: false,
         'aria-label': 'Packed indeterminate progress',
+      }),
+      h(FRating, {
+        modelValue: ratingValue.value,
+        'onUpdate:modelValue': value => (ratingValue.value = value),
+        color: ratingColor,
+        size: ratingSize,
+        step: ratingStep,
+        name: 'packed-rating',
+        'aria-label': 'Packed rating',
+      }),
+      h(FRating, { defaultValue: 3, readOnly: true, 'aria-label': 'Packed read-only rating' }),
+      h(FRatingDisplay, {
+        value: 4.5,
+        count: 1160,
+        color: ratingColor,
+        'aria-label': 'Packed rating display',
+      }),
+      h(FRatingDisplay, { value: 3.8, compact: true, 'aria-label': 'Packed compact rating' }),
+      h(FRating, { defaultValue: 1, 'aria-label': 'Packed custom rating' }, {
+        default: () => [h(FRatingItem, { value: 1 }), h(FRatingItem, { value: 2 })],
       }),
       h(FSpinButton, {
         modelValue: spinButtonValue.value,
