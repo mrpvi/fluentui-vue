@@ -5,6 +5,7 @@ import {
   FCheckbox,
   FDivider,
   FField,
+  FImage,
   FInput,
   FLabel,
   FLink,
@@ -18,6 +19,9 @@ const biography = ref('Vue-native Fluent components.');
 const accepted = ref<CheckboxValue>(false);
 const triState = ref<CheckboxValue>('mixed');
 const dark = ref(false);
+const imageFixture =
+  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22320%22 height=%22180%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%230f6cbd%22/%3E%3Crect width=%22160%22 height=%2290%22 fill=%22%23479ef5%22/%3E%3Crect x=%22160%22 y=%2290%22 width=%22160%22 height=%2290%22 fill=%22%230e4775%22/%3E%3Ccircle cx=%22160%22 cy=%2290%22 r=%2242%22 fill=%22%23f7c646%22/%3E%3Cpath d=%22M0 180 96 68l58 66 44-46 122 92Z%22 fill=%22%23dff6dd%22 opacity=%22.92%22/%3E%3C/svg%3E';
+const missingImageFixture = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABINVALID';
 
 function clearUncontrolledAmount(event: MouseEvent) {
   const button = event.currentTarget as HTMLButtonElement;
@@ -38,8 +42,9 @@ function clearUncontrolledAmount(event: MouseEvent) {
         <p class="eyebrow">@local/fluent-vue · 0.1.0</p>
         <h1>Native Fluent components for Vue 3</h1>
         <p>
-          Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, and Divider components
-          translated from Fluent UI React v9 to Vue props, slots, emits, and semantic HTML.
+          Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, and Image
+          components translated from Fluent UI React v9 to Vue props, slots, emits, and semantic
+          HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -218,6 +223,111 @@ function clearUncontrolledAmount(event: MouseEvent) {
           <FText>Current</FText>
           <FDivider class="divider-vertical-content" vertical appearance="brand"> OR </FDivider>
           <FText>Next</FText>
+        </div>
+      </div>
+    </section>
+
+    <section id="image">
+      <h2>Image</h2>
+      <div class="image-samples">
+        <div class="image-grid image-shape-grid">
+          <figure>
+            <FImage
+              class="image-square"
+              :src="imageFixture"
+              alt="Abstract blue landscape with a yellow sun"
+              width="160"
+              height="112"
+            />
+            <figcaption>Square</figcaption>
+          </figure>
+          <figure>
+            <FImage
+              class="image-rounded"
+              :src="imageFixture"
+              alt="Abstract blue landscape with a yellow sun"
+              shape="rounded"
+              width="160"
+              height="112"
+            />
+            <figcaption>Rounded</figcaption>
+          </figure>
+          <figure>
+            <FImage
+              class="image-circular"
+              :src="imageFixture"
+              alt="Abstract blue landscape with a yellow sun"
+              shape="circular"
+              width="112"
+              height="112"
+            />
+            <figcaption>Circular</figcaption>
+          </figure>
+          <figure>
+            <FImage
+              class="image-decorated"
+              :src="imageFixture"
+              alt=""
+              bordered
+              shadow
+              shape="rounded"
+              width="160"
+              height="112"
+            />
+            <figcaption>Decorative, bordered, and shadowed</figcaption>
+          </figure>
+        </div>
+
+        <div class="image-block-frame">
+          <FImage
+            class="image-block"
+            :src="imageFixture"
+            alt="Wide abstract landscape filling its container"
+            block
+            height="88"
+            fit="cover"
+            shape="rounded"
+          />
+        </div>
+
+        <div class="image-grid image-fit-grid">
+          <figure
+            v-for="fit in ['default', 'none', 'center', 'contain', 'cover'] as const"
+            :key="fit"
+          >
+            <div class="image-fit-frame">
+              <FImage
+                :class="`image-fit-${fit}`"
+                :src="imageFixture"
+                :alt="`Abstract landscape using ${fit} image fit`"
+                :fit="fit"
+                width="144"
+                height="104"
+              />
+            </div>
+            <figcaption>{{ fit }}</figcaption>
+          </figure>
+          <figure>
+            <div class="image-fit-frame image-fit-fill-frame">
+              <FImage
+                class="image-fit-fill"
+                :src="imageFixture"
+                alt="Abstract landscape filling inferred dimensions"
+                fit="cover"
+              />
+            </div>
+            <figcaption>cover with inferred fill dimensions</figcaption>
+          </figure>
+        </div>
+
+        <div class="image-failure-frame">
+          <FImage
+            class="image-native-failure"
+            :src="missingImageFixture"
+            alt="Unavailable image example"
+            width="160"
+            height="72"
+          />
         </div>
       </div>
     </section>
@@ -423,6 +533,7 @@ section {
 .field-samples,
 .link-samples,
 .divider-samples,
+.image-samples,
 .textarea-samples {
   display: grid;
   gap: 1rem;
@@ -448,6 +559,68 @@ section {
 .divider-vertical-content {
   flex-grow: 0;
   height: 7rem;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  gap: 1rem;
+}
+
+.image-samples {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.image-samples figure {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.image-samples figcaption {
+  color: var(--fui-color-neutral-foreground-3);
+  font-size: var(--fui-font-size-base-200);
+  text-align: center;
+}
+
+.image-shape-grid {
+  align-items: start;
+}
+
+.image-block-frame {
+  width: min(100%, 38rem);
+  padding: 0.75rem;
+  background: var(--fui-color-neutral-background-2);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+}
+
+.image-fit-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+}
+
+.image-fit-frame {
+  width: 144px;
+  height: 104px;
+  overflow: hidden;
+  background: var(--fui-color-neutral-background-3);
+  border: var(--fui-stroke-width-thin) dashed var(--fui-color-neutral-stroke-1);
+}
+
+.image-fit-fill-frame {
+  width: 176px;
+  height: 104px;
+}
+
+.image-failure-frame {
+  display: grid;
+  place-items: center;
+  width: 176px;
+  min-height: 88px;
+  padding: 0.5rem;
+  background: var(--fui-color-neutral-background-2);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
 }
 
 .field-validity-demo,

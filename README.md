@@ -10,6 +10,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 - `FInput` — adapted from `@fluentui/react-input` 9.8.6
 - `FCheckbox` — adapted from `@fluentui/react-checkbox` 9.6.4
 - `FDivider` — adapted from `@fluentui/react-divider` 9.7.4
+- `FImage` — adapted from `@fluentui/react-image` 9.4.4
 - `FText` — adapted from `@fluentui/react-text` 9.6.19
 - `FLabel` — adapted from `@fluentui/react-label` 9.4.4
 - `FField` — adapted from `@fluentui/react-field` 9.5.4
@@ -119,6 +120,7 @@ import {
   FCheckbox,
   FDivider,
   FField,
+  FImage,
   FInput,
   FLabel,
   FLink,
@@ -142,6 +144,7 @@ const accepted = ref<CheckboxValue>(false);
   </FField>
   <FCheckbox v-model="accepted" label="Accept terms" />
   <FDivider>Review</FDivider>
+  <FImage src="/summary.png" alt="Account summary chart" shape="rounded" />
   <FLink inline href="/privacy">Read the privacy policy</FLink>
   <FButton appearance="primary" :disabled="!accepted">Continue</FButton>
 </template>
@@ -369,6 +372,35 @@ The root is a native `<div role="separator">` with managed `aria-orientation`. W
 
 Top-level `class`, `style`, native, ARIA, and data attributes are forwarded to the root. The managed `role`, `aria-orientation`, and content-derived `aria-labelledby` cannot be overridden. Alignment and inset styling use logical properties, so start/end layout follows the document direction. The component exposes its native `element` and defines no component-specific events. React slot customization for the root and wrapper is intentionally translated to Vue's fixed semantic root plus default content slot.
 
+## Image
+
+`FImage` renders one native `<img>` with Fluent shape, fit, border, shadow, and block styling. It is adapted from the released `@fluentui/react-image@9.4.4` package.
+
+```vue
+<FImage src="/team-photo.jpg" alt="The product team at the launch event" shape="rounded" />
+<FImage src="/texture.png" alt="" bordered shadow />
+
+<div style="width: 20rem; height: 12rem">
+  <FImage src="/landscape.jpg" alt="Mountain landscape" fit="cover" />
+</div>
+```
+
+Key props:
+
+- `shape`: `square | rounded | circular`
+- `fit`: `default | none | center | contain | cover`
+- `block` to set the image width to its container width
+- `bordered` for a Fluent neutral rectangular border
+- `shadow` for Fluent elevation shadow 4
+
+The root is always a native `<img>`. Native image attributes, ARIA and data attributes, event listeners, `class`, and `style` are forwarded to it. The component exposes the native `element`; it does not add fallback markup or component error state, so native `load` and `error` behavior is preserved.
+
+For non-default fit modes, when neither a native `width` nor `height` attribute is supplied, the image receives `width: 100%` and `height: 100%`, matching the reviewed Fluent implementation. Put it in a container with explicit dimensions so `object-fit` has defined bounds. Supplying either dimension prevents this inferred fill sizing. `none` positions at the physical left top, while `center`, `contain`, and `cover` center the image; this matches upstream and does not change in RTL.
+
+Every meaningful image must have concise alternative text that conveys its purpose. Decorative images must use `alt=""`. Do not omit `alt`: an omitted attribute can cause assistive technology to announce the filename or URL. Image loading failures remain the browser's native behavior; applications that need a replacement can listen for the native `error` event and update `src` or render application-owned fallback UI.
+
+React root slot replacement and Fluent's internal custom-style hook are intentionally omitted. Vue uses a fixed semantic image root, fallthrough attributes, and application-controlled CSS classes/styles instead.
+
 ## Input
 
 ```vue
@@ -483,7 +515,7 @@ All theme values are CSS custom properties and can be overridden by applications
 
 ## Intentional scope limits
 
-- This is an early nine-component parity slice, not a complete Fluent UI Vue library.
+- This is an early ten-component parity slice, not a complete Fluent UI Vue library.
 - `FField` integrates the current Input, Checkbox, and Textarea controls; future form controls will adopt the same internal context contract as they are ported.
 - The default checkbox marks are package-owned SVG/CSS primitives rather than copied Fluent icon assets.
 - Griffel and React-specific Tabster bindings are not included.

@@ -15,6 +15,10 @@ describe('SSR rendering', () => {
     expect(firstRender).toContain('required');
     expect(firstRender).toContain('type="checkbox"');
     expect(firstRender).toContain('href="#details"');
+    expect(firstRender).toContain('alt="SSR image"');
+    expect(firstRender).toContain('fui-Image--fit-cover');
+    expect(firstRender).toContain('fui-Image--shape-rounded');
+    expect(firstRender).not.toContain('fui-Image--fit-fill');
     expect(firstRender).toContain('aria-label="Contentless boundary"');
     expect(firstRender).toMatch(
       /role="separator" aria-orientation="horizontal" aria-labelledby="(fui-divider-[^"]+__content)"><div id="\1" class="fui-Divider__wrapper"><!--\[-->Server section<!--\]--><\/div>/,

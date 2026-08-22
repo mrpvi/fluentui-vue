@@ -23,7 +23,7 @@ Status legend:
 6. ✅ **Field → `FField`**
 7. ✅ **Link → `FLink`**
 8. ✅ **Divider → `FDivider`** — definition-of-done gates complete for `@fluentui/react-divider@9.7.4`
-9. ❌ **Image → `FImage`**
+9. ✅ **Image → `FImage`**
 10. ❌ **Badge family**
     - `FBadge`
     - `FCounterBadge`

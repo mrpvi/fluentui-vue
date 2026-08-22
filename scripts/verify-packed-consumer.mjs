@@ -34,6 +34,7 @@ import {
   FCheckbox,
   FDivider,
   FField,
+  FImage,
   FInput,
   FLabel,
   FLink,
@@ -45,6 +46,8 @@ import {
   type CheckboxValue,
   type DividerAppearance,
   type FluentTheme,
+  type ImageFit,
+  type ImageShape,
   type TextareaResize,
 } from '@local/fluent-vue';
 import '@local/fluent-vue/style.css';
@@ -53,6 +56,8 @@ const accepted = ref<CheckboxValue>('mixed');
 const appearance: ButtonAppearance = 'primary';
 const resize: TextareaResize = 'vertical';
 const dividerAppearance: DividerAppearance = 'brand';
+const imageFit: ImageFit = 'cover';
+const imageShape: ImageShape = 'rounded';
 const theme: FluentTheme = 'light';
 
 createApp({
@@ -92,6 +97,15 @@ createApp({
       h(FLink, { href: '#docs', inline: true }, () => 'Read documentation'),
       h(FDivider, { appearance: dividerAppearance }, () => 'Review'),
       h(FDivider, { vertical: true, 'aria-label': 'Column boundary' }),
+      h(FImage, {
+        src: 'data:image/gif;base64,R0lGODlhAQABAAAAACw=',
+        alt: 'Packed consumer image',
+        fit: imageFit,
+        shape: imageShape,
+        bordered: true,
+        width: 64,
+        height: 48,
+      }),
       h(FButton, { appearance }, () => 'Save'),
     ]),
 })

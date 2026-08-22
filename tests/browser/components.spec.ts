@@ -314,6 +314,88 @@ test('Divider start and end alignment follow RTL logical layout', async ({ page 
   await expect(complete).toHaveCSS('text-align', 'end');
 });
 
+test('Image applies native fit, dimension, shape, border, shadow, and block behavior', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#image');
+  const none = section.getByRole('img', { name: 'Abstract landscape using none image fit' });
+  const center = section.getByRole('img', {
+    name: 'Abstract landscape using center image fit',
+  });
+  const contain = section.getByRole('img', {
+    name: 'Abstract landscape using contain image fit',
+  });
+  const cover = section.getByRole('img', { name: 'Abstract landscape using cover image fit' });
+  const fill = section.getByRole('img', {
+    name: 'Abstract landscape filling inferred dimensions',
+  });
+  const square = section.locator('.image-square');
+  const rounded = section.locator('.image-rounded');
+  const circular = section.locator('.image-circular');
+  const decorated = section.locator('.image-decorated');
+  const block = section.getByRole('img', {
+    name: 'Wide abstract landscape filling its container',
+  });
+
+  await expect(none).toHaveCSS('object-fit', 'none');
+  await expect(none).toHaveCSS('object-position', '0% 0%');
+  await expect(center).toHaveCSS('object-fit', 'none');
+  await expect(center).toHaveCSS('object-position', '50% 50%');
+  await expect(contain).toHaveCSS('object-fit', 'contain');
+  await expect(contain).toHaveCSS('object-position', '50% 50%');
+  await expect(cover).toHaveCSS('object-fit', 'cover');
+  await expect(cover).toHaveCSS('object-position', '50% 50%');
+
+  const fillFrame = section.locator('.image-fit-fill-frame');
+  const fillBox = await fill.boundingBox();
+  const fillFrameBox = await fillFrame.boundingBox();
+  expect(fillBox).not.toBeNull();
+  expect(fillFrameBox).not.toBeNull();
+  expect(fillBox!.width).toBe(fillFrameBox!.width - 2);
+  expect(fillBox!.height).toBe(fillFrameBox!.height - 2);
+
+  await expect(square).toHaveCSS('border-radius', '0px');
+  await expect(rounded).toHaveCSS('border-radius', '4px');
+  await expect(circular).toHaveCSS('border-radius', '10000px');
+  await expect(decorated).toHaveCSS('border-style', 'solid');
+  await expect(decorated).toHaveCSS('border-width', '1px');
+  expect(await decorated.evaluate((element) => getComputedStyle(element).boxShadow)).not.toBe(
+    'none',
+  );
+
+  const blockFrame = section.locator('.image-block-frame');
+  const blockBox = await block.boundingBox();
+  const blockFrameBox = await blockFrame.boundingBox();
+  expect(blockBox).not.toBeNull();
+  expect(blockFrameBox).not.toBeNull();
+  expect(blockBox!.width).toBe(blockFrameBox!.width - 26);
+
+  await expect(section.locator('.image-decorated')).toHaveAttribute('alt', '');
+});
+
+test('Image preserves deterministic native failure behavior', async ({ page }) => {
+  await page.goto('/');
+
+  const failed = page.locator('#image .image-native-failure');
+  await expect(failed).toHaveAttribute('alt', 'Unavailable image example');
+  await expect
+    .poll(() => failed.evaluate((element) => (element as HTMLImageElement).complete))
+    .toBe(true);
+  expect(
+    await failed.evaluate((element) => ({
+      naturalWidth: (element as HTMLImageElement).naturalWidth,
+      childCount: element.childElementCount,
+      className: element.className,
+    })),
+  ).toEqual({
+    naturalWidth: 0,
+    childCount: 0,
+    className: expect.not.stringContaining('fui-Image--error'),
+  });
+});
+
 test('native form reset restores uncontrolled Input and Checkbox defaults', async ({ page }) => {
   await page.goto('/');
 

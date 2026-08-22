@@ -4,6 +4,7 @@ import {
   FCheckbox,
   FDivider,
   FField,
+  FImage,
   FInput,
   FLabel,
   FLink,
@@ -37,6 +38,14 @@ export const SsrFixture = defineComponent({
         h(FDivider, { 'aria-label': 'Contentless boundary' }),
         h(FDivider, { appearance: 'brand' }, () => 'Server section'),
         h(FDivider, { vertical: true }, () => 'Vertical section'),
+        h(FImage, {
+          src: 'data:image/gif;base64,R0lGODlhAQABAAAAACw=',
+          alt: 'SSR image',
+          fit: 'cover',
+          shape: 'rounded',
+          width: 64,
+          height: 48,
+        }),
         h(FLink, { href: '#details' }, () => 'View details'),
         h(FButton, { appearance: 'primary' }, () => 'Continue'),
       ]);
