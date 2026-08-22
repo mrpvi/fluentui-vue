@@ -1,0 +1,52 @@
+.fui-Image {
+  display: inline-block;
+  box-sizing: border-box;
+  border-color: var(--fui-color-neutral-stroke-1);
+  border-radius: var(--fui-border-radius-none);
+}
+
+.fui-Image--block {
+  width: 100%;
+}
+
+.fui-Image--bordered {
+  border-style: solid;
+  border-width: var(--fui-stroke-width-thin);
+}
+
+.fui-Image--shadow {
+  box-shadow: var(--fui-shadow-4);
+}
+
+.fui-Image--shape-rounded {
+  border-radius: var(--fui-border-radius-medium);
+}
+
+.fui-Image--shape-circular {
+  border-radius: var(--fui-border-radius-circular);
+}
+
+.fui-Image--fit-none {
+  object-fit: none;
+  object-position: left top;
+}
+
+.fui-Image--fit-center {
+  object-fit: none;
+  object-position: center;
+}
+
+.fui-Image--fit-contain {
+  object-fit: contain;
+  object-position: center;
+}
+
+.fui-Image--fit-cover {
+  object-fit: cover;
+  object-position: center;
+}
+
+.fui-Image--fit-fill {
+  width: 100%;
+  height: 100%;
+}
