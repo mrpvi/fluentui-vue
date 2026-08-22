@@ -75,5 +75,14 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /role="separator" aria-orientation="vertical" aria-labelledby="(fui-divider-[^"]+__content)"><div id="\1" class="fui-Divider__wrapper"><!--\[-->Vertical section<!--\]--><\/div>/,
     );
+    expect(firstRender).toMatch(
+      /class="fui-Card fui-Card--filled fui-Card--vertical fui-Card--medium fui-Card--interactive fui-Card--selectable fui-Card--selected ssr-card"[^>]*role="group"[^>]*><input class="fui-Card__checkbox" type="checkbox" checked[^>]*name="server-card" value="report"/,
+    );
+    expect(firstRender).toContain('class="fui-CardPreview"');
+    expect(firstRender).toContain('class="fui-CardHeader"');
+    expect(firstRender).toContain('class="fui-CardFooter"');
+    expect(firstRender).toMatch(
+      /<article(?=[^>]*aria-label="Server article")(?=[^>]*class="fui-Card[^>]*ssr-article-card")[^>]*>/,
+    );
   });
 });

@@ -1,14 +1,5 @@
 <script setup lang="ts">
-import {
-  computed,
-  inject,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  useAttrs,
-  useId,
-  useTemplateRef,
-} from 'vue';
+import { computed, inject, onBeforeUnmount, onMounted, ref, useAttrs, useId } from 'vue';
 import { cardContextKey } from '../Card/cardContext';
 import type { CardHeaderSlots } from './CardHeader.types';
 
@@ -20,7 +11,7 @@ defineOptions({
 defineSlots<CardHeaderSlots>();
 const attrs = useAttrs();
 const card = inject(cardContextKey, undefined);
-const root = useTemplateRef<HTMLElement>('root');
+const root = ref<HTMLElement | null>(null);
 const generatedHeaderId = `fui-CardHeader__header-${useId()}`;
 const registeredReferenceId = ref<string>();
 const rootAttrs = computed(() => {
@@ -35,12 +26,10 @@ onMounted(() => {
   const header = root.value?.querySelector<HTMLElement>('.fui-CardHeader__header');
   const childWithId = header?.querySelector<HTMLElement>('[id]');
   if (childWithId?.id) {
+    header?.removeAttribute('id');
     registeredReferenceId.value = childWithId.id;
     card.setReferenceId(childWithId.id);
   } else if (header) {
-    if (!header.id) {
-      header.id = generatedHeaderId;
-    }
     registeredReferenceId.value = header.id;
     card.setReferenceId(header.id);
   }
@@ -66,7 +55,7 @@ defineExpose({
     <div v-if="$slots.image" class="fui-CardHeader__image">
       <slot name="image" />
     </div>
-    <div v-if="$slots.header" class="fui-CardHeader__header">
+    <div v-if="$slots.header" :id="generatedHeaderId" class="fui-CardHeader__header">
       <slot name="header" />
     </div>
     <div v-if="$slots.description" class="fui-CardHeader__description">

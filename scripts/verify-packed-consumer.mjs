@@ -32,6 +32,10 @@ try {
 import {
   FBadge,
   FButton,
+  FCard,
+  FCardFooter,
+  FCardHeader,
+  FCardPreview,
   FCheckbox,
   FCounterBadge,
   FDivider,
@@ -54,6 +58,10 @@ import {
   type BadgeAppearance,
   type BadgeColor,
   type ButtonAppearance,
+  type CardAppearance,
+  type CardFocusMode,
+  type CardOrientation,
+  type CardSize,
   type CheckboxValue,
   type DividerAppearance,
   type FluentTheme,
@@ -77,6 +85,10 @@ const accepted = ref<CheckboxValue>('mixed');
 const badgeAppearance: BadgeAppearance = 'tint';
 const badgeColor: BadgeColor = 'success';
 const appearance: ButtonAppearance = 'primary';
+const cardAppearance: CardAppearance = 'outline';
+const cardFocusMode: CardFocusMode = 'tab-only';
+const cardOrientation: CardOrientation = 'vertical';
+const cardSize: CardSize = 'medium';
 const resize: TextareaResize = 'vertical';
 const dividerAppearance: DividerAppearance = 'brand';
 const imageFit: ImageFit = 'cover';
@@ -199,6 +211,29 @@ createApp({
           default: () => [
             h(FSkeletonItem),
             h(FSkeletonItem, { size: 16, shape: 'rectangle', style: { width: '60%' } }),
+          ],
+        },
+      ),
+      h(
+        FCard,
+        {
+          appearance: cardAppearance,
+          focusMode: cardFocusMode,
+          orientation: cardOrientation,
+          size: cardSize,
+          defaultSelected: true,
+          name: 'packed-card',
+          value: 'report',
+        },
+        {
+          default: () => [
+            h(
+              FCardPreview,
+              {},
+              { default: () => h('img', { src: 'preview.png', alt: 'Packed card preview' }) },
+            ),
+            h(FCardHeader, {}, { header: () => h('h2', { id: 'packed-card-title' }, 'Packed card') }),
+            h(FCardFooter, {}, { default: () => h(FButton, {}, () => 'Open packed card') }),
           ],
         },
       ),

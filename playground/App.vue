@@ -3,6 +3,10 @@ import { ref } from 'vue';
 import {
   FBadge,
   FButton,
+  FCard,
+  FCardFooter,
+  FCardHeader,
+  FCardPreview,
   FCheckbox,
   FCounterBadge,
   FDivider,
@@ -32,6 +36,8 @@ const switchEnabled = ref(false);
 const controlledSwitch = ref(true);
 const sliderValue = ref(40);
 const sliderControlled = ref(35);
+const selectableCard = ref(false);
+const controlledCard = ref(true);
 const imageFixture =
   'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22320%22 height=%22180%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%230f6cbd%22/%3E%3Crect width=%22160%22 height=%2290%22 fill=%22%23479ef5%22/%3E%3Crect x=%22160%22 y=%2290%22 width=%22160%22 height=%2290%22 fill=%22%230e4775%22/%3E%3Ccircle cx=%22160%22 cy=%2290%22 r=%2242%22 fill=%22%23f7c646%22/%3E%3Cpath d=%22M0 180 96 68l58 66 44-46 122 92Z%22 fill=%22%23dff6dd%22 opacity=%22.92%22/%3E%3C/svg%3E';
 const missingImageFixture = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABINVALID';
@@ -56,8 +62,8 @@ function clearUncontrolledAmount(event: MouseEvent) {
         <h1>Native Fluent components for Vue 3</h1>
         <p>
           Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, Image, Badge,
-          Spinner, ProgressBar, Switch, Skeleton, and Slider components translated from Fluent UI
-          React v9 to Vue props, slots, emits, and semantic HTML.
+          Spinner, ProgressBar, Switch, Skeleton, Slider, and Card components translated from Fluent
+          UI React v9 to Vue props, slots, emits, and semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -592,7 +598,7 @@ function clearUncontrolledAmount(event: MouseEvent) {
             />
             <FSpinner
               class="spinner-delayed"
-              :delay="1200"
+              :delay="5000"
               aria-label="Delayed spinner"
               label="Delayed spinner"
               size="extra-small"
@@ -955,6 +961,155 @@ function clearUncontrolledAmount(event: MouseEvent) {
       </div>
     </section>
 
+    <section id="card">
+      <h2>Card</h2>
+      <div class="card-samples">
+        <div class="card-group">
+          <h3>Appearances, sizes, and parts</h3>
+          <div class="card-grid">
+            <FCard
+              v-for="appearance in ['filled', 'filled-alternative', 'outline', 'subtle'] as const"
+              :key="appearance"
+              :class="`card-appearance-${appearance}`"
+              :appearance="appearance"
+              :aria-label="`${appearance} card`"
+            >
+              <FCardPreview>
+                <FImage
+                  :src="imageFixture"
+                  :alt="`${appearance} project preview`"
+                  block
+                  height="96"
+                  fit="cover"
+                />
+                <template #logo><FBadge appearance="tint">Vue</FBadge></template>
+              </FCardPreview>
+              <FCardHeader>
+                <template #image
+                  ><FBadge>{{ appearance.slice(0, 1).toUpperCase() }}</FBadge></template
+                >
+                <template #header
+                  ><h3>{{ appearance }}</h3></template
+                >
+                <template #description><span>Complete Card part composition</span></template>
+                <template #action
+                  ><FButton size="small" appearance="subtle">More</FButton></template
+                >
+              </FCardHeader>
+              <p>Preview, header, description, action, body, footer, and logo slots.</p>
+              <FCardFooter>
+                <FButton size="small" appearance="primary">Open</FButton>
+                <template #action><FLink href="#card">Details</FLink></template>
+              </FCardFooter>
+            </FCard>
+          </div>
+          <div class="card-size-row">
+            <FCard
+              v-for="size in ['small', 'medium', 'large'] as const"
+              :key="size"
+              :size="size"
+              :aria-label="`${size} card`"
+            >
+              <strong>{{ size }}</strong
+              ><span>Size</span>
+            </FCard>
+          </div>
+        </div>
+
+        <div class="card-group">
+          <h3>Selection, forms, nested actions, and disabled state</h3>
+          <form class="card-form-demo">
+            <FCard
+              v-model="selectableCard"
+              class="card-selectable"
+              name="selected-report"
+              value="quarterly"
+            >
+              <FCardHeader>
+                <template #header><h3>Quarterly report</h3></template>
+                <template #description><span>Selectable native checkbox card</span></template>
+              </FCardHeader>
+              <FButton class="card-nested-action" size="small" @click.prevent
+                >Nested action</FButton
+              >
+            </FCard>
+            <FCard
+              :model-value="controlledCard"
+              class="card-controlled-rollback"
+              name="locked-report"
+              value="locked"
+            >
+              <FCardHeader
+                ><template #header><h3>Controlled report</h3></template></FCardHeader
+              >
+              <span>Selection rolls back until the parent updates.</span>
+            </FCard>
+            <FCard
+              class="card-disabled"
+              default-selected
+              disabled
+              aria-label="Disabled selected card"
+            >
+              <FCardHeader
+                ><template #header><h3>Disabled selected card</h3></template></FCardHeader
+              >
+            </FCard>
+            <div class="row">
+              <FButton type="reset">Reset card form</FButton>
+              <FButton type="button" size="small" @click="controlledCard = !controlledCard"
+                >Update controlled card</FButton
+              >
+              <small>Selectable: {{ selectableCard }} · Controlled: {{ controlledCard }}</small>
+            </div>
+          </form>
+        </div>
+
+        <div class="card-group">
+          <h3>Focus modes, semantic roots, horizontal and RTL layouts</h3>
+          <div class="card-focus-grid">
+            <FCard
+              v-for="mode in ['off', 'no-tab', 'tab-exit', 'tab-only'] as const"
+              :key="mode"
+              :class="`card-focus-${mode}`"
+              :focus-mode="mode"
+              :aria-label="`${mode} focus card`"
+            >
+              <strong>{{ mode }}</strong>
+              <FButton size="small">First action</FButton>
+              <FLink href="#card">Second action</FLink>
+            </FCard>
+          </div>
+          <FCard as="article" class="card-semantic-article" aria-label="Article card">
+            <FCardHeader
+              ><template #header><h3>Article root</h3></template></FCardHeader
+            >
+          </FCard>
+          <div dir="rtl" class="card-rtl-surface">
+            <FCard
+              orientation="horizontal"
+              class="card-horizontal-rtl"
+              aria-label="RTL horizontal card"
+            >
+              <FCardPreview
+                ><FImage
+                  :src="imageFixture"
+                  alt="RTL project preview"
+                  width="120"
+                  height="96"
+                  fit="cover"
+              /></FCardPreview>
+              <FCardHeader>
+                <template #header><h3>RTL horizontal</h3></template>
+                <template #description
+                  ><span>Logical preview and floating-action placement</span></template
+                >
+              </FCardHeader>
+            </FCard>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section>
       <h2>Button</h2>
       <div class="row">
@@ -1163,6 +1318,7 @@ section {
 }
 
 .badge-samples,
+.card-samples,
 .spinner-samples,
 .progress-bar-samples,
 .switch-samples,
@@ -1172,6 +1328,7 @@ section {
 }
 
 .badge-group,
+.card-group,
 .spinner-group,
 .progress-bar-group,
 .switch-group,
@@ -1182,6 +1339,7 @@ section {
 
 .spinner-group h3,
 .badge-group h3,
+.card-group > h3,
 .progress-bar-group h3,
 .switch-group h3,
 .skeleton-group h3 {
@@ -1417,6 +1575,71 @@ section {
   gap: 1rem;
   padding: 1rem;
   border: 1px solid var(--fui-color-neutral-stroke-1);
+}
+
+.card-grid,
+.card-focus-grid,
+.card-size-row {
+  display: grid;
+  gap: 1rem;
+}
+
+.card-grid,
+.card-focus-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+
+.card-size-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.card-grid .fui-Card,
+.card-focus-grid .fui-Card,
+.card-size-row .fui-Card,
+.card-form-demo .fui-Card,
+.card-semantic-article,
+.card-rtl-surface {
+  min-width: 0;
+}
+
+.card-grid .fui-CardHeader h3,
+.card-form-demo .fui-CardHeader h3,
+.card-semantic-article h3,
+.card-horizontal-rtl h3 {
+  margin: 0;
+  font-size: var(--fui-font-size-base-300);
+}
+
+.card-grid .fui-CardPreview > .fui-Image {
+  width: 100%;
+}
+
+.card-form-demo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+}
+
+.card-form-demo > .row {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+
+.card-focus-grid .fui-Card {
+  min-height: 9rem;
+}
+
+.card-rtl-surface {
+  width: min(100%, 40rem);
+  padding: 1rem;
+  background: var(--fui-color-neutral-background-2);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+}
+
+.card-horizontal-rtl {
+  width: 100%;
 }
 
 .badge-matrix {
@@ -1659,6 +1882,7 @@ small {
     flex-direction: column;
   }
 
+  .card-size-row,
   .field-validity-demo,
   .spinner-position-grid,
   .spinner-size-grid,

@@ -2,6 +2,10 @@ import { defineComponent, h } from 'vue';
 import {
   FBadge,
   FButton,
+  FCard,
+  FCardFooter,
+  FCardHeader,
+  FCardPreview,
   FCheckbox,
   FCounterBadge,
   FDivider,
@@ -144,6 +148,38 @@ export const SsrFixture = defineComponent({
           FField,
           { label: 'Server field switch', hint: 'Server switch hint', required: true },
           { default: () => h(FSwitch, { class: 'ssr-field-switch' }) },
+        ),
+        h(
+          FCard,
+          {
+            class: 'ssr-card',
+            defaultSelected: true,
+            name: 'server-card',
+            value: 'report',
+          },
+          {
+            default: () => [
+              h(
+                FCardPreview,
+                {},
+                { default: () => h('img', { src: 'preview.png', alt: 'Server card preview' }) },
+              ),
+              h(
+                FCardHeader,
+                {},
+                {
+                  header: () => h('h2', { id: 'server-card-title' }, 'Server card'),
+                  description: () => 'Hydration fixture',
+                },
+              ),
+              h(FCardFooter, {}, { default: () => h(FButton, {}, () => 'Open server card') }),
+            ],
+          },
+        ),
+        h(
+          FCard,
+          { as: 'article', class: 'ssr-article-card', 'aria-label': 'Server article' },
+          () => 'Article card',
         ),
         h(FLink, { href: '#details' }, () => 'View details'),
         h(FButton, { appearance: 'primary' }, () => 'Continue'),

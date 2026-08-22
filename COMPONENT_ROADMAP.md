@@ -66,7 +66,7 @@ Delay these components until Menu exists:
 
 ## Phase 5 — Simple content containers
 
-24. ❌ **Card family**
+24. ✅ **Card family** — definition-of-done gates complete for `@fluentui/react-card@9.7.2`
     - `FCard`
     - `FCardHeader`
     - `FCardPreview`

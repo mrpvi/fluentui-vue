@@ -49,6 +49,26 @@ test('ProgressBar fixtures expose determinate, indeterminate, and Field-derived 
   );
 });
 
+test('Card fixtures expose group names and native selectable checkbox semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const selectable = page.locator('#card .card-selectable');
+  const checkbox = selectable.locator('input[type="checkbox"]');
+  const header = selectable.locator('.fui-CardHeader__header');
+  const headerId = await header.getAttribute('id');
+  expect(headerId).not.toBeNull();
+  await expect(selectable).toHaveAttribute('role', 'group');
+  await expect(checkbox).toHaveAttribute('aria-labelledby', headerId!);
+  await expect(checkbox).toHaveAttribute('name', 'selected-report');
+  await expect(page.getByRole('group', { name: 'no-tab focus card' })).toHaveAttribute(
+    'tabindex',
+    '0',
+  );
+  await expect(page.locator('#card .card-disabled')).toHaveAttribute('aria-disabled', 'true');
+});
+
 test('Skeleton fixtures expose default and explicitly overridden loading semantics', async ({
   page,
 }) => {

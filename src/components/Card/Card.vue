@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, provide, ref, useAttrs } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, provide, ref, useAttrs } from 'vue';
 import { useIsPropProvided } from '../../composables/useIsPropProvided';
 import { cardContextKey } from './cardContext';
 import type {
@@ -30,11 +30,15 @@ defineSlots<CardSlots>();
 const attrs = useAttrs();
 const root = ref<HTMLElement | null>(null);
 const checkbox = ref<HTMLInputElement | null>(null);
-const internalSelected = ref(props.defaultSelected ?? false);
+const initialSelected = props.defaultSelected ?? false;
+const internalSelected = ref(initialSelected);
 const referenceId = ref<string>();
 const referenceLabel = ref<string>();
 const focusWithin = ref(false);
+const focusInside = ref(false);
 const isModelProvided = useIsPropProvided('modelValue');
+let form: HTMLFormElement | null = null;
+let pendingReset: ReturnType<typeof setTimeout> | undefined;
 const isDefaultSelectedProvided =
   useIsPropProvided('defaultSelected') || useIsPropProvided('default-selected');
 const hasSelectionListener = useIsPropProvided('onSelectionChange');
@@ -58,8 +62,11 @@ const rootRole = computed(() => {
   if (selectable.value) {
     return 'group';
   }
-  if (props.as === 'div' || props.as === 'article' || props.as === 'section') {
+  if (props.as === 'div') {
     return (attrs.role as string | undefined) ?? 'group';
+  }
+  if (props.as === 'article' || props.as === 'section') {
+    return attrs.role as string | undefined;
   }
   if (props.as === 'a' && !attrs.href) {
     return 'button';
@@ -86,6 +93,15 @@ const rootType = computed(() =>
 const rootHref = computed(() =>
   rootElement.value === 'a' && !props.disabled ? (attrs.href as string | undefined) : undefined,
 );
+const checkboxName = computed(() => attrs.name as string | undefined);
+const checkboxValue = computed(() => (attrs.value as string | undefined) ?? 'on');
+const checkboxForm = computed(() => attrs.form as string | undefined);
+const checkboxRequired = computed(() => attrs.required === true || attrs.required === '');
+const checkboxLabel = computed(() =>
+  referenceId.value
+    ? undefined
+    : (referenceLabel.value ?? (attrs['aria-label'] as string | undefined)),
+);
 const classes = computed(() => [
   'fui-Card',
   `fui-Card--${props.appearance satisfies CardAppearance}`,
@@ -109,6 +125,10 @@ const rootAttrs = computed(() => {
     type: _type,
     href: _href,
     disabled: _disabled,
+    name: _name,
+    value: _value,
+    form: _form,
+    required: _required,
     'aria-disabled': _ariaDisabled,
     'aria-selected': _ariaSelected,
     'aria-checked': _ariaChecked,
@@ -177,6 +197,36 @@ function syncCheckboxState() {
   }
 }
 
+function handleFormReset() {
+  pendingReset = setTimeout(() => {
+    if (isModelProvided) {
+      syncCheckboxState();
+      return;
+    }
+    internalSelected.value = initialSelected;
+    syncCheckboxState();
+  });
+}
+
+function getFocusableElements(): HTMLElement[] {
+  if (!root.value) {
+    return [];
+  }
+  return Array.from(
+    root.value.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, [contenteditable="true"], [tabindex]:not([tabindex="-1"])',
+    ),
+  ).filter((element) => element !== checkbox.value && !element.hidden);
+}
+
+function focusFirstInside() {
+  const first = getFocusableElements()[0];
+  if (first) {
+    focusInside.value = true;
+    first.focus();
+  }
+}
+
 function handleClick(event: MouseEvent) {
   if (props.disabled) {
     event.preventDefault();
@@ -200,6 +250,32 @@ function handleKeydown(event: KeyboardEvent) {
   if (event.defaultPrevented) {
     return;
   }
+
+  if (event.key === 'Tab' && focusInside.value) {
+    handleFocusTab(event);
+    if (event.defaultPrevented) {
+      return;
+    }
+  }
+
+  if (event.key === 'Escape' && focusInside.value) {
+    event.preventDefault();
+    focusInside.value = false;
+    root.value?.focus();
+    return;
+  }
+
+  if (
+    event.target === root.value &&
+    effectiveFocusMode.value !== 'off' &&
+    !selectable.value &&
+    event.key === 'Enter'
+  ) {
+    event.preventDefault();
+    focusFirstInside();
+    return;
+  }
+
   if (selectable.value && event.key === 'Enter') {
     event.preventDefault();
     toggleSelection(event);
@@ -217,14 +293,68 @@ function handleCheckboxChange(event: Event) {
   setSelected((event.target as HTMLInputElement).checked, event);
 }
 
-function handleFocusIn() {
+function handleFocusIn(event: FocusEvent) {
   focusWithin.value = true;
+  if (event.target !== root.value && event.target !== checkbox.value) {
+    focusInside.value = true;
+  }
 }
 
 function handleFocusOut(event: FocusEvent) {
   focusWithin.value =
     event.relatedTarget instanceof Node && Boolean(root.value?.contains(event.relatedTarget));
+  if (!focusWithin.value) {
+    focusInside.value = false;
+  }
 }
+
+function handleFocusTab(event: KeyboardEvent) {
+  if (event.key !== 'Tab' || !focusInside.value || props.disabled) {
+    return;
+  }
+  const focusable = getFocusableElements();
+  if (focusable.length === 0) {
+    return;
+  }
+  const currentIndex = focusable.indexOf(document.activeElement as HTMLElement);
+  const atStart = currentIndex <= 0;
+  const atEnd = currentIndex === focusable.length - 1;
+
+  if (effectiveFocusMode.value === 'no-tab') {
+    event.preventDefault();
+    const nextIndex = event.shiftKey
+      ? atStart
+        ? focusable.length - 1
+        : currentIndex - 1
+      : atEnd
+        ? 0
+        : currentIndex + 1;
+    focusable[nextIndex]?.focus();
+  } else if (
+    effectiveFocusMode.value === 'tab-exit' &&
+    ((event.shiftKey && atStart) || (!event.shiftKey && atEnd))
+  ) {
+    focusInside.value = false;
+  } else if (
+    effectiveFocusMode.value === 'tab-only' &&
+    ((event.shiftKey && atStart) || (!event.shiftKey && atEnd))
+  ) {
+    focusInside.value = false;
+  }
+}
+
+onMounted(() => {
+  syncCheckboxState();
+  form = checkbox.value?.form ?? null;
+  form?.addEventListener('reset', handleFormReset);
+});
+
+onBeforeUnmount(() => {
+  form?.removeEventListener('reset', handleFormReset);
+  if (pendingReset !== undefined) {
+    clearTimeout(pendingReset);
+  }
+});
 
 defineExpose({
   element: root,
@@ -257,8 +387,12 @@ defineExpose({
       type="checkbox"
       :checked="selected"
       :disabled="disabled"
+      :name="checkboxName"
+      :value="checkboxValue"
+      :form="checkboxForm"
+      :required="checkboxRequired"
       :aria-labelledby="referenceId"
-      :aria-label="referenceId ? undefined : referenceLabel"
+      :aria-label="checkboxLabel"
       @change.stop="handleCheckboxChange"
     />
     <div v-if="$slots['floating-action']" class="fui-Card__floatingAction" @click.stop>

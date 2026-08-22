@@ -137,6 +137,21 @@ describe('hydration', () => {
     expect(skeletonStatus?.getAttribute('aria-busy')).toBe('false');
     expect(skeletonStatus?.style.width).toBe('180px');
 
+    const card = container.querySelector<HTMLElement>('.ssr-card');
+    const cardCheckbox = card?.querySelector<HTMLInputElement>('input[type="checkbox"]');
+    expect(card?.getAttribute('role')).toBe('group');
+    expect(cardCheckbox?.checked).toBe(true);
+    expect(cardCheckbox?.name).toBe('server-card');
+    expect(cardCheckbox?.value).toBe('report');
+    expect(cardCheckbox?.getAttribute('aria-labelledby')).toBe('server-card-title');
+    expect(card?.querySelector('.fui-CardPreview')).not.toBeNull();
+    expect(card?.querySelector('.fui-CardHeader')).not.toBeNull();
+    expect(card?.querySelector('.fui-CardFooter')).not.toBeNull();
+    card?.click();
+    await nextTick();
+    expect(cardCheckbox?.checked).toBe(false);
+    expect(container.querySelector('.ssr-article-card')?.tagName).toBe('ARTICLE');
+
     const delayedSpinner = container.querySelector<HTMLElement>('.ssr-delayed-spinner');
     expect(delayedSpinner).not.toBeNull();
     expect(delayedSpinner?.children).toHaveLength(0);

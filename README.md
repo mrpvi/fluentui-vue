@@ -17,6 +17,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 - `FSwitch` — adapted from `@fluentui/react-switch` 9.7.5
 - `FSkeleton` and `FSkeletonItem` — adapted from `@fluentui/react-skeleton` 9.7.5
 - `FSlider` — adapted from `@fluentui/react-slider` 9.6.5
+- `FCard`, `FCardHeader`, `FCardPreview`, and `FCardFooter` — adapted from `@fluentui/react-card` 9.7.2
 - `FText` — adapted from `@fluentui/react-text` 9.6.19
 - `FLabel` — adapted from `@fluentui/react-label` 9.4.4
 - `FField` — adapted from `@fluentui/react-field` 9.5.4
@@ -124,6 +125,10 @@ Components can be imported without installing the global plugin:
 import {
   FBadge,
   FButton,
+  FCard,
+  FCardFooter,
+  FCardHeader,
+  FCardPreview,
   FCheckbox,
   FCounterBadge,
   FDivider,
@@ -642,6 +647,54 @@ The native `<input type="range">` is the primary control and retains browser key
 Horizontal progress follows document direction and reverses in RTL. Vertical progress runs from bottom to top and sets Firefox's non-standard `orient="vertical"` attribute in addition to the CSS writing-mode/fallback behavior. Small and medium thumb/rail geometry, discrete step markers, disabled styling, invalid Field styling, forced-color system colors, and reduced-motion-safe styling follow the reviewed upstream release. The rail and thumb are decorative and hidden from assistive technology.
 
 React's root/input/rail/thumb slot objects are intentionally translated to a fixed Vue root and native input with fallthrough attributes; visual-part replacement is not exposed because it could break control geometry or semantics. The upstream component has no marks or two-thumb range-selection API. Vue adds native `input` and `change` emits and deterministic native form-reset synchronization. Do not use Slider for binary choices, fewer than three values, or ranges where exact typed entry is required.
+
+## Card
+
+The Card family provides a topic container plus structured preview, header, and footer parts. It is adapted from the exact `@fluentui/react-card@9.7.2` release.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { FButton, FCard, FCardFooter, FCardHeader, FCardPreview } from '@local/fluent-vue';
+
+const selected = ref(false);
+</script>
+
+<template>
+  <FCard v-model="selected" name="selected-card" value="quarterly">
+    <FCardPreview>
+      <img src="/quarterly.png" alt="Quarterly report preview" />
+    </FCardPreview>
+    <FCardHeader>
+      <template #header><h2>Quarterly report</h2></template>
+      <template #description>Updated today</template>
+      <template #action><FButton appearance="subtle">More</FButton></template>
+    </FCardHeader>
+    <p>Revenue and retention summary.</p>
+    <FCardFooter><FButton appearance="primary">Open</FButton></FCardFooter>
+  </FCard>
+</template>
+```
+
+Key `FCard` props:
+
+- `appearance`: `filled | filled-alternative | outline | subtle`
+- `size`: `small | medium | large`
+- `orientation`: `vertical | horizontal`
+- `focusMode`: `off | no-tab | tab-exit | tab-only`
+- `modelValue` and `defaultSelected` for controlled and uncontrolled selection
+- `disabled`
+- `as`: `div | article | section | button | a` for nonselectable semantic roots
+
+A selectable card renders a visually hidden native checkbox. Native checkbox attributes including `name`, `value`, `form`, and `required` route to that input, so selection participates in form data and reset behavior. Controlled selection emits the requested value and restores the prop value until the parent updates; uncontrolled selection initializes once and returns to `defaultSelected` on native form reset. The checkbox accessible name is derived from the CardHeader title ID, or from the direct preview image description/alternative text when there is no header title. Provide a meaningful title or explicit floating selection control.
+
+Clicking the card surface or pressing Enter on the internal checkbox toggles selection. Clicks and Enter presses originating from nested focusable controls do not toggle the card. The optional `floating-action` slot replaces the internal checkbox wrapper and is responsible for its own visible selection control and accessible name. `disabled` suppresses card activation and disables the internal checkbox, but, matching upstream, does not automatically disable slotted child controls.
+
+Focus modes translate the reviewed Fluent focus-group behavior without bundling React Tabster. `off` leaves the card out of the tab order. The other modes make a nonselectable card focusable; Enter moves focus to its first inner control and Escape returns focus to the card. `no-tab` cycles Tab within the inner controls, while `tab-exit` and `tab-only` allow Tab to leave at the edge. Focusable cards must have a meaningful `aria-label` or `aria-labelledby` and relevant `aria-describedby` text.
+
+`FCardHeader` exposes `image`, `header`, `description`, and `action` slots. `FCardPreview` renders default preview content followed by an optional `logo` overlay. `FCardFooter` renders its default actions followed by an optional far-edge `action` slot. All four components forward root classes, styles, native, ARIA, and data attributes and expose their native `element`; `FCard` additionally exposes `focus()`.
+
+The family preserves released appearance, selected, disabled, focus, size, vertical/horizontal, RTL, forced-color, and reduced-motion styles. React root/part slot objects and provider direction are translated to fixed Vue part structures, typed slots, root fallthrough attributes, and logical CSS. Semantic root customization is a Vue extension for nonselectable cards; selectable cards always render a `div` so the internal checkbox remains valid HTML.
 
 ## Input
 

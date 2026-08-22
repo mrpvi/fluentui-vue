@@ -138,6 +138,53 @@ describe('FCard', () => {
     expect(wrapper.classes()).toContain('fui-Card--selected');
   });
 
+  it('routes native form attributes to the hidden checkbox and resets uncontrolled state', async () => {
+    const wrapper = mount(
+      {
+        components: { Card },
+        template: `
+        <form>
+          <Card default-selected name="chosen-card" value="report" required>Report</Card>
+          <button type="reset">Reset</button>
+        </form>
+      `,
+      },
+      { attachTo: document.body },
+    );
+    const card = wrapper.get('.fui-Card');
+    const checkbox = wrapper.get('input');
+    const form = wrapper.get('form').element as HTMLFormElement;
+
+    expect(checkbox.attributes('name')).toBe('chosen-card');
+    expect(checkbox.attributes('value')).toBe('report');
+    expect(checkbox.attributes('required')).toBeDefined();
+    expect(Object.fromEntries(new FormData(form))).toEqual({ 'chosen-card': 'report' });
+
+    await card.trigger('click');
+    expect((checkbox.element as HTMLInputElement).checked).toBe(false);
+    form.reset();
+    await new Promise((resolve) => setTimeout(resolve));
+    expect((checkbox.element as HTMLInputElement).checked).toBe(true);
+    expect(card.classes()).toContain('fui-Card--selected');
+    wrapper.unmount();
+  });
+
+  it('reapplies controlled state after native form reset', async () => {
+    const wrapper = mount(
+      {
+        components: { Card },
+        template: '<form><Card :model-value="false" name="chosen-card">Report</Card></form>',
+      },
+      { attachTo: document.body },
+    );
+    const checkbox = wrapper.get('input').element as HTMLInputElement;
+    checkbox.defaultChecked = true;
+    (wrapper.get('form').element as HTMLFormElement).reset();
+    await new Promise((resolve) => setTimeout(resolve));
+    expect(checkbox.checked).toBe(false);
+    wrapper.unmount();
+  });
+
   it('does not toggle selection from nested interactive descendants', async () => {
     const wrapper = mount(Card, {
       props: { defaultSelected: false },
@@ -284,6 +331,37 @@ describe('FCard', () => {
     expect(wrapper.attributes('aria-disabled')).toBe('true');
     expect(wrapper.attributes('aria-selected')).toBeUndefined();
     expect(wrapper.attributes('data-track')).toBe('report');
+  });
+
+  it.each(['no-tab', 'tab-exit', 'tab-only'] as const)(
+    'moves focus inside and returns it with Escape for %s mode',
+    async (focusMode) => {
+      const wrapper = mount(Card, {
+        attachTo: document.body,
+        props: { focusMode },
+        slots: { default: '<button data-first>First</button><button data-last>Last</button>' },
+      });
+      await wrapper.trigger('focus');
+      await wrapper.trigger('keydown', { key: 'Enter' });
+      expect(document.activeElement).toBe(wrapper.get('[data-first]').element);
+      await wrapper.get('[data-first]').trigger('keydown', { key: 'Escape' });
+      expect(document.activeElement).toBe(wrapper.element);
+      wrapper.unmount();
+    },
+  );
+
+  it('cycles Tab inside no-tab mode', async () => {
+    const wrapper = mount(Card, {
+      attachTo: document.body,
+      props: { focusMode: 'no-tab' },
+      slots: { default: '<button data-first>First</button><button data-last>Last</button>' },
+    });
+    await wrapper.trigger('focus');
+    await wrapper.trigger('keydown', { key: 'Enter' });
+    (wrapper.get('[data-last]').element as HTMLElement).focus();
+    await wrapper.get('[data-last]').trigger('keydown', { key: 'Tab' });
+    expect(document.activeElement).toBe(wrapper.get('[data-first]').element);
+    wrapper.unmount();
   });
 
   it('exposes the native root and focus method', async () => {
