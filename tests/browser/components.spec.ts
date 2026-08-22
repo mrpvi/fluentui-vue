@@ -1541,6 +1541,129 @@ test('Radio generated names, IDs, Field semantics, layouts, RTL, disabled, and f
   expect(rtlIndicator!.x).toBeGreaterThan(rtlLabel!.x);
 });
 
+test('Select preserves native options, keyboard, forms, controlled rollback, and Field semantics', async ({
+  page,
+  browserName,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#select');
+  const form = section.locator('.select-form-demo');
+  const select = form.getByLabel('Companion');
+  const label = form.locator('label');
+
+  await label.click();
+  await expect(select).toBeFocused();
+  await expect(select).toHaveAttribute('required', '');
+  await expect(select).toHaveAttribute('name', 'companion');
+  expect(await select.locator('option').count()).toBe(6);
+  await expect(select.locator('optgroup').first()).toHaveAttribute('label', 'Land animals');
+  await expect(select.locator('optgroup').last()).toHaveAttribute('label', 'Water animals');
+
+  const keyboardSelect = section.locator('.select-appearance-outline select');
+  await keyboardSelect.focus();
+  await expect(keyboardSelect).toBeFocused();
+  await page.keyboard.press('ArrowLeft');
+  const keyboardValue = await keyboardSelect.inputValue();
+  expect(['blue', 'green']).toContain(keyboardValue);
+  test.info().annotations.push({
+    type: 'platform-note',
+    description: `The ${browserName} engine exposes native select arrow-key selection as ${keyboardValue}; the popup and commit timing remain browser/OS-owned.`,
+  });
+
+  await select.selectOption('seal');
+  await expect(select).toHaveValue('seal');
+  await expect(section.locator('.select-current-value')).toContainText('seal');
+
+  const formData = await form.evaluate((element) =>
+    Object.fromEntries(new FormData(element as HTMLFormElement).entries()),
+  );
+  expect(formData).toEqual({ companion: 'seal' });
+
+  const resetForm = section.locator('.select-reset-demo');
+  const resetSelect = resetForm.getByLabel('Resettable animal');
+  await expect(resetSelect).toHaveValue('dog');
+  await resetSelect.selectOption('seal');
+  await expect(resetSelect).toHaveValue('seal');
+  await resetForm.getByRole('button', { name: 'Reset select form' }).click();
+  await expect(resetSelect).toHaveValue('dog');
+
+  const controlled = section.locator('.select-controlled-demo');
+  const controlledSelect = controlled.getByLabel('Controlled rollback animal');
+  await expect(controlledSelect).toHaveValue('cat');
+  await controlledSelect.selectOption('dog');
+  await expect(controlledSelect).toHaveValue('cat');
+  await controlled.getByRole('button', { name: 'Set controlled animal to Seal' }).click();
+  await expect(controlledSelect).toHaveValue('seal');
+
+  await expect(section.locator('.select-disabled select')).toBeDisabled();
+  await expect(section.locator('.select-invalid select')).toHaveAttribute('aria-invalid', 'true');
+  await expect(section.locator('.select-custom-icon .fui-Select__icon')).toHaveAttribute(
+    'aria-hidden',
+    'true',
+  );
+  await expect(section.locator('[data-select-custom-icon]')).toBeVisible();
+  await expect(section.locator('.select-size-small select')).toHaveCSS('height', '24px');
+  await expect(section.locator('.select-size-medium select')).toHaveCSS('height', '32px');
+  await expect(section.locator('.select-size-large select')).toHaveCSS('height', '40px');
+  await expect(section.locator('.select-appearance-underline select')).toHaveCSS(
+    'border-bottom-style',
+    'solid',
+  );
+  await expect(section.locator('.select-appearance-filled-darker select')).toHaveCSS(
+    'border-left-color',
+    'rgba(0, 0, 0, 0)',
+  );
+
+  test.info().annotations.push({
+    type: 'platform-note',
+    description: `Native select popup rendering is browser/OS-owned in ${browserName}; coverage asserts the DOM value, keyboard selection, grouping, and form contracts.`,
+  });
+});
+
+test('Select icon placement follows RTL logical direction', async ({ page }) => {
+  await page.goto('/');
+
+  const selectRoot = page.locator('#select .select-custom-icon');
+  const select = selectRoot.locator('select');
+  const icon = selectRoot.locator('.fui-Select__icon');
+  const ltrSelectBox = await select.boundingBox();
+  const ltrIconBox = await icon.boundingBox();
+  expect(ltrSelectBox).not.toBeNull();
+  expect(ltrIconBox).not.toBeNull();
+  expect(ltrIconBox!.x).toBeGreaterThan(ltrSelectBox!.x + ltrSelectBox!.width / 2);
+
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  const rtlSelectBox = await select.boundingBox();
+  const rtlIconBox = await icon.boundingBox();
+  expect(rtlSelectBox).not.toBeNull();
+  expect(rtlIconBox).not.toBeNull();
+  expect(rtlIconBox!.x).toBeLessThan(rtlSelectBox!.x + rtlSelectBox!.width / 2);
+});
+
+test('Select reduced motion shortens focus underline transitions', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Reduced-motion computed-style coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const root = page.locator('#select .select-appearance-outline');
+  const beforeFocus = await root.evaluate((element) => ({
+    duration: getComputedStyle(element, '::after').transitionDuration,
+    delay: getComputedStyle(element, '::after').transitionDelay,
+  }));
+  expect(beforeFocus).toEqual({ duration: '1e-05s', delay: '1e-05s' });
+
+  await root.locator('select').focus();
+  const afterFocus = await root.evaluate((element) => ({
+    duration: getComputedStyle(element, '::after').transitionDuration,
+    delay: getComputedStyle(element, '::after').transitionDelay,
+  }));
+  expect(afterFocus).toEqual({ duration: '1e-05s', delay: '1e-05s' });
+});
+
 test('native form reset restores uncontrolled Input and Checkbox defaults', async ({ page }) => {
   await page.goto('/');
 
@@ -1611,6 +1734,10 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   const outlinedBadge = page.locator('#badge').getByText('Outline', { exact: true });
   const filledBadge = page.locator('#badge').getByText('Filled', { exact: true });
   const spinnerIndicator = page.locator('#spinner .spinner-primary .fui-Spinner__spinner');
+  const select = page.locator('#select .select-appearance-outline select');
+  const selectIcon = page.locator('#select .select-appearance-outline .fui-Select__icon');
+  const invalidSelect = page.locator('#select .select-invalid select');
+  const disabledSelect = page.locator('#select .select-disabled select');
   const checkedRadio = page
     .getByRole('radiogroup', { name: 'Native choices' })
     .getByRole('radio', { name: 'Alpha' });
@@ -1655,6 +1782,22 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
     return color;
   });
   await expect(checkedRadioIndicator).toHaveCSS('border-color', highlight);
+  await expect(select).toHaveCSS('forced-color-adjust', 'none');
+  const selectSystemColors = await page.evaluate(() => {
+    const probe = document.createElement('span');
+    probe.style.color = 'FieldText';
+    document.body.append(probe);
+    const fieldText = getComputedStyle(probe).color;
+    probe.style.color = 'Mark';
+    const mark = getComputedStyle(probe).color;
+    probe.style.color = 'GrayText';
+    const grayText = getComputedStyle(probe).color;
+    probe.remove();
+    return { fieldText, mark, grayText };
+  });
+  await expect(selectIcon).toHaveCSS('color', selectSystemColors.fieldText);
+  await expect(invalidSelect).toHaveCSS('border-color', selectSystemColors.mark);
+  await expect(disabledSelect).toHaveCSS('color', selectSystemColors.grayText);
   await expect(sliderRail).toHaveCSS('forced-color-adjust', 'none');
   await expect(sliderThumb).toHaveCSS('forced-color-adjust', 'none');
   await expect(selectedCard).toHaveCSS('forced-color-adjust', 'none');

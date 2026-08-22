@@ -61,6 +61,13 @@ describe('hydration', () => {
       expect(radioGroup?.querySelector(`label[for="${radio.id}"]`)).not.toBeNull();
     }
 
+    const select = container.querySelector<HTMLSelectElement>('select[name="companion"]');
+    expect(select).not.toBeNull();
+    expect(select?.value).toBe('dog');
+    expect(select?.required).toBe(true);
+    expect(select?.getAttribute('aria-describedby')).not.toBeNull();
+    expect(select?.closest('.fui-Select')?.querySelector('.fui-Select__icon')).not.toBeNull();
+
     const dividers = [...container.querySelectorAll<HTMLElement>('[role="separator"]')];
     expect(dividers).toHaveLength(3);
     expect(dividers[0]?.getAttribute('aria-labelledby')).toBeNull();

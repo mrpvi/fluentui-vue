@@ -330,4 +330,32 @@ describe('FSelect', () => {
     await resetForm(form);
     expect(select.element.value).toBe('second');
   });
+
+  it('cancels deferred form-reset synchronization when unmounted', () => {
+    vi.useFakeTimers();
+    const clearTimeoutSpy = vi.spyOn(globalThis, 'clearTimeout');
+    const wrapper = mount({
+      setup: () => () =>
+        h('form', null, [
+          h(
+            Select,
+            { defaultValue: 'second' },
+            {
+              default: () => [
+                h('option', { value: 'first' }, 'First'),
+                h('option', { value: 'second' }, 'Second'),
+              ],
+            },
+          ),
+        ]),
+    });
+
+    wrapper.get('form').element.reset();
+    wrapper.unmount();
+
+    expect(clearTimeoutSpy).toHaveBeenCalledOnce();
+
+    clearTimeoutSpy.mockRestore();
+    vi.useRealTimers();
+  });
 });

@@ -22,6 +22,7 @@ import {
   FSkeleton,
   FSkeletonItem,
   FSlider,
+  FSelect,
   FSpinner,
   FSwitch,
   FText,
@@ -33,6 +34,8 @@ const name = ref('Ada Lovelace');
 const biography = ref('Vue-native Fluent components.');
 const accepted = ref<CheckboxValue>(false);
 const triState = ref<CheckboxValue>('mixed');
+const selectedPet = ref('dog');
+const lockedPet = ref('cat');
 const dark = ref(false);
 const switchEnabled = ref(false);
 const controlledSwitch = ref(true);
@@ -73,8 +76,9 @@ function captureRadioSubmission(event: SubmitEvent) {
         <h1>Native Fluent components for Vue 3</h1>
         <p>
           Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, Image, Badge,
-          Spinner, ProgressBar, Switch, Radio, RadioGroup, Skeleton, Slider, and Card components
-          translated from Fluent UI React v9 to Vue props, slots, emits, and semantic HTML.
+          Spinner, ProgressBar, Switch, Radio, RadioGroup, Select, Skeleton, Slider, and Card
+          components translated from Fluent UI React v9 to Vue props, slots, emits, and semantic
+          HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -1352,6 +1356,147 @@ function captureRadioSubmission(event: SubmitEvent) {
       </div>
     </section>
 
+    <section id="select">
+      <h2>Select</h2>
+      <div class="select-samples">
+        <div class="select-group">
+          <h3>Appearances</h3>
+          <div class="select-grid">
+            <FField label="Outline color">
+              <FSelect class="select-appearance-outline" default-value="blue">
+                <option value="red">Red</option>
+                <option value="green">Green</option>
+                <option value="blue">Blue</option>
+              </FSelect>
+            </FField>
+            <FField label="Underline color">
+              <FSelect class="select-appearance-underline" appearance="underline">
+                <option>Red</option>
+                <option>Green</option>
+                <option>Blue</option>
+              </FSelect>
+            </FField>
+            <div class="select-contrast-surface">
+              <FField label="Filled lighter color">
+                <FSelect class="select-appearance-filled-lighter" appearance="filled-lighter">
+                  <option>Red</option>
+                  <option>Green</option>
+                  <option>Blue</option>
+                </FSelect>
+              </FField>
+            </div>
+            <div class="select-contrast-surface">
+              <FField label="Filled darker color">
+                <FSelect class="select-appearance-filled-darker" appearance="filled-darker">
+                  <option>Red</option>
+                  <option>Green</option>
+                  <option>Blue</option>
+                </FSelect>
+              </FField>
+            </div>
+          </div>
+        </div>
+
+        <div class="select-group">
+          <h3>Sizes, states, and icon slot</h3>
+          <div class="select-grid">
+            <FField label="Small animal" size="small">
+              <FSelect class="select-size-small">
+                <option>Cat</option>
+                <option>Dog</option>
+              </FSelect>
+            </FField>
+            <FField label="Medium animal">
+              <FSelect class="select-size-medium">
+                <option>Cat</option>
+                <option>Dog</option>
+              </FSelect>
+            </FField>
+            <FField label="Large animal" size="large">
+              <FSelect class="select-size-large">
+                <option>Cat</option>
+                <option>Dog</option>
+              </FSelect>
+            </FField>
+            <FField label="Invalid animal" validation-message="Choose an available animal.">
+              <FSelect class="select-invalid" default-value="unavailable">
+                <option value="unavailable">Unavailable</option>
+                <option value="cat">Cat</option>
+              </FSelect>
+            </FField>
+            <FField label="Disabled animal">
+              <FSelect class="select-disabled" disabled>
+                <option>Cat</option>
+                <option>Dog</option>
+              </FSelect>
+            </FField>
+            <FField label="Custom icon animal">
+              <FSelect class="select-custom-icon">
+                <option>Cat</option>
+                <option>Dog</option>
+                <template #icon>
+                  <svg viewBox="0 0 20 20" data-select-custom-icon>
+                    <path d="m5 8 5 5 5-5Z" />
+                  </svg>
+                </template>
+              </FSelect>
+            </FField>
+          </div>
+        </div>
+
+        <div class="select-group">
+          <h3>Native options, forms, and controlled state</h3>
+          <form class="select-form-demo">
+            <FField
+              label="Companion"
+              hint="Choose one native option from the grouped list."
+              required
+            >
+              <FSelect v-model="selectedPet" name="companion">
+                <option value="">Choose a companion</option>
+                <optgroup label="Land animals">
+                  <option value="cat">Cat</option>
+                  <option value="dog">Dog</option>
+                  <option value="horse">Horse</option>
+                </optgroup>
+                <optgroup label="Water animals">
+                  <option value="dolphin">Dolphin</option>
+                  <option value="seal">Seal</option>
+                </optgroup>
+              </FSelect>
+            </FField>
+            <FButton type="submit" @click.prevent>Submit select form</FButton>
+            <output class="select-current-value">Value: {{ selectedPet }}</output>
+          </form>
+
+          <form class="select-reset-demo">
+            <FField label="Resettable animal">
+              <FSelect name="resettableAnimal" default-value="dog">
+                <option value="cat">Cat</option>
+                <option value="dog">Dog</option>
+                <option value="seal">Seal</option>
+              </FSelect>
+            </FField>
+            <FButton type="reset">Reset select form</FButton>
+          </form>
+
+          <div class="select-controlled-demo">
+            <FField label="Controlled rollback animal">
+              <FSelect :model-value="lockedPet">
+                <option value="cat">Cat</option>
+                <option value="dog">Dog</option>
+                <option value="seal">Seal</option>
+              </FSelect>
+            </FField>
+            <FButton type="button" @click="lockedPet = 'seal'"
+              >Set controlled animal to Seal</FButton
+            >
+            <output>Locked value: {{ lockedPet }}</output>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="checkbox">
       <h2>Checkbox</h2>
       <div class="column">
@@ -1797,6 +1942,71 @@ section {
   font-size: var(--fui-font-size-base-200);
 }
 
+.select-samples,
+.select-group {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.select-group {
+  gap: 0.75rem;
+}
+
+.select-group h3 {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-300);
+}
+
+.select-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1rem;
+}
+
+.select-grid .fui-Field,
+.select-form-demo .fui-Field,
+.select-reset-demo .fui-Field,
+.select-controlled-demo .fui-Field {
+  min-width: 0;
+}
+
+.select-grid .fui-Select,
+.select-form-demo .fui-Select,
+.select-reset-demo .fui-Select,
+.select-controlled-demo .fui-Select {
+  width: 100%;
+}
+
+.select-contrast-surface {
+  padding: 0.75rem;
+  background: var(--fui-color-neutral-background-2);
+}
+
+.select-form-demo,
+.select-reset-demo,
+.select-controlled-demo {
+  display: grid;
+  align-items: end;
+  grid-template-columns: minmax(0, 24rem) max-content minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--fui-color-neutral-stroke-1);
+}
+
+.select-custom-icon [data-select-custom-icon] {
+  display: block;
+  width: 1em;
+  height: 1em;
+  fill: currentcolor;
+}
+
+.select-current-value,
+.select-controlled-demo output {
+  color: var(--fui-color-neutral-foreground-3);
+  font-size: var(--fui-font-size-base-200);
+}
+
 .badge-matrix {
   margin-bottom: 0;
 }
@@ -2039,6 +2249,9 @@ small {
 
   .card-size-row,
   .field-validity-demo,
+  .select-form-demo,
+  .select-reset-demo,
+  .select-controlled-demo,
   .spinner-position-grid,
   .spinner-size-grid,
   .textarea-reset-demo {

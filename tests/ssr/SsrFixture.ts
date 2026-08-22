@@ -21,6 +21,7 @@ import {
   FSkeleton,
   FSkeletonItem,
   FSlider,
+  FSelect,
   FSpinner,
   FSwitch,
   FText,
@@ -196,6 +197,26 @@ export const SsrFixture = defineComponent({
           FCard,
           { as: 'article', class: 'ssr-article-card', 'aria-label': 'Server article' },
           () => 'Article card',
+        ),
+        h(
+          FField,
+          { label: 'Server companion', hint: 'Choose one animal.', required: true },
+          {
+            default: () =>
+              h(
+                FSelect,
+                { defaultValue: 'dog', name: 'companion' },
+                {
+                  default: () => [
+                    h('option', { value: '' }, 'Choose a companion'),
+                    h('optgroup', { label: 'Animals' }, [
+                      h('option', { value: 'cat' }, 'Cat'),
+                      h('option', { value: 'dog' }, 'Dog'),
+                    ]),
+                  ],
+                },
+              ),
+          },
         ),
         h(FLink, { href: '#details' }, () => 'View details'),
         h(FButton, { appearance: 'primary' }, () => 'Continue'),

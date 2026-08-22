@@ -58,6 +58,7 @@ import {
   FSlider,
   FRadio,
   FRadioGroup,
+  FSelect,
   FSpinner,
   FSwitch,
   FText,
@@ -84,6 +85,8 @@ import {
   type SliderSize,
   type RadioGroupLayout,
   type RadioLabelPosition,
+  type SelectAppearance,
+  type SelectSize,
   type SpinnerLabelPosition,
   type SpinnerSize,
   type SwitchLabelPosition,
@@ -113,6 +116,8 @@ const skeletonSize: SkeletonSize = 48;
 const sliderSize: SliderSize = 'small';
 const radioGroupLayout: RadioGroupLayout = 'horizontal';
 const radioLabelPosition: RadioLabelPosition = 'after';
+const selectAppearance: SelectAppearance = 'outline';
+const selectSize: SelectSize = 'medium';
 const spinnerLabelPosition: SpinnerLabelPosition = 'after';
 const spinnerSize: SpinnerSize = 'large';
 const switchLabelPosition: SwitchLabelPosition = 'before';
@@ -196,6 +201,18 @@ createApp({
         defaultValue: 25,
         vertical: true,
       }),
+      h(
+        FField,
+        { label: 'Packed select', required: true },
+        {
+          default: () =>
+            h(
+              FSelect,
+              { defaultValue: 'dog', appearance: selectAppearance, size: selectSize, name: 'companion' },
+              { default: () => [h('option', { value: 'cat' }, 'Cat'), h('option', { value: 'dog' }, 'Dog')] },
+            ),
+        },
+      ),
       h(FSpinner, {
         as: 'span',
         label: 'Packed spinner',

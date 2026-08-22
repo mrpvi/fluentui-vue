@@ -24,6 +24,10 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /<label[^>]*for="(fui-field-[^"]+)"[^>]*>.*Server field switch.*<\/label>[\s\S]*?<input(?=[^>]*id="\1")(?=[^>]*role="switch")(?=[^>]*required)(?=[^>]*aria-describedby="[^"]+")[^>]*>/,
     );
+    expect(firstRender).toContain('name="companion"');
+    expect(firstRender).toContain('fui-Select--outline');
+    expect(firstRender).toContain('<optgroup label="Animals">');
+    expect(firstRender).toContain('class="fui-Select__select" value="dog"');
     expect(firstRender).toContain('href="#details"');
     expect(firstRender).toContain('alt="SSR image"');
     expect(firstRender).toContain('fui-Image--fit-cover');

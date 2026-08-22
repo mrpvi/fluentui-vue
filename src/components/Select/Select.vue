@@ -19,10 +19,11 @@ const attrs = useAttrs();
 defineSlots<SelectSlots>();
 const select = ref<HTMLSelectElement | null>(null);
 const initialValue = props.defaultValue;
-const internalValue = ref(initialValue ?? '');
+const internalValue = ref<string | undefined>(initialValue);
 const isControlled = useIsPropProvided('modelValue');
 const isSizeProvided = useIsPropProvided('size');
 let form: HTMLFormElement | null = null;
+let formResetTimer: ReturnType<typeof setTimeout> | undefined;
 
 const fieldControlProps = useFieldControlProps(
   () => ({ ...attrs, ...(isSizeProvided ? { size: props.size } : {}) }),
@@ -35,6 +36,7 @@ const fieldControlProps = useFieldControlProps(
 const effectiveSize = computed(
   () => (fieldControlProps.value.size as SelectSize | undefined) ?? props.size,
 );
+const renderedValue = computed(() => (isControlled ? controlledValue() : internalValue.value));
 
 const rootClasses = computed(() => [
   'fui-Select',
@@ -89,7 +91,9 @@ function setDefaultSelection(value: string) {
 }
 
 function handleFormReset() {
-  setTimeout(() => {
+  formResetTimer = setTimeout(() => {
+    formResetTimer = undefined;
+
     if (!select.value) {
       return;
     }
@@ -124,7 +128,12 @@ onMounted(() => {
   form?.addEventListener('reset', handleFormReset);
 });
 
-onBeforeUnmount(() => form?.removeEventListener('reset', handleFormReset));
+onBeforeUnmount(() => {
+  form?.removeEventListener('reset', handleFormReset);
+  if (formResetTimer !== undefined) {
+    clearTimeout(formResetTimer);
+  }
+});
 
 watch(
   () => props.modelValue,
@@ -158,7 +167,13 @@ defineExpose({
 
 <template>
   <span :class="rootClasses" :style="attrs.style">
-    <select ref="select" v-bind="selectAttrs" class="fui-Select__select" @change="handleChange">
+    <select
+      ref="select"
+      v-bind="selectAttrs"
+      class="fui-Select__select"
+      :value="renderedValue"
+      @change="handleChange"
+    >
       <slot />
     </select>
 

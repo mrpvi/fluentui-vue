@@ -19,6 +19,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 - `FSlider` — adapted from `@fluentui/react-slider` 9.6.5
 - `FCard`, `FCardHeader`, `FCardPreview`, and `FCardFooter` — adapted from `@fluentui/react-card` 9.7.2
 - `FRadio` and `FRadioGroup` — adapted from `@fluentui/react-radio` 9.6.5
+- `FSelect` — adapted from `@fluentui/react-select` 9.5.5
 - `FText` — adapted from `@fluentui/react-text` 9.6.19
 - `FLabel` — adapted from `@fluentui/react-label` 9.4.4
 - `FField` — adapted from `@fluentui/react-field` 9.5.4
@@ -145,6 +146,7 @@ import {
   FSkeleton,
   FSkeletonItem,
   FSlider,
+  FSelect,
   FSpinner,
   FSwitch,
   FText,
@@ -157,6 +159,7 @@ const name = ref('');
 const biography = ref('');
 const accepted = ref<CheckboxValue>(false);
 const receiptMethod = ref('email');
+const companion = ref('dog');
 </script>
 
 <template>
@@ -187,6 +190,12 @@ const receiptMethod = ref('email');
   </FSkeleton>
   <FField label="Volume">
     <FSlider :default-value="40" />
+  </FField>
+  <FField label="Companion">
+    <FSelect v-model="companion">
+      <option value="cat">Cat</option>
+      <option value="dog">Dog</option>
+    </FSelect>
   </FField>
   <FLink inline href="/privacy">Read the privacy policy</FLink>
   <FButton appearance="primary" :disabled="!accepted">Continue</FButton>
@@ -282,7 +291,7 @@ Key props:
 - `size`: `small | medium | large`
 - `required`
 
-`FInput`, `FCheckbox`, `FTextarea`, `FSwitch`, `FSlider`, and `FRadioGroup` automatically consume the enclosing Field context. Field generates the control ID, connects `label for` to that ID, merges validation and hint IDs into `aria-describedby`, applies native `required`, and defaults `aria-invalid="true"` for errors. Explicit control attributes remain authoritative; for example, an explicit `aria-invalid="false"` or `:required="false"` is preserved.
+`FInput`, `FCheckbox`, `FTextarea`, `FSwitch`, `FSlider`, `FRadioGroup`, and `FSelect` automatically consume the enclosing Field context. Field generates the control ID, connects `label for` to that ID, merges validation and hint IDs into `aria-describedby`, applies native `required`, and defaults `aria-invalid="true"` for errors. Explicit control attributes remain authoritative; for example, an explicit `aria-invalid="false"` or `:required="false"` is preserved.
 
 Error and warning messages use `role="alert"`. Success and `none` messages do not. Validation icons are decorative and hidden from assistive technology. The required asterisk is also visual; native required semantics are applied separately to supported controls.
 
@@ -761,6 +770,52 @@ Inside `FField`, RadioGroup receives the Field label through `aria-labelledby`, 
 
 The React root, input, label, and indicator slot-object APIs are translated to a fixed semantic Vue structure, fallthrough attributes, and typed `label`/decorative `indicator` slots. React Tabster focus helpers are not bundled; native input focus and CSS `:focus-within` provide the released observable behavior.
 
+## Select
+
+`FSelect` is a styled wrapper around the native single-value `<select>` element, adapted from `@fluentui/react-select@9.5.5`. Prefer it over a custom combobox when filtering, freeform input, virtualization, multiple selection, and custom option rendering are not required; native select behavior offers stronger mobile and cross-platform accessibility.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { FField, FSelect } from '@local/fluent-vue';
+
+const animal = ref('dog');
+</script>
+
+<template>
+  <FField label="Companion" hint="Choose one animal." required>
+    <FSelect v-model="animal" name="companion">
+      <option value="">Choose a companion</option>
+      <optgroup label="Land animals">
+        <option value="cat">Cat</option>
+        <option value="dog">Dog</option>
+      </optgroup>
+      <optgroup label="Water animals">
+        <option value="seal">Seal</option>
+      </optgroup>
+    </FSelect>
+  </FField>
+</template>
+```
+
+Key props:
+
+- `modelValue` for controlled Vue usage
+- `defaultValue` for uncontrolled initial selection
+- `appearance`: `outline | underline | filled-darker | filled-lighter`
+- `size`: `small | medium | large`
+- native select attributes such as `name`, `form`, `required`, `disabled`, `autocomplete`, and ARIA attributes
+
+The defaults are `appearance="outline"` and `size="medium"`. Top-level `class` and `style` apply to the visual `<span>` root; native and ARIA attributes route to the internal `<select>`. The default slot must contain native `<option>` or `<optgroup>` content. The `icon` slot replaces the decorative chevron and is always inside an `aria-hidden="true"`, pointer-inert wrapper, so it must not contain interactive content or an accessible name.
+
+`FSelect` emits `update:modelValue` and `change`, with the native event and `{ value }` data for `change`. Controlledness is determined by prop presence. An explicitly bound `:model-value="undefined"` is controlled and renders the empty-string option. If a user chooses another option before the parent updates the prop, the native DOM selection rolls back immediately to the controlled value. In uncontrolled mode, `defaultValue` initializes selection once and native form reset restores it; a controlled value is reapplied after reset.
+
+Inside `FField`, Select inherits the generated ID, native label association, required state, validation/hint descriptions, invalid state, and Field size. Explicit Select attributes and an explicit `size` remain authoritative. The component exposes the native `element` and `focus()`.
+
+Native select keyboard behavior, option grouping, form serialization, validation, and mobile picker UI are intentionally left to the browser. The public value/event contract is scalar. Native `multiple` may still be forwarded as a raw fallthrough attribute for released-runtime compatibility, but it is unsupported because Fluent Select is designed as a basic single-select; use a future Combobox/Listbox family or a native `<select multiple>` directly when multiple selection is required. The native numeric `size` attribute is also reserved for the styled `small | medium | large` component prop and is not forwarded.
+
+Filled appearances require sufficient contrast with the surrounding surface. Prefer outline or underline when the adjacent fill does not provide at least a 3:1 boundary contrast. React root/select slot objects, provider-driven input appearance overrides, and React callback APIs are translated to a fixed Vue root, native option children, an icon slot, Vue `v-model`, and typed emits.
+
 ## Input
 
 ```vue
@@ -875,8 +930,8 @@ All theme values are CSS custom properties and can be overridden by applications
 
 ## Intentional scope limits
 
-- This is an early seventeen-component parity slice, not a complete Fluent UI Vue library.
-- `FField` integrates the current Input, Checkbox, Textarea, Switch, RadioGroup, ProgressBar, and Slider controls; future form controls will adopt the same internal context contract as they are ported.
+- This is an early eighteen-component parity slice, not a complete Fluent UI Vue library.
+- `FField` integrates the current Input, Checkbox, Textarea, Switch, RadioGroup, Select, ProgressBar, and Slider controls; future form controls will adopt the same internal context contract as they are ported.
 - The default checkbox marks are package-owned SVG/CSS primitives. Presence fallback SVG paths are the only privately bundled Fluent System Icons adaptation and are covered by the third-party notice.
 - Griffel and React-specific Tabster bindings are not included.
 - Visual parity is based on the reviewed upstream versions and should be regression-tested before public release.
