@@ -147,6 +147,15 @@
     forced-color-adjust: none;
   }
 
+  .fui-RadioGroup .fui-Radio__input:enabled:checked ~ .fui-Radio__indicator {
+    color: Highlight;
+    border-color: Highlight;
+  }
+
+  .fui-RadioGroup .fui-Radio__input:enabled:checked ~ .fui-Radio__indicator::after {
+    background-color: Highlight;
+  }
+
   .fui-Radio:focus-within {
     outline-color: Highlight;
     box-shadow: none;

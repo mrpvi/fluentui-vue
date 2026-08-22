@@ -139,6 +139,8 @@ describe('FRadio', () => {
 
     await inputs[0].setValue(true);
     await inputs[1].setValue(true);
+    await wrapper.vm.$forceUpdate();
+    await wrapper.vm.$nextTick();
 
     expect(isChecked(inputs[0].element)).toBe(false);
     expect(isChecked(inputs[1].element)).toBe(true);

@@ -18,6 +18,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 - `FSkeleton` and `FSkeletonItem` — adapted from `@fluentui/react-skeleton` 9.7.5
 - `FSlider` — adapted from `@fluentui/react-slider` 9.6.5
 - `FCard`, `FCardHeader`, `FCardPreview`, and `FCardFooter` — adapted from `@fluentui/react-card` 9.7.2
+- `FRadio` and `FRadioGroup` — adapted from `@fluentui/react-radio` 9.6.5
 - `FText` — adapted from `@fluentui/react-text` 9.6.19
 - `FLabel` — adapted from `@fluentui/react-label` 9.4.4
 - `FField` — adapted from `@fluentui/react-field` 9.5.4
@@ -139,6 +140,8 @@ import {
   FLink,
   FPresenceBadge,
   FProgressBar,
+  FRadio,
+  FRadioGroup,
   FSkeleton,
   FSkeletonItem,
   FSlider,
@@ -153,6 +156,7 @@ import { ref } from 'vue';
 const name = ref('');
 const biography = ref('');
 const accepted = ref<CheckboxValue>(false);
+const receiptMethod = ref('email');
 </script>
 
 <template>
@@ -163,6 +167,12 @@ const accepted = ref<CheckboxValue>(false);
     <FTextarea v-model="biography" resize="vertical" />
   </FField>
   <FCheckbox v-model="accepted" label="Accept terms" />
+  <FField label="Receipt method" required>
+    <FRadioGroup v-model="receiptMethod" name="receipt-method" layout="horizontal">
+      <FRadio value="email" label="Email" />
+      <FRadio value="paper" label="Paper" />
+    </FRadioGroup>
+  </FField>
   <FDivider>Review</FDivider>
   <FImage src="/summary.png" alt="Account summary chart" shape="rounded" />
   <FBadge appearance="tint" color="success">Verified</FBadge>
@@ -272,7 +282,7 @@ Key props:
 - `size`: `small | medium | large`
 - `required`
 
-`FInput`, `FCheckbox`, `FTextarea`, `FSwitch`, and `FSlider` automatically consume the enclosing Field context. Field generates the control ID, connects `label for` to that ID, merges validation and hint IDs into `aria-describedby`, applies native `required`, and defaults `aria-invalid="true"` for errors. Explicit control attributes remain authoritative; for example, an explicit `aria-invalid="false"` or `:required="false"` is preserved.
+`FInput`, `FCheckbox`, `FTextarea`, `FSwitch`, `FSlider`, and `FRadioGroup` automatically consume the enclosing Field context. Field generates the control ID, connects `label for` to that ID, merges validation and hint IDs into `aria-describedby`, applies native `required`, and defaults `aria-invalid="true"` for errors. Explicit control attributes remain authoritative; for example, an explicit `aria-invalid="false"` or `:required="false"` is preserved.
 
 Error and warning messages use `role="alert"`. Success and `none` messages do not. Validation icons are decorative and hidden from assistive technology. The required asterisk is also visual; native required semantics are applied separately to supported controls.
 
@@ -696,6 +706,61 @@ Focus modes translate the reviewed Fluent focus-group behavior without bundling 
 
 The family preserves released appearance, selected, disabled, focus, size, vertical/horizontal, RTL, forced-color, and reduced-motion styles. React root/part slot objects and provider direction are translated to fixed Vue part structures, typed slots, root fallthrough attributes, and logical CSS. Semantic root customization is a Vue extension for nonselectable cards; selectable cards always render a `div` so the internal checkbox remains valid HTML.
 
+## Radio
+
+`FRadio` wraps a native radio input and optional label. `FRadioGroup` provides a semantic `radiogroup`, a stable common name, controlled or uncontrolled selection, layout, and automatic `FField` integration. Both are adapted from the released `@fluentui/react-radio@9.6.5` package.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { FField, FRadio, FRadioGroup } from '@local/fluent-vue';
+
+const contactMethod = ref('email');
+</script>
+
+<template>
+  <FField
+    label="Preferred contact"
+    hint="Choose how the team should contact you."
+    validation-message="A contact method is required."
+    required
+  >
+    <FRadioGroup v-model="contactMethod" name="contact-method" layout="horizontal">
+      <FRadio value="email" label="Email" />
+      <FRadio value="chat" label="Chat" />
+      <FRadio value="phone" label="Phone" />
+    </FRadioGroup>
+  </FField>
+</template>
+```
+
+`FRadio` key props:
+
+- required `value` for submission and group selection
+- `modelValue` for controlled standalone checked state
+- `defaultChecked` for uncontrolled standalone state
+- `label` or the semantic `label` slot
+- `labelPosition`: `after | below`
+- `disabled`
+
+`FRadioGroup` key props:
+
+- `modelValue` for controlled selection
+- `defaultValue` for uncontrolled initial selection
+- `name`; one deterministic common name is generated when omitted
+- `layout`: `vertical | horizontal | horizontal-stacked`
+- `disabled` and `required`, inherited by child radios unless explicitly overridden
+
+Both controlled contracts use prop presence: an explicitly bound `undefined` value is controlled. A controlled radio or group emits the requested update and immediately restores the rendered prop state until its parent updates. Uncontrolled defaults initialize once, and native form reset restores the initial selection. `FRadioGroup` emits `update:modelValue` and `change` with `{ value }`; a selected `FRadio` emits `update:modelValue` with `true` and `change` with the same value data. Radio change is not emitted on deselection.
+
+All radios with the same native `name` use browser selection and arrow-key behavior; the components intentionally add no custom keyboard handler. `FRadioGroup` generates a common name so its children remain one native group. A radio may explicitly override inherited `name`, checked state, disabled, required, label position, `aria-describedby`, or `aria-invalid` values.
+
+Top-level `class` and `style` on `FRadio` apply to its visual `<span>` root. Remaining native, ARIA, data, and form attributes apply to the hidden native `<input type="radio">`; managed type, checked state, and change handling remain authoritative. The generated or explicit input ID is associated with the radio-owned `<label>`. The `indicator` slot is decorative, receives `{ checked }`, and is hidden from assistive technology. `FRadioGroup` forwards root attributes to its fixed `<div role="radiogroup">`, while `name` is applied to its child inputs.
+
+Inside `FField`, RadioGroup receives the Field label through `aria-labelledby`, descriptions through `aria-describedby`, required state through `aria-required`, and invalid state. Required, description, and invalid semantics are also propagated to child native inputs. Use `FField` for the group label rather than adding separate unrelated labels to each option. Horizontal-stacked groups default child labels below their indicators; explicit radio label positions remain authoritative. Logical spacing supports RTL, and radio styles include hover, active, checked, disabled, focus, invalid, dark-theme, and forced-color states.
+
+The React root, input, label, and indicator slot-object APIs are translated to a fixed semantic Vue structure, fallthrough attributes, and typed `label`/decorative `indicator` slots. React Tabster focus helpers are not bundled; native input focus and CSS `:focus-within` provide the released observable behavior.
+
 ## Input
 
 ```vue
@@ -810,8 +875,8 @@ All theme values are CSS custom properties and can be overridden by applications
 
 ## Intentional scope limits
 
-- This is an early sixteen-component parity slice, not a complete Fluent UI Vue library.
-- `FField` integrates the current Input, Checkbox, Textarea, Switch, ProgressBar, and Slider controls; future form controls will adopt the same internal context contract as they are ported.
+- This is an early seventeen-component parity slice, not a complete Fluent UI Vue library.
+- `FField` integrates the current Input, Checkbox, Textarea, Switch, RadioGroup, ProgressBar, and Slider controls; future form controls will adopt the same internal context contract as they are ported.
 - The default checkbox marks are package-owned SVG/CSS primitives. Presence fallback SVG paths are the only privately bundled Fluent System Icons adaptation and are covered by the third-party notice.
 - Griffel and React-specific Tabster bindings are not included.
 - Visual parity is based on the reviewed upstream versions and should be regression-tested before public release.

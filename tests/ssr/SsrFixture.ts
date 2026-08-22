@@ -16,6 +16,8 @@ import {
   FLink,
   FPresenceBadge,
   FProgressBar,
+  FRadio,
+  FRadioGroup,
   FSkeleton,
   FSkeletonItem,
   FSlider,
@@ -148,6 +150,20 @@ export const SsrFixture = defineComponent({
           FField,
           { label: 'Server field switch', hint: 'Server switch hint', required: true },
           { default: () => h(FSwitch, { class: 'ssr-field-switch' }) },
+        ),
+        h(
+          FRadioGroup,
+          {
+            class: 'ssr-radio-group',
+            defaultValue: 'email',
+            'aria-label': 'Server contact method',
+          },
+          {
+            default: () => [
+              h(FRadio, { value: 'email', label: 'Server email' }),
+              h(FRadio, { value: 'chat', label: 'Server chat' }),
+            ],
+          },
         ),
         h(
           FCard,

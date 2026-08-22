@@ -48,6 +48,19 @@ describe('hydration', () => {
     await nextTick();
     expect(switches[0]?.checked).toBe(false);
 
+    const radioGroup = container.querySelector<HTMLElement>('.ssr-radio-group');
+    expect(radioGroup).not.toBeNull();
+    const radios = [...radioGroup!.querySelectorAll<HTMLInputElement>('input[type="radio"]')];
+    expect(radios).toHaveLength(2);
+    expect(radios[0]?.checked).toBe(true);
+    expect(radios[1]?.checked).toBe(false);
+    expect(radios[0]?.name).toBeTruthy();
+    expect(radios[1]?.name).toBe(radios[0]?.name);
+    for (const radio of radios) {
+      expect(radio.id).toMatch(/^fui-radio-/);
+      expect(radioGroup?.querySelector(`label[for="${radio.id}"]`)).not.toBeNull();
+    }
+
     const dividers = [...container.querySelectorAll<HTMLElement>('[role="separator"]')];
     expect(dividers).toHaveLength(3);
     expect(dividers[0]?.getAttribute('aria-labelledby')).toBeNull();

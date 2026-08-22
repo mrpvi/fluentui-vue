@@ -1399,6 +1399,148 @@ test('Card reduced motion collapses authored transitions', async ({ page, browse
   );
 });
 
+test('Radio uses native common-name selection and arrow keys across engines', async ({ page }) => {
+  await page.goto('/');
+
+  const group = page.getByRole('radiogroup', { name: 'Native choices' });
+  const alpha = group.getByRole('radio', { name: 'Alpha' });
+  const beta = group.getByRole('radio', { name: 'Beta' });
+  const gamma = group.getByRole('radio', { name: 'Gamma' });
+
+  await expect(alpha).toBeChecked();
+  await beta.check();
+  await expect(alpha).not.toBeChecked();
+  await expect(beta).toBeChecked();
+
+  await beta.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(gamma).toBeChecked();
+  await expect(gamma).toBeFocused();
+  await page.keyboard.press('ArrowLeft');
+  await expect(beta).toBeChecked();
+  await expect(beta).toBeFocused();
+
+  const names = await group
+    .getByRole('radio')
+    .evaluateAll((radios) => radios.map((radio) => (radio as HTMLInputElement).name));
+  expect(names.every((name) => name === 'radio-native-choice')).toBe(true);
+});
+
+test('Radio controlled standalone and group interactions roll back until updated', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const controlledGroup = page.locator('.radio-controlled-group');
+  await controlledGroup.getByRole('radio', { name: 'Gamma' }).click();
+  await expect(controlledGroup.getByRole('radio', { name: 'Gamma' })).toBeChecked();
+  await expect(controlledGroup.getByText('Controlled value: gamma')).toBeVisible();
+
+  const rollback = page.locator('.radio-controlled-rollback');
+  await rollback.getByRole('radio', { name: 'Attempt Beta' }).click();
+  await expect(rollback.getByRole('radio', { name: 'Locked Alpha' })).toBeChecked();
+  await expect(rollback.getByRole('radio', { name: 'Attempt Beta' })).not.toBeChecked();
+
+  const standalone = page.locator('.radio-standalone-sample');
+  const controlledStandalone = standalone.getByRole('radio', { name: 'Controlled standalone' });
+  const lockedStandalone = standalone.getByRole('radio', { name: 'Locked standalone' });
+  await controlledStandalone.check();
+  await expect(controlledStandalone).toBeChecked();
+  await expect(standalone.getByText('Standalone value: true')).toBeVisible();
+  await lockedStandalone.click();
+  await expect(lockedStandalone).not.toBeChecked();
+});
+
+test('Radio form submission and reset preserve native values', async ({ page }) => {
+  await page.goto('/');
+
+  const form = page.locator('.radio-form-demo');
+  const email = form.getByRole('radio', { name: 'Email receipt' });
+  const paper = form.getByRole('radio', { name: 'Paper receipt' });
+  await expect(email).toBeChecked();
+  await paper.check();
+  await form.getByRole('button', { name: 'Submit radio form' }).click();
+  await expect(form.getByText('Submitted radio: paper')).toBeVisible();
+
+  await form.getByRole('button', { name: 'Reset radio form' }).click();
+  await expect(email).toBeChecked();
+  await expect(paper).not.toBeChecked();
+  await form.getByRole('button', { name: 'Submit radio form' }).click();
+  await expect(form.getByText('Submitted radio: email')).toBeVisible();
+});
+
+test('Radio generated names, IDs, Field semantics, layouts, RTL, disabled, and focus work', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const field = page.locator('.radio-field-demo');
+  const fieldGroup = field.getByRole('radiogroup', { name: 'Preferred contact' });
+  const fieldLabel = field.locator('.fui-Field__label');
+  const validation = field.locator('.fui-Field__validationMessage');
+  const hint = field.locator('.fui-Field__hint');
+  const fieldLabelId = await fieldLabel.getAttribute('id');
+  const validationId = await validation.getAttribute('id');
+  const hintId = await hint.getAttribute('id');
+  expect(fieldLabelId).not.toBeNull();
+  expect(validationId).not.toBeNull();
+  expect(hintId).not.toBeNull();
+  await expect(fieldGroup).toHaveAttribute('aria-labelledby', fieldLabelId!);
+  await expect(fieldGroup).toHaveAttribute('aria-describedby', `${validationId} ${hintId}`);
+  await expect(fieldGroup).toHaveAttribute('aria-required', 'true');
+  await expect(fieldGroup).toHaveAttribute('aria-invalid', 'true');
+  for (const radio of await fieldGroup.getByRole('radio').all()) {
+    await expect(radio).toHaveAttribute('required', '');
+    await expect(radio).toHaveAttribute('aria-invalid', 'true');
+  }
+
+  const stacked = page.locator('.radio-stacked-layout');
+  await expect(stacked).toHaveCSS('flex-direction', 'row');
+  const stackedNames = await stacked
+    .getByRole('radio')
+    .evaluateAll((radios) => radios.map((radio) => (radio as HTMLInputElement).name));
+  expect(new Set(stackedNames).size).toBe(1);
+  expect(stackedNames[0]).toBeTruthy();
+  for (const radio of await stacked.getByRole('radio').all()) {
+    const id = await radio.getAttribute('id');
+    expect(id).toMatch(/^fui-radio-/);
+    await expect(page.locator(`label[for="${id}"]`)).toHaveCount(1);
+  }
+
+  const below = page.getByRole('radio', { name: 'Label below' });
+  const belowRoot = below.locator('xpath=..');
+  await expect(belowRoot).toHaveCSS('flex-direction', 'column');
+  const disabled = page.getByRole('radio', { name: 'Disabled', exact: true });
+  const disabledChecked = page.getByRole('radio', { name: 'Disabled checked' });
+  await expect(disabled).toBeDisabled();
+  await expect(disabledChecked).toBeDisabled();
+  await expect(disabledChecked).toBeChecked();
+
+  const alpha = page.getByRole('radiogroup', { name: 'Native choices' }).getByRole('radio', {
+    name: 'Alpha',
+  });
+  await alpha.focus();
+  await expect(alpha).toBeFocused();
+  const root = alpha.locator('xpath=..');
+  expect(await root.evaluate((element) => getComputedStyle(element).boxShadow)).not.toBe('none');
+
+  const after = page.getByRole('radio', { name: 'Label after' });
+  const indicator = after.locator('xpath=..').locator('.fui-Radio__indicator');
+  const label = page.locator(`label[for="${await after.getAttribute('id')}"]`);
+  const ltrIndicator = await indicator.boundingBox();
+  const ltrLabel = await label.boundingBox();
+  expect(ltrIndicator).not.toBeNull();
+  expect(ltrLabel).not.toBeNull();
+  expect(ltrIndicator!.x).toBeLessThan(ltrLabel!.x);
+
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  const rtlIndicator = await indicator.boundingBox();
+  const rtlLabel = await label.boundingBox();
+  expect(rtlIndicator).not.toBeNull();
+  expect(rtlLabel).not.toBeNull();
+  expect(rtlIndicator!.x).toBeGreaterThan(rtlLabel!.x);
+});
+
 test('native form reset restores uncontrolled Input and Checkbox defaults', async ({ page }) => {
   await page.goto('/');
 
@@ -1469,6 +1611,13 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   const outlinedBadge = page.locator('#badge').getByText('Outline', { exact: true });
   const filledBadge = page.locator('#badge').getByText('Filled', { exact: true });
   const spinnerIndicator = page.locator('#spinner .spinner-primary .fui-Spinner__spinner');
+  const checkedRadio = page
+    .getByRole('radiogroup', { name: 'Native choices' })
+    .getByRole('radio', { name: 'Alpha' });
+  const checkedRadioRoot = checkedRadio.locator('xpath=..');
+  const checkedRadioIndicator = checkedRadioRoot.locator('.fui-Radio__indicator');
+  const disabledRadio = page.getByRole('radio', { name: 'Disabled', exact: true });
+  const disabledRadioLabel = page.locator(`label[for="${await disabledRadio.getAttribute('id')}"]`);
   const switchIndicator = page.locator('#switch .switch-size-medium .fui-Switch__indicator');
   const disabledSwitchIndicator = page
     .locator('#switch')
@@ -1496,6 +1645,16 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   await expect(outlinedBadge).toHaveCSS('border-color', 'rgb(0, 0, 0)');
   await expect(filledBadge).toHaveCSS('border-color', 'rgb(0, 0, 0)');
   await expect(spinnerIndicator).toHaveCSS('forced-color-adjust', 'none');
+  await expect(checkedRadioRoot).toHaveCSS('forced-color-adjust', 'none');
+  const highlight = await page.evaluate(() => {
+    const probe = document.createElement('span');
+    probe.style.color = 'Highlight';
+    document.body.append(probe);
+    const color = getComputedStyle(probe).color;
+    probe.remove();
+    return color;
+  });
+  await expect(checkedRadioIndicator).toHaveCSS('border-color', highlight);
   await expect(sliderRail).toHaveCSS('forced-color-adjust', 'none');
   await expect(sliderThumb).toHaveCSS('forced-color-adjust', 'none');
   await expect(selectedCard).toHaveCSS('forced-color-adjust', 'none');
@@ -1579,6 +1738,7 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   });
 
   await expect(disabledLabel).toHaveCSS('color', grayText);
+  await expect(disabledRadioLabel).toHaveCSS('color', grayText);
   await expect(disabledSwitchIndicator).toHaveCSS('border-color', grayText);
   await expect(disabledSwitchIndicator).toHaveCSS('color', grayText);
   await expect(disabledTextarea).toHaveCSS('-webkit-text-fill-color', grayText);

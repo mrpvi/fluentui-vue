@@ -52,6 +52,15 @@ const checked = computed(() => {
 
   return internalChecked.value;
 });
+const inputChecked = computed(() => {
+  if (group || hasModelValue) {
+    return checked.value;
+  }
+
+  // Keep the native input uncontrolled after its initial render. Rebinding the live
+  // checked state would undo native common-name selection when a sibling radio updates.
+  return initialChecked;
+});
 const resolvedName = computed(() => {
   const localName = attrs.name as string | undefined;
   return hasName ? localName : group?.name.value;
@@ -184,7 +193,7 @@ defineExpose({
       type="radio"
       :name="resolvedName"
       :value="value"
-      :checked="checked"
+      :checked="inputChecked"
       :disabled="resolvedDisabled"
       :required="resolvedRequired"
       :aria-describedby="resolvedAriaDescribedBy"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, provide, ref, useAttrs, useId } from 'vue';
+import { computed, onBeforeUnmount, onMounted, provide, ref, useAttrs, useId } from 'vue';
 import { useFieldControlProps } from '../../composables/useFieldControlProps';
 import { useIsPropProvided } from '../../composables/useIsPropProvided';
 import { radioGroupContextKey } from './radioGroupContext';
@@ -97,7 +97,7 @@ function handleChange(event: Event) {
 
   select(target.value);
   if (isControlled) {
-    nextTick(syncControlledInputs);
+    queueMicrotask(syncControlledInputs);
   }
   emit('update:modelValue', target.value);
   emit('change', event, { value: target.value });

@@ -1,10 +1,13 @@
 import { execFileSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { mkdtemp, mkdir, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const localVueTsc = resolve(root, 'node_modules/.bin/vue-tsc');
+const dependencyRoot = existsSync(localVueTsc) ? root : resolve(root, '../../..');
 const consumer = await mkdtemp(resolve(tmpdir(), 'fluent-vue-consumer-'));
 const packageDirectory = resolve(consumer, 'node_modules/@local/fluent-vue');
 
@@ -19,7 +22,11 @@ try {
 
   await mkdir(packageDirectory, { recursive: true });
   execFileSync('tar', ['-xzf', tarball, '--strip-components=1', '-C', packageDirectory]);
-  await symlink(resolve(root, 'node_modules/vue'), resolve(consumer, 'node_modules/vue'), 'dir');
+  await symlink(
+    resolve(dependencyRoot, 'node_modules/vue'),
+    resolve(consumer, 'node_modules/vue'),
+    'dir',
+  );
   await mkdir(resolve(consumer, 'src'));
 
   await writeFile(
@@ -49,6 +56,8 @@ import {
   FSkeleton,
   FSkeletonItem,
   FSlider,
+  FRadio,
+  FRadioGroup,
   FSpinner,
   FSwitch,
   FText,
@@ -73,6 +82,8 @@ import {
   type SkeletonAnimation,
   type SkeletonSize,
   type SliderSize,
+  type RadioGroupLayout,
+  type RadioLabelPosition,
   type SpinnerLabelPosition,
   type SpinnerSize,
   type SwitchLabelPosition,
@@ -82,6 +93,7 @@ import {
 import '@local/fluent-vue/style.css';
 
 const accepted = ref<CheckboxValue>('mixed');
+const radioValue = ref('email');
 const badgeAppearance: BadgeAppearance = 'tint';
 const badgeColor: BadgeColor = 'success';
 const appearance: ButtonAppearance = 'primary';
@@ -99,6 +111,8 @@ const progressThickness: ProgressBarThickness = 'large';
 const skeletonAnimation: SkeletonAnimation = 'pulse';
 const skeletonSize: SkeletonSize = 48;
 const sliderSize: SliderSize = 'small';
+const radioGroupLayout: RadioGroupLayout = 'horizontal';
+const radioLabelPosition: RadioLabelPosition = 'after';
 const spinnerLabelPosition: SpinnerLabelPosition = 'after';
 const spinnerSize: SpinnerSize = 'large';
 const switchLabelPosition: SwitchLabelPosition = 'before';
@@ -139,6 +153,28 @@ createApp({
         'onUpdate:modelValue': value => (accepted.value = value),
         label: 'Accept terms',
       }),
+      h(
+        FField,
+        { label: 'Receipt method', hint: 'Choose one option.', required: true },
+        {
+          default: () =>
+            h(
+              FRadioGroup,
+              {
+                modelValue: radioValue.value,
+                'onUpdate:modelValue': value => (radioValue.value = value),
+                layout: radioGroupLayout,
+                name: 'packed-receipt',
+              },
+              {
+                default: () => [
+                  h(FRadio, { value: 'email', label: 'Email', labelPosition: radioLabelPosition }),
+                  h(FRadio, { value: 'paper', label: 'Paper' }),
+                ],
+              },
+            ),
+        },
+      ),
       h(FBadge, { appearance: badgeAppearance, color: badgeColor }, () => 'Packed badge'),
       h(FCounterBadge, {
         count: 120,
@@ -275,11 +311,15 @@ createApp({
     ),
   );
 
-  execFileSync(resolve(root, 'node_modules/.bin/vue-tsc'), ['--noEmit', '-p', 'tsconfig.json'], {
-    cwd: consumer,
-    stdio: 'inherit',
-  });
-  execFileSync(resolve(root, 'node_modules/.bin/vite'), ['build'], {
+  execFileSync(
+    resolve(dependencyRoot, 'node_modules/.bin/vue-tsc'),
+    ['--noEmit', '-p', 'tsconfig.json'],
+    {
+      cwd: consumer,
+      stdio: 'inherit',
+    },
+  );
+  execFileSync(resolve(dependencyRoot, 'node_modules/.bin/vite'), ['build'], {
     cwd: consumer,
     stdio: 'inherit',
   });

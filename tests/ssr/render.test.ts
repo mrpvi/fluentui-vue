@@ -36,6 +36,14 @@ describe('SSR rendering', () => {
     expect(firstRender).toContain('aria-label="away out of office"');
     expect(firstRender).toContain('fui-PresenceBadge--size-large');
     expect(firstRender).toContain('fui-Spinner--size-large');
+    expect(firstRender).toContain(
+      'class="fui-RadioGroup fui-RadioGroup--vertical ssr-radio-group"',
+    );
+    expect(firstRender).toMatch(/aria-label="Server contact method"[^>]*role="radiogroup"/);
+    expect(firstRender).toMatch(/name="fui-radiogroup-[^"]+" value="email" checked/);
+    expect(firstRender).toMatch(
+      /id="(fui-radio-[^"]+)"[^>]*><span[^>]*>[\s\S]*?<\/span><label for="\1"/,
+    );
     expect(firstRender).toMatch(
       /role="progressbar" aria-labelledby="(fui-spinner-[^"]+__label)"><span id="\1" class="fui-Spinner__label">.*Server loading.*<\/span><span class="fui-Spinner__spinner" aria-hidden="true">.*<span class="fui-Spinner__spinnerTail"><\/span>.*<\/span>/,
     );

@@ -17,6 +17,8 @@ import {
   FLink,
   FPresenceBadge,
   FProgressBar,
+  FRadio,
+  FRadioGroup,
   FSkeleton,
   FSkeletonItem,
   FSlider,
@@ -34,6 +36,9 @@ const triState = ref<CheckboxValue>('mixed');
 const dark = ref(false);
 const switchEnabled = ref(false);
 const controlledSwitch = ref(true);
+const controlledRadio = ref('beta');
+const standaloneRadio = ref(false);
+const radioSubmission = ref('');
 const sliderValue = ref(40);
 const sliderControlled = ref(35);
 const selectableCard = ref(false);
@@ -52,6 +57,12 @@ function clearUncontrolledAmount(event: MouseEvent) {
     input.focus();
   }
 }
+
+function captureRadioSubmission(event: SubmitEvent) {
+  const form = event.currentTarget as HTMLFormElement;
+  const value = new FormData(form).get('radio-form-choice');
+  radioSubmission.value = typeof value === 'string' ? value : '';
+}
 </script>
 
 <template>
@@ -62,8 +73,8 @@ function clearUncontrolledAmount(event: MouseEvent) {
         <h1>Native Fluent components for Vue 3</h1>
         <p>
           Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, Image, Badge,
-          Spinner, ProgressBar, Switch, Skeleton, Slider, and Card components translated from Fluent
-          UI React v9 to Vue props, slots, emits, and semantic HTML.
+          Spinner, ProgressBar, Switch, Radio, RadioGroup, Skeleton, Slider, and Card components
+          translated from Fluent UI React v9 to Vue props, slots, emits, and semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -1110,6 +1121,113 @@ function clearUncontrolledAmount(event: MouseEvent) {
       </div>
     </section>
 
+    <section id="radio">
+      <h2>Radio</h2>
+      <div class="radio-samples">
+        <div class="radio-group-sample radio-native-selection">
+          <h3>Native common-name selection and keyboard navigation</h3>
+          <FRadioGroup name="radio-native-choice" default-value="alpha" aria-label="Native choices">
+            <FRadio value="alpha" label="Alpha" />
+            <FRadio value="beta" label="Beta" />
+            <FRadio value="gamma" label="Gamma" />
+          </FRadioGroup>
+        </div>
+
+        <div class="radio-group-sample radio-controlled-group">
+          <h3>Controlled group</h3>
+          <FRadioGroup v-model="controlledRadio" name="radio-controlled-choice" layout="horizontal">
+            <FRadio value="alpha" label="Alpha" />
+            <FRadio value="beta" label="Beta" />
+            <FRadio value="gamma" label="Gamma" />
+          </FRadioGroup>
+          <small>Controlled value: {{ controlledRadio }}</small>
+        </div>
+
+        <div class="radio-group-sample radio-controlled-rollback">
+          <h3>Controlled rollback</h3>
+          <FRadioGroup
+            model-value="alpha"
+            name="radio-rollback-choice"
+            aria-label="Rollback choices"
+          >
+            <FRadio value="alpha" label="Locked Alpha" />
+            <FRadio value="beta" label="Attempt Beta" />
+          </FRadioGroup>
+        </div>
+
+        <div class="radio-group-sample radio-standalone-sample">
+          <h3>Standalone radios</h3>
+          <div class="row">
+            <FRadio
+              v-model="standaloneRadio"
+              value="controlled-standalone"
+              label="Controlled standalone"
+            />
+            <FRadio :model-value="false" value="rollback-standalone" label="Locked standalone" />
+          </div>
+          <small>Standalone value: {{ standaloneRadio }}</small>
+        </div>
+
+        <FField
+          class="radio-field-demo"
+          label="Preferred contact"
+          hint="Choose how the team should contact you."
+          validation-message="A contact method is required."
+          required
+        >
+          <FRadioGroup name="radio-field-choice" layout="horizontal">
+            <FRadio value="email" label="Email" />
+            <FRadio value="chat" label="Chat" />
+            <FRadio value="phone" label="Phone" />
+          </FRadioGroup>
+        </FField>
+
+        <div class="radio-group-sample">
+          <h3>Layouts, labels, disabled, and RTL-safe spacing</h3>
+          <FRadioGroup
+            class="radio-stacked-layout"
+            name="radio-stacked-choice"
+            layout="horizontal-stacked"
+            default-value="one"
+            aria-label="Stacked choices"
+          >
+            <FRadio value="one" label="One" />
+            <FRadio value="two" label="Two" />
+            <FRadio value="three" label="Three" />
+          </FRadioGroup>
+          <div class="row radio-state-row">
+            <FRadio value="after" name="radio-label-after" label="Label after" />
+            <FRadio
+              value="below"
+              name="radio-label-below"
+              label="Label below"
+              label-position="below"
+            />
+            <FRadio value="disabled" name="radio-disabled" label="Disabled" disabled />
+            <FRadio
+              value="disabled-checked"
+              name="radio-disabled-checked"
+              label="Disabled checked"
+              disabled
+              default-checked
+            />
+          </div>
+        </div>
+
+        <form class="radio-form-demo" @submit.prevent="captureRadioSubmission">
+          <FRadioGroup name="radio-form-choice" default-value="email" aria-label="Form choices">
+            <FRadio value="email" label="Email receipt" />
+            <FRadio value="paper" label="Paper receipt" />
+          </FRadioGroup>
+          <div class="row">
+            <FButton type="submit">Submit radio form</FButton>
+            <FButton type="reset">Reset radio form</FButton>
+          </div>
+          <output aria-live="polite">Submitted radio: {{ radioSubmission || 'none' }}</output>
+        </form>
+      </div>
+    </section>
+
     <section>
       <h2>Button</h2>
       <div class="row">
@@ -1640,6 +1758,43 @@ section {
 
 .card-horizontal-rtl {
   width: 100%;
+}
+
+.radio-group-sample,
+.radio-form-demo,
+.radio-field-demo {
+  display: grid;
+  gap: 0.75rem;
+  width: min(100%, 42rem);
+  padding: 1rem;
+  background: var(--fui-color-neutral-background-2);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+  border-radius: var(--fui-border-radius-medium);
+}
+
+.radio-group-sample h3 {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-300);
+}
+
+.radio-group-sample .fui-RadioGroup,
+.radio-field-demo .fui-RadioGroup {
+  gap: var(--fui-spacing-vertical-xs) var(--fui-spacing-horizontal-m);
+}
+
+.radio-stacked-layout {
+  min-height: 4.5rem;
+}
+
+.radio-state-row {
+  align-items: flex-start;
+  margin-bottom: 0;
+}
+
+.radio-form-demo output {
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-200);
 }
 
 .badge-matrix {
