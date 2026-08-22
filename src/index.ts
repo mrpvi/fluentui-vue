@@ -13,6 +13,8 @@ export * from './components/Radio';
 export * from './components/RadioGroup';
 export * from './components/Select';
 export * from './components/Link';
+export * from './components/Skeleton';
+export * from './components/SkeletonItem';
 export * from './components/Slider';
 export * from './components/Spinner';
 export * from './components/Switch';

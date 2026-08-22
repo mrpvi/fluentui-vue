@@ -14,6 +14,8 @@ import { FRadio } from './components/Radio';
 import { FRadioGroup } from './components/RadioGroup';
 import { FSelect } from './components/Select';
 import { FLink } from './components/Link';
+import { FSkeleton } from './components/Skeleton';
+import { FSkeletonItem } from './components/SkeletonItem';
 import { FSlider } from './components/Slider';
 import { FSpinner } from './components/Spinner';
 import { FSwitch } from './components/Switch';
@@ -37,6 +39,8 @@ export const FluentVue: Plugin = {
     app.component('FRadioGroup', FRadioGroup);
     app.component('FLabel', FLabel);
     app.component('FLink', FLink);
+    app.component('FSkeleton', FSkeleton);
+    app.component('FSkeletonItem', FSkeletonItem);
     app.component('FSlider', FSlider);
     app.component('FSpinner', FSpinner);
     app.component('FSwitch', FSwitch);

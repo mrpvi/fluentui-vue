@@ -1,0 +1,297 @@
+@keyframes fui-skeleton-wave {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fui-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.fui-SkeletonItem {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.fui-SkeletonItem::after {
+  position: absolute;
+  inset: 0;
+  display: block;
+  content: '';
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.fui-SkeletonItem--wave {
+  background-color: var(--fui-color-neutral-stencil-1);
+}
+
+.fui-SkeletonItem--wave::after {
+  background-image: linear-gradient(
+    to right,
+    var(--fui-color-neutral-stencil-1) 0%,
+    var(--fui-color-neutral-stencil-2) 50%,
+    var(--fui-color-neutral-stencil-1) 100%
+  );
+  transform: translateX(-100%);
+  animation-name: fui-skeleton-wave;
+}
+
+.fui-SkeletonItem--pulse::after {
+  background-color: var(--fui-color-neutral-stencil-1);
+  animation-name: fui-skeleton-pulse;
+  animation-duration: 1s;
+}
+
+.fui-SkeletonItem--translucent {
+  background-color: var(--fui-color-neutral-stencil-1-alpha);
+}
+
+.fui-SkeletonItem--translucent::after {
+  background-image: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--fui-color-neutral-stencil-1-alpha) 50%,
+    transparent 100%
+  );
+}
+
+.fui-SkeletonItem--pulse.fui-SkeletonItem--translucent {
+  background-color: transparent;
+}
+
+.fui-SkeletonItem--pulse.fui-SkeletonItem--translucent::after {
+  background-color: var(--fui-color-neutral-stencil-1-alpha);
+  background-image: none;
+}
+
+.fui-SkeletonItem--rectangle {
+  width: 100%;
+  border-radius: 4px;
+}
+
+.fui-SkeletonItem--circle {
+  border-radius: 50%;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-8 {
+  height: 8px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-12 {
+  height: 12px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-14 {
+  height: 14px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-16 {
+  height: 16px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-20 {
+  height: 20px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-22 {
+  height: 22px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-24 {
+  height: 24px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-28 {
+  height: 28px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-32 {
+  height: 32px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-36 {
+  height: 36px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-40 {
+  height: 40px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-48 {
+  height: 48px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-52 {
+  height: 52px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-56 {
+  height: 56px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-64 {
+  height: 64px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-72 {
+  height: 72px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-92 {
+  height: 92px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-96 {
+  height: 96px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-120 {
+  height: 120px;
+}
+
+.fui-SkeletonItem--rectangle.fui-SkeletonItem--size-128 {
+  height: 128px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-8,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-8 {
+  width: 8px;
+  height: 8px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-12,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-12 {
+  width: 12px;
+  height: 12px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-14,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-14 {
+  width: 14px;
+  height: 14px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-16,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-16 {
+  width: 16px;
+  height: 16px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-20,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-20 {
+  width: 20px;
+  height: 20px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-22,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-22 {
+  width: 22px;
+  height: 22px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-24,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-24 {
+  width: 24px;
+  height: 24px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-28,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-28 {
+  width: 28px;
+  height: 28px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-32,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-32 {
+  width: 32px;
+  height: 32px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-36,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-36 {
+  width: 36px;
+  height: 36px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-40,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-40 {
+  width: 40px;
+  height: 40px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-48,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-48 {
+  width: 48px;
+  height: 48px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-52,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-52 {
+  width: 52px;
+  height: 52px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-56,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-56 {
+  width: 56px;
+  height: 56px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-64,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-64 {
+  width: 64px;
+  height: 64px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-72,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-72 {
+  width: 72px;
+  height: 72px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-92,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-92 {
+  width: 92px;
+  height: 92px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-96,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-96 {
+  width: 96px;
+  height: 96px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-120,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-120 {
+  width: 120px;
+  height: 120px;
+}
+
+.fui-SkeletonItem--square.fui-SkeletonItem--size-128,
+.fui-SkeletonItem--circle.fui-SkeletonItem--size-128 {
+  width: 128px;
+  height: 128px;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+  .fui-SkeletonItem::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+}
+
+@media screen and (forced-colors: active) {
+  .fui-SkeletonItem--wave::after {
+    background-color: WindowText;
+  }
+}
