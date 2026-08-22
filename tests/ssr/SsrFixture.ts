@@ -1,5 +1,15 @@
 import { defineComponent, h } from 'vue';
-import { FButton, FCheckbox, FField, FInput, FLabel, FLink, FText, FTextarea } from '../../src';
+import {
+  FButton,
+  FCheckbox,
+  FDivider,
+  FField,
+  FInput,
+  FLabel,
+  FLink,
+  FText,
+  FTextarea,
+} from '../../src';
 
 export const SsrFixture = defineComponent({
   name: 'SsrFixture',
@@ -24,6 +34,9 @@ export const SsrFixture = defineComponent({
           { default: () => h(FTextarea, { defaultValue: 'Vue-native components' }) },
         ),
         h(FCheckbox, { defaultChecked: true, label: 'Accept terms' }),
+        h(FDivider, { 'aria-label': 'Contentless boundary' }),
+        h(FDivider, { appearance: 'brand' }, () => 'Server section'),
+        h(FDivider, { vertical: true }, () => 'Vertical section'),
         h(FLink, { href: '#details' }, () => 'View details'),
         h(FButton, { appearance: 'primary' }, () => 'Continue'),
       ]);

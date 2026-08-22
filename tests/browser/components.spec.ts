@@ -219,6 +219,101 @@ test('Link preserves disabled focus, keyboard, and visual behavior', async ({ pa
   await expect(spanAction).toHaveCSS('text-align', 'start');
 });
 
+test('Divider exposes real-browser semantics and representative layout', async ({ page }) => {
+  await page.goto('/');
+
+  const section = page.locator('#divider');
+  const unnamed = section.getByRole('separator', { name: 'Unlabeled section boundary' });
+  const planning = section.getByRole('separator', { name: 'Planning' });
+  const complete = section.getByRole('separator', { name: 'Complete' });
+  const pageBoundary = section.getByRole('separator', { name: 'Page boundary' });
+  const verticalContent = section.getByRole('separator', { name: 'OR' });
+
+  await expect(unnamed).toHaveAttribute('aria-orientation', 'horizontal');
+  const planningContentId = await planning.locator('.fui-Divider__wrapper').getAttribute('id');
+  expect(planningContentId).not.toBeNull();
+  await expect(planning).toHaveAttribute('aria-labelledby', planningContentId!);
+  await expect(planning).toHaveCSS('text-align', 'start');
+  await expect(complete).toHaveCSS('padding-left', '12px');
+  await expect(complete).toHaveCSS('padding-right', '12px');
+
+  const planningPseudo = await planning.evaluate((element) => {
+    const before = getComputedStyle(element, '::before');
+    const after = getComputedStyle(element, '::after');
+
+    return {
+      beforeContent: before.content,
+      beforeMaxWidth: before.maxWidth,
+      beforeMarginInlineEnd: before.marginInlineEnd,
+      afterContent: after.content,
+      afterMaxWidth: after.maxWidth,
+      afterMarginInlineStart: after.marginInlineStart,
+    };
+  });
+  expect(planningPseudo).toEqual({
+    beforeContent: 'none',
+    beforeMaxWidth: '8px',
+    beforeMarginInlineEnd: '12px',
+    afterContent: '""',
+    afterMaxWidth: 'none',
+    afterMarginInlineStart: '12px',
+  });
+
+  await expect(pageBoundary).toHaveAttribute('aria-orientation', 'vertical');
+  await expect(verticalContent).toHaveAttribute('aria-orientation', 'vertical');
+  await expect(pageBoundary).toHaveCSS('height', '48px');
+  await expect(verticalContent).toHaveCSS('height', '112px');
+
+  const verticalPseudo = await verticalContent.evaluate((element) => {
+    const before = getComputedStyle(element, '::before');
+
+    return {
+      borderInlineEndStyle: before.borderInlineEndStyle,
+      borderInlineEndWidth: before.borderInlineEndWidth,
+      minHeight: before.minHeight,
+    };
+  });
+  expect(verticalPseudo).toEqual({
+    borderInlineEndStyle: 'solid',
+    borderInlineEndWidth: '1px',
+    minHeight: '8px',
+  });
+});
+
+test('Divider start and end alignment follow RTL logical layout', async ({ page }) => {
+  await page.goto('/');
+
+  const section = page.locator('#divider');
+  const planning = section.getByRole('separator', { name: 'Planning' });
+  const complete = section.getByRole('separator', { name: 'Complete' });
+
+  const ltrPlanningContent = await planning.locator('.fui-Divider__wrapper').boundingBox();
+  const ltrCompleteContent = await complete.locator('.fui-Divider__wrapper').boundingBox();
+  const ltrPlanningRoot = await planning.boundingBox();
+  const ltrCompleteRoot = await complete.boundingBox();
+  expect(ltrPlanningContent).not.toBeNull();
+  expect(ltrCompleteContent).not.toBeNull();
+  expect(ltrPlanningRoot).not.toBeNull();
+  expect(ltrCompleteRoot).not.toBeNull();
+  expect(ltrPlanningContent!.x).toBeLessThan(ltrPlanningRoot!.x + ltrPlanningRoot!.width / 2);
+  expect(ltrCompleteContent!.x).toBeGreaterThan(ltrCompleteRoot!.x + ltrCompleteRoot!.width / 2);
+
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+
+  const rtlPlanningContent = await planning.locator('.fui-Divider__wrapper').boundingBox();
+  const rtlCompleteContent = await complete.locator('.fui-Divider__wrapper').boundingBox();
+  const rtlPlanningRoot = await planning.boundingBox();
+  const rtlCompleteRoot = await complete.boundingBox();
+  expect(rtlPlanningContent).not.toBeNull();
+  expect(rtlCompleteContent).not.toBeNull();
+  expect(rtlPlanningRoot).not.toBeNull();
+  expect(rtlCompleteRoot).not.toBeNull();
+  expect(rtlPlanningContent!.x).toBeGreaterThan(rtlPlanningRoot!.x + rtlPlanningRoot!.width / 2);
+  expect(rtlCompleteContent!.x).toBeLessThan(rtlCompleteRoot!.x + rtlCompleteRoot!.width / 2);
+  await expect(planning).toHaveCSS('text-align', 'start');
+  await expect(complete).toHaveCSS('text-align', 'end');
+});
+
 test('native form reset restores uncontrolled Input and Checkbox defaults', async ({ page }) => {
   await page.goto('/');
 

@@ -9,6 +9,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 - `FButton` — adapted from `@fluentui/react-button` 9.11.0
 - `FInput` — adapted from `@fluentui/react-input` 9.8.6
 - `FCheckbox` — adapted from `@fluentui/react-checkbox` 9.6.4
+- `FDivider` — adapted from `@fluentui/react-divider` 9.7.4
 - `FText` — adapted from `@fluentui/react-text` 9.6.19
 - `FLabel` — adapted from `@fluentui/react-label` 9.4.4
 - `FField` — adapted from `@fluentui/react-field` 9.5.4
@@ -116,6 +117,7 @@ Components can be imported without installing the global plugin:
 import {
   FButton,
   FCheckbox,
+  FDivider,
   FField,
   FInput,
   FLabel,
@@ -139,6 +141,7 @@ const accepted = ref<CheckboxValue>(false);
     <FTextarea v-model="biography" resize="vertical" />
   </FField>
   <FCheckbox v-model="accepted" label="Accept terms" />
+  <FDivider>Review</FDivider>
   <FLink inline href="/privacy">Read the privacy policy</FLink>
   <FButton appearance="primary" :disabled="!accepted">Continue</FButton>
 </template>
@@ -344,6 +347,28 @@ Default links use Fluent brand link colors; subtle links use neutral link colors
 
 Use specific, meaningful link text rather than “click here.” If a link opens a new tab or window, provide both a visual indication and accessible text that announces that behavior. Background-aware inverted/brand colors from Fluent’s React context are intentionally not exposed until this library has a shared provider/background context.
 
+## Divider
+
+`FDivider` is a semantic separator that may render visible content as its accessible name. It is adapted from `@fluentui/react-divider@9.7.4`.
+
+```vue
+<FDivider aria-label="Section boundary" />
+<FDivider align-content="start" appearance="brand">Planning</FDivider>
+<FDivider align-content="end" appearance="subtle" inset>Complete</FDivider>
+<FDivider vertical aria-label="Column boundary" />
+```
+
+Key props:
+
+- `alignContent`: `start | center | end`
+- `appearance`: `brand | default | strong | subtle`
+- `inset` for beginning and end spacing
+- `vertical` for vertical orientation
+
+The root is a native `<div role="separator">` with managed `aria-orientation`. When the default slot is present, the component wraps it in an ID generated with Vue `useId()` and applies that ID through `aria-labelledby`, so visible content names the separator. A contentless divider has no implicit accessible name; add `aria-label` or `aria-labelledby` only when the boundary needs a specific announced name.
+
+Top-level `class`, `style`, native, ARIA, and data attributes are forwarded to the root. The managed `role`, `aria-orientation`, and content-derived `aria-labelledby` cannot be overridden. Alignment and inset styling use logical properties, so start/end layout follows the document direction. The component exposes its native `element` and defines no component-specific events. React slot customization for the root and wrapper is intentionally translated to Vue's fixed semantic root plus default content slot.
+
 ## Input
 
 ```vue
@@ -458,7 +483,7 @@ All theme values are CSS custom properties and can be overridden by applications
 
 ## Intentional scope limits
 
-- This is an early eight-component parity slice, not a complete Fluent UI Vue library.
+- This is an early nine-component parity slice, not a complete Fluent UI Vue library.
 - `FField` integrates the current Input, Checkbox, and Textarea controls; future form controls will adopt the same internal context contract as they are ported.
 - The default checkbox marks are package-owned SVG/CSS primitives rather than copied Fluent icon assets.
 - Griffel and React-specific Tabster bindings are not included.

@@ -32,6 +32,7 @@ try {
 import {
   FButton,
   FCheckbox,
+  FDivider,
   FField,
   FInput,
   FLabel,
@@ -42,6 +43,7 @@ import {
   packageVersion,
   type ButtonAppearance,
   type CheckboxValue,
+  type DividerAppearance,
   type FluentTheme,
   type TextareaResize,
 } from '@local/fluent-vue';
@@ -50,6 +52,7 @@ import '@local/fluent-vue/style.css';
 const accepted = ref<CheckboxValue>('mixed');
 const appearance: ButtonAppearance = 'primary';
 const resize: TextareaResize = 'vertical';
+const dividerAppearance: DividerAppearance = 'brand';
 const theme: FluentTheme = 'light';
 
 createApp({
@@ -87,6 +90,8 @@ createApp({
         label: 'Accept terms',
       }),
       h(FLink, { href: '#docs', inline: true }, () => 'Read documentation'),
+      h(FDivider, { appearance: dividerAppearance }, () => 'Review'),
+      h(FDivider, { vertical: true, 'aria-label': 'Column boundary' }),
       h(FButton, { appearance }, () => 'Save'),
     ]),
 })

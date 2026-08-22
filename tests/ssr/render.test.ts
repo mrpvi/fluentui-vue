@@ -15,5 +15,12 @@ describe('SSR rendering', () => {
     expect(firstRender).toContain('required');
     expect(firstRender).toContain('type="checkbox"');
     expect(firstRender).toContain('href="#details"');
+    expect(firstRender).toContain('aria-label="Contentless boundary"');
+    expect(firstRender).toMatch(
+      /role="separator" aria-orientation="horizontal" aria-labelledby="(fui-divider-[^"]+__content)"><div id="\1" class="fui-Divider__wrapper"><!--\[-->Server section<!--\]--><\/div>/,
+    );
+    expect(firstRender).toMatch(
+      /role="separator" aria-orientation="vertical" aria-labelledby="(fui-divider-[^"]+__content)"><div id="\1" class="fui-Divider__wrapper"><!--\[-->Vertical section<!--\]--><\/div>/,
+    );
   });
 });

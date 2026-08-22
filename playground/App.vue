@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import {
   FButton,
   FCheckbox,
+  FDivider,
   FField,
   FInput,
   FLabel,
@@ -37,7 +38,7 @@ function clearUncontrolledAmount(event: MouseEvent) {
         <p class="eyebrow">@local/fluent-vue · 0.1.0</p>
         <h1>Native Fluent components for Vue 3</h1>
         <p>
-          Native Button, Input, Checkbox, Text, Label, Field, Textarea, and Link components
+          Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, and Divider components
           translated from Fluent UI React v9 to Vue props, slots, emits, and semantic HTML.
         </p>
       </div>
@@ -193,6 +194,30 @@ function clearUncontrolledAmount(event: MouseEvent) {
           <FLink href="#input" disabled-focusable>Focusable disabled link</FLink>
           <FLink disabled>Disabled action</FLink>
           <FLink disabled-focusable>Focusable disabled action</FLink>
+        </div>
+      </div>
+    </section>
+
+    <section id="divider">
+      <h2>Divider</h2>
+      <div class="divider-samples">
+        <div class="divider-horizontal-samples">
+          <FDivider aria-label="Unlabeled section boundary" />
+          <FDivider class="divider-start" align-content="start" appearance="brand">
+            Planning
+          </FDivider>
+          <FDivider appearance="strong">Review</FDivider>
+          <FDivider class="divider-end" align-content="end" appearance="subtle" inset>
+            Complete
+          </FDivider>
+        </div>
+
+        <div class="divider-vertical-row">
+          <FText>Previous</FText>
+          <FDivider class="divider-vertical-childless" vertical aria-label="Page boundary" />
+          <FText>Current</FText>
+          <FDivider class="divider-vertical-content" vertical appearance="brand"> OR </FDivider>
+          <FText>Next</FText>
         </div>
       </div>
     </section>
@@ -397,9 +422,32 @@ section {
 .label-samples,
 .field-samples,
 .link-samples,
+.divider-samples,
 .textarea-samples {
   display: grid;
   gap: 1rem;
+}
+
+.divider-horizontal-samples {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.divider-vertical-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 9rem;
+}
+
+.divider-vertical-childless {
+  flex-grow: 0;
+  height: 3rem;
+}
+
+.divider-vertical-content {
+  flex-grow: 0;
+  height: 7rem;
 }
 
 .field-validity-demo,
