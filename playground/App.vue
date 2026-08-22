@@ -13,6 +13,8 @@ import {
   FLink,
   FPresenceBadge,
   FProgressBar,
+  FSkeleton,
+  FSkeletonItem,
   FSpinner,
   FSwitch,
   FText,
@@ -51,8 +53,8 @@ function clearUncontrolledAmount(event: MouseEvent) {
         <h1>Native Fluent components for Vue 3</h1>
         <p>
           Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, Image, Badge,
-          Spinner, ProgressBar, and Switch components translated from Fluent UI React v9 to Vue
-          props, slots, emits, and semantic HTML.
+          Spinner, ProgressBar, Switch, and Skeleton components translated from Fluent UI React v9
+          to Vue props, slots, emits, and semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -745,6 +747,107 @@ function clearUncontrolledAmount(event: MouseEvent) {
       </div>
     </section>
 
+    <section id="skeleton">
+      <h2>Skeleton</h2>
+      <div class="skeleton-samples">
+        <div class="skeleton-group">
+          <h3>Animations and appearances</h3>
+          <div class="skeleton-feature-grid">
+            <FSkeleton class="skeleton-card skeleton-wave-opaque" aria-label="Loading wave card">
+              <FSkeletonItem shape="circle" :size="48" />
+              <FSkeletonItem class="skeleton-line-long" />
+              <FSkeletonItem class="skeleton-line-short" />
+            </FSkeleton>
+            <FSkeleton
+              class="skeleton-card skeleton-wave-translucent"
+              appearance="translucent"
+              aria-label="Loading translucent wave card"
+            >
+              <FSkeletonItem shape="square" :size="48" />
+              <FSkeletonItem class="skeleton-line-long" />
+              <FSkeletonItem class="skeleton-line-short" />
+            </FSkeleton>
+            <FSkeleton
+              class="skeleton-card skeleton-pulse-opaque"
+              animation="pulse"
+              aria-label="Loading pulse card"
+            >
+              <FSkeletonItem shape="circle" :size="48" />
+              <FSkeletonItem class="skeleton-line-long" />
+              <FSkeletonItem class="skeleton-line-short" />
+            </FSkeleton>
+            <FSkeleton
+              class="skeleton-card skeleton-pulse-translucent"
+              animation="pulse"
+              appearance="translucent"
+              aria-label="Loading translucent pulse card"
+            >
+              <FSkeletonItem shape="square" :size="48" />
+              <FSkeletonItem class="skeleton-line-long" />
+              <FSkeletonItem class="skeleton-line-short" />
+            </FSkeleton>
+          </div>
+        </div>
+
+        <div class="skeleton-group">
+          <h3>Shapes and exact sizes</h3>
+          <FSkeleton class="skeleton-shape-row" aria-label="Loading shape examples">
+            <FSkeletonItem class="skeleton-size-circle" shape="circle" :size="64" />
+            <FSkeletonItem class="skeleton-size-square" shape="square" :size="64" />
+            <FSkeletonItem class="skeleton-size-rectangle" shape="rectangle" :size="64" />
+          </FSkeleton>
+          <FSkeleton class="skeleton-size-grid" aria-label="Loading size examples">
+            <div
+              v-for="size in [
+                8, 12, 14, 16, 20, 22, 24, 28, 32, 36, 40, 48, 52, 56, 64, 72, 92, 96, 120, 128,
+              ] as const"
+              :key="size"
+              class="skeleton-size-sample"
+            >
+              <FText :size="200">{{ size }}</FText>
+              <FSkeletonItem :class="`skeleton-exact-size-${size}`" :size="size" />
+            </div>
+          </FSkeleton>
+        </div>
+
+        <div class="skeleton-group">
+          <h3>Context, roots, width compatibility, and ARIA overrides</h3>
+          <div class="skeleton-context-grid">
+            <FSkeleton
+              class="skeleton-context-parent"
+              animation="pulse"
+              appearance="translucent"
+              :size="32"
+              shape="circle"
+              aria-label="Loading inherited items"
+            >
+              <FSkeletonItem class="skeleton-inherited-item" />
+              <FSkeletonItem
+                class="skeleton-overridden-item"
+                animation="wave"
+                appearance="opaque"
+                :size="20"
+                shape="square"
+              />
+              <FSkeleton class="skeleton-nested-context" aria-label="Loading nested item">
+                <FSkeletonItem class="skeleton-nested-item" />
+              </FSkeleton>
+            </FSkeleton>
+            <FSkeleton
+              as="span"
+              class="skeleton-span-root"
+              role="status"
+              :aria-busy="false"
+              :width="240"
+              aria-label="Custom skeleton status"
+            >
+              <FSkeletonItem as="span" class="skeleton-span-item" :size="24" />
+            </FSkeleton>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section>
       <h2>Button</h2>
       <div class="row">
@@ -955,7 +1058,8 @@ section {
 .badge-samples,
 .spinner-samples,
 .progress-bar-samples,
-.switch-samples {
+.switch-samples,
+.skeleton-samples {
   display: grid;
   gap: 1.5rem;
 }
@@ -963,7 +1067,8 @@ section {
 .badge-group,
 .spinner-group,
 .progress-bar-group,
-.switch-group {
+.switch-group,
+.skeleton-group {
   display: grid;
   gap: 0.75rem;
 }
@@ -971,7 +1076,8 @@ section {
 .spinner-group h3,
 .badge-group h3,
 .progress-bar-group h3,
-.switch-group h3 {
+.switch-group h3,
+.skeleton-group h3 {
   margin: 0;
   color: var(--fui-color-neutral-foreground-2);
   font-size: var(--fui-font-size-base-300);
@@ -1014,6 +1120,77 @@ section {
   box-sizing: border-box;
   border: 4px dotted currentcolor;
   border-radius: 50%;
+}
+
+.skeleton-feature-grid,
+.skeleton-context-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1rem;
+}
+
+.skeleton-card {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+  padding: 1rem;
+  background: var(--fui-color-neutral-background-2);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+}
+
+.skeleton-card > :first-child {
+  grid-row: span 2;
+}
+
+.skeleton-line-long {
+  width: 85%;
+}
+
+.skeleton-line-short {
+  width: 55%;
+}
+
+.skeleton-shape-row {
+  display: grid;
+  grid-template-columns: 64px 64px minmax(10rem, 24rem);
+  gap: 1rem;
+  align-items: center;
+}
+
+.skeleton-size-grid {
+  display: grid;
+  gap: 0.5rem;
+  width: min(100%, 42rem);
+}
+
+.skeleton-size-sample {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.skeleton-context-parent {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 4rem;
+  padding: 1rem;
+  background: var(--fui-color-neutral-background-2);
+}
+
+.skeleton-nested-context {
+  width: 7rem;
+}
+
+.skeleton-span-root {
+  padding: 1rem;
+  background: var(--fui-color-neutral-background-2);
+}
+
+.skeleton-span-item {
+  width: 75%;
 }
 
 .progress-bar-stack,

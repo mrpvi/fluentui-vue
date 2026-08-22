@@ -48,3 +48,18 @@ test('ProgressBar fixtures expose determinate, indeterminate, and Field-derived 
     /^fui-field-.+__validation-message$/,
   );
 });
+
+test('Skeleton fixtures expose default and explicitly overridden loading semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const loading = page.getByRole('progressbar', { name: 'Loading wave card' });
+  await expect(loading).toHaveAttribute('aria-busy', 'true');
+
+  const status = page.getByRole('status', { name: 'Custom skeleton status' });
+  await expect(status).toHaveAttribute('aria-busy', 'false');
+  await expect(status).not.toHaveAttribute('tabindex');
+
+  await expect(page.locator('#skeleton .fui-SkeletonItem[role]')).toHaveCount(0);
+});

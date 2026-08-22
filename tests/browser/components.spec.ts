@@ -934,6 +934,161 @@ test('Switch reduced motion collapses track and thumb transitions', async ({
   }
 });
 
+test('Skeleton preserves animations, appearances, exact geometry, context, roots, and width', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#skeleton');
+  const wave = section.locator('.skeleton-wave-opaque .skeleton-line-long');
+  const pulse = section.locator('.skeleton-pulse-opaque .skeleton-line-long');
+
+  const stencilColor = await page.evaluate(() => {
+    const probe = document.createElement('span');
+    probe.style.color = getComputedStyle(document.documentElement)
+      .getPropertyValue('--fui-color-neutral-stencil-1')
+      .trim();
+    document.body.append(probe);
+    const color = getComputedStyle(probe).color;
+    probe.remove();
+    return color;
+  });
+  await expect(wave).toHaveCSS('background-color', stencilColor);
+  await expect(wave).toHaveCSS('animation-name', 'none');
+  await expect(pulse).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+  await expect(wave).toHaveCSS('overflow', 'hidden');
+  await expect(wave).toHaveCSS('position', 'relative');
+
+  const animationStyles = await section.evaluate(() => {
+    const readAfter = (selector: string) => {
+      const element = document.querySelector(selector)!;
+      const style = getComputedStyle(element, '::after');
+      return {
+        animationName: style.animationName,
+        animationDuration: style.animationDuration,
+        backgroundColor: style.backgroundColor,
+        backgroundImage: style.backgroundImage,
+        transform: style.transform,
+      };
+    };
+    return {
+      wave: readAfter('#skeleton .skeleton-wave-opaque .skeleton-line-long'),
+      pulse: readAfter('#skeleton .skeleton-pulse-opaque .skeleton-line-long'),
+      translucentPulse: readAfter('#skeleton .skeleton-pulse-translucent .skeleton-line-long'),
+    };
+  });
+  expect(animationStyles.wave.animationName).toBe('fui-skeleton-wave');
+  expect(animationStyles.wave.animationDuration).toBe('3s');
+  expect(animationStyles.wave.backgroundImage).not.toBe('none');
+  expect(animationStyles.pulse.animationName).toBe('fui-skeleton-pulse');
+  expect(animationStyles.pulse.animationDuration).toBe('1s');
+  expect(animationStyles.translucentPulse.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+  expect(animationStyles.translucentPulse.backgroundImage).not.toBe('none');
+
+  for (const size of [
+    8, 12, 14, 16, 20, 22, 24, 28, 32, 36, 40, 48, 52, 56, 64, 72, 92, 96, 120, 128,
+  ]) {
+    const item = section.locator(`.skeleton-exact-size-${size}`);
+    const box = await item.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.height).toBe(size);
+  }
+
+  for (const [selector, width, height, radius] of [
+    ['.skeleton-size-circle', 64, 64, '50%'],
+    ['.skeleton-size-square', 64, 64, '0px'],
+  ] as const) {
+    const item = section.locator(selector);
+    const box = await item.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.width).toBe(width);
+    expect(box!.height).toBe(height);
+    await expect(item).toHaveCSS('border-radius', radius);
+  }
+  const rectangle = section.locator('.skeleton-size-rectangle');
+  const rectangleBox = await rectangle.boundingBox();
+  expect(rectangleBox).not.toBeNull();
+  expect(rectangleBox!.width).toBeGreaterThan(160);
+  expect(rectangleBox!.height).toBe(64);
+  await expect(rectangle).toHaveCSS('border-radius', '4px');
+
+  await expect(section.locator('.skeleton-inherited-item')).toHaveClass(/fui-SkeletonItem--pulse/);
+  await expect(section.locator('.skeleton-inherited-item')).toHaveClass(
+    /fui-SkeletonItem--translucent/,
+  );
+  await expect(section.locator('.skeleton-inherited-item')).toHaveClass(
+    /fui-SkeletonItem--size-32/,
+  );
+  await expect(section.locator('.skeleton-inherited-item')).toHaveClass(/fui-SkeletonItem--circle/);
+  await expect(section.locator('.skeleton-overridden-item')).toHaveClass(/fui-SkeletonItem--wave/);
+  await expect(section.locator('.skeleton-overridden-item')).toHaveClass(
+    /fui-SkeletonItem--opaque/,
+  );
+  await expect(section.locator('.skeleton-overridden-item')).toHaveClass(
+    /fui-SkeletonItem--size-20/,
+  );
+  await expect(section.locator('.skeleton-overridden-item')).toHaveClass(
+    /fui-SkeletonItem--square/,
+  );
+  await expect(section.locator('.skeleton-nested-item')).toHaveClass(/fui-SkeletonItem--pulse/);
+  await expect(section.locator('.skeleton-nested-item')).toHaveClass(
+    /fui-SkeletonItem--translucent/,
+  );
+  await expect(section.locator('.skeleton-nested-item')).toHaveClass(/fui-SkeletonItem--size-16/);
+  await expect(section.locator('.skeleton-nested-item')).toHaveClass(/fui-SkeletonItem--rectangle/);
+
+  const spanRoot = section.getByRole('status', { name: 'Custom skeleton status' });
+  expect(await spanRoot.evaluate((element) => element.tagName)).toBe('SPAN');
+  expect(await spanRoot.locator('.skeleton-span-item').evaluate((element) => element.tagName)).toBe(
+    'SPAN',
+  );
+  await expect(spanRoot).toHaveCSS('display', 'block');
+  await expect(spanRoot).toHaveCSS('width', '240px');
+  await expect(spanRoot).toHaveAttribute('aria-busy', 'false');
+});
+
+test('Skeleton wave follows RTL and reduced motion stops both animations', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(
+    browserName !== 'chromium',
+    'Media emulation computed-style coverage is Chromium-only.',
+  );
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const wave = page.locator('#skeleton .skeleton-wave-opaque .skeleton-line-long');
+  const pulse = page.locator('#skeleton .skeleton-pulse-opaque .skeleton-line-long');
+  const ltrWave = await wave.evaluate((element) => {
+    const style = getComputedStyle(element, '::after');
+    return {
+      animationName: style.animationName,
+      duration: style.animationDuration,
+      count: style.animationIterationCount,
+      background: style.backgroundImage,
+    };
+  });
+  expect(ltrWave.animationName).toBe('fui-skeleton-wave');
+  expect(Number.parseFloat(ltrWave.duration)).toBeLessThanOrEqual(0.01);
+  expect(ltrWave.count).toBe('1');
+  expect(
+    await pulse.evaluate((element) => getComputedStyle(element, '::after').animationIterationCount),
+  ).toBe('1');
+
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  const rtlWave = await wave.evaluate((element) => {
+    const style = getComputedStyle(element, '::after');
+    return {
+      animationName: style.animationName,
+      transform: style.transform,
+      background: style.backgroundImage,
+    };
+  });
+  expect(rtlWave.animationName).toBe('fui-skeleton-wave-rtl');
+  expect(rtlWave.background).not.toBe(ltrWave.background);
+});
+
 test('native form reset restores uncontrolled Input and Checkbox defaults', async ({ page }) => {
   await page.goto('/');
 
@@ -1012,6 +1167,7 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
     .locator('.fui-Switch__indicator');
   const progressTrack = page.locator('#progress-bar .progress-bar-rounded-medium');
   const progressBar = progressTrack.locator('.fui-ProgressBar__bar');
+  const skeletonWave = page.locator('#skeleton .skeleton-wave-opaque .skeleton-line-long');
 
   await expect(indicator).toHaveCSS('border-color', 'rgb(0, 0, 0)');
   await expect(invalidInput).toHaveCSS('forced-color-adjust', 'none');
@@ -1046,6 +1202,12 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   expect(progressSystemColors.bar).not.toBe(progressSystemColors.track);
   expect(progressSystemColors.barForcedColorAdjust).toBe('none');
   await expect(progressBar).toHaveCSS('forced-color-adjust', 'none');
+  const skeletonWaveAfter = await skeletonWave.evaluate((element) => ({
+    backgroundColor: getComputedStyle(element, '::after').backgroundColor,
+    animationName: getComputedStyle(element, '::after').animationName,
+  }));
+  expect(skeletonWaveAfter.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+  expect(skeletonWaveAfter.animationName).toBe('fui-skeleton-wave');
 
   const grayText = await page.evaluate(() => {
     const probe = document.createElement('span');

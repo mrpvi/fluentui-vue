@@ -50,6 +50,12 @@ describe('SSR rendering', () => {
     );
     expect(firstRender).toContain('fui-ProgressBar__bar--warning');
     expect(firstRender).toMatch(
+      /aria-label="Server skeleton" class="fui-Skeleton ssr-skeleton" style="" role="progressbar" aria-busy="true"><!--\[--><span class="fui-SkeletonItem fui-SkeletonItem--pulse fui-SkeletonItem--translucent fui-SkeletonItem--size-24 fui-SkeletonItem--circle ssr-skeleton-item" style=""><!--\[--><!--\]--><\/span><!--\]--><\/div>/,
+    );
+    expect(firstRender).toMatch(
+      /aria-label="Server skeleton status" class="fui-Skeleton ssr-skeleton-status" style="width:180px;" role="status" aria-busy="false"><!--\[--><div class="fui-SkeletonItem fui-SkeletonItem--wave fui-SkeletonItem--opaque fui-SkeletonItem--size-16 fui-SkeletonItem--rectangle" style=""><!--\[--><!--\]--><\/div><!--\]--><\/span>/,
+    );
+    expect(firstRender).toMatch(
       /id="fui-field-[^"]+__control" aria-labelledby="fui-field-[^"]+__label" aria-describedby="fui-field-[^"]+__validation-message fui-field-[^"]+__hint" class="fui-ProgressBar fui-ProgressBar--rounded fui-ProgressBar--medium ssr-field-progress"[^>]*role="progressbar" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.75">/,
     );
     const delayedMarkup = firstRender.match(

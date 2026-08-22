@@ -4,6 +4,12 @@
   }
 }
 
+@keyframes fui-skeleton-wave-rtl {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
 @keyframes fui-skeleton-pulse {
   0%,
   100% {
@@ -65,13 +71,28 @@
   );
 }
 
-.fui-SkeletonItem--pulse.fui-SkeletonItem--translucent {
-  background-color: transparent;
-}
-
 .fui-SkeletonItem--pulse.fui-SkeletonItem--translucent::after {
   background-color: var(--fui-color-neutral-stencil-1-alpha);
-  background-image: none;
+}
+
+:dir(rtl) .fui-SkeletonItem--wave::after {
+  background-image: linear-gradient(
+    to left,
+    var(--fui-color-neutral-stencil-1) 0%,
+    var(--fui-color-neutral-stencil-2) 50%,
+    var(--fui-color-neutral-stencil-1) 100%
+  );
+  transform: translateX(100%);
+  animation-name: fui-skeleton-wave-rtl;
+}
+
+:dir(rtl) .fui-SkeletonItem--wave.fui-SkeletonItem--translucent::after {
+  background-image: linear-gradient(
+    to left,
+    transparent 0%,
+    var(--fui-color-neutral-stencil-1-alpha) 50%,
+    transparent 100%
+  );
 }
 
 .fui-SkeletonItem--rectangle {

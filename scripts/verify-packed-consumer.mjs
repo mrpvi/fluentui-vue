@@ -42,6 +42,8 @@ import {
   FLink,
   FPresenceBadge,
   FProgressBar,
+  FSkeleton,
+  FSkeletonItem,
   FSpinner,
   FSwitch,
   FText,
@@ -59,6 +61,8 @@ import {
   type PresenceBadgeStatus,
   type ProgressBarColor,
   type ProgressBarThickness,
+  type SkeletonAnimation,
+  type SkeletonSize,
   type SpinnerLabelPosition,
   type SpinnerSize,
   type SwitchLabelPosition,
@@ -78,6 +82,8 @@ const imageShape: ImageShape = 'rounded';
 const presenceStatus: PresenceBadgeStatus = 'available';
 const progressColor: ProgressBarColor = 'success';
 const progressThickness: ProgressBarThickness = 'large';
+const skeletonAnimation: SkeletonAnimation = 'pulse';
+const skeletonSize: SkeletonSize = 48;
 const spinnerLabelPosition: SpinnerLabelPosition = 'after';
 const spinnerSize: SpinnerSize = 'large';
 const switchLabelPosition: SwitchLabelPosition = 'before';
@@ -163,6 +169,22 @@ createApp({
         FField,
         { label: 'Packed field switch', required: true },
         { default: () => h(FSwitch) },
+      ),
+      h(
+        FSkeleton,
+        {
+          animation: skeletonAnimation,
+          appearance: 'translucent',
+          size: skeletonSize,
+          shape: 'circle',
+          'aria-label': 'Packed skeleton',
+        },
+        {
+          default: () => [
+            h(FSkeletonItem),
+            h(FSkeletonItem, { size: 16, shape: 'rectangle', style: { width: '60%' } }),
+          ],
+        },
       ),
       h(FLink, { href: '#docs', inline: true }, () => 'Read documentation'),
       h(FDivider, { appearance: dividerAppearance }, () => 'Review'),

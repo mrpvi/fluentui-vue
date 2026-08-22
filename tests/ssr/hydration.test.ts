@@ -102,6 +102,29 @@ describe('hydration', () => {
     );
     expect(fieldProgress?.querySelector('.fui-ProgressBar__bar--warning')).not.toBeNull();
 
+    const skeleton = container.querySelector<HTMLElement>('.ssr-skeleton');
+    expect(skeleton?.getAttribute('role')).toBe('progressbar');
+    expect(skeleton?.getAttribute('aria-busy')).toBe('true');
+    expect(skeleton?.querySelector('.ssr-skeleton-item')?.tagName).toBe('SPAN');
+    expect(skeleton?.querySelector('.ssr-skeleton-item')?.className).toContain(
+      'fui-SkeletonItem--pulse',
+    );
+    expect(skeleton?.querySelector('.ssr-skeleton-item')?.className).toContain(
+      'fui-SkeletonItem--translucent',
+    );
+    expect(skeleton?.querySelector('.ssr-skeleton-item')?.className).toContain(
+      'fui-SkeletonItem--size-24',
+    );
+    expect(skeleton?.querySelector('.ssr-skeleton-item')?.className).toContain(
+      'fui-SkeletonItem--circle',
+    );
+
+    const skeletonStatus = container.querySelector<HTMLElement>('.ssr-skeleton-status');
+    expect(skeletonStatus?.tagName).toBe('SPAN');
+    expect(skeletonStatus?.getAttribute('role')).toBe('status');
+    expect(skeletonStatus?.getAttribute('aria-busy')).toBe('false');
+    expect(skeletonStatus?.style.width).toBe('180px');
+
     const delayedSpinner = container.querySelector<HTMLElement>('.ssr-delayed-spinner');
     expect(delayedSpinner).not.toBeNull();
     expect(delayedSpinner?.children).toHaveLength(0);

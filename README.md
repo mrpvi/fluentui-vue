@@ -15,6 +15,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 - `FSpinner` — adapted from `@fluentui/react-spinner` 9.8.5
 - `FProgressBar` — adapted from `@fluentui/react-progress` 9.5.4
 - `FSwitch` — adapted from `@fluentui/react-switch` 9.7.5
+- `FSkeleton` and `FSkeletonItem` — adapted from `@fluentui/react-skeleton` 9.7.5
 - `FText` — adapted from `@fluentui/react-text` 9.6.19
 - `FLabel` — adapted from `@fluentui/react-label` 9.4.4
 - `FField` — adapted from `@fluentui/react-field` 9.5.4
@@ -132,6 +133,8 @@ import {
   FLink,
   FPresenceBadge,
   FProgressBar,
+  FSkeleton,
+  FSkeletonItem,
   FSpinner,
   FSwitch,
   FText,
@@ -161,6 +164,10 @@ const accepted = ref<CheckboxValue>(false);
   <FSpinner label="Loading account" size="large" />
   <FProgressBar :value="0.6" aria-label="Account setup progress" />
   <FSwitch label="Enable notifications" />
+  <FSkeleton aria-label="Loading account card" style="display: grid; gap: 0.5rem">
+    <FSkeletonItem shape="circle" :size="48" />
+    <FSkeletonItem style="width: 65%" />
+  </FSkeleton>
   <FLink inline href="/privacy">Read the privacy policy</FLink>
   <FButton appearance="primary" :disabled="!accepted">Continue</FButton>
 </template>
@@ -565,6 +572,34 @@ Top-level `class` and `style` apply to the visual root. Native input, form, ARIA
 A visible component-owned label uses `FLabel`, including the upstream required marker and disabled styling. Label positions preserve the released DOM order and long labels wrap while the track remains aligned to the first line. When nested in `FField`, the Switch consumes the Field-generated ID, external label association, required state, invalid state, and validation/hint descriptions; avoid also setting the Switch's own `label` unless a second visible label is intentional.
 
 The `indicator` slot replaces the package-owned thumb inside the fixed track wrapper. It is decorative and always hidden from assistive technology, so it must not contain interactive content or the accessible name. Native click and Space behavior come from the checkbox input. The thumb movement reverses in RTL, transitions collapse under `prefers-reduced-motion: reduce`, and custom track, checked, disabled, invalid, and focus states use system colors in forced-color mode. React root/input/indicator/Label slot objects are translated to a fixed Vue structure, root fallthrough styling, native control attributes, and typed `label` plus decorative `indicator` slots.
+
+## Skeleton
+
+`FSkeleton` groups visual placeholders for content that is still loading, and `FSkeletonItem` renders the individual wave or pulse stencil. They are adapted from the released `@fluentui/react-skeleton@9.7.5` package.
+
+```vue
+<FSkeleton aria-label="Loading profile" class="profile-skeleton">
+  <FSkeletonItem shape="circle" :size="48" />
+  <FSkeletonItem style="width: 70%" />
+  <FSkeletonItem animation="pulse" appearance="translucent" style="width: 45%" />
+</FSkeleton>
+```
+
+Key props shared through the nearest `FSkeleton` context:
+
+- `animation`: `wave | pulse`, default `wave`
+- `appearance`: `opaque | translucent`, default `opaque`
+- `size`: `8 | 12 | 14 | 16 | 20 | 22 | 24 | 28 | 32 | 36 | 40 | 48 | 52 | 56 | 64 | 72 | 92 | 96 | 120 | 128`
+- `shape`: `rectangle | square | circle`, with item default `rectangle`
+- `as`: `div | span` on both components
+
+`FSkeleton` defaults to `role="progressbar"` and `aria-busy="true"`, matching the released component. Supply a concise `aria-label` or `aria-labelledby` when the Skeleton is the loading indicator that needs its own name. For a larger region containing several placeholders, put `aria-busy="true"` and the useful accessible name on the nameable content container instead, and override the Skeleton semantics only when that produces a clearer accessibility tree. Do not create a live region for every item.
+
+`FSkeletonItem` is visual and has no role by default. Individual item props override context values; omitted animation and appearance values inherit through nested Skeletons, while an inner Skeleton without `size` or `shape` starts a new item-sizing context. Both roots forward native, ARIA, data, listener, class, and style attributes and expose only their native `element`. They are non-interactive and should not be made focusable.
+
+Rectangle items are 100% wide and use the selected size as height; set a class or inline style on an item to approximate the width of the content it replaces. Circle and square items use the selected size for both dimensions. The deprecated Skeleton `width` prop remains accepted and is translated to inline CSS (numbers become pixels), but new code should use class or style. Wave motion follows LTR/RTL direction, both animations stop after one near-instant iteration under reduced motion, and the released forced-color wave fallback is preserved.
+
+React root slot objects and context hooks are translated to fixed Vue `div`/`span` roots, a default slot, and a private typed Vue injection context. The released package's deprecated width field reaches a React intrinsic-prop path without a reliable visual result; Vue intentionally retains its documented width behavior through inline CSS for compatibility.
 
 ## Input
 
