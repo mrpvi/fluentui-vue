@@ -45,12 +45,46 @@ describe('hydration', () => {
       expect(divider.getAttribute('aria-labelledby')).toBe(content?.id);
     }
 
-    const spinners = [...container.querySelectorAll<HTMLElement>('[role="progressbar"]')];
+    const spinners = [...container.querySelectorAll<HTMLElement>('.fui-Spinner')];
     expect(spinners).toHaveLength(2);
     expect(spinners[0]?.querySelector('.fui-Spinner__spinner')).not.toBeNull();
     expect(spinners[0]?.getAttribute('aria-labelledby')).toBe(
       spinners[0]?.querySelector<HTMLElement>('.fui-Spinner__label')?.id,
     );
+
+    const progressBars = [...container.querySelectorAll<HTMLElement>('.fui-ProgressBar')];
+    expect(progressBars).toHaveLength(3);
+    const determinateProgress = container.querySelector<HTMLElement>('.ssr-determinate-progress');
+    expect(determinateProgress?.getAttribute('aria-valuemin')).toBe('0');
+    expect(determinateProgress?.getAttribute('aria-valuemax')).toBe('100');
+    expect(determinateProgress?.getAttribute('aria-valuenow')).toBe('36');
+    expect(
+      determinateProgress?.querySelector<HTMLElement>('.fui-ProgressBar__bar')?.style.width,
+    ).toBe('36%');
+
+    const indeterminateProgress = container.querySelector<HTMLElement>(
+      '.ssr-indeterminate-progress',
+    );
+    expect(indeterminateProgress?.getAttribute('aria-valuemin')).toBeNull();
+    expect(indeterminateProgress?.getAttribute('aria-valuemax')).toBeNull();
+    expect(indeterminateProgress?.getAttribute('aria-valuenow')).toBeNull();
+    expect(indeterminateProgress?.querySelector('.fui-ProgressBar__indeterminateMotion')).not.toBe(
+      null,
+    );
+
+    const fieldProgress = container.querySelector<HTMLElement>('.ssr-field-progress');
+    expect(fieldProgress?.getAttribute('aria-labelledby')).toBe(
+      fieldProgress?.closest('.fui-Field')?.querySelector<HTMLElement>('label')?.id,
+    );
+    expect(fieldProgress?.getAttribute('aria-describedby')).toBe(
+      [
+        fieldProgress
+          ?.closest('.fui-Field')
+          ?.querySelector<HTMLElement>('.fui-Field__validationMessage')?.id,
+        fieldProgress?.closest('.fui-Field')?.querySelector<HTMLElement>('.fui-Field__hint')?.id,
+      ].join(' '),
+    );
+    expect(fieldProgress?.querySelector('.fui-ProgressBar__bar--warning')).not.toBeNull();
 
     const delayedSpinner = container.querySelector<HTMLElement>('.ssr-delayed-spinner');
     expect(delayedSpinner).not.toBeNull();

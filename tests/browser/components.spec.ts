@@ -685,6 +685,109 @@ test('Spinner reduced motion simplifies the animated tail', async ({ page, brows
   );
 });
 
+test('ProgressBar preserves real-browser dimensions, semantics, colors, and Field integration', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#progress-bar');
+  const customMax = section.getByRole('progressbar', { name: 'Custom maximum progress' });
+  await expect(customMax).toHaveAttribute('aria-valuemin', '0');
+  await expect(customMax).toHaveAttribute('aria-valuemax', '100');
+  await expect(customMax).toHaveAttribute('aria-valuenow', '36');
+  const customMaxRootBox = await customMax.boundingBox();
+  const customMaxBarBox = await customMax.locator('.fui-ProgressBar__bar').boundingBox();
+  expect(customMaxRootBox).not.toBeNull();
+  expect(customMaxBarBox).not.toBeNull();
+  expect(customMaxBarBox!.width / customMaxRootBox!.width).toBeCloseTo(0.36, 2);
+
+  const roundedMedium = section.getByRole('progressbar', { name: 'Rounded medium progress' });
+  const squareLarge = section.getByRole('progressbar', { name: 'Square large progress' });
+  await expect(roundedMedium).toHaveCSS('height', '2px');
+  await expect(roundedMedium).toHaveCSS('border-radius', '4px');
+  await expect(squareLarge).toHaveCSS('height', '4px');
+  await expect(squareLarge).toHaveCSS('border-radius', '0px');
+  const squareLargeRootBox = await squareLarge.boundingBox();
+  const squareLargeBarBox = await squareLarge.locator('.fui-ProgressBar__bar').boundingBox();
+  expect(squareLargeRootBox).not.toBeNull();
+  expect(squareLargeBarBox).not.toBeNull();
+  expect(squareLargeBarBox!.width / squareLargeRootBox!.width).toBeCloseTo(0.68, 2);
+
+  const colors = ['brand', 'error', 'warning', 'success'] as const;
+  const computedColors: string[] = [];
+  for (const color of colors) {
+    const bar = section.locator(`.progress-bar-color-${color} .fui-ProgressBar__bar`);
+    computedColors.push(await bar.evaluate((element) => getComputedStyle(element).backgroundColor));
+  }
+  expect(new Set(computedColors).size).toBe(4);
+
+  const indeterminate = section.getByRole('progressbar', {
+    name: 'Indeterminate progress',
+    exact: true,
+  });
+  await expect(indeterminate).not.toHaveAttribute('aria-valuemin');
+  await expect(indeterminate).not.toHaveAttribute('aria-valuemax');
+  await expect(indeterminate).not.toHaveAttribute('aria-valuenow');
+  await expect(indeterminate.locator('.fui-ProgressBar__indeterminateMotion')).toHaveCount(1);
+  await expect(indeterminate.locator('.fui-ProgressBar__bar')).toHaveCSS(
+    'animation-duration',
+    '3s',
+  );
+
+  const staticIndeterminate = section.getByRole('progressbar', {
+    name: 'Indeterminate progress without motion',
+  });
+  await expect(staticIndeterminate.locator('.fui-ProgressBar__indeterminateMotion')).toHaveCount(0);
+  await expect(staticIndeterminate.locator('.fui-ProgressBar__bar')).toHaveCSS(
+    'animation-name',
+    'none',
+  );
+
+  for (const [rootClass, expectedColor] of [
+    ['.progress-bar-field-error', 'error'],
+    ['.progress-bar-field-warning', 'warning'],
+    ['.progress-bar-field-success', 'success'],
+  ] as const) {
+    const root = section.locator(rootClass);
+    await expect(root.locator('.fui-ProgressBar__bar')).toHaveClass(
+      new RegExp(`fui-ProgressBar__bar--${expectedColor}`),
+    );
+    const label = root.locator('xpath=..').locator('label');
+    const labelId = await label.getAttribute('id');
+    expect(labelId).not.toBeNull();
+    await expect(root).toHaveAttribute('aria-labelledby', labelId!);
+  }
+
+  const defaultField = section.locator('.progress-bar-field-default');
+  const defaultFieldRoot = defaultField.locator('xpath=..');
+  const defaultLabel = defaultFieldRoot.locator('label');
+  const defaultHint = defaultFieldRoot.locator('.fui-Field__hint');
+  const defaultControlId = await defaultLabel.getAttribute('for');
+  const defaultLabelId = await defaultLabel.getAttribute('id');
+  const defaultHintId = await defaultHint.getAttribute('id');
+  expect(defaultControlId).not.toBeNull();
+  expect(defaultLabelId).not.toBeNull();
+  expect(defaultHintId).not.toBeNull();
+  await expect(defaultField).toHaveAttribute('id', defaultControlId!);
+  await expect(defaultField).toHaveAttribute('aria-labelledby', defaultLabelId!);
+  await expect(defaultField).toHaveAttribute('aria-describedby', defaultHintId!);
+});
+
+test('ProgressBar reduced motion replaces translation with opacity pulsing', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Reduced-motion computed-style coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const bar = page.locator('#progress-bar .progress-bar-indeterminate .fui-ProgressBar__bar');
+  await expect(bar).toHaveCSS('max-width', '100%');
+  await expect(bar).toHaveCSS('animation-name', 'fui-progress-bar-indeterminate-reduced-motion');
+  await expect(bar).toHaveCSS('animation-duration', '3s');
+  await expect(bar).toHaveCSS('translate', 'none');
+});
+
 test('native form reset restores uncontrolled Input and Checkbox defaults', async ({ page }) => {
   await page.goto('/');
 
@@ -755,6 +858,8 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   const outlinedBadge = page.locator('#badge').getByText('Outline', { exact: true });
   const filledBadge = page.locator('#badge').getByText('Filled', { exact: true });
   const spinnerIndicator = page.locator('#spinner .spinner-primary .fui-Spinner__spinner');
+  const progressTrack = page.locator('#progress-bar .progress-bar-rounded-medium');
+  const progressBar = progressTrack.locator('.fui-ProgressBar__bar');
 
   await expect(indicator).toHaveCSS('border-color', 'rgb(0, 0, 0)');
   await expect(invalidInput).toHaveCSS('forced-color-adjust', 'none');
@@ -770,6 +875,17 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   expect(spinnerSystemColors.background).not.toBe('rgba(0, 0, 0, 0)');
   expect(spinnerSystemColors.color).not.toBe('rgba(0, 0, 0, 0)');
   expect(spinnerSystemColors.background).not.toBe(spinnerSystemColors.color);
+  const progressSystemColors = await progressTrack.evaluate((element) => ({
+    track: getComputedStyle(element).backgroundColor,
+    bar: getComputedStyle(element.querySelector('.fui-ProgressBar__bar')!).backgroundColor,
+    barForcedColorAdjust: getComputedStyle(element.querySelector('.fui-ProgressBar__bar')!)
+      .forcedColorAdjust,
+  }));
+  expect(progressSystemColors.track).not.toBe('rgba(0, 0, 0, 0)');
+  expect(progressSystemColors.bar).not.toBe('rgba(0, 0, 0, 0)');
+  expect(progressSystemColors.bar).not.toBe(progressSystemColors.track);
+  expect(progressSystemColors.barForcedColorAdjust).toBe('none');
+  await expect(progressBar).toHaveCSS('forced-color-adjust', 'none');
 
   const grayText = await page.evaluate(() => {
     const probe = document.createElement('span');

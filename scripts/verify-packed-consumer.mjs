@@ -41,6 +41,7 @@ import {
   FLabel,
   FLink,
   FPresenceBadge,
+  FProgressBar,
   FSpinner,
   FText,
   FTextarea,
@@ -55,6 +56,8 @@ import {
   type ImageFit,
   type ImageShape,
   type PresenceBadgeStatus,
+  type ProgressBarColor,
+  type ProgressBarThickness,
   type SpinnerLabelPosition,
   type SpinnerSize,
   type TextareaResize,
@@ -70,6 +73,8 @@ const dividerAppearance: DividerAppearance = 'brand';
 const imageFit: ImageFit = 'cover';
 const imageShape: ImageShape = 'rounded';
 const presenceStatus: PresenceBadgeStatus = 'available';
+const progressColor: ProgressBarColor = 'success';
+const progressThickness: ProgressBarThickness = 'large';
 const spinnerLabelPosition: SpinnerLabelPosition = 'after';
 const spinnerSize: SpinnerSize = 'large';
 const theme: FluentTheme = 'light';
@@ -127,6 +132,20 @@ createApp({
         { label: 'Packed custom spinner' },
         { indicator: () => h('span', { class: 'packed-indicator' }) },
       ),
+      h(FProgressBar, {
+        value: 72,
+        max: 100,
+        color: progressColor,
+        thickness: progressThickness,
+        'aria-label': 'Packed progress',
+      }),
+      h(FField, { label: 'Packed field progress', validationState: 'warning' }, {
+        default: () => h(FProgressBar, { value: 0.4 }),
+      }),
+      h(FProgressBar, {
+        indeterminateMotion: false,
+        'aria-label': 'Packed indeterminate progress',
+      }),
       h(FLink, { href: '#docs', inline: true }, () => 'Read documentation'),
       h(FDivider, { appearance: dividerAppearance }, () => 'Review'),
       h(FDivider, { vertical: true, 'aria-label': 'Column boundary' }),

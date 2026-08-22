@@ -12,6 +12,7 @@ import {
   FLabel,
   FLink,
   FPresenceBadge,
+  FProgressBar,
   FSpinner,
   FText,
   FTextarea,
@@ -47,8 +48,8 @@ function clearUncontrolledAmount(event: MouseEvent) {
         <h1>Native Fluent components for Vue 3</h1>
         <p>
           Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, Image, Badge,
-          and Spinner components translated from Fluent UI React v9 to Vue props, slots, emits, and
-          semantic HTML.
+          Spinner, and ProgressBar components translated from Fluent UI React v9 to Vue props,
+          slots, emits, and semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -598,6 +599,83 @@ function clearUncontrolledAmount(event: MouseEvent) {
       </div>
     </section>
 
+    <section id="progress-bar">
+      <h2>ProgressBar</h2>
+      <div class="progress-bar-samples">
+        <div class="progress-bar-group">
+          <h3>Determinate colors and values</h3>
+          <div class="progress-bar-stack">
+            <FProgressBar
+              v-for="color in ['brand', 'error', 'warning', 'success'] as const"
+              :key="color"
+              :class="`progress-bar-color-${color}`"
+              :value="
+                color === 'brand' ? 0.25 : color === 'error' ? 0.5 : color === 'warning' ? 0.75 : 1
+              "
+              :color="color"
+              :aria-label="`${color} progress`"
+            />
+            <FProgressBar
+              class="progress-bar-custom-max"
+              :value="36"
+              :max="100"
+              aria-label="Custom maximum progress"
+            />
+          </div>
+        </div>
+
+        <div class="progress-bar-group">
+          <h3>Shapes, thicknesses, and indeterminate motion</h3>
+          <div class="progress-bar-stack">
+            <FProgressBar
+              class="progress-bar-rounded-medium"
+              :value="0.42"
+              aria-label="Rounded medium progress"
+            />
+            <FProgressBar
+              class="progress-bar-square-large"
+              :value="0.68"
+              shape="square"
+              thickness="large"
+              aria-label="Square large progress"
+            />
+            <FProgressBar class="progress-bar-indeterminate" aria-label="Indeterminate progress" />
+            <FProgressBar
+              class="progress-bar-indeterminate-static"
+              :indeterminate-motion="false"
+              aria-label="Indeterminate progress without motion"
+            />
+          </div>
+        </div>
+
+        <div class="progress-bar-group">
+          <h3>Field validation integration</h3>
+          <div class="progress-bar-field-grid">
+            <FField label="Upload" hint="Uploading three account files.">
+              <FProgressBar class="progress-bar-field-default" :value="0.62" />
+            </FField>
+            <FField label="Profile import" validation-message="Two records could not be imported.">
+              <FProgressBar class="progress-bar-field-error" :value="0.38" thickness="large" />
+            </FField>
+            <FField
+              label="Storage migration"
+              validation-state="warning"
+              validation-message="Migration is taking longer than expected."
+            >
+              <FProgressBar class="progress-bar-field-warning" :value="0.84" />
+            </FField>
+            <FField
+              label="Account setup"
+              validation-state="success"
+              validation-message="Account setup is complete."
+            >
+              <FProgressBar class="progress-bar-field-success" :value="1" />
+            </FField>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section>
       <h2>Button</h2>
       <div class="row">
@@ -806,19 +884,22 @@ section {
 }
 
 .badge-samples,
-.spinner-samples {
+.spinner-samples,
+.progress-bar-samples {
   display: grid;
   gap: 1.5rem;
 }
 
 .badge-group,
-.spinner-group {
+.spinner-group,
+.progress-bar-group {
   display: grid;
   gap: 0.75rem;
 }
 
 .spinner-group h3,
-.badge-group h3 {
+.badge-group h3,
+.progress-bar-group h3 {
   margin: 0;
   color: var(--fui-color-neutral-foreground-2);
   font-size: var(--fui-font-size-base-300);
@@ -861,6 +942,25 @@ section {
   box-sizing: border-box;
   border: 4px dotted currentcolor;
   border-radius: 50%;
+}
+
+.progress-bar-stack,
+.progress-bar-field-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.progress-bar-stack {
+  width: min(100%, 38rem);
+  padding-block: 0.5rem;
+}
+
+.progress-bar-field-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+
+.progress-bar-field-grid .fui-Field {
+  align-content: start;
 }
 
 .badge-matrix {

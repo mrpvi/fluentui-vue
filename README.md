@@ -13,6 +13,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 - `FImage` — adapted from `@fluentui/react-image` 9.4.4
 - `FBadge`, `FCounterBadge`, and `FPresenceBadge` — adapted from `@fluentui/react-badge` 9.5.5
 - `FSpinner` — adapted from `@fluentui/react-spinner` 9.8.5
+- `FProgressBar` — adapted from `@fluentui/react-progress` 9.5.4
 - `FText` — adapted from `@fluentui/react-text` 9.6.19
 - `FLabel` — adapted from `@fluentui/react-label` 9.4.4
 - `FField` — adapted from `@fluentui/react-field` 9.5.4
@@ -129,6 +130,7 @@ import {
   FLabel,
   FLink,
   FPresenceBadge,
+  FProgressBar,
   FSpinner,
   FText,
   FTextarea,
@@ -155,6 +157,7 @@ const accepted = ref<CheckboxValue>(false);
   <FCounterBadge :count="120" role="img" aria-label="120 unread notifications" />
   <FPresenceBadge status="available" aria-label="Available for support" />
   <FSpinner label="Loading account" size="large" />
+  <FProgressBar :value="0.6" aria-label="Account setup progress" />
   <FLink inline href="/privacy">Read the privacy policy</FLink>
   <FButton appearance="primary" :disabled="!accepted">Continue</FButton>
 </template>
@@ -487,6 +490,38 @@ The `indicator` slot replaces the package's animated tail inside the fixed decor
 
 The animation follows document direction, uses Fluent forced-color system colors, and simplifies the tail for `prefers-reduced-motion: reduce`. `appearance="inverted"` is intended for brand or dark contrasting surfaces. React root, spinner, spinner-tail, and Label slot objects are translated to a constrained Vue root plus `label` and decorative `indicator` slots. React Spinner context sizing is intentionally omitted until this package introduces a shared provider/context contract.
 
+## ProgressBar
+
+`FProgressBar` is a determinate or indeterminate `role="progressbar"` adapted from the released `@fluentui/react-progress@9.5.4` package. Use determinate progress when a meaningful completion value is available; omit `value` for an indeterminate operation.
+
+```vue
+<FProgressBar :value="0.5" aria-label="Uploading files" />
+<FProgressBar :value="36" :max="100" thickness="large" color="success" aria-label="Upload" />
+<FProgressBar aria-label="Preparing download" />
+<FProgressBar :indeterminate-motion="false" aria-label="Waiting without animation" />
+
+<FField label="Profile completion" hint="Complete the remaining account fields.">
+  <FProgressBar :value="0.75" />
+</FField>
+```
+
+Key props:
+
+- `value`: a number between zero and `max`; omit it for indeterminate progress
+- `max`: completion maximum, default `1`; values less than or equal to zero normalize to `1`
+- `color`: `brand | error | warning | success`
+- `shape`: `rounded | square`
+- `thickness`: `medium | large`
+- `indeterminateMotion`: whether the default indeterminate motion wrapper renders, default `true`
+
+The fixed root is a `<div role="progressbar">`. Determinate bars expose managed `aria-valuemin="0"`, `aria-valuemax`, and clamped `aria-valuenow`, and size the inner bar as `value / max`. Indeterminate bars omit all three value attributes. Invalid `max` and out-of-range `value` inputs are clamped like the reviewed Fluent utilities and produce development-only console errors.
+
+`FProgressBar` integrates automatically with `FField`: it receives the generated control ID and label relationship, prepends validation and hint IDs to `aria-describedby`, and inherits `error`, `warning`, or `success` color when no explicit `color` is supplied. Explicit root IDs, accessible-label attributes, descriptions, and colors remain authoritative. Outside a Field, provide `aria-label` or `aria-labelledby` whenever surrounding context does not already identify the operation.
+
+Top-level `class`, `style`, native, ARIA, data attributes, and listeners are forwarded to the root, while the managed role and determinate value attributes cannot be overridden. The root exposes its native `element`, defines no component events, and is not focusable unless a consumer explicitly adds focusability, which is normally inappropriate.
+
+Indeterminate motion uses the released three-second linear slide. Under `prefers-reduced-motion: reduce`, it changes to an opacity pulse without translation. Forced-colors mode uses `CanvasText` for the track and `Highlight` for the bar. The upstream React root and bar slot objects are translated to a fixed semantic Vue structure; `indeterminateMotion={null}` is represented by `:indeterminate-motion="false"`. Fluent's internal custom-style hook is intentionally omitted in favor of fallthrough classes, styles, and CSS token overrides.
+
 ## Input
 
 ```vue
@@ -601,8 +636,8 @@ All theme values are CSS custom properties and can be overridden by applications
 
 ## Intentional scope limits
 
-- This is an early thirteen-component parity slice, not a complete Fluent UI Vue library.
-- `FField` integrates the current Input, Checkbox, and Textarea controls; future form controls will adopt the same internal context contract as they are ported.
+- This is an early fourteen-component parity slice, not a complete Fluent UI Vue library.
+- `FField` integrates the current Input, Checkbox, Textarea, and ProgressBar controls; future form controls will adopt the same internal context contract as they are ported.
 - The default checkbox marks are package-owned SVG/CSS primitives. Presence fallback SVG paths are the only privately bundled Fluent System Icons adaptation and are covered by the third-party notice.
 - Griffel and React-specific Tabster bindings are not included.
 - Visual parity is based on the reviewed upstream versions and should be regression-tested before public release.

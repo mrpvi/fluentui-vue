@@ -32,6 +32,16 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /class="fui-Spinner fui-Spinner--primary fui-Spinner--size-medium fui-Spinner--label-after ssr-delayed-spinner" style="" role="progressbar" aria-labelledby="fui-spinner-[^"]+__label"><!--v-if--><!--v-if--><!--v-if--><\/div>/,
     );
+    expect(firstRender).toMatch(
+      /aria-label="Server progress" class="fui-ProgressBar fui-ProgressBar--rounded fui-ProgressBar--large ssr-determinate-progress"[^>]*role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="36"><div class="fui-ProgressBar__bar fui-ProgressBar__bar--brand fui-ProgressBar__bar--determinate-transition" style="width:36%;"><\/div><\/div>/,
+    );
+    expect(firstRender).toMatch(
+      /aria-label="Server indeterminate progress" class="fui-ProgressBar fui-ProgressBar--rounded fui-ProgressBar--medium ssr-indeterminate-progress"[^>]*role="progressbar"><div class="fui-ProgressBar__indeterminateMotion"><div class="fui-ProgressBar__bar fui-ProgressBar__bar--indeterminate"><\/div><\/div><\/div>/,
+    );
+    expect(firstRender).toContain('fui-ProgressBar__bar--warning');
+    expect(firstRender).toMatch(
+      /id="fui-field-[^"]+__control" aria-labelledby="fui-field-[^"]+__label" aria-describedby="fui-field-[^"]+__validation-message fui-field-[^"]+__hint" class="fui-ProgressBar fui-ProgressBar--rounded fui-ProgressBar--medium ssr-field-progress"[^>]*role="progressbar" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.75">/,
+    );
     const delayedMarkup = firstRender.match(
       /<div class="[^"]*ssr-delayed-spinner[\s\S]*?<\/div>/,
     )?.[0];

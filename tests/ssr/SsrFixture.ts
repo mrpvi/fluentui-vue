@@ -11,6 +11,7 @@ import {
   FLabel,
   FLink,
   FPresenceBadge,
+  FProgressBar,
   FSpinner,
   FText,
   FTextarea,
@@ -64,6 +65,27 @@ export const SsrFixture = defineComponent({
           delay: 1000,
           label: 'Delayed server loading',
         }),
+        h(FProgressBar, {
+          class: 'ssr-determinate-progress',
+          value: 36,
+          max: 100,
+          thickness: 'large',
+          'aria-label': 'Server progress',
+        }),
+        h(FProgressBar, {
+          class: 'ssr-indeterminate-progress',
+          'aria-label': 'Server indeterminate progress',
+        }),
+        h(
+          FField,
+          {
+            label: 'Server field progress',
+            hint: 'Rendered with Field context.',
+            validationState: 'warning',
+            validationMessage: 'Server progress warning',
+          },
+          { default: () => h(FProgressBar, { class: 'ssr-field-progress', value: 0.75 }) },
+        ),
         h(FLink, { href: '#details' }, () => 'View details'),
         h(FButton, { appearance: 'primary' }, () => 'Continue'),
       ]);
