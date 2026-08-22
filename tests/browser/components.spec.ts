@@ -788,6 +788,152 @@ test('ProgressBar reduced motion replaces translation with opacity pulsing', asy
   await expect(bar).toHaveCSS('translate', 'none');
 });
 
+test('Switch preserves native click, keyboard, controlled rollback, and disabled-focusable behavior', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#switch');
+  const live = section.getByRole('switch', { name: 'Live setting' });
+  const liveLabel = section.getByText('Live setting', { exact: true });
+
+  await expect(live).not.toBeChecked();
+  await liveLabel.click();
+  await expect(live).toBeChecked();
+  await expect(section.getByText(/Live setting: true/)).toBeVisible();
+
+  await live.focus();
+  await page.keyboard.press('Space');
+  await expect(live).not.toBeChecked();
+  await expect(section.getByText(/Live setting: false/)).toBeVisible();
+
+  const controlled = section.getByRole('switch', { name: 'Controlled rollback' });
+  await expect(controlled).toBeChecked();
+  await controlled.click();
+  await expect(controlled).toBeChecked();
+  await section.getByRole('button', { name: 'Update controlled switch' }).click();
+  await expect(controlled).not.toBeChecked();
+
+  const disabledFocusable = section.getByRole('switch', { name: 'Focusable disabled' });
+  await expect(disabledFocusable).toHaveAttribute('aria-disabled', 'true');
+  await expect(disabledFocusable).not.toHaveAttribute('disabled');
+  await disabledFocusable.focus();
+  await expect(disabledFocusable).toBeFocused();
+  await expect(disabledFocusable).toBeChecked();
+  await page.keyboard.press('Space');
+  await expect(disabledFocusable).toBeChecked();
+  await disabledFocusable.click({ force: true });
+  await expect(disabledFocusable).toBeChecked();
+});
+
+test('Switch preserves exact geometry, label positions, first-line alignment, and RTL thumb movement', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#switch');
+  const medium = section.locator('.switch-size-medium');
+  const small = section.locator('.switch-size-small');
+
+  for (const [root, trackWidth, trackHeight, thumbSize] of [
+    [medium, 40, 20, 18],
+    [small, 32, 16, 14],
+  ] as const) {
+    const indicator = root.locator('.fui-Switch__indicator');
+    const thumb = root.locator('.fui-Switch__thumb');
+    const indicatorBox = await indicator.boundingBox();
+    const thumbBox = await thumb.boundingBox();
+    expect(indicatorBox).not.toBeNull();
+    expect(thumbBox).not.toBeNull();
+    expect(indicatorBox!.width).toBe(trackWidth);
+    expect(indicatorBox!.height).toBe(trackHeight);
+    expect(thumbBox!.width).toBe(thumbSize);
+    expect(thumbBox!.height).toBe(thumbSize);
+  }
+
+  const before = section.locator('.switch-position-before');
+  const above = section.locator('.switch-position-above');
+  const after = section.locator('.switch-position-after');
+  const beforeLabel = await before.locator('label').boundingBox();
+  const beforeIndicator = await before.locator('.fui-Switch__indicator').boundingBox();
+  const aboveLabel = await above.locator('label').boundingBox();
+  const aboveIndicator = await above.locator('.fui-Switch__indicator').boundingBox();
+  const afterLabel = await after.locator('label').boundingBox();
+  const afterIndicator = await after.locator('.fui-Switch__indicator').boundingBox();
+  expect(beforeLabel!.x).toBeLessThan(beforeIndicator!.x);
+  expect(aboveLabel!.y).toBeLessThan(aboveIndicator!.y);
+  expect(afterLabel!.x).toBeGreaterThan(afterIndicator!.x);
+
+  const longLabelRoot = section.locator('.switch-long-label');
+  const longLabel = longLabelRoot.locator('label');
+  const longLabelBox = await longLabel.boundingBox();
+  const longIndicatorBox = await longLabelRoot.locator('.fui-Switch__indicator').boundingBox();
+  expect(longLabelBox).not.toBeNull();
+  expect(longIndicatorBox).not.toBeNull();
+  expect(longLabelBox!.height).toBeGreaterThan(20);
+  expect(Math.abs(longLabelBox!.y - longIndicatorBox!.y)).toBeLessThanOrEqual(8);
+
+  const thumb = medium.locator('.fui-Switch__thumb');
+  await expect(thumb).toHaveCSS('transform', 'matrix(1, 0, 0, 1, 20, 0)');
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await expect(thumb).toHaveCSS('transform', 'matrix(1, 0, 0, 1, -20, 0)');
+});
+
+test('Switch preserves Field association and native form reset and data behavior', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const form = page.locator('.switch-form-demo');
+  const field = form.locator('.switch-field-demo');
+  const fieldSwitch = field.getByRole('switch', { name: 'Enable alerts' });
+  const fieldLabel = field.locator('label');
+  const hintId = await field.locator('.fui-Field__hint').getAttribute('id');
+  const fieldSwitchId = await fieldSwitch.getAttribute('id');
+  expect(hintId).not.toBeNull();
+  expect(fieldSwitchId).not.toBeNull();
+  await expect(fieldLabel).toHaveAttribute('for', fieldSwitchId!);
+  await expect(fieldSwitch).toHaveAttribute('required', '');
+  await expect(fieldSwitch).toHaveAttribute('aria-describedby', hintId!);
+  await fieldLabel.click();
+  await expect(fieldSwitch).toBeChecked();
+  await fieldSwitch.focus();
+  await expect(fieldSwitch).toBeFocused();
+
+  const resettable = form.getByRole('switch', { name: 'Resettable switch' });
+  await expect(resettable).toBeChecked();
+  expect(
+    await form.evaluate((element) => Object.fromEntries(new FormData(element as HTMLFormElement))),
+  ).toEqual({ alerts: 'enabled', updates: 'enabled' });
+
+  await resettable.uncheck();
+  expect(
+    await form.evaluate((element) => Object.fromEntries(new FormData(element as HTMLFormElement))),
+  ).toEqual({ alerts: 'enabled' });
+  await form.getByRole('button', { name: 'Reset switch form' }).click();
+  await expect(resettable).toBeChecked();
+});
+
+test('Switch reduced motion collapses track and thumb transitions', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Reduced-motion computed-style coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const switchRoot = page.locator('#switch .switch-size-medium');
+  for (const part of [
+    switchRoot.locator('.fui-Switch__indicator'),
+    switchRoot.locator('.fui-Switch__thumb'),
+  ]) {
+    const duration = await part.evaluate((element) =>
+      Number.parseFloat(getComputedStyle(element).transitionDuration),
+    );
+    expect(duration).toBeLessThanOrEqual(0.00001);
+  }
+});
+
 test('native form reset restores uncontrolled Input and Checkbox defaults', async ({ page }) => {
   await page.goto('/');
 
@@ -858,6 +1004,12 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   const outlinedBadge = page.locator('#badge').getByText('Outline', { exact: true });
   const filledBadge = page.locator('#badge').getByText('Filled', { exact: true });
   const spinnerIndicator = page.locator('#spinner .spinner-primary .fui-Spinner__spinner');
+  const switchIndicator = page.locator('#switch .switch-size-medium .fui-Switch__indicator');
+  const disabledSwitchIndicator = page
+    .locator('#switch')
+    .getByRole('switch', { name: 'Focusable disabled' })
+    .locator('xpath=..')
+    .locator('.fui-Switch__indicator');
   const progressTrack = page.locator('#progress-bar .progress-bar-rounded-medium');
   const progressBar = progressTrack.locator('.fui-ProgressBar__bar');
 
@@ -875,6 +1027,14 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   expect(spinnerSystemColors.background).not.toBe('rgba(0, 0, 0, 0)');
   expect(spinnerSystemColors.color).not.toBe('rgba(0, 0, 0, 0)');
   expect(spinnerSystemColors.background).not.toBe(spinnerSystemColors.color);
+  const switchSystemColors = await switchIndicator.evaluate((element) => ({
+    background: getComputedStyle(element).backgroundColor,
+    border: getComputedStyle(element).borderColor,
+    color: getComputedStyle(element).color,
+  }));
+  expect(switchSystemColors.background).not.toBe('rgba(0, 0, 0, 0)');
+  expect(switchSystemColors.border).toBe(switchSystemColors.background);
+  expect(switchSystemColors.color).not.toBe(switchSystemColors.background);
   const progressSystemColors = await progressTrack.evaluate((element) => ({
     track: getComputedStyle(element).backgroundColor,
     bar: getComputedStyle(element.querySelector('.fui-ProgressBar__bar')!).backgroundColor,
@@ -897,6 +1057,8 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   });
 
   await expect(disabledLabel).toHaveCSS('color', grayText);
+  await expect(disabledSwitchIndicator).toHaveCSS('border-color', grayText);
+  await expect(disabledSwitchIndicator).toHaveCSS('color', grayText);
   await expect(disabledTextarea).toHaveCSS('-webkit-text-fill-color', grayText);
   await expect(disabledLink).toHaveCSS('color', grayText);
 

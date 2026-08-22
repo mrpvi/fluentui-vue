@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useAttrs, useId, watch } from 'vue';
 import { useFieldControlProps } from '../../composables/useFieldControlProps';
 import { useIsPropProvided } from '../../composables/useIsPropProvided';
+import FLabel from '../Label/Label.vue';
 import type { SwitchEmits, SwitchProps, SwitchSlots } from './Switch.types';
 
 defineOptions({
@@ -189,17 +190,20 @@ defineExpose({
       @keydown="handleKeydown"
     />
 
-    <label
+    <FLabel
       v-if="hasLabel && labelPosition !== 'after'"
       :for="inputId"
+      :disabled="isDisabled || disabledFocusable"
+      :required="Boolean(fieldControlProps.required)"
       :class="[
         'fui-Switch__label',
         `fui-Switch__label--${size}`,
         `fui-Switch__label--${labelPosition}`,
       ]"
+      size="medium"
     >
       <slot name="label">{{ label }}</slot>
-    </label>
+    </FLabel>
 
     <div
       :class="[
@@ -214,13 +218,16 @@ defineExpose({
       </slot>
     </div>
 
-    <label
+    <FLabel
       v-if="hasLabel && labelPosition === 'after'"
       :for="inputId"
+      :disabled="isDisabled || disabledFocusable"
+      :required="Boolean(fieldControlProps.required)"
       :class="['fui-Switch__label', `fui-Switch__label--${size}`, 'fui-Switch__label--after']"
+      size="medium"
     >
       <slot name="label">{{ label }}</slot>
-    </label>
+    </FLabel>
   </div>
 </template>
 

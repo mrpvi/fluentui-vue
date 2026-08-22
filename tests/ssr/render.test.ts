@@ -14,6 +14,16 @@ describe('SSR rendering', () => {
     expect(firstRender).toContain('aria-describedby=');
     expect(firstRender).toContain('required');
     expect(firstRender).toContain('type="checkbox"');
+    expect(firstRender).toContain('role="switch"');
+    expect(firstRender).toContain('name="server-switch"');
+    expect(firstRender).toContain('value="enabled"');
+    expect(firstRender).toContain('fui-Switch--checked');
+    expect(firstRender).toMatch(
+      /class="fui-Switch[^"]*ssr-switch[^"]*"[^>]*><input[^>]*id="(fui-switch-[^"]+)"[^>]*checked[^>]*><label[^>]*for="\1"[^>]*>.*Server switch.*<\/label><div[^>]*aria-hidden="true"/,
+    );
+    expect(firstRender).toMatch(
+      /<label[^>]*for="(fui-field-[^"]+)"[^>]*>.*Server field switch.*<\/label>[\s\S]*?<input(?=[^>]*id="\1")(?=[^>]*role="switch")(?=[^>]*required)(?=[^>]*aria-describedby="[^"]+")[^>]*>/,
+    );
     expect(firstRender).toContain('href="#details"');
     expect(firstRender).toContain('alt="SSR image"');
     expect(firstRender).toContain('fui-Image--fit-cover');

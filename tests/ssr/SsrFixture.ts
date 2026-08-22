@@ -13,6 +13,7 @@ import {
   FPresenceBadge,
   FProgressBar,
   FSpinner,
+  FSwitch,
   FText,
   FTextarea,
 } from '../../src';
@@ -85,6 +86,19 @@ export const SsrFixture = defineComponent({
             validationMessage: 'Server progress warning',
           },
           { default: () => h(FProgressBar, { class: 'ssr-field-progress', value: 0.75 }) },
+        ),
+        h(FSwitch, {
+          class: 'ssr-switch',
+          defaultChecked: true,
+          label: 'Server switch',
+          labelPosition: 'before',
+          name: 'server-switch',
+          value: 'enabled',
+        }),
+        h(
+          FField,
+          { label: 'Server field switch', hint: 'Server switch hint', required: true },
+          { default: () => h(FSwitch, { class: 'ssr-field-switch' }) },
         ),
         h(FLink, { href: '#details' }, () => 'View details'),
         h(FButton, { appearance: 'primary' }, () => 'Continue'),

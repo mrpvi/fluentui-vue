@@ -14,6 +14,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 - `FBadge`, `FCounterBadge`, and `FPresenceBadge` — adapted from `@fluentui/react-badge` 9.5.5
 - `FSpinner` — adapted from `@fluentui/react-spinner` 9.8.5
 - `FProgressBar` — adapted from `@fluentui/react-progress` 9.5.4
+- `FSwitch` — adapted from `@fluentui/react-switch` 9.7.5
 - `FText` — adapted from `@fluentui/react-text` 9.6.19
 - `FLabel` — adapted from `@fluentui/react-label` 9.4.4
 - `FField` — adapted from `@fluentui/react-field` 9.5.4
@@ -132,6 +133,7 @@ import {
   FPresenceBadge,
   FProgressBar,
   FSpinner,
+  FSwitch,
   FText,
   FTextarea,
   type CheckboxValue,
@@ -158,6 +160,7 @@ const accepted = ref<CheckboxValue>(false);
   <FPresenceBadge status="available" aria-label="Available for support" />
   <FSpinner label="Loading account" size="large" />
   <FProgressBar :value="0.6" aria-label="Account setup progress" />
+  <FSwitch label="Enable notifications" />
   <FLink inline href="/privacy">Read the privacy policy</FLink>
   <FButton appearance="primary" :disabled="!accepted">Continue</FButton>
 </template>
@@ -252,7 +255,7 @@ Key props:
 - `size`: `small | medium | large`
 - `required`
 
-`FInput`, `FCheckbox`, and `FTextarea` automatically consume the enclosing Field context. Field generates the control ID, connects `label for` to that ID, merges validation and hint IDs into `aria-describedby`, applies native `required`, and defaults `aria-invalid="true"` for errors. Explicit control attributes remain authoritative; for example, an explicit `aria-invalid="false"` or `:required="false"` is preserved.
+`FInput`, `FCheckbox`, `FTextarea`, and `FSwitch` automatically consume the enclosing Field context. Field generates the control ID, connects `label for` to that ID, merges validation and hint IDs into `aria-describedby`, applies native `required`, and defaults `aria-invalid="true"` for errors. Explicit control attributes remain authoritative; for example, an explicit `aria-invalid="false"` or `:required="false"` is preserved.
 
 Error and warning messages use `role="alert"`. Success and `none` messages do not. Validation icons are decorative and hidden from assistive technology. The required asterisk is also visual; native required semantics are applied separately to supported controls.
 
@@ -522,6 +525,47 @@ Top-level `class`, `style`, native, ARIA, data attributes, and listeners are for
 
 Indeterminate motion uses the released three-second linear slide. Under `prefers-reduced-motion: reduce`, it changes to an opacity pulse without translation. Forced-colors mode uses `CanvasText` for the track and `Highlight` for the bar. The upstream React root and bar slot objects are translated to a fixed semantic Vue structure; `indeterminateMotion={null}` is represented by `:indeterminate-motion="false"`. Fluent's internal custom-style hook is intentionally omitted in favor of fallthrough classes, styles, and CSS token overrides.
 
+## Switch
+
+`FSwitch` is a native checkbox input with `role="switch"`, adapted from the released `@fluentui/react-switch@9.7.5` package. Use it for settings that take effect immediately; use a checkbox when users must submit or confirm a group of choices.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { FField, FSwitch } from '@local/fluent-vue';
+
+const enabled = ref(false);
+</script>
+
+<template>
+  <FSwitch v-model="enabled" label="Enable notifications" />
+  <FSwitch default-checked label="Compact mode" size="small" />
+  <FSwitch label="Show previews" label-position="before" />
+  <FSwitch label="Unavailable setting" disabled-focusable />
+
+  <FField label="Enable alerts" hint="Applies immediately." required>
+    <FSwitch name="alerts" value="enabled" />
+  </FField>
+</template>
+```
+
+Key props:
+
+- `modelValue` for controlled Vue usage
+- `defaultChecked` for initial uncontrolled state
+- `label` or the `label` slot
+- `labelPosition`: `above | after | before`
+- `size`: `small | medium`
+- `disabled` and `disabledFocusable`
+
+The default size is `medium`, the default label position is `after`, and the default state is unchecked. Supplying `modelValue` makes the component controlled even when its value is `undefined`; controlled `undefined` renders unchecked. A user interaction emits `update:modelValue` and `change` with the native event plus `{ checked }`. Until the parent updates a controlled value, the native input rolls back to the current prop value. Uncontrolled switches retain their initial `defaultChecked` value for native form reset.
+
+Top-level `class` and `style` apply to the visual root. Native input, form, ARIA, and data attributes are routed to the hidden checkbox input, while managed `type="checkbox"`, `role="switch"`, checked state, disabled semantics, and internal handlers remain authoritative. `disabled` uses native input disabling. `disabledFocusable` keeps the switch in the tab order with `aria-disabled="true"` while suppressing pointer, Space, and Enter activation. The component exposes the native `element` and a `focus()` method.
+
+A visible component-owned label uses `FLabel`, including the upstream required marker and disabled styling. Label positions preserve the released DOM order and long labels wrap while the track remains aligned to the first line. When nested in `FField`, the Switch consumes the Field-generated ID, external label association, required state, invalid state, and validation/hint descriptions; avoid also setting the Switch's own `label` unless a second visible label is intentional.
+
+The `indicator` slot replaces the package-owned thumb inside the fixed track wrapper. It is decorative and always hidden from assistive technology, so it must not contain interactive content or the accessible name. Native click and Space behavior come from the checkbox input. The thumb movement reverses in RTL, transitions collapse under `prefers-reduced-motion: reduce`, and custom track, checked, disabled, invalid, and focus states use system colors in forced-color mode. React root/input/indicator/Label slot objects are translated to a fixed Vue structure, root fallthrough styling, native control attributes, and typed `label` plus decorative `indicator` slots.
+
 ## Input
 
 ```vue
@@ -636,8 +680,8 @@ All theme values are CSS custom properties and can be overridden by applications
 
 ## Intentional scope limits
 
-- This is an early fourteen-component parity slice, not a complete Fluent UI Vue library.
-- `FField` integrates the current Input, Checkbox, Textarea, and ProgressBar controls; future form controls will adopt the same internal context contract as they are ported.
+- This is an early fifteen-component parity slice, not a complete Fluent UI Vue library.
+- `FField` integrates the current Input, Checkbox, Textarea, Switch, and ProgressBar controls; future form controls will adopt the same internal context contract as they are ported.
 - The default checkbox marks are package-owned SVG/CSS primitives. Presence fallback SVG paths are the only privately bundled Fluent System Icons adaptation and are covered by the third-party notice.
 - Griffel and React-specific Tabster bindings are not included.
 - Visual parity is based on the reviewed upstream versions and should be regression-tested before public release.

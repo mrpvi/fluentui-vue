@@ -66,6 +66,20 @@ describe('FSwitch', () => {
     expect(input.element.checked).toBe(false);
   });
 
+  it('detects kebab-case model-value bindings as controlled', async () => {
+    const wrapper = mount({
+      components: { Switch },
+      data: () => ({ checked: true }),
+      template: '<Switch :model-value="checked" />',
+    });
+    const input = wrapper.get('input');
+
+    expect(input.element.checked).toBe(true);
+    await input.setValue(false);
+    await nextTick();
+    expect(input.element.checked).toBe(true);
+  });
+
   it('does not emit when controlled props change', async () => {
     const wrapper = mount(Switch, { props: { modelValue: false } });
 
@@ -174,6 +188,22 @@ describe('FSwitch', () => {
     expect(input.attributes('type')).toBe('checkbox');
     expect(input.attributes('role')).toBe('switch');
     expect(input.attributes('aria-disabled')).toBeUndefined();
+  });
+
+  it('renders upstream Label required and disabled styling from native control state', () => {
+    const required = mount(Switch, {
+      props: { label: 'Required switch' },
+      attrs: { required: true },
+    });
+    const disabledFocusable = mount(Switch, {
+      props: { label: 'Unavailable switch', disabledFocusable: true },
+    });
+
+    expect(required.get('input').attributes('required')).toBeDefined();
+    expect(required.get('.fui-Switch__label').classes()).toContain('fui-Label');
+    expect(required.get('.fui-Label__required').text()).toBe('*');
+    expect(required.get('.fui-Label__required').attributes('aria-hidden')).toBe('true');
+    expect(disabledFocusable.get('.fui-Switch__label').classes()).toContain('fui-Label--disabled');
   });
 
   it('supports disabled as a native fallthrough prop as well as a declared prop', () => {

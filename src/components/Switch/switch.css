@@ -12,6 +12,10 @@
   flex-direction: column;
 }
 
+.fui-Switch:focus-within {
+  outline: none;
+}
+
 .fui-Switch:focus-within::after {
   position: absolute;
   inset: -2px;
@@ -30,6 +34,7 @@
   height: 100%;
   margin: 0;
   cursor: pointer;
+  outline: none;
   opacity: 0;
 }
 
@@ -248,11 +253,21 @@
   }
 
   .fui-Switch__input:disabled ~ .fui-Switch__indicator,
-  .fui-Switch__input[aria-disabled='true'] ~ .fui-Switch__indicator,
+  .fui-Switch__input[aria-disabled='true'] ~ .fui-Switch__indicator {
+    color: GrayText;
+    background-color: Canvas;
+    border-color: GrayText;
+  }
+
+  .fui-Switch__input:disabled:checked ~ .fui-Switch__indicator,
+  .fui-Switch__input[aria-disabled='true']:checked ~ .fui-Switch__indicator {
+    background-color: Canvas;
+    border-color: GrayText;
+  }
+
   .fui-Switch__input:disabled ~ .fui-Switch__label,
   .fui-Switch__input[aria-disabled='true'] ~ .fui-Switch__label {
     color: GrayText;
-    border-color: GrayText;
   }
 
   .fui-Switch--invalid:not(.fui-Switch--disabled) .fui-Switch__indicator {

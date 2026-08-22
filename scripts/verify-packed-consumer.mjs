@@ -43,6 +43,7 @@ import {
   FPresenceBadge,
   FProgressBar,
   FSpinner,
+  FSwitch,
   FText,
   FTextarea,
   FluentVue,
@@ -60,6 +61,8 @@ import {
   type ProgressBarThickness,
   type SpinnerLabelPosition,
   type SpinnerSize,
+  type SwitchLabelPosition,
+  type SwitchSize,
   type TextareaResize,
 } from '@local/fluent-vue';
 import '@local/fluent-vue/style.css';
@@ -77,6 +80,8 @@ const progressColor: ProgressBarColor = 'success';
 const progressThickness: ProgressBarThickness = 'large';
 const spinnerLabelPosition: SpinnerLabelPosition = 'after';
 const spinnerSize: SpinnerSize = 'large';
+const switchLabelPosition: SwitchLabelPosition = 'before';
+const switchSize: SwitchSize = 'small';
 const theme: FluentTheme = 'light';
 
 createApp({
@@ -146,6 +151,19 @@ createApp({
         indeterminateMotion: false,
         'aria-label': 'Packed indeterminate progress',
       }),
+      h(FSwitch, {
+        defaultChecked: true,
+        label: 'Packed switch',
+        labelPosition: switchLabelPosition,
+        name: 'packed-switch',
+        size: switchSize,
+        value: 'enabled',
+      }),
+      h(
+        FField,
+        { label: 'Packed field switch', required: true },
+        { default: () => h(FSwitch) },
+      ),
       h(FLink, { href: '#docs', inline: true }, () => 'Read documentation'),
       h(FDivider, { appearance: dividerAppearance }, () => 'Review'),
       h(FDivider, { vertical: true, 'aria-label': 'Column boundary' }),

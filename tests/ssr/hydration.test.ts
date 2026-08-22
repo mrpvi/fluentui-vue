@@ -32,6 +32,22 @@ describe('hydration', () => {
     expect(container.querySelector('label[for^="fui-field-"]')).not.toBeNull();
     expect(container.querySelector('input[aria-describedby]')).not.toBeNull();
 
+    const switches = [...container.querySelectorAll<HTMLInputElement>('input[role="switch"]')];
+    expect(switches).toHaveLength(2);
+    expect(switches[0]?.checked).toBe(true);
+    expect(switches[0]?.name).toBe('server-switch');
+    expect(switches[0]?.value).toBe('enabled');
+    expect(container.querySelector('.ssr-switch label')?.getAttribute('for')).toBe(switches[0]?.id);
+    expect(switches[1]?.required).toBe(true);
+    expect(switches[1]?.getAttribute('aria-describedby')).not.toBeNull();
+    expect(container.querySelector('.ssr-field-switch')?.classList.contains('fui-Switch')).toBe(
+      true,
+    );
+
+    switches[0]?.click();
+    await nextTick();
+    expect(switches[0]?.checked).toBe(false);
+
     const dividers = [...container.querySelectorAll<HTMLElement>('[role="separator"]')];
     expect(dividers).toHaveLength(3);
     expect(dividers[0]?.getAttribute('aria-labelledby')).toBeNull();

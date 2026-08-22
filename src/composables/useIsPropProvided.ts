@@ -7,5 +7,11 @@ export function useIsPropProvided(propName: string): boolean {
     throw new Error('useIsPropProvided must be called during component setup.');
   }
 
-  return Object.prototype.hasOwnProperty.call(instance.vnode.props ?? {}, propName);
+  const vnodeProps = instance.vnode.props ?? {};
+  if (Object.prototype.hasOwnProperty.call(vnodeProps, propName)) {
+    return true;
+  }
+
+  const kebabName = propName.replace(/\B([A-Z])/g, '-$1').toLowerCase();
+  return Object.prototype.hasOwnProperty.call(vnodeProps, kebabName);
 }

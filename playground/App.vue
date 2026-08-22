@@ -14,6 +14,7 @@ import {
   FPresenceBadge,
   FProgressBar,
   FSpinner,
+  FSwitch,
   FText,
   FTextarea,
   type CheckboxValue,
@@ -24,6 +25,8 @@ const biography = ref('Vue-native Fluent components.');
 const accepted = ref<CheckboxValue>(false);
 const triState = ref<CheckboxValue>('mixed');
 const dark = ref(false);
+const switchEnabled = ref(false);
+const controlledSwitch = ref(true);
 const imageFixture =
   'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22320%22 height=%22180%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%230f6cbd%22/%3E%3Crect width=%22160%22 height=%2290%22 fill=%22%23479ef5%22/%3E%3Crect x=%22160%22 y=%2290%22 width=%22160%22 height=%2290%22 fill=%22%230e4775%22/%3E%3Ccircle cx=%22160%22 cy=%2290%22 r=%2242%22 fill=%22%23f7c646%22/%3E%3Cpath d=%22M0 180 96 68l58 66 44-46 122 92Z%22 fill=%22%23dff6dd%22 opacity=%22.92%22/%3E%3C/svg%3E';
 const missingImageFixture = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABINVALID';
@@ -48,8 +51,8 @@ function clearUncontrolledAmount(event: MouseEvent) {
         <h1>Native Fluent components for Vue 3</h1>
         <p>
           Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, Image, Badge,
-          Spinner, and ProgressBar components translated from Fluent UI React v9 to Vue props,
-          slots, emits, and semantic HTML.
+          Spinner, ProgressBar, and Switch components translated from Fluent UI React v9 to Vue
+          props, slots, emits, and semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -676,6 +679,72 @@ function clearUncontrolledAmount(event: MouseEvent) {
       </div>
     </section>
 
+    <section id="switch">
+      <h2>Switch</h2>
+      <div class="switch-samples">
+        <div class="switch-group">
+          <h3>Label positions and sizes</h3>
+          <div class="switch-position-grid">
+            <FSwitch
+              v-for="position in ['before', 'above', 'after'] as const"
+              :key="position"
+              :class="`switch-position-${position}`"
+              :label="`${position} label`"
+              :label-position="position"
+              default-checked
+            />
+          </div>
+          <div class="row switch-size-row">
+            <FSwitch class="switch-size-small" size="small" label="Small" />
+            <FSwitch class="switch-size-medium" label="Medium" default-checked />
+          </div>
+        </div>
+
+        <div class="switch-group">
+          <h3>State, disabled behavior, and label wrapping</h3>
+          <div class="switch-state-grid">
+            <FSwitch v-model="switchEnabled" class="switch-uncontrolled" label="Live setting" />
+            <FSwitch
+              class="switch-controlled-rollback"
+              :model-value="controlledSwitch"
+              label="Controlled rollback"
+            />
+            <FSwitch label="Disabled" disabled />
+            <FSwitch label="Focusable disabled" disabled-focusable default-checked />
+            <FSwitch
+              class="switch-long-label"
+              label="This concise demonstration label wraps while the switch track remains aligned with its first line."
+            />
+          </div>
+          <small>
+            Live setting: {{ switchEnabled }} · Controlled value: {{ controlledSwitch }}
+          </small>
+          <FButton size="small" @click="controlledSwitch = !controlledSwitch">
+            Update controlled switch
+          </FButton>
+        </div>
+
+        <form class="switch-form-demo">
+          <FField
+            class="switch-field-demo"
+            label="Enable alerts"
+            hint="This Switch receives its label, required state, and description from Field."
+            required
+          >
+            <FSwitch name="alerts" value="enabled" />
+          </FField>
+          <FSwitch
+            class="switch-resettable"
+            default-checked
+            label="Resettable switch"
+            name="updates"
+            value="enabled"
+          />
+          <FButton type="reset">Reset switch form</FButton>
+        </form>
+      </div>
+    </section>
+
     <section>
       <h2>Button</h2>
       <div class="row">
@@ -885,21 +954,24 @@ section {
 
 .badge-samples,
 .spinner-samples,
-.progress-bar-samples {
+.progress-bar-samples,
+.switch-samples {
   display: grid;
   gap: 1.5rem;
 }
 
 .badge-group,
 .spinner-group,
-.progress-bar-group {
+.progress-bar-group,
+.switch-group {
   display: grid;
   gap: 0.75rem;
 }
 
 .spinner-group h3,
 .badge-group h3,
-.progress-bar-group h3 {
+.progress-bar-group h3,
+.switch-group h3 {
   margin: 0;
   color: var(--fui-color-neutral-foreground-2);
   font-size: var(--fui-font-size-base-300);
@@ -961,6 +1033,38 @@ section {
 
 .progress-bar-field-grid .fui-Field {
   align-content: start;
+}
+
+.switch-position-grid,
+.switch-state-grid {
+  display: grid;
+  align-items: start;
+  gap: 1rem;
+}
+
+.switch-position-grid {
+  grid-template-columns: repeat(3, minmax(10rem, 1fr));
+}
+
+.switch-state-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), max-content));
+}
+
+.switch-size-row {
+  min-height: 3rem;
+}
+
+.switch-long-label {
+  width: min(100%, 20rem);
+}
+
+.switch-form-demo {
+  display: grid;
+  align-items: end;
+  grid-template-columns: minmax(0, 24rem) minmax(12rem, max-content) max-content;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--fui-color-neutral-stroke-1);
 }
 
 .badge-matrix {

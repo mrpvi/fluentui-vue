@@ -39,7 +39,7 @@ Status legend:
 ## Phase 3 — Form controls
 
 14. ✅ **Textarea → `FTextarea`**
-15. ⏳ **Switch → `FSwitch`**
+15. ✅ **Switch → `FSwitch`** — definition-of-done gates complete for `@fluentui/react-switch@9.7.5`
 16. ⏳ **Radio family**
     - `FRadio`
     - `FRadioGroup`
@@ -321,10 +321,9 @@ These components come last because they combine overlays, focus management, navi
 
 The next practical batch is:
 
-1. `FSwitch`
-2. `FRadio`
-3. `FRadioGroup`
-4. `FSelect`
+1. `FRadio`
+2. `FRadioGroup`
+3. `FSelect`
 
 This batch expands the library's basic and form capabilities without first requiring complex overlay or positioning infrastructure.
 
