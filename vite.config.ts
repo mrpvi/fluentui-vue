@@ -36,7 +36,7 @@ export default defineConfig({
   test: {
     environment: 'happy-dom',
     setupFiles: ['./tests/setup.ts'],
-    exclude: ['tests/browser/**', 'node_modules/**', 'dist/**'],
+    exclude: ['tests/browser/**', 'node_modules/**', 'dist/**', '.claude/**'],
     css: true,
   },
 });
