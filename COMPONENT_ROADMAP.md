@@ -22,7 +22,7 @@ Status legend:
 5. ✅ **Label → `FLabel`**
 6. ✅ **Field → `FField`**
 7. ✅ **Link → `FLink`**
-8. ⏳ **Divider → `FDivider`**
+8. ✅ **Divider → `FDivider`**
 9. ❌ **Image → `FImage`**
 10. ❌ **Badge family**
     - `FBadge`
@@ -321,11 +321,10 @@ These components come last because they combine overlays, focus management, navi
 
 The next practical batch is:
 
-1. `FDivider`
-2. `FSwitch`
-3. `FRadio`
-4. `FRadioGroup`
-5. `FSelect`
+1. `FSwitch`
+2. `FRadio`
+3. `FRadioGroup`
+4. `FSelect`
 
 This batch expands the library's basic and form capabilities without first requiring complex overlay or positioning infrastructure.
 
