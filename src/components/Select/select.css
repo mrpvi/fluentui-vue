@@ -1,0 +1,232 @@
+.fui-Select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  max-width: 100%;
+  vertical-align: middle;
+  font-family: var(--fui-font-family-base);
+}
+
+.fui-Select::after {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  height: var(--fui-border-radius-medium);
+  content: '';
+  background-image: linear-gradient(
+    0deg,
+    var(--fui-color-compound-brand-stroke) 0%,
+    var(--fui-color-compound-brand-stroke) 50%,
+    transparent 50%,
+    transparent 100%
+  );
+  border-end-end-radius: var(--fui-border-radius-medium);
+  border-end-start-radius: var(--fui-border-radius-medium);
+  pointer-events: none;
+  transform: scaleX(0);
+  transition-delay: var(--fui-curve-accelerate-mid);
+  transition-duration: var(--fui-duration-ultra-fast);
+  transition-property: transform;
+}
+
+.fui-Select:focus-within::after {
+  transform: scaleX(1);
+  transition-delay: var(--fui-curve-decelerate-mid);
+  transition-duration: var(--fui-duration-normal);
+}
+
+.fui-Select__select {
+  appearance: none;
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+  max-width: 100%;
+  height: 32px;
+  padding-block: 0;
+  padding-inline: calc(var(--fui-spacing-horizontal-m-nudge) + var(--fui-spacing-horizontal-xxs))
+    calc(
+      var(--fui-spacing-horizontal-m-nudge) + 20px + var(--fui-spacing-horizontal-xxs) +
+        var(--fui-spacing-horizontal-xxs)
+    );
+  color: var(--fui-color-neutral-foreground-1);
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-300);
+  font-weight: var(--fui-font-weight-regular);
+  line-height: var(--fui-line-height-base-300);
+  cursor: pointer;
+  background-color: var(--fui-color-neutral-background-1);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible);
+  border-radius: var(--fui-border-radius-medium);
+  box-shadow: none;
+}
+
+.fui-Select__select:focus {
+  outline: 2px solid transparent;
+}
+
+.fui-Select--outline:not(.fui-Select--disabled) .fui-Select__select:hover {
+  border-color: var(--fui-color-neutral-stroke-1-hover);
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible);
+}
+
+.fui-Select--outline:not(.fui-Select--disabled) .fui-Select__select:active {
+  border-color: var(--fui-color-neutral-stroke-1-pressed);
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible);
+}
+
+.fui-Select--underline .fui-Select__select {
+  background-color: var(--fui-color-transparent-background);
+  border-color: transparent;
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible);
+  border-radius: 0;
+}
+
+.fui-Select--underline .fui-Select__select option {
+  background-color: var(--fui-color-neutral-background-1);
+}
+
+.fui-Select--underline::after {
+  border-radius: 0;
+}
+
+.fui-Select--filled-darker .fui-Select__select,
+.fui-Select--filled-lighter .fui-Select__select {
+  border-color: transparent;
+}
+
+.fui-Select--filled-darker .fui-Select__select {
+  background-color: var(--fui-color-neutral-background-3);
+}
+
+.fui-Select--filled-lighter .fui-Select__select {
+  background-color: var(--fui-color-neutral-background-1);
+}
+
+.fui-Select--small .fui-Select__select {
+  height: 24px;
+  padding-inline: calc(var(--fui-spacing-horizontal-s-nudge) + var(--fui-spacing-horizontal-xxs))
+    calc(
+      var(--fui-spacing-horizontal-s-nudge) + 16px + var(--fui-spacing-horizontal-xxs) +
+        var(--fui-spacing-horizontal-xxs)
+    );
+  font-size: var(--fui-font-size-base-200);
+  line-height: var(--fui-line-height-base-200);
+}
+
+.fui-Select--large .fui-Select__select {
+  height: 40px;
+  padding-inline: calc(var(--fui-spacing-horizontal-m) + var(--fui-spacing-horizontal-s-nudge))
+    calc(
+      var(--fui-spacing-horizontal-m) + 24px + var(--fui-spacing-horizontal-s-nudge) +
+        var(--fui-spacing-horizontal-s-nudge)
+    );
+  font-size: var(--fui-font-size-base-400);
+  line-height: var(--fui-line-height-base-400);
+}
+
+.fui-Select__icon {
+  position: absolute;
+  inset-inline-end: var(--fui-spacing-horizontal-m-nudge);
+  display: block;
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  color: var(--fui-color-neutral-stroke-accessible);
+  font-size: 20px;
+  pointer-events: none;
+}
+
+.fui-Select__icon svg {
+  display: block;
+  width: 1em;
+  height: 1em;
+}
+
+.fui-Select--small .fui-Select__icon {
+  inset-inline-end: var(--fui-spacing-horizontal-s-nudge);
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+}
+
+.fui-Select--large .fui-Select__icon {
+  inset-inline-end: var(--fui-spacing-horizontal-m);
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+}
+
+.fui-Select--invalid:not(.fui-Select--disabled) .fui-Select__select:not(:focus),
+.fui-Select--invalid:not(.fui-Select--disabled) .fui-Select__select:hover:not(:focus) {
+  border-color: var(--fui-color-palette-red-border-2);
+}
+
+.fui-Select--invalid.fui-Select--underline:not(.fui-Select--disabled)
+  .fui-Select__select:not(:focus),
+.fui-Select--invalid.fui-Select--underline:not(.fui-Select--disabled)
+  .fui-Select__select:hover:not(:focus) {
+  border-color: transparent;
+  border-bottom-color: var(--fui-color-palette-red-border-2);
+}
+
+.fui-Select--disabled::after {
+  content: none;
+}
+
+.fui-Select--disabled .fui-Select__select,
+.fui-Select__select:disabled {
+  color: var(--fui-color-neutral-foreground-disabled);
+  cursor: not-allowed;
+  background-color: var(--fui-color-transparent-background);
+  border-color: var(--fui-color-neutral-stroke-disabled);
+}
+
+.fui-Select--disabled.fui-Select--underline .fui-Select__select {
+  border-color: transparent;
+  border-bottom-color: var(--fui-color-transparent-stroke-disabled);
+}
+
+.fui-Select--disabled .fui-Select__icon {
+  color: var(--fui-color-neutral-foreground-disabled);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fui-Select::after,
+  .fui-Select:focus-within::after {
+    transition-delay: 0.01ms;
+    transition-duration: 0.01ms;
+  }
+}
+
+@media (forced-colors: active) {
+  .fui-Select__select {
+    color: FieldText;
+    background-color: Field;
+    border-color: FieldText;
+    forced-color-adjust: none;
+  }
+
+  .fui-Select::after {
+    background-image: linear-gradient(0deg, Highlight 0%, Highlight 50%, transparent 50%);
+  }
+
+  .fui-Select__icon {
+    color: FieldText;
+  }
+
+  .fui-Select--invalid:not(.fui-Select--disabled) .fui-Select__select:not(:focus),
+  .fui-Select--invalid:not(.fui-Select--disabled) .fui-Select__select:hover:not(:focus) {
+    border-color: Mark;
+  }
+
+  .fui-Select--disabled .fui-Select__select,
+  .fui-Select__select:disabled,
+  .fui-Select--disabled .fui-Select__icon {
+    color: GrayText;
+    background-color: Field;
+    border-color: GrayText;
+  }
+}

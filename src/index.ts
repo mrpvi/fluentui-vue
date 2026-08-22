@@ -8,6 +8,7 @@ export * from './components/Image';
 export * from './components/PresenceBadge';
 export * from './components/ProgressBar';
 export * from './components/Input';
+export * from './components/Select';
 export * from './components/Label';
 export * from './components/Link';
 export * from './components/Spinner';
