@@ -1,0 +1,10 @@
+.fui-CounterBadge--dot {
+  width: 6px;
+  min-width: auto;
+  height: 6px;
+  padding: 0;
+}
+
+.fui-CounterBadge--hidden {
+  display: none;
+}

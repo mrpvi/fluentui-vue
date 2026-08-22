@@ -1,0 +1,101 @@
+.fui-PresenceBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 1px;
+  border-radius: var(--fui-border-radius-circular);
+  background-color: var(--fui-color-neutral-background-1);
+  background-clip: content-box;
+}
+
+.fui-PresenceBadge__icon {
+  display: flex;
+  margin: -1px;
+}
+
+.fui-PresenceBadge__svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.fui-PresenceBadge--busy {
+  color: var(--fui-color-palette-red-background-3);
+}
+
+.fui-PresenceBadge--away {
+  color: var(--fui-color-palette-marigold-background-3);
+}
+
+.fui-PresenceBadge--available {
+  color: var(--fui-color-palette-light-green-foreground-3);
+}
+
+.fui-PresenceBadge--offline,
+.fui-PresenceBadge--unknown {
+  color: var(--fui-color-neutral-foreground-3);
+}
+
+.fui-PresenceBadge--out-of-office {
+  color: var(--fui-color-neutral-background-1);
+}
+
+.fui-PresenceBadge--out-of-office.fui-PresenceBadge--available {
+  color: var(--fui-color-palette-light-green-foreground-3);
+}
+
+.fui-PresenceBadge--out-of-office.fui-PresenceBadge--busy {
+  color: var(--fui-color-palette-red-background-3);
+}
+
+.fui-PresenceBadge--out-of-office.fui-PresenceBadge--away,
+.fui-PresenceBadge--out-of-office.fui-PresenceBadge--offline,
+.fui-PresenceBadge--out-of-office.fui-PresenceBadge--out-of-office {
+  color: var(--fui-color-palette-berry-foreground-3);
+}
+
+.fui-PresenceBadge--out-of-office.fui-PresenceBadge--unknown {
+  color: var(--fui-color-neutral-foreground-3);
+}
+
+.fui-PresenceBadge--size-tiny {
+  width: 6px;
+  aspect-ratio: 1;
+  background-clip: unset;
+}
+
+.fui-PresenceBadge--size-tiny .fui-PresenceBadge__svg {
+  width: 6px;
+  height: 6px;
+}
+
+.fui-PresenceBadge--size-extra-small .fui-PresenceBadge__svg {
+  width: 10px;
+  height: 10px;
+}
+
+.fui-PresenceBadge--size-small .fui-PresenceBadge__svg {
+  width: 12px;
+  height: 12px;
+}
+
+.fui-PresenceBadge--size-large {
+  width: 20px;
+  aspect-ratio: 1;
+}
+
+.fui-PresenceBadge--size-large .fui-PresenceBadge__svg {
+  width: 20px;
+  height: 20px;
+}
+
+.fui-PresenceBadge--size-extra-large {
+  width: 28px;
+  aspect-ratio: 1;
+}
+
+.fui-PresenceBadge--size-extra-large .fui-PresenceBadge__svg {
+  width: 28px;
+  height: 28px;
+}
