@@ -20,6 +20,11 @@ describe('SSR rendering', () => {
     expect(firstRender).toContain('fui-Image--shape-rounded');
     expect(firstRender).not.toContain('fui-Image--fit-fill');
     expect(firstRender).toContain('aria-label="Contentless boundary"');
+    expect(firstRender).toContain('fui-Badge--tint');
+    expect(firstRender).toContain('fui-Badge--success');
+    expect(firstRender).toContain('99+');
+    expect(firstRender).toContain('aria-label="away out of office"');
+    expect(firstRender).toContain('fui-PresenceBadge--size-large');
     expect(firstRender).toMatch(
       /role="separator" aria-orientation="horizontal" aria-labelledby="(fui-divider-[^"]+__content)"><div id="\1" class="fui-Divider__wrapper"><!--\[-->Server section<!--\]--><\/div>/,
     );

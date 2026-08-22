@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import {
+  FBadge,
   FButton,
   FCheckbox,
+  FCounterBadge,
   FDivider,
   FField,
   FImage,
   FInput,
   FLabel,
   FLink,
+  FPresenceBadge,
   FText,
   FTextarea,
   type CheckboxValue,
@@ -42,9 +45,9 @@ function clearUncontrolledAmount(event: MouseEvent) {
         <p class="eyebrow">@local/fluent-vue · 0.1.0</p>
         <h1>Native Fluent components for Vue 3</h1>
         <p>
-          Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, and Image
-          components translated from Fluent UI React v9 to Vue props, slots, emits, and semantic
-          HTML.
+          Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, Image, and
+          Badge components translated from Fluent UI React v9 to Vue props, slots, emits, and
+          semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -332,6 +335,200 @@ function clearUncontrolledAmount(event: MouseEvent) {
       </div>
     </section>
 
+    <section id="badge">
+      <h2>Badge</h2>
+      <div class="badge-samples">
+        <div class="badge-group">
+          <h3>Appearances</h3>
+          <div class="row badge-matrix">
+            <FBadge appearance="filled">Filled</FBadge>
+            <FBadge appearance="ghost" color="danger">Ghost</FBadge>
+            <FBadge appearance="outline" color="success">Outline</FBadge>
+            <FBadge appearance="tint" color="warning">Tint</FBadge>
+          </div>
+        </div>
+
+        <div class="badge-group">
+          <h3>Colors</h3>
+          <div class="row badge-matrix">
+            <FBadge
+              v-for="color in [
+                'brand',
+                'danger',
+                'important',
+                'informative',
+                'severe',
+                'subtle',
+                'success',
+                'warning',
+              ] as const"
+              :key="color"
+              :color="color"
+            >
+              {{ color }}
+            </FBadge>
+          </div>
+        </div>
+
+        <div class="badge-group">
+          <h3>Sizes and shapes</h3>
+          <div class="row badge-matrix badge-size-matrix">
+            <FBadge
+              v-for="size in [
+                'tiny',
+                'extra-small',
+                'small',
+                'medium',
+                'large',
+                'extra-large',
+              ] as const"
+              :key="size"
+              :class="`badge-size-${size}`"
+              :size="size"
+            >
+              {{ size === 'tiny' || size === 'extra-small' ? '' : size }}
+            </FBadge>
+          </div>
+          <div class="row badge-matrix">
+            <FBadge shape="circular">Circular</FBadge>
+            <FBadge shape="rounded" color="informative">Rounded</FBadge>
+            <FBadge shape="square" color="important">Square</FBadge>
+          </div>
+        </div>
+
+        <div class="badge-group">
+          <h3>Icon order</h3>
+          <div class="row badge-matrix">
+            <FBadge class="badge-icon-before" appearance="tint">
+              <template #icon>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 20 20">
+                  <path
+                    d="M10 2 12.2 7l5.3.5-4 3.5 1.2 5.2-4.7-2.7-4.7 2.7L6.5 11l-4-3.5L7.8 7 10 2Z"
+                  />
+                </svg>
+              </template>
+              Before
+            </FBadge>
+            <FBadge class="badge-icon-after" appearance="tint" icon-position="after">
+              <template #icon>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 20 20">
+                  <path
+                    d="M10 2 12.2 7l5.3.5-4 3.5 1.2 5.2-4.7-2.7-4.7 2.7L6.5 11l-4-3.5L7.8 7 10 2Z"
+                  />
+                </svg>
+              </template>
+              After
+            </FBadge>
+            <FBadge class="badge-icon-only" role="img" aria-label="Favorite" size="large">
+              <template #icon>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 20 20">
+                  <path
+                    d="M10 2 12.2 7l5.3.5-4 3.5 1.2 5.2-4.7-2.7-4.7 2.7L6.5 11l-4-3.5L7.8 7 10 2Z"
+                  />
+                </svg>
+              </template>
+            </FBadge>
+          </div>
+        </div>
+
+        <div class="badge-group">
+          <h3>Counter badges</h3>
+          <div class="row badge-matrix">
+            <FCounterBadge
+              class="counter-hidden-zero"
+              role="img"
+              aria-label="No unread notifications"
+            />
+            <FCounterBadge
+              class="counter-show-zero"
+              show-zero
+              role="img"
+              aria-label="Zero unread notifications"
+            />
+            <FCounterBadge :count="42" role="img" aria-label="42 unread notifications" />
+            <FCounterBadge
+              class="counter-overflow"
+              :count="120"
+              :overflow-count="99"
+              role="img"
+              aria-label="More than 99 unread notifications"
+            />
+            <FCounterBadge class="counter-dot" dot role="img" aria-label="New notification" />
+            <FCounterBadge appearance="ghost" color="danger" :count="7" shape="rounded" />
+            <FCounterBadge class="counter-custom" :count="12">Custom</FCounterBadge>
+          </div>
+        </div>
+
+        <div class="badge-group">
+          <h3>Presence badges</h3>
+          <div class="row badge-matrix presence-status-matrix">
+            <FPresenceBadge
+              v-for="status in [
+                'available',
+                'away',
+                'busy',
+                'do-not-disturb',
+                'blocked',
+                'offline',
+                'out-of-office',
+                'unknown',
+              ] as const"
+              :key="status"
+              :class="`presence-${status}`"
+              :status="status"
+            />
+          </div>
+          <div class="row badge-matrix presence-size-matrix">
+            <FPresenceBadge
+              v-for="size in [
+                'tiny',
+                'extra-small',
+                'small',
+                'medium',
+                'large',
+                'extra-large',
+              ] as const"
+              :key="size"
+              :class="`presence-size-${size}`"
+              :size="size"
+              status="available"
+              :aria-label="`available ${size}`"
+            />
+            <FPresenceBadge status="away" out-of-office />
+            <FPresenceBadge status="do-not-disturb" out-of-office />
+            <FPresenceBadge
+              class="presence-custom-label"
+              status="available"
+              aria-label="Available for pair programming"
+            />
+            <FPresenceBadge
+              class="presence-custom-icon"
+              status="available"
+              aria-label="Custom online status"
+            >
+              <template #icon>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 16 16">
+                  <rect x="1" y="1" width="14" height="14" rx="7" fill="currentColor" />
+                  <path d="m4.5 8 2 2 5-5" fill="none" stroke="white" stroke-width="1.5" />
+                </svg>
+              </template>
+            </FPresenceBadge>
+          </div>
+        </div>
+
+        <div
+          class="badge-group badge-consumer-overrides"
+          style="--fui-color-brand-background: rgb(92, 45, 145)"
+        >
+          <h3>Consumer token overrides</h3>
+          <div class="row badge-matrix">
+            <FBadge class="badge-token-override">Override</FBadge>
+            <FCounterBadge class="counter-token-override" :count="3" />
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section>
       <h2>Button</h2>
       <div class="row">
@@ -537,6 +734,42 @@ section {
 .textarea-samples {
   display: grid;
   gap: 1rem;
+}
+
+.badge-samples {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.badge-group {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.badge-group h3 {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-300);
+}
+
+.badge-matrix {
+  margin-bottom: 0;
+}
+
+.badge-size-matrix {
+  min-height: 2rem;
+}
+
+.badge-matrix svg {
+  width: 1em;
+  height: 1em;
+  fill: currentcolor;
+}
+
+.badge-consumer-overrides {
+  padding: 1rem;
+  background: var(--fui-color-neutral-background-2);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
 }
 
 .divider-horizontal-samples {

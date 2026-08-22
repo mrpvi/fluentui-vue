@@ -11,6 +11,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 - `FCheckbox` — adapted from `@fluentui/react-checkbox` 9.6.4
 - `FDivider` — adapted from `@fluentui/react-divider` 9.7.4
 - `FImage` — adapted from `@fluentui/react-image` 9.4.4
+- `FBadge`, `FCounterBadge`, and `FPresenceBadge` — adapted from `@fluentui/react-badge` 9.5.5
 - `FText` — adapted from `@fluentui/react-text` 9.6.19
 - `FLabel` — adapted from `@fluentui/react-label` 9.4.4
 - `FField` — adapted from `@fluentui/react-field` 9.5.4
@@ -116,14 +117,17 @@ Components can be imported without installing the global plugin:
 ```vue
 <script setup lang="ts">
 import {
+  FBadge,
   FButton,
   FCheckbox,
+  FCounterBadge,
   FDivider,
   FField,
   FImage,
   FInput,
   FLabel,
   FLink,
+  FPresenceBadge,
   FText,
   FTextarea,
   type CheckboxValue,
@@ -145,6 +149,9 @@ const accepted = ref<CheckboxValue>(false);
   <FCheckbox v-model="accepted" label="Accept terms" />
   <FDivider>Review</FDivider>
   <FImage src="/summary.png" alt="Account summary chart" shape="rounded" />
+  <FBadge appearance="tint" color="success">Verified</FBadge>
+  <FCounterBadge :count="120" role="img" aria-label="120 unread notifications" />
+  <FPresenceBadge status="available" aria-label="Available for support" />
   <FLink inline href="/privacy">Read the privacy policy</FLink>
   <FButton appearance="primary" :disabled="!accepted">Continue</FButton>
 </template>
@@ -401,6 +408,47 @@ Every meaningful image must have concise alternative text that conveys its purpo
 
 React root slot replacement and Fluent's internal custom-style hook are intentionally omitted. Vue uses a fixed semantic image root, fallthrough attributes, and application-controlled CSS classes/styles instead.
 
+## Badge family
+
+`FBadge`, `FCounterBadge`, and `FPresenceBadge` are non-interactive visual descriptors adapted from the released `@fluentui/react-badge@9.5.5` package.
+
+```vue
+<FBadge appearance="tint" color="success" shape="rounded">Verified</FBadge>
+
+<FCounterBadge
+  :count="120"
+  :overflow-count="99"
+  role="img"
+  aria-label="More than 99 notifications"
+/>
+<FCounterBadge dot role="img" aria-label="New notification" />
+
+<FPresenceBadge status="available" aria-label="Available for pair programming" />
+<FPresenceBadge status="away" out-of-office />
+```
+
+`FBadge` key props:
+
+- `appearance`: `filled | ghost | outline | tint`
+- `color`: `brand | danger | important | informative | severe | subtle | success | warning`
+- `shape`: `circular | rounded | square`
+- `size`: `tiny | extra-small | small | medium | large | extra-large`
+- `iconPosition`: `before | after`
+
+`FCounterBadge` restricts appearances to `filled | ghost`, colors to `brand | danger | important | informative`, and shapes to `circular | rounded`. `count` defaults to `0`; zero is hidden unless `showZero` is true. Values above `overflowCount` (default `99`) render as `N+`. `dot` renders a 6px indicator and suppresses generated numeric content. Supplying the default slot replaces generated count text, including for a zero or dot badge.
+
+`FPresenceBadge` supports `available`, `away`, `busy`, `do-not-disturb`, `blocked`, `offline`, `out-of-office`, and `unknown`, plus `outOfOffice` combinations and all six badge sizes. Its root defaults to `role="img"` with a status-derived `aria-label`; consumers may override either attribute when a more useful contextual label is available. The fallback status SVG is decorative and nonfocusable.
+
+All badge roots are fixed `<div>` elements, forward top-level `class`, `style`, native, ARIA, data attributes, and listeners, expose the native `element`, and define no component events. They are not interactive and do not enter the tab order unless a consumer explicitly adds focusability, which is normally inappropriate; put a badge beside or inside the relevant interactive control instead. Counter values and dots communicate information visually, so provide equivalent surrounding text when possible. If a standalone `FBadge` or `FCounterBadge` needs an `aria-label` or `aria-labelledby`, also supply an appropriate semantic role such as `role="img"`; ARIA naming is not valid on a generic unroled `<div>`.
+
+Slots:
+
+- `FBadge` and `FCounterBadge` use the default slot for visible content and `icon` for optional visual content.
+- `FPresenceBadge` uses `icon` to replace the package fallback status SVG.
+- Consumer-provided icon slots are **not automatically `aria-hidden`** because arbitrary slot content may carry intended semantics. If the root or visible text already supplies the accessible name, mark the slotted SVG or icon `aria-hidden="true"` and `focusable="false"`. If the icon itself must contribute to the name, give it appropriate accessible semantics and avoid duplicating the root label. Never place interactive controls in these icon slots.
+
+The private fallback presence SVG path data is adapted from `@fluentui/react-icons@2.0.245`; it is bundled as internal data rather than exposing React or a runtime icon dependency. React root/icon slot objects are intentionally translated to fixed Vue roots, typed Vue slots, and fallthrough attributes.
+
 ## Input
 
 ```vue
@@ -515,8 +563,8 @@ All theme values are CSS custom properties and can be overridden by applications
 
 ## Intentional scope limits
 
-- This is an early ten-component parity slice, not a complete Fluent UI Vue library.
+- This is an early thirteen-component parity slice, not a complete Fluent UI Vue library.
 - `FField` integrates the current Input, Checkbox, and Textarea controls; future form controls will adopt the same internal context contract as they are ported.
-- The default checkbox marks are package-owned SVG/CSS primitives rather than copied Fluent icon assets.
+- The default checkbox marks are package-owned SVG/CSS primitives. Presence fallback SVG paths are the only privately bundled Fluent System Icons adaptation and are covered by the third-party notice.
 - Griffel and React-specific Tabster bindings are not included.
 - Visual parity is based on the reviewed upstream versions and should be regression-tested before public release.

@@ -30,34 +30,43 @@ try {
     resolve(consumer, 'src/main.ts'),
     `import { createApp, h, ref } from 'vue';
 import {
+  FBadge,
   FButton,
   FCheckbox,
+  FCounterBadge,
   FDivider,
   FField,
   FImage,
   FInput,
   FLabel,
   FLink,
+  FPresenceBadge,
   FText,
   FTextarea,
   FluentVue,
   packageVersion,
+  type BadgeAppearance,
+  type BadgeColor,
   type ButtonAppearance,
   type CheckboxValue,
   type DividerAppearance,
   type FluentTheme,
   type ImageFit,
   type ImageShape,
+  type PresenceBadgeStatus,
   type TextareaResize,
 } from '@local/fluent-vue';
 import '@local/fluent-vue/style.css';
 
 const accepted = ref<CheckboxValue>('mixed');
+const badgeAppearance: BadgeAppearance = 'tint';
+const badgeColor: BadgeColor = 'success';
 const appearance: ButtonAppearance = 'primary';
 const resize: TextareaResize = 'vertical';
 const dividerAppearance: DividerAppearance = 'brand';
 const imageFit: ImageFit = 'cover';
 const imageShape: ImageShape = 'rounded';
+const presenceStatus: PresenceBadgeStatus = 'available';
 const theme: FluentTheme = 'light';
 
 createApp({
@@ -94,6 +103,14 @@ createApp({
         'onUpdate:modelValue': value => (accepted.value = value),
         label: 'Accept terms',
       }),
+      h(FBadge, { appearance: badgeAppearance, color: badgeColor }, () => 'Packed badge'),
+      h(FCounterBadge, {
+        count: 120,
+        overflowCount: 99,
+        role: 'img',
+        'aria-label': 'Packed notifications',
+      }),
+      h(FPresenceBadge, { status: presenceStatus, size: 'large' }),
       h(FLink, { href: '#docs', inline: true }, () => 'Read documentation'),
       h(FDivider, { appearance: dividerAppearance }, () => 'Review'),
       h(FDivider, { vertical: true, 'aria-label': 'Column boundary' }),

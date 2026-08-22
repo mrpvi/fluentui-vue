@@ -1,13 +1,16 @@
 import { defineComponent, h } from 'vue';
 import {
+  FBadge,
   FButton,
   FCheckbox,
+  FCounterBadge,
   FDivider,
   FField,
   FImage,
   FInput,
   FLabel,
   FLink,
+  FPresenceBadge,
   FText,
   FTextarea,
 } from '../../src';
@@ -46,6 +49,14 @@ export const SsrFixture = defineComponent({
           width: 64,
           height: 48,
         }),
+        h(FBadge, { appearance: 'tint', color: 'success', shape: 'rounded' }, () => 'Server badge'),
+        h(FCounterBadge, {
+          count: 120,
+          overflowCount: 99,
+          role: 'img',
+          'aria-label': 'Server notifications',
+        }),
+        h(FPresenceBadge, { status: 'away', outOfOffice: true, size: 'large' }),
         h(FLink, { href: '#details' }, () => 'View details'),
         h(FButton, { appearance: 'primary' }, () => 'Continue'),
       ]);

@@ -396,6 +396,141 @@ test('Image preserves deterministic native failure behavior', async ({ page }) =
   });
 });
 
+test('Badge family preserves dimensions, icon order, tokens, and nonfocusability', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#badge');
+  const expectedBadgeSizes = {
+    tiny: 6,
+    'extra-small': 10,
+    small: 16,
+    medium: 20,
+    large: 24,
+    'extra-large': 32,
+  } as const;
+
+  for (const [size, dimension] of Object.entries(expectedBadgeSizes)) {
+    const badge = section.locator(`.badge-size-${size}`);
+    const box = await badge.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.height).toBe(dimension);
+    expect(box!.width).toBeGreaterThanOrEqual(dimension);
+  }
+
+  const before = section.locator('.badge-icon-before');
+  const after = section.locator('.badge-icon-after');
+  await expect(before.locator('.fui-Badge__icon')).toHaveCSS('font-size', '12px');
+  await expect(section.locator('.badge-icon-only .fui-Badge__icon')).toHaveCSS('font-size', '16px');
+  expect(
+    await before.evaluate((element) =>
+      element.firstElementChild?.classList.contains('fui-Badge__icon'),
+    ),
+  ).toBe(true);
+  expect(
+    await after.evaluate((element) =>
+      element.lastElementChild?.classList.contains('fui-Badge__icon'),
+    ),
+  ).toBe(true);
+
+  const focusableRoots = await section
+    .locator('.fui-Badge, .fui-PresenceBadge')
+    .evaluateAll(
+      (roots) =>
+        roots.filter((root) => root.matches('a, button, input, select, textarea, [tabindex]'))
+          .length,
+    );
+  expect(focusableRoots).toBe(0);
+
+  const tokenOverride = section.locator('.badge-token-override');
+  await expect(tokenOverride).toHaveCSS('background-color', 'rgb(92, 45, 145)');
+  await expect(section.locator('.counter-token-override')).toHaveCSS(
+    'background-color',
+    'rgb(92, 45, 145)',
+  );
+
+  const brandBeforeDark = await section
+    .getByText('Filled', { exact: true })
+    .evaluate((element) => ({
+      background: getComputedStyle(element).backgroundColor,
+      color: getComputedStyle(element).color,
+    }));
+  await page.getByRole('button', { name: 'Use dark theme' }).click();
+  const brandAfterDark = await section.getByText('Filled', { exact: true }).evaluate((element) => ({
+    background: getComputedStyle(element).backgroundColor,
+    color: getComputedStyle(element).color,
+  }));
+  expect(brandAfterDark.background).not.toBe(brandBeforeDark.background);
+  expect(brandAfterDark.color).not.toBe('rgba(0, 0, 0, 0)');
+});
+
+test('CounterBadge preserves zero, overflow, dot, and custom-content behavior', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#badge');
+  const hiddenZero = section.locator('.counter-hidden-zero');
+  const showZero = section.locator('.counter-show-zero');
+  const dot = section.locator('.counter-dot');
+
+  await expect(hiddenZero).toBeHidden();
+  await expect(hiddenZero).toHaveCSS('display', 'none');
+  await expect(showZero).toHaveText('0');
+  await expect(showZero).toBeVisible();
+  await expect(section.locator('.counter-overflow')).toHaveText('99+');
+  await expect(section.locator('.counter-custom')).toHaveText('Custom');
+
+  const dotBox = await dot.boundingBox();
+  expect(dotBox).not.toBeNull();
+  expect(dotBox!.width).toBe(6);
+  expect(dotBox!.height).toBe(6);
+  await expect(dot).toHaveText('');
+});
+
+test('PresenceBadge preserves status labels, OOO, sizes, and icon accessibility', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#badge');
+  await expect(section.getByRole('img', { name: 'available', exact: true })).toBeVisible();
+  await expect(section.getByRole('img', { name: 'away out of office' })).toBeVisible();
+  await expect(section.getByRole('img', { name: 'do not disturb out of office' })).toBeVisible();
+  await expect(section.getByRole('img', { name: 'Available for pair programming' })).toBeVisible();
+  await expect(section.getByRole('img', { name: 'Custom online status' })).toBeVisible();
+
+  const expectedPresenceSizes = {
+    tiny: 6,
+    'extra-small': 10,
+    small: 12,
+    medium: 16,
+    large: 20,
+    'extra-large': 28,
+  } as const;
+
+  for (const [size, dimension] of Object.entries(expectedPresenceSizes)) {
+    const presence = section.locator(`.presence-size-${size}`);
+    const svg = presence.locator('svg');
+    const box = await svg.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.width).toBe(dimension);
+    expect(box!.height).toBe(dimension);
+    await expect(svg).toHaveAttribute('aria-hidden', 'true');
+    await expect(svg).toHaveAttribute('focusable', 'false');
+  }
+
+  const customIcon = section.locator('.presence-custom-icon svg');
+  await expect(customIcon).toHaveAttribute('aria-hidden', 'true');
+  await expect(customIcon).toHaveAttribute('focusable', 'false');
+  await expect(section.locator('.presence-custom-label')).toHaveAttribute('role', 'img');
+  await expect(section.locator('.presence-custom-label')).toHaveAttribute(
+    'aria-label',
+    'Available for pair programming',
+  );
+});
+
 test('native form reset restores uncontrolled Input and Checkbox defaults', async ({ page }) => {
   await page.goto('/');
 
@@ -463,11 +598,15 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   const warningIcon = page
     .getByText('Your storage is almost full.')
     .locator('.fui-Field__validationMessageIcon');
+  const outlinedBadge = page.locator('#badge').getByText('Outline', { exact: true });
+  const filledBadge = page.locator('#badge').getByText('Filled', { exact: true });
 
   await expect(indicator).toHaveCSS('border-color', 'rgb(0, 0, 0)');
   await expect(invalidInput).toHaveCSS('forced-color-adjust', 'none');
   await expect(invalidTextarea).toHaveCSS('forced-color-adjust', 'none');
   await expect(primary).toHaveCSS('forced-color-adjust', 'none');
+  await expect(outlinedBadge).toHaveCSS('border-color', 'rgb(0, 0, 0)');
+  await expect(filledBadge).toHaveCSS('border-color', 'rgb(0, 0, 0)');
 
   const grayText = await page.evaluate(() => {
     const probe = document.createElement('span');
