@@ -1089,6 +1089,192 @@ test('Skeleton wave follows RTL and reduced motion stops both animations', async
   expect(rtlWave.background).not.toBe(ltrWave.background);
 });
 
+test('Slider keyboard behavior, controlled updates, and disabled state use native range semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const volume = page.getByRole('slider', { name: 'Volume' });
+  await expect(volume).toHaveValue('40');
+  await volume.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(volume).toHaveValue('45');
+  await page.keyboard.press('ArrowLeft');
+  await expect(volume).toHaveValue('40');
+  await page.keyboard.press('End');
+  await expect(volume).toHaveValue('100');
+  await page.keyboard.press('Home');
+  await expect(volume).toHaveValue('0');
+  await page.keyboard.press('PageUp');
+  expect(Number(await volume.inputValue())).toBeGreaterThan(0);
+  await page.keyboard.press('PageDown');
+  expect(Number(await volume.inputValue())).toBeGreaterThanOrEqual(0);
+
+  const controlled = page.getByRole('slider', { name: 'Brightness' });
+  await expect(controlled).toHaveValue('35');
+  await controlled.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(controlled).toHaveValue('36');
+  await page.getByRole('button', { name: 'Set to 80' }).click();
+  await expect(controlled).toHaveValue('80');
+
+  const rollback = page.getByRole('slider', { name: 'Controlled rollback slider' });
+  await expect(rollback).toHaveValue('35');
+  await rollback.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(rollback).toHaveValue('35');
+
+  const disabled = page.getByRole('slider', { name: 'Disabled slider' });
+  await expect(disabled).toBeDisabled();
+  await disabled.focus();
+  await expect(disabled).not.toBeFocused();
+  await expect(disabled).toHaveValue('45');
+});
+
+test('Slider preserves min, max, step, decimal, form data, and reset behavior', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const decimal = page.getByRole('slider', { name: 'Decimal slider' });
+  await expect(decimal).toHaveAttribute('min', '-0.5');
+  await expect(decimal).toHaveAttribute('max', '0.5');
+  await expect(decimal).toHaveAttribute('step', '0.1');
+  await expect(decimal).toHaveValue('0.3');
+  await decimal.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(decimal).toHaveValue('0.4');
+
+  const resetForm = page.locator('.slider-reset-demo');
+  const resettable = resetForm.getByRole('slider', { name: 'Resettable level' });
+  await expect(resettable).toHaveValue('30');
+  await resettable.focus();
+  await page.keyboard.press('End');
+  await expect(resettable).toHaveValue('100');
+  await resetForm.getByRole('button', { name: 'Reset slider form' }).click();
+  await expect(resettable).toHaveValue('30');
+  expect(
+    await resetForm.evaluate((form) => Object.fromEntries(new FormData(form as HTMLFormElement))),
+  ).toEqual({ level: '30' });
+});
+
+test('Slider Field integration exposes label, description, invalid state, and inherited size', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const volumeField = page
+    .locator('#slider')
+    .getByText('Volume', { exact: true })
+    .locator('xpath=..');
+  const volume = volumeField.getByRole('slider', { name: 'Volume' });
+  const volumeLabel = volumeField.locator('label');
+  const volumeHint = volumeField.locator('.fui-Field__hint');
+  const volumeHintId = await volumeHint.getAttribute('id');
+  const volumeId = await volume.getAttribute('id');
+  expect(volumeHintId).not.toBeNull();
+  expect(volumeId).not.toBeNull();
+  await expect(volumeLabel).toHaveAttribute('for', volumeId!);
+  await expect(volume).toHaveAttribute('aria-describedby', volumeHintId!);
+  await expect(volume.locator('xpath=..')).toHaveClass(/fui-Slider--small/);
+
+  const invalidField = page.locator('.slider-field-invalid');
+  const invalid = invalidField.getByRole('slider', { name: 'Brightness' });
+  const validationId = await invalidField
+    .locator('.fui-Field__validationMessage')
+    .getAttribute('id');
+  const hintId = await invalidField.locator('.fui-Field__hint').getAttribute('id');
+  expect(validationId).not.toBeNull();
+  expect(hintId).not.toBeNull();
+  await expect(invalid).toHaveAttribute('aria-invalid', 'true');
+  await expect(invalid).toHaveAttribute('aria-describedby', `${validationId} ${hintId}`);
+  await expect(invalid.locator('xpath=..')).toHaveClass(/fui-Slider--invalid/);
+  await expect(invalid.locator('xpath=..')).toHaveClass(/fui-Slider--small/);
+});
+
+test('Slider horizontal, vertical, progress, and RTL geometry match the Fluent layout', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const horizontal = page.getByRole('slider', { name: 'Horizontal geometry slider' });
+  const horizontalRoot = horizontal.locator('xpath=..');
+  const horizontalRail = horizontalRoot.locator('.fui-Slider__rail');
+  const horizontalThumb = horizontalRoot.locator('.fui-Slider__thumb');
+  const horizontalRootBox = await horizontalRoot.boundingBox();
+  const horizontalRailBox = await horizontalRail.boundingBox();
+  const horizontalThumbBox = await horizontalThumb.boundingBox();
+  expect(horizontalRootBox).not.toBeNull();
+  expect(horizontalRailBox).not.toBeNull();
+  expect(horizontalThumbBox).not.toBeNull();
+  expect(horizontalRootBox!.width).toBe(256);
+  expect(horizontalRailBox!.width).toBe(236);
+  expect(horizontalRailBox!.height).toBe(4);
+  expect(horizontalThumbBox!.width).toBe(20);
+  expect(horizontalThumbBox!.height).toBe(20);
+  expect(horizontalThumbBox!.x + horizontalThumbBox!.width / 2).toBeCloseTo(
+    horizontalRailBox!.x + horizontalRailBox!.width * 0.25 + horizontalThumbBox!.width * 0.125,
+    0,
+  );
+  await expect(horizontalRoot).toHaveCSS('--fui-Slider--progress', '25%');
+  await expect(horizontalRoot).toHaveCSS('--fui-Slider--steps-percent', '25%');
+  expect(
+    await horizontalRail.evaluate((element) => getComputedStyle(element).backgroundImage),
+  ).toContain('25%');
+
+  const vertical = page.getByRole('slider', { name: 'Vertical geometry slider' });
+  const verticalRoot = vertical.locator('xpath=..');
+  const verticalRail = verticalRoot.locator('.fui-Slider__rail');
+  const verticalThumb = verticalRoot.locator('.fui-Slider__thumb');
+  const verticalRootBox = await verticalRoot.boundingBox();
+  const verticalRailBox = await verticalRail.boundingBox();
+  const verticalThumbBox = await verticalThumb.boundingBox();
+  expect(verticalRootBox).not.toBeNull();
+  expect(verticalRailBox).not.toBeNull();
+  expect(verticalThumbBox).not.toBeNull();
+  expect(verticalRootBox!.height).toBe(160);
+  expect(verticalRailBox!.height).toBe(140);
+  expect(verticalRailBox!.width).toBe(4);
+  expect(verticalThumbBox!.y + verticalThumbBox!.height / 2).toBeCloseTo(
+    verticalRailBox!.y + verticalRailBox!.height * 0.75 + verticalThumbBox!.height * 0.375,
+    0,
+  );
+  await expect(vertical).toHaveAttribute('orient', 'vertical');
+  await expect(verticalRoot).toHaveCSS('--fui-Slider--direction', '0deg');
+
+  const rtl = page.getByRole('slider', { name: 'RTL slider' });
+  const rtlRoot = rtl.locator('xpath=..');
+  const rtlRail = rtlRoot.locator('.fui-Slider__rail');
+  const rtlThumb = rtlRoot.locator('.fui-Slider__thumb');
+  const rtlRootBox = await rtlRoot.boundingBox();
+  const rtlRailBox = await rtlRail.boundingBox();
+  const rtlThumbBox = await rtlThumb.boundingBox();
+  expect(rtlRootBox).not.toBeNull();
+  expect(rtlRailBox).not.toBeNull();
+  expect(rtlThumbBox).not.toBeNull();
+  expect(rtlThumbBox!.x + rtlThumbBox!.width / 2).toBeCloseTo(
+    rtlRailBox!.x + rtlRailBox!.width * 0.75 - rtlThumbBox!.width * 0.125,
+    0,
+  );
+  await expect(rtlRoot).toHaveCSS('--fui-Slider--direction', '270deg');
+});
+
+test('Slider reduced motion removes authored transition durations', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Reduced-motion computed-style coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const slider = page.getByRole('slider', { name: 'Medium slider' }).locator('xpath=..');
+  const rail = slider.locator('.fui-Slider__rail');
+  const thumb = slider.locator('.fui-Slider__thumb');
+  await expect(slider).toHaveCSS('transition-duration', /^(?:1e-05|0\.00001)s$/);
+  await expect(rail).toHaveCSS('transition-duration', /^(?:1e-05|0\.00001)s$/);
+  await expect(thumb).toHaveCSS('transition-duration', /^(?:1e-05|0\.00001)s$/);
+});
+
 test('native form reset restores uncontrolled Input and Checkbox defaults', async ({ page }) => {
   await page.goto('/');
 
@@ -1168,6 +1354,12 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   const progressTrack = page.locator('#progress-bar .progress-bar-rounded-medium');
   const progressBar = progressTrack.locator('.fui-ProgressBar__bar');
   const skeletonWave = page.locator('#skeleton .skeleton-wave-opaque .skeleton-line-long');
+  const sliderRoot = page.getByRole('slider', { name: 'Medium slider' }).locator('xpath=..');
+  const sliderRail = sliderRoot.locator('.fui-Slider__rail');
+  const sliderThumb = sliderRoot.locator('.fui-Slider__thumb');
+  const disabledSliderRoot = page
+    .getByRole('slider', { name: 'Disabled slider' })
+    .locator('xpath=..');
 
   await expect(indicator).toHaveCSS('border-color', 'rgb(0, 0, 0)');
   await expect(invalidInput).toHaveCSS('forced-color-adjust', 'none');
@@ -1176,6 +1368,26 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   await expect(outlinedBadge).toHaveCSS('border-color', 'rgb(0, 0, 0)');
   await expect(filledBadge).toHaveCSS('border-color', 'rgb(0, 0, 0)');
   await expect(spinnerIndicator).toHaveCSS('forced-color-adjust', 'none');
+  await expect(sliderRail).toHaveCSS('forced-color-adjust', 'none');
+  await expect(sliderThumb).toHaveCSS('forced-color-adjust', 'none');
+  const sliderSystemColors = await sliderRoot.evaluate((element) => ({
+    progress: getComputedStyle(element).getPropertyValue('--fui-Slider__progress--color').trim(),
+    rail: getComputedStyle(element).getPropertyValue('--fui-Slider__rail--color').trim(),
+    thumb: getComputedStyle(element).getPropertyValue('--fui-Slider__thumb--color').trim(),
+  }));
+  expect(sliderSystemColors.progress).toBe('Highlight');
+  expect(sliderSystemColors.rail).toBe('CanvasText');
+  expect(sliderSystemColors.thumb).toBe('Highlight');
+  const disabledSliderSystemColors = await disabledSliderRoot.evaluate((element) => ({
+    progress: getComputedStyle(element).getPropertyValue('--fui-Slider__progress--color').trim(),
+    rail: getComputedStyle(element).getPropertyValue('--fui-Slider__rail--color').trim(),
+    thumb: getComputedStyle(element).getPropertyValue('--fui-Slider__thumb--color').trim(),
+  }));
+  expect(disabledSliderSystemColors).toEqual({
+    progress: 'GrayText',
+    rail: 'GrayText',
+    thumb: 'GrayText',
+  });
   const spinnerSystemColors = await spinnerIndicator.evaluate((element) => ({
     background: getComputedStyle(element).backgroundColor,
     color: getComputedStyle(element).color,

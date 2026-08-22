@@ -1,4 +1,5 @@
 .fui-Slider {
+  --fui-Slider--direction: 90deg;
   --fui-Slider__inner-thumb--radius: 6px;
   --fui-Slider__progress--color: var(--fui-color-compound-brand-background);
   --fui-Slider__rail--color: var(--fui-color-neutral-stroke-accessible);
@@ -28,6 +29,7 @@
 }
 
 .fui-Slider--vertical {
+  --fui-Slider--direction: 0deg;
   min-height: 120px;
   grid-template-rows: 1fr calc(100% - var(--fui-Slider__thumb--size)) 1fr;
   grid-template-columns: 1fr var(--fui-Slider__thumb--size) 1fr;

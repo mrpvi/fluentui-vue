@@ -15,6 +15,7 @@ import {
   FProgressBar,
   FSkeleton,
   FSkeletonItem,
+  FSlider,
   FSpinner,
   FSwitch,
   FText,
@@ -29,6 +30,8 @@ const triState = ref<CheckboxValue>('mixed');
 const dark = ref(false);
 const switchEnabled = ref(false);
 const controlledSwitch = ref(true);
+const sliderValue = ref(40);
+const sliderControlled = ref(35);
 const imageFixture =
   'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22320%22 height=%22180%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%230f6cbd%22/%3E%3Crect width=%22160%22 height=%2290%22 fill=%22%23479ef5%22/%3E%3Crect x=%22160%22 y=%2290%22 width=%22160%22 height=%2290%22 fill=%22%230e4775%22/%3E%3Ccircle cx=%22160%22 cy=%2290%22 r=%2242%22 fill=%22%23f7c646%22/%3E%3Cpath d=%22M0 180 96 68l58 66 44-46 122 92Z%22 fill=%22%23dff6dd%22 opacity=%22.92%22/%3E%3C/svg%3E';
 const missingImageFixture = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABINVALID';
@@ -53,8 +56,8 @@ function clearUncontrolledAmount(event: MouseEvent) {
         <h1>Native Fluent components for Vue 3</h1>
         <p>
           Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, Image, Badge,
-          Spinner, ProgressBar, Switch, and Skeleton components translated from Fluent UI React v9
-          to Vue props, slots, emits, and semantic HTML.
+          Spinner, ProgressBar, Switch, Skeleton, and Slider components translated from Fluent UI
+          React v9 to Vue props, slots, emits, and semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -848,6 +851,110 @@ function clearUncontrolledAmount(event: MouseEvent) {
       </div>
     </section>
 
+    <section id="slider">
+      <h2>Slider</h2>
+      <div class="slider-samples">
+        <div class="slider-group">
+          <h3>Values and sizes</h3>
+          <FField label="Volume" hint="Use arrow keys for single steps." size="small">
+            <FSlider
+              v-model="sliderValue"
+              class="slider-volume"
+              name="volume"
+              :min="0"
+              :max="100"
+              :step="5"
+            />
+          </FField>
+          <small>Volume: {{ sliderValue }}</small>
+          <FSlider class="slider-medium" aria-label="Medium slider" :default-value="65" />
+          <FSlider
+            class="slider-small"
+            aria-label="Small slider"
+            :default-value="65"
+            size="small"
+          />
+          <FSlider
+            class="slider-decimal"
+            aria-label="Decimal slider"
+            :default-value="0.3"
+            :min="-0.5"
+            :max="0.5"
+            :step="0.1"
+          />
+        </div>
+
+        <div class="slider-group">
+          <h3>Controlled, invalid, and disabled</h3>
+          <FField
+            class="slider-field-invalid"
+            label="Brightness"
+            hint="Controlled by Vue state."
+            validation-message="Brightness needs review."
+            size="small"
+          >
+            <FSlider v-model="sliderControlled" class="slider-controlled" />
+          </FField>
+          <div class="row slider-actions">
+            <FButton type="button" size="small" @click="sliderControlled = 20">Set to 20</FButton>
+            <FButton type="button" size="small" @click="sliderControlled = 80">Set to 80</FButton>
+            <small>Controlled: {{ sliderControlled }}</small>
+          </div>
+          <FSlider
+            class="slider-controlled-rollback"
+            aria-label="Controlled rollback slider"
+            :model-value="35"
+          />
+          <FSlider
+            class="slider-disabled"
+            aria-label="Disabled slider"
+            :default-value="45"
+            disabled
+          />
+        </div>
+
+        <div class="slider-group slider-orientation-group">
+          <h3>Orientation and RTL</h3>
+          <div class="slider-orientation-row">
+            <FSlider
+              class="slider-horizontal-geometry"
+              aria-label="Horizontal geometry slider"
+              :default-value="25"
+              :min="0"
+              :max="100"
+              :step="25"
+            />
+            <FSlider
+              class="slider-vertical-geometry"
+              aria-label="Vertical geometry slider"
+              :default-value="25"
+              :min="0"
+              :max="100"
+              :step="25"
+              vertical
+            />
+            <div class="slider-rtl-surface" dir="rtl">
+              <FSlider
+                class="slider-rtl"
+                aria-label="RTL slider"
+                :default-value="25"
+                :min="0"
+                :max="100"
+                :step="25"
+              />
+            </div>
+          </div>
+        </div>
+
+        <form class="slider-reset-demo">
+          <FField label="Resettable level" hint="Submitted as the native level field.">
+            <FSlider class="slider-resettable" name="level" :default-value="30" />
+          </FField>
+          <FButton type="reset">Reset slider form</FButton>
+        </form>
+      </div>
+    </section>
+
     <section>
       <h2>Button</h2>
       <div class="row">
@@ -1078,6 +1185,74 @@ section {
 .progress-bar-group h3,
 .switch-group h3,
 .skeleton-group h3 {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-300);
+}
+
+.slider-samples,
+.spinner-samples {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.badge-group,
+.slider-group,
+.spinner-group {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.slider-group {
+  width: min(100%, 40rem);
+}
+
+.slider-group > .fui-Slider,
+.slider-group > .fui-Field,
+.slider-reset-demo > .fui-Field {
+  width: 100%;
+}
+
+.slider-actions {
+  margin-bottom: 0;
+}
+
+.slider-orientation-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+  min-height: 12rem;
+}
+
+.slider-horizontal-geometry,
+.slider-rtl {
+  width: 16rem;
+}
+
+.slider-vertical-geometry {
+  height: 10rem;
+}
+
+.slider-rtl-surface {
+  padding: 1rem;
+  background: var(--fui-color-neutral-background-2);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+}
+
+.slider-reset-demo {
+  display: grid;
+  align-items: end;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: 1rem;
+  width: min(100%, 40rem);
+  padding: 1rem;
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+}
+
+.spinner-group h3,
+.slider-group h3,
+.badge-group h3 {
   margin: 0;
   color: var(--fui-color-neutral-foreground-2);
   font-size: var(--fui-font-size-base-300);

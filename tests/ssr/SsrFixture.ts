@@ -14,6 +14,7 @@ import {
   FProgressBar,
   FSkeleton,
   FSkeletonItem,
+  FSlider,
   FSpinner,
   FSwitch,
   FText,
@@ -112,6 +113,24 @@ export const SsrFixture = defineComponent({
             validationMessage: 'Server progress warning',
           },
           { default: () => h(FProgressBar, { class: 'ssr-field-progress', value: 0.75 }) },
+        ),
+        h(FSlider, {
+          class: 'ssr-slider',
+          'aria-label': 'Server volume',
+          defaultValue: 0.3,
+          min: -0.5,
+          max: 0.5,
+          step: 0.1,
+        }),
+        h(
+          FField,
+          {
+            label: 'Server slider field',
+            hint: 'Server slider hint',
+            validationMessage: 'Server slider invalid',
+            size: 'small',
+          },
+          { default: () => h(FSlider, { class: 'ssr-field-slider', vertical: true }) },
         ),
         h(FSwitch, {
           class: 'ssr-switch',

@@ -44,7 +44,7 @@ Status legend:
     - `FRadio`
     - `FRadioGroup`
 17. ⏳ **Select → `FSelect`**
-18. ❌ **Slider → `FSlider`**
+18. ✅ **Slider → `FSlider`** — definition-of-done gates complete for `@fluentui/react-slider@9.6.5`
 19. ❌ **SpinButton → `FSpinButton`**
 20. ❌ **SearchBox → `FSearchBox`**
 21. ❌ **Rating family**

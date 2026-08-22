@@ -16,6 +16,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 - `FProgressBar` — adapted from `@fluentui/react-progress` 9.5.4
 - `FSwitch` — adapted from `@fluentui/react-switch` 9.7.5
 - `FSkeleton` and `FSkeletonItem` — adapted from `@fluentui/react-skeleton` 9.7.5
+- `FSlider` — adapted from `@fluentui/react-slider` 9.6.5
 - `FText` — adapted from `@fluentui/react-text` 9.6.19
 - `FLabel` — adapted from `@fluentui/react-label` 9.4.4
 - `FField` — adapted from `@fluentui/react-field` 9.5.4
@@ -135,6 +136,7 @@ import {
   FProgressBar,
   FSkeleton,
   FSkeletonItem,
+  FSlider,
   FSpinner,
   FSwitch,
   FText,
@@ -168,6 +170,9 @@ const accepted = ref<CheckboxValue>(false);
     <FSkeletonItem shape="circle" :size="48" />
     <FSkeletonItem style="width: 65%" />
   </FSkeleton>
+  <FField label="Volume">
+    <FSlider :default-value="40" />
+  </FField>
   <FLink inline href="/privacy">Read the privacy policy</FLink>
   <FButton appearance="primary" :disabled="!accepted">Continue</FButton>
 </template>
@@ -262,7 +267,7 @@ Key props:
 - `size`: `small | medium | large`
 - `required`
 
-`FInput`, `FCheckbox`, `FTextarea`, and `FSwitch` automatically consume the enclosing Field context. Field generates the control ID, connects `label for` to that ID, merges validation and hint IDs into `aria-describedby`, applies native `required`, and defaults `aria-invalid="true"` for errors. Explicit control attributes remain authoritative; for example, an explicit `aria-invalid="false"` or `:required="false"` is preserved.
+`FInput`, `FCheckbox`, `FTextarea`, `FSwitch`, and `FSlider` automatically consume the enclosing Field context. Field generates the control ID, connects `label for` to that ID, merges validation and hint IDs into `aria-describedby`, applies native `required`, and defaults `aria-invalid="true"` for errors. Explicit control attributes remain authoritative; for example, an explicit `aria-invalid="false"` or `:required="false"` is preserved.
 
 Error and warning messages use `role="alert"`. Success and `none` messages do not. Validation icons are decorative and hidden from assistive technology. The required asterisk is also visual; native required semantics are applied separately to supported controls.
 
@@ -601,6 +606,43 @@ Rectangle items are 100% wide and use the selected size as height; set a class o
 
 React root slot objects and context hooks are translated to fixed Vue `div`/`span` roots, a default slot, and a private typed Vue injection context. The released package's deprecated width field reaches a React intrinsic-prop path without a reliable visual result; Vue intentionally retains its documented width behavior through inline CSS for compatibility.
 
+## Slider
+
+`FSlider` is a native range input with Fluent rail and thumb visuals, adapted from the released `@fluentui/react-slider@9.6.5` package. Use it for selecting one approximate numeric value from three or more meaningful choices.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { FField, FSlider } from '@local/fluent-vue';
+
+const volume = ref(40);
+</script>
+
+<template>
+  <FField label="Volume" hint="Use arrow keys for single steps.">
+    <FSlider v-model="volume" name="volume" :min="0" :max="100" :step="5" />
+  </FField>
+  <FSlider aria-label="Vertical level" :default-value="6" :min="0" :max="10" :step="2" vertical />
+</template>
+```
+
+Key props:
+
+- `modelValue` for controlled Vue usage
+- `defaultValue` for uncontrolled usage
+- `min`, `max`, and positive `step` numeric constraints
+- `size`: `small | medium`
+- `vertical` for a bottom-to-top vertical control
+- `disabled`
+
+The defaults are `min=0`, `max=100`, `step=1`, size `medium`, horizontal orientation, and initial value `0`. Initial and updated values are clamped to the range and normalized to the closest step relative to `min`, including decimal steps. Controlledness is determined by whether `modelValue` was supplied; an explicitly bound `undefined` is controlled and renders the normalized fallback value. User input emits `update:modelValue` and typed native `input`/`change` events with `{ value }`. A controlled slider immediately restores its prop value until its parent accepts the update. Changes to `defaultValue` after mount do not change either the live uncontrolled value or the native reset default.
+
+The native `<input type="range">` is the primary control and retains browser keyboard, pointer, focus, form submission, reset, disabled, and accessibility behavior. Arrow keys move by one step, Page Up/Down use the browser's larger range increment, and Home/End select the bounds. Top-level `class` and `style` apply to the visual root; native, form, ARIA, data, and event-listener attributes are routed to the input. The input exposes its native `element` and a `focus()` method. Supply an accessible name with `FField`, `FLabel`, `aria-label`, or `aria-labelledby`; `aria-valuetext` is forwarded for application-specific value descriptions.
+
+Horizontal progress follows document direction and reverses in RTL. Vertical progress runs from bottom to top and sets Firefox's non-standard `orient="vertical"` attribute in addition to the CSS writing-mode/fallback behavior. Small and medium thumb/rail geometry, discrete step markers, disabled styling, invalid Field styling, forced-color system colors, and reduced-motion-safe styling follow the reviewed upstream release. The rail and thumb are decorative and hidden from assistive technology.
+
+React's root/input/rail/thumb slot objects are intentionally translated to a fixed Vue root and native input with fallthrough attributes; visual-part replacement is not exposed because it could break control geometry or semantics. The upstream component has no marks or two-thumb range-selection API. Vue adds native `input` and `change` emits and deterministic native form-reset synchronization. Do not use Slider for binary choices, fewer than three values, or ranges where exact typed entry is required.
+
 ## Input
 
 ```vue
@@ -715,8 +757,8 @@ All theme values are CSS custom properties and can be overridden by applications
 
 ## Intentional scope limits
 
-- This is an early fifteen-component parity slice, not a complete Fluent UI Vue library.
-- `FField` integrates the current Input, Checkbox, Textarea, Switch, and ProgressBar controls; future form controls will adopt the same internal context contract as they are ported.
+- This is an early sixteen-component parity slice, not a complete Fluent UI Vue library.
+- `FField` integrates the current Input, Checkbox, Textarea, Switch, ProgressBar, and Slider controls; future form controls will adopt the same internal context contract as they are ported.
 - The default checkbox marks are package-owned SVG/CSS primitives. Presence fallback SVG paths are the only privately bundled Fluent System Icons adaptation and are covered by the third-party notice.
 - Griffel and React-specific Tabster bindings are not included.
 - Visual parity is based on the reviewed upstream versions and should be regression-tested before public release.

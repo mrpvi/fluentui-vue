@@ -44,6 +44,7 @@ import {
   FProgressBar,
   FSkeleton,
   FSkeletonItem,
+  FSlider,
   FSpinner,
   FSwitch,
   FText,
@@ -63,6 +64,7 @@ import {
   type ProgressBarThickness,
   type SkeletonAnimation,
   type SkeletonSize,
+  type SliderSize,
   type SpinnerLabelPosition,
   type SpinnerSize,
   type SwitchLabelPosition,
@@ -84,6 +86,7 @@ const progressColor: ProgressBarColor = 'success';
 const progressThickness: ProgressBarThickness = 'large';
 const skeletonAnimation: SkeletonAnimation = 'pulse';
 const skeletonSize: SkeletonSize = 48;
+const sliderSize: SliderSize = 'small';
 const spinnerLabelPosition: SpinnerLabelPosition = 'after';
 const spinnerSize: SpinnerSize = 'large';
 const switchLabelPosition: SwitchLabelPosition = 'before';
@@ -132,6 +135,19 @@ createApp({
         'aria-label': 'Packed notifications',
       }),
       h(FPresenceBadge, { status: presenceStatus, size: 'large' }),
+      h(FSlider, {
+        'aria-label': 'Packed slider',
+        defaultValue: 0.3,
+        min: -0.5,
+        max: 0.5,
+        step: 0.1,
+        size: sliderSize,
+      }),
+      h(FSlider, {
+        'aria-label': 'Packed vertical slider',
+        defaultValue: 25,
+        vertical: true,
+      }),
       h(FSpinner, {
         as: 'span',
         label: 'Packed spinner',

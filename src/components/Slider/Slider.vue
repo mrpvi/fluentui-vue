@@ -30,6 +30,7 @@ const input = ref<HTMLInputElement | null>(null);
 const generatedId = useId();
 const initialValue = props.defaultValue ?? 0;
 const internalValue = ref(initialValue);
+const initialNormalizedValue = normalizeValue(initialValue);
 const isControlled = useIsPropProvided('modelValue');
 const isSizeProvided = useIsPropProvided('size');
 let form: HTMLFormElement | null = null;
@@ -110,7 +111,6 @@ const rootClasses = computed(() => [
 ]);
 const rootStyle = computed(() => [
   {
-    '--fui-Slider--direction': props.vertical ? '0deg' : '90deg',
     '--fui-Slider--progress': `${progress.value}%`,
     ...(stepPercent.value ? { '--fui-Slider--steps-percent': stepPercent.value } : {}),
   },
@@ -153,7 +153,7 @@ function handleFormReset() {
       return;
     }
 
-    internalValue.value = normalizeValue(initialValue);
+    internalValue.value = initialNormalizedValue;
     syncNativeValue();
   });
 }
@@ -163,7 +163,7 @@ onMounted(() => {
     return;
   }
 
-  input.value.defaultValue = String(normalizeValue(initialValue));
+  input.value.defaultValue = String(initialNormalizedValue);
   syncNativeValue();
   form = input.value.form;
   form?.addEventListener('reset', handleFormReset);

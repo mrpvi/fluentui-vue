@@ -50,6 +50,12 @@ describe('SSR rendering', () => {
     );
     expect(firstRender).toContain('fui-ProgressBar__bar--warning');
     expect(firstRender).toMatch(
+      /class="fui-Slider fui-Slider--medium fui-Slider--horizontal ssr-slider" style="--fui-Slider--progress:80%;--fui-Slider--steps-percent:10%;"><input aria-label="Server volume" id="fui-slider-[^"]+" class="fui-Slider__input" type="range" min="-0.5" max="0.5" step="0.1" value="0.3">/,
+    );
+    expect(firstRender).toMatch(
+      /class="fui-Slider fui-Slider--small fui-Slider--vertical fui-Slider--invalid ssr-field-slider" style="--fui-Slider--progress:0%;--fui-Slider--steps-percent:1%;"><input aria-describedby="[^"]+" aria-invalid="true" id="(fui-field-[^"]+)" class="fui-Slider__input" type="range" min="0" max="100" step="1" orient="vertical" value="0">/,
+    );
+    expect(firstRender).toMatch(
       /aria-label="Server skeleton" class="fui-Skeleton ssr-skeleton" style="" role="progressbar" aria-busy="true"><!--\[--><span class="fui-SkeletonItem fui-SkeletonItem--pulse fui-SkeletonItem--translucent fui-SkeletonItem--size-24 fui-SkeletonItem--circle ssr-skeleton-item" style=""><!--\[--><!--\]--><\/span><!--\]--><\/div>/,
     );
     expect(firstRender).toMatch(

@@ -61,6 +61,18 @@ describe('hydration', () => {
       expect(divider.getAttribute('aria-labelledby')).toBe(content?.id);
     }
 
+    const sliders = [...container.querySelectorAll<HTMLInputElement>('input[type="range"]')];
+    expect(sliders).toHaveLength(2);
+    expect(sliders[0]?.valueAsNumber).toBe(0.3);
+    expect(sliders[0]?.getAttribute('aria-label')).toBe('Server volume');
+    expect(sliders[0]?.closest('.fui-Slider')?.getAttribute('style')).toContain(
+      '--fui-Slider--progress:80%',
+    );
+    expect(sliders[1]?.getAttribute('orient')).toBe('vertical');
+    expect(sliders[1]?.getAttribute('aria-invalid')).toBe('true');
+    expect(sliders[1]?.getAttribute('aria-describedby')?.split(' ')).toHaveLength(2);
+    expect(container.querySelector('label[for="' + sliders[1]?.id + '"]')).not.toBeNull();
+
     const spinners = [...container.querySelectorAll<HTMLElement>('.fui-Spinner')];
     expect(spinners).toHaveLength(2);
     expect(spinners[0]?.querySelector('.fui-Spinner__spinner')).not.toBeNull();

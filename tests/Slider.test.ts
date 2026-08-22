@@ -62,6 +62,20 @@ describe('FSlider', () => {
     expect(input.element.valueAsNumber).toBe(70);
   });
 
+  it('recognizes kebab-case model-value as controlled', async () => {
+    const wrapper = mount(Slider, {
+      attrs: { 'model-value': 35 },
+    });
+    const input = wrapper.get('input');
+
+    expect(input.element.valueAsNumber).toBe(35);
+    input.element.value = '50';
+    await input.trigger('input');
+
+    expect(wrapper.emitted('update:modelValue')).toEqual([[50]]);
+    expect(input.element.valueAsNumber).toBe(35);
+  });
+
   it('treats explicitly bound undefined modelValue as controlled', async () => {
     const wrapper = mount(Slider, {
       props: { modelValue: undefined, defaultValue: 40 },
@@ -76,15 +90,29 @@ describe('FSlider', () => {
     expect(input.element.valueAsNumber).toBe(0);
   });
 
-  it('initializes defaultValue once', async () => {
-    const wrapper = mount(Slider, { props: { defaultValue: 20 } });
+  it('initializes defaultValue and its reset value once', async () => {
+    vi.useFakeTimers();
+    const form = document.createElement('form');
+    document.body.append(form);
+    const wrapper = mount(Slider, {
+      attachTo: form,
+      props: { defaultValue: 23, min: 0, max: 100, step: 5 },
+    });
     const input = wrapper.get('input');
 
+    expect(input.element.valueAsNumber).toBe(25);
     input.element.value = '60';
     await input.trigger('input');
     await wrapper.setProps({ defaultValue: 10 });
-
     expect(input.element.valueAsNumber).toBe(60);
+
+    form.reset();
+    await vi.runAllTimersAsync();
+    await nextTick();
+
+    expect(input.element.valueAsNumber).toBe(25);
+    vi.useRealTimers();
+    form.remove();
   });
 
   it('emits native input and change events exactly once with typed data', async () => {
@@ -210,7 +238,7 @@ describe('FSlider', () => {
       ]),
     );
     expect(horizontal.get('input').attributes('dir')).toBe('rtl');
-    expect(horizontal.attributes('style')).toContain('--fui-Slider--direction: 90deg');
+    expect(horizontal.attributes('style')).not.toContain('--fui-Slider--direction');
     expect(vertical.classes()).toEqual(
       expect.arrayContaining([
         'fui-Slider--medium',
@@ -220,7 +248,7 @@ describe('FSlider', () => {
     );
     expect(vertical.get('input').attributes('orient')).toBe('vertical');
     expect(vertical.get('input').attributes('disabled')).toBeDefined();
-    expect(vertical.attributes('style')).toContain('--fui-Slider--direction: 0deg');
+    expect(vertical.attributes('style')).not.toContain('--fui-Slider--direction');
   });
 
   it('uses native form data and excludes disabled controls', async () => {
