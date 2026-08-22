@@ -17,6 +17,7 @@ export * from './components/Skeleton';
 export * from './components/SkeletonItem';
 export * from './components/Slider';
 export * from './components/Spinner';
+export * from './components/SpinButton';
 export * from './components/Switch';
 export * from './components/Text';
 export * from './components/Textarea';

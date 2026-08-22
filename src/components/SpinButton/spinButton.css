@@ -1,0 +1,309 @@
+.fui-SpinButton {
+  position: relative;
+  isolation: isolate;
+  display: inline-grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) 24px;
+  column-gap: var(--fui-spacing-horizontal-xs);
+  box-sizing: border-box;
+  min-width: 128px;
+  min-height: 32px;
+  padding-inline-start: var(--fui-spacing-horizontal-m-nudge);
+  vertical-align: middle;
+  color: var(--fui-color-neutral-foreground-1);
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-300);
+  font-weight: var(--fui-font-weight-regular);
+  line-height: var(--fui-line-height-base-300);
+  background-color: var(--fui-color-neutral-background-1);
+  border-radius: var(--fui-border-radius-medium);
+}
+
+.fui-SpinButton::before {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  box-sizing: border-box;
+  pointer-events: none;
+  content: '';
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible);
+  border-radius: var(--fui-border-radius-medium);
+}
+
+.fui-SpinButton::after {
+  position: absolute;
+  z-index: 20;
+  inset-inline: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  height: max(2px, var(--fui-border-radius-medium));
+  pointer-events: none;
+  content: '';
+  border-bottom: 2px solid var(--fui-color-compound-brand-stroke);
+  border-end-end-radius: var(--fui-border-radius-medium);
+  border-end-start-radius: var(--fui-border-radius-medium);
+  clip-path: inset(calc(100% - 2px) 0 0 0);
+  transform: scaleX(0);
+  transition-delay: var(--fui-curve-accelerate-mid);
+  transition-duration: var(--fui-duration-ultra-fast);
+  transition-property: transform;
+}
+
+.fui-SpinButton:focus-within {
+  outline: 2px solid transparent;
+}
+
+.fui-SpinButton:focus-within::after {
+  transform: scaleX(1);
+  transition-delay: var(--fui-curve-decelerate-mid);
+  transition-duration: var(--fui-duration-normal);
+}
+
+.fui-SpinButton:focus-within:active::after {
+  border-bottom-color: var(--fui-color-compound-brand-stroke-pressed);
+}
+
+.fui-SpinButton--outline:not(.fui-SpinButton--disabled):hover::before {
+  border-color: var(--fui-color-neutral-stroke-1-hover);
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible-hover);
+}
+
+.fui-SpinButton--outline:not(.fui-SpinButton--disabled):active::before,
+.fui-SpinButton--outline:not(.fui-SpinButton--disabled):focus-within::before {
+  border-color: var(--fui-color-neutral-stroke-1-pressed);
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible-pressed);
+}
+
+.fui-SpinButton--underline::before {
+  border-block-start-width: 0;
+  border-inline-width: 0;
+  border-radius: 0;
+}
+
+.fui-SpinButton--underline::after {
+  border-radius: 0;
+}
+
+.fui-SpinButton--underline:not(.fui-SpinButton--disabled):hover::before {
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible-hover);
+}
+
+.fui-SpinButton--underline:not(.fui-SpinButton--disabled):active::before,
+.fui-SpinButton--underline:not(.fui-SpinButton--disabled):focus-within::before {
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible-pressed);
+}
+
+.fui-SpinButton--filled-darker,
+.fui-SpinButton--filled-lighter {
+  background-color: var(--fui-color-neutral-background-1);
+}
+
+.fui-SpinButton--filled-darker {
+  background-color: var(--fui-color-neutral-background-3);
+}
+
+.fui-SpinButton--filled-darker::before,
+.fui-SpinButton--filled-lighter::before {
+  border-color: var(--fui-color-transparent-stroke);
+}
+
+.fui-SpinButton--filled-darker:not(.fui-SpinButton--disabled):hover::before,
+.fui-SpinButton--filled-darker:not(.fui-SpinButton--disabled):focus-within::before,
+.fui-SpinButton--filled-lighter:not(.fui-SpinButton--disabled):hover::before,
+.fui-SpinButton--filled-lighter:not(.fui-SpinButton--disabled):focus-within::before {
+  border-color: var(--fui-color-transparent-stroke-interactive);
+}
+
+.fui-SpinButton--small {
+  min-height: 24px;
+  padding-inline-start: var(--fui-spacing-horizontal-s);
+  font-size: var(--fui-font-size-base-200);
+  line-height: var(--fui-line-height-base-200);
+}
+
+.fui-SpinButton__input {
+  grid-row: 1 / 3;
+  grid-column: 1 / 2;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  color: var(--fui-color-neutral-foreground-1);
+  font: inherit;
+  background-color: transparent;
+  border: 0;
+  outline: none;
+}
+
+.fui-SpinButton__input::placeholder {
+  color: var(--fui-color-neutral-foreground-4);
+  opacity: 1;
+}
+
+.fui-SpinButton__incrementButton,
+.fui-SpinButton__decrementButton {
+  position: absolute;
+  inset-inline-end: 0;
+  display: inline-flex;
+  grid-column: 2;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 24px;
+  height: 16px;
+  padding: 0 5px;
+  color: var(--fui-color-neutral-foreground-3);
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+}
+
+.fui-SpinButton__incrementButton {
+  top: 0;
+  grid-row: 1;
+  padding-block: 4px 1px;
+  border-start-end-radius: var(--fui-border-radius-medium);
+}
+
+.fui-SpinButton__decrementButton {
+  bottom: 0;
+  grid-row: 2;
+  padding-block: 1px 4px;
+  border-end-end-radius: var(--fui-border-radius-medium);
+}
+
+.fui-SpinButton--small .fui-SpinButton__incrementButton,
+.fui-SpinButton--small .fui-SpinButton__decrementButton {
+  height: 12px;
+}
+
+.fui-SpinButton--small .fui-SpinButton__incrementButton {
+  padding: 3px 6px 0 4px;
+}
+
+.fui-SpinButton--small .fui-SpinButton__decrementButton {
+  padding: 0 6px 3px 4px;
+}
+
+.fui-SpinButton__incrementButton svg,
+.fui-SpinButton__decrementButton svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.fui-SpinButton__incrementButton:enabled:hover,
+.fui-SpinButton__decrementButton:enabled:hover {
+  color: var(--fui-color-neutral-foreground-3-hover);
+  cursor: pointer;
+  background-color: var(--fui-color-subtle-background-hover);
+}
+
+.fui-SpinButton__incrementButton:enabled:active,
+.fui-SpinButton__decrementButton:enabled:active,
+.fui-SpinButton__button--active {
+  color: var(--fui-color-neutral-foreground-3-pressed);
+  background-color: var(--fui-color-subtle-background-pressed);
+}
+
+.fui-SpinButton--filled-darker .fui-SpinButton__incrementButton:enabled:hover,
+.fui-SpinButton--filled-darker .fui-SpinButton__decrementButton:enabled:hover {
+  background-color: var(--fui-color-neutral-background-3-hover);
+}
+
+.fui-SpinButton--filled-darker .fui-SpinButton__incrementButton:enabled:active,
+.fui-SpinButton--filled-darker .fui-SpinButton__decrementButton:enabled:active,
+.fui-SpinButton--filled-darker .fui-SpinButton__button--active {
+  background-color: var(--fui-color-neutral-background-3-pressed);
+}
+
+.fui-SpinButton--filled-lighter .fui-SpinButton__incrementButton:enabled:hover,
+.fui-SpinButton--filled-lighter .fui-SpinButton__decrementButton:enabled:hover {
+  background-color: var(--fui-color-neutral-background-1-hover);
+}
+
+.fui-SpinButton--filled-lighter .fui-SpinButton__incrementButton:enabled:active,
+.fui-SpinButton--filled-lighter .fui-SpinButton__decrementButton:enabled:active,
+.fui-SpinButton--filled-lighter .fui-SpinButton__button--active {
+  background-color: var(--fui-color-neutral-background-1-pressed);
+}
+
+.fui-SpinButton--invalid:not(:focus-within)::before,
+.fui-SpinButton--invalid:hover:not(:focus-within)::before {
+  border-color: var(--fui-color-palette-red-border-2);
+}
+
+.fui-SpinButton--disabled {
+  cursor: not-allowed;
+  background-color: var(--fui-color-transparent-background);
+}
+
+.fui-SpinButton--disabled::before {
+  border-color: var(--fui-color-neutral-stroke-disabled);
+}
+
+.fui-SpinButton--disabled::after {
+  content: none;
+}
+
+.fui-SpinButton__input:disabled,
+.fui-SpinButton__incrementButton:disabled,
+.fui-SpinButton__decrementButton:disabled {
+  color: var(--fui-color-neutral-foreground-disabled);
+  cursor: not-allowed;
+}
+
+.fui-SpinButton__input:disabled::placeholder {
+  color: var(--fui-color-neutral-foreground-disabled);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fui-SpinButton::after,
+  .fui-SpinButton:focus-within::after {
+    transition-delay: 0.01ms;
+    transition-duration: 0.01ms;
+  }
+}
+
+@media (forced-colors: active) {
+  .fui-SpinButton {
+    color: FieldText;
+    background-color: Field;
+    forced-color-adjust: none;
+  }
+
+  .fui-SpinButton::before {
+    border-color: FieldText;
+  }
+
+  .fui-SpinButton::after {
+    border-bottom-color: Highlight;
+  }
+
+  .fui-SpinButton:focus-within {
+    outline-color: Highlight;
+  }
+
+  .fui-SpinButton--invalid:not(:focus-within)::before,
+  .fui-SpinButton--invalid:hover:not(:focus-within)::before {
+    border-color: Mark;
+  }
+
+  .fui-SpinButton__input,
+  .fui-SpinButton__incrementButton,
+  .fui-SpinButton__decrementButton {
+    color: FieldText;
+  }
+
+  .fui-SpinButton--disabled::before {
+    border-color: GrayText;
+  }
+
+  .fui-SpinButton__input:disabled,
+  .fui-SpinButton__incrementButton:disabled,
+  .fui-SpinButton__decrementButton:disabled {
+    color: GrayText;
+  }
+}

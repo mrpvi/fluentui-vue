@@ -18,6 +18,7 @@ import { FSkeleton } from './components/Skeleton';
 import { FSkeletonItem } from './components/SkeletonItem';
 import { FSlider } from './components/Slider';
 import { FSpinner } from './components/Spinner';
+import { FSpinButton } from './components/SpinButton';
 import { FSwitch } from './components/Switch';
 import { FText } from './components/Text';
 import { FTextarea } from './components/Textarea';
@@ -43,6 +44,7 @@ export const FluentVue: Plugin = {
     app.component('FSkeletonItem', FSkeletonItem);
     app.component('FSlider', FSlider);
     app.component('FSpinner', FSpinner);
+    app.component('FSpinButton', FSpinButton);
     app.component('FSwitch', FSwitch);
     app.component('FText', FText);
     app.component('FTextarea', FTextarea);
