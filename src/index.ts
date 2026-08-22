@@ -9,6 +9,7 @@ export * from './components/PresenceBadge';
 export * from './components/Input';
 export * from './components/Label';
 export * from './components/Link';
+export * from './components/Spinner';
 export * from './components/Text';
 export * from './components/Textarea';
 export { FluentVue } from './plugin';

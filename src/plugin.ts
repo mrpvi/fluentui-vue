@@ -10,6 +10,7 @@ import { FPresenceBadge } from './components/PresenceBadge';
 import { FInput } from './components/Input';
 import { FLabel } from './components/Label';
 import { FLink } from './components/Link';
+import { FSpinner } from './components/Spinner';
 import { FText } from './components/Text';
 import { FTextarea } from './components/Textarea';
 
@@ -26,6 +27,7 @@ export const FluentVue: Plugin = {
     app.component('FPresenceBadge', FPresenceBadge);
     app.component('FLabel', FLabel);
     app.component('FLink', FLink);
+    app.component('FSpinner', FSpinner);
     app.component('FText', FText);
     app.component('FTextarea', FTextarea);
   },
