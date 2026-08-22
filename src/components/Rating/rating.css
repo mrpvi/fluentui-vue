@@ -1,0 +1,15 @@
+.fui-Rating {
+  display: inline-flex;
+  align-items: center;
+  inline-size: fit-content;
+}
+
+.fui-Rating--disabled {
+  color: var(--fui-color-neutral-foreground-disabled);
+}
+
+@media (forced-colors: active) {
+  .fui-Rating--disabled {
+    color: GrayText;
+  }
+}
