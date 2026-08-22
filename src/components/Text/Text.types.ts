@@ -1,17 +1,5 @@
 export type TextTag =
-  | 'span'
-  | 'h1'
-  | 'h2'
-  | 'h3'
-  | 'h4'
-  | 'h5'
-  | 'h6'
-  | 'p'
-  | 'pre'
-  | 'strong'
-  | 'b'
-  | 'em'
-  | 'i';
+  'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'pre' | 'strong' | 'b' | 'em' | 'i';
 
 export type TextAlign = 'start' | 'center' | 'end' | 'justify';
 export type TextFont = 'base' | 'monospace' | 'numeric';

@@ -1,3 +1,0 @@
-[    3337ms] [ERROR] Failed to load resource: the server responded with a status of 999 () @ https://www.linkedin.com/in/erfan-forouzi-b2892227b:0
-[    3743ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "username"): (More info: https://goo.gl/9p2vKq) %o @ https://www.linkedin.com/authwall?trk=gf&trkInfo=AQGwQPYBgSfiIgAAAaAUcxr4UYUw0ZrN9j49dDpY15L5Z2NvOp9CTA85vJqGEBaY3mVt0fS3F9ZSduXtQlHF6yRZbGUvqaovhz-KYaCKwaDPzBfYKmtYycIKmUhEkGdsI3oRZfo=&original_referer=&sessionRedirect=https%3A%2F%2Fwww.linkedin.com%2Fin%2Ferfan-forouzi-b2892227b:0
-[    5793ms] [WARNING] Element with id: dust-var-locale not found @ https://static.licdn.com/aero-v1/sc/h/4sy6xgzo0t4xd6r0uco9cdjd2:1

@@ -9,7 +9,7 @@ export default defineConfig({
     dts({
       include: ['src'],
       exclude: ['src/style.ts'],
-      tsconfigPath: './tsconfig.json',
+      tsconfigPath: './tsconfig.lib.json',
       insertTypesEntry: true,
     }),
   ],
@@ -36,7 +36,14 @@ export default defineConfig({
   test: {
     environment: 'happy-dom',
     setupFiles: ['./tests/setup.ts'],
-    exclude: ['tests/browser/**', 'node_modules/**', 'dist/**', '.claude/**'],
+    exclude: [
+      'tests/browser/**',
+      'tests/a11y/**',
+      'tests/ssr/**',
+      'node_modules/**',
+      'dist/**',
+      '.claude/**',
+    ],
     css: true,
   },
 });

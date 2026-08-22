@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, ref, useAttrs } from 'vue';
-import type {
-  LinkEmits,
-  LinkProps,
-  LinkSlots,
-  LinkTag,
-} from './Link.types';
+import type { LinkEmits, LinkProps, LinkSlots, LinkTag } from './Link.types';
 
 defineOptions({
   name: 'FLink',
@@ -81,15 +76,11 @@ function findManualListener(
       : /^(?:onKeyDown|onKey[dD]own(?:Capture|Passive)+(?:Once)?)$/;
 
   return Object.entries(vnodeProps.value).find(
-    ([propName, listener]) =>
-      pattern.test(propName) && typeof listener === 'function',
+    ([propName, listener]) => pattern.test(propName) && typeof listener === 'function',
   ) as [string, (event: Event) => void] | undefined;
 }
 
-function invokeManualListener(
-  name: 'click' | 'keydown',
-  event: MouseEvent | KeyboardEvent,
-) {
+function invokeManualListener(name: 'click' | 'keydown', event: MouseEvent | KeyboardEvent) {
   const listener = findManualListener(name);
 
   if (!listener) {
@@ -110,7 +101,7 @@ function invokeManualListener(
 }
 
 function hasKeydownListener() {
-  return Object.keys(vnodeProps.value).some(propName =>
+  return Object.keys(vnodeProps.value).some((propName) =>
     /^onKey[dD]own(?:Capture|Once|Passive)*$/.test(propName),
   );
 }

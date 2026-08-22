@@ -49,18 +49,9 @@ defineExpose({
 </script>
 
 <template>
-  <label
-    ref="root"
-    v-bind="rootAttrs"
-    :class="classes"
-    :style="attrs.style"
-  >
+  <label ref="root" v-bind="rootAttrs" :class="classes" :style="attrs.style">
     <slot />
-    <span
-      v-if="hasRequiredIndicator"
-      class="fui-Label__required"
-      aria-hidden="true"
-    >
+    <span v-if="hasRequiredIndicator" class="fui-Label__required" aria-hidden="true">
       <slot name="required">{{ requiredContent }}</slot>
     </span>
   </label>

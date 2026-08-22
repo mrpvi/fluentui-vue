@@ -94,12 +94,7 @@ Every component should follow the same implementation layers.
 Example:
 
 ```ts
-export type ButtonAppearance =
-  | 'secondary'
-  | 'primary'
-  | 'outline'
-  | 'subtle'
-  | 'transparent';
+export type ButtonAppearance = 'secondary' | 'primary' | 'outline' | 'subtle' | 'transparent';
 
 export interface ButtonProps {
   appearance?: ButtonAppearance;
@@ -247,10 +242,14 @@ The prefix may be revisited when the final package name is selected, but it must
 Use stable Fluent-style class names:
 
 ```css
-.fui-Button {}
-.fui-Button__icon {}
-.fui-Button--primary {}
-.fui-Button--disabled {}
+.fui-Button {
+}
+.fui-Button__icon {
+}
+.fui-Button--primary {
+}
+.fui-Button--disabled {
+}
 ```
 
 Rules:
@@ -613,23 +612,19 @@ A component is complete when:
 
 ## 14. Current technical debt
 
-The current three-component implementation is a strong prototype, but these items should be addressed before a large-scale port:
+The current eight-component implementation now has the Phase 0 quality baseline: complete generated light/dark theme tokens, ESLint and Prettier, split TypeScript configurations, axe checks, SSR/hydration coverage, multi-engine browser tests, Chromium visual baselines, packed-consumer validation, and CI.
 
-1. Replace the manually maintained token subset with generated complete theme files.
-2. Pin exact Fluent UI upstream commit SHAs in `UPSTREAM.md`.
-3. Add ESLint and deterministic formatting.
-4. Add automated accessibility checks.
-5. Add Playwright visual and keyboard regression tests.
-6. Add CI.
-7. Split library, test, and playground TypeScript configurations.
-8. Add tested component subpath exports.
-9. Extract controlled/uncontrolled state only when the next components confirm the shared contract.
-10. Introduce a provider only when theme, direction, or shared configuration requires one.
-11. Add SSR and hydration tests for generated IDs and future Teleport or browser-measured components.
-12. Expand the browser suite to additional engines and add visual baselines for all component states.
-13. Add automated `axe-core` coverage and manual screen-reader verification before public release.
+Remaining work before broad public release:
 
-These are planned improvements, not reasons to introduce premature abstractions into the current three-component codebase.
+1. Pin exact Fluent UI upstream commit SHAs in `UPSTREAM.md`.
+2. Add tested component-family subpath exports as the library grows.
+3. Extract controlled/uncontrolled state only when the next components confirm the shared contract.
+4. Introduce a provider only when theme, direction, or shared configuration requires one.
+5. Add targeted SSR and hydration tests for future Teleport or browser-measured components.
+6. Expand visual matrices from the baseline playground coverage to every component state, RTL case, and supported forced-color scenario.
+7. Perform and record manual screen-reader verification for complex components before public release.
+
+These are planned improvements, not reasons to introduce premature abstractions into the current codebase.
 
 ## 15. Research sources and interpretation
 

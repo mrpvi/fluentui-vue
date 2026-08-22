@@ -43,7 +43,7 @@ describe('FText', () => {
     );
   });
 
-  it.each(tags)('renders the supported %s semantic root', tag => {
+  it.each(tags)('renders the supported %s semantic root', (tag) => {
     const wrapper = mount(Text, { props: { as: tag } });
     expect(wrapper.element.tagName.toLowerCase()).toBe(tag);
   });
@@ -107,32 +107,25 @@ describe('FText', () => {
 
   it.each<TextSize>([100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])(
     'applies size %s',
-    size => {
+    (size) => {
       expect(mount(Text, { props: { size } }).classes()).toContain(`fui-Text--size-${size}`);
     },
   );
 
-  it.each<TextFont>(['base', 'monospace', 'numeric'])('applies the %s font', font => {
+  it.each<TextFont>(['base', 'monospace', 'numeric'])('applies the %s font', (font) => {
     expect(mount(Text, { props: { font } }).classes()).toContain(`fui-Text--font-${font}`);
   });
 
   it.each<TextWeight>(['regular', 'medium', 'semibold', 'bold'])(
     'applies the %s weight',
-    weight => {
-      expect(mount(Text, { props: { weight } }).classes()).toContain(
-        `fui-Text--weight-${weight}`,
-      );
+    (weight) => {
+      expect(mount(Text, { props: { weight } }).classes()).toContain(`fui-Text--weight-${weight}`);
     },
   );
 
-  it.each<TextAlign>(['start', 'center', 'end', 'justify'])(
-    'applies the %s alignment',
-    align => {
-      expect(mount(Text, { props: { align } }).classes()).toContain(
-        `fui-Text--align-${align}`,
-      );
-    },
-  );
+  it.each<TextAlign>(['start', 'center', 'end', 'justify'])('applies the %s alignment', (align) => {
+    expect(mount(Text, { props: { align } }).classes()).toContain(`fui-Text--align-${align}`);
+  });
 
   it('exposes only the native root element', () => {
     const wrapper = mount(Text);

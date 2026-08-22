@@ -127,7 +127,9 @@
 }
 
 .fui-Input--large {
-  --fui-input-combined-padding: calc(var(--fui-spacing-horizontal-m) + var(--fui-spacing-horizontal-s-nudge));
+  --fui-input-combined-padding: calc(
+    var(--fui-spacing-horizontal-m) + var(--fui-spacing-horizontal-s-nudge)
+  );
   --fui-input-root-padding: var(--fui-spacing-horizontal-m);
   --fui-input-inner-padding: var(--fui-spacing-horizontal-s-nudge);
   gap: var(--fui-spacing-horizontal-s-nudge);

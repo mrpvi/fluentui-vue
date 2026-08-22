@@ -1,8 +1,5 @@
 import { computed, inject, toValue, type MaybeRefOrGetter } from 'vue';
-import {
-  fieldContextKey,
-  type FieldContextValue,
-} from '../components/Field/fieldContext';
+import { fieldContextKey, type FieldContextValue } from '../components/Field/fieldContext';
 
 export interface FieldControlPropsOptions {
   supportsLabelFor?: boolean;
@@ -22,7 +19,7 @@ export type FieldCompatibleControlProps = Record<string, unknown> & {
 
 function mergeIdRefs(...values: unknown[]): string | undefined {
   const ids = values
-    .flatMap(value => (typeof value === 'string' ? value.split(/\s+/) : []))
+    .flatMap((value) => (typeof value === 'string' ? value.split(/\s+/) : []))
     .filter(Boolean);
   const uniqueIds = [...new Set(ids)];
 
@@ -88,7 +85,5 @@ export function useFieldControlProps(
 ) {
   const context = inject(fieldContextKey, undefined);
 
-  return computed(() =>
-    getFieldControlProps(context, toValue(controlProps), options),
-  );
+  return computed(() => getFieldControlProps(context, toValue(controlProps), options));
 }

@@ -1,0 +1,8 @@
+dist/
+node_modules/
+coverage/
+playwright-report/
+test-results/
+.playwright-mcp/
+src/styles/tokens.css
+package-lock.json

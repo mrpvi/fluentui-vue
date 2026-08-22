@@ -1,7 +1,19 @@
 node_modules/
 dist/
 coverage/
+.vite/
 *.tgz
 .DS_Store
-.vite/
-fluent-vue-playground.png
+
+# Playwright output and local MCP browser artifacts
+/playwright-report/
+/test-results/
+/blob-report/
+/playwright/.cache/
+/.playwright-mcp/
+/fluent-vue-playground.png
+
+# Local reports and temporary research output
+*.log
+*.tmp
+.tmp/

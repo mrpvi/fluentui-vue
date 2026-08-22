@@ -35,7 +35,7 @@ describe('FTextarea', () => {
     'filled-lighter',
     'filled-darker-shadow',
     'filled-lighter-shadow',
-  ])('applies the %s appearance', appearance => {
+  ])('applies the %s appearance', (appearance) => {
     const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     const wrapper = mount(Textarea, { props: { appearance } });
 
@@ -43,18 +43,13 @@ describe('FTextarea', () => {
     expect(error).toHaveBeenCalledTimes(appearance.endsWith('-shadow') ? 1 : 0);
   });
 
-  it.each<TextareaSize>(['small', 'medium', 'large'])(
-    'applies the %s size',
-    size => {
-      expect(mount(Textarea, { props: { size } }).classes()).toContain(
-        `fui-Textarea--${size}`,
-      );
-    },
-  );
+  it.each<TextareaSize>(['small', 'medium', 'large'])('applies the %s size', (size) => {
+    expect(mount(Textarea, { props: { size } }).classes()).toContain(`fui-Textarea--${size}`);
+  });
 
   it.each<TextareaResize>(['none', 'horizontal', 'vertical', 'both'])(
     'applies the %s resize mode',
-    resize => {
+    (resize) => {
       expect(mount(Textarea, { props: { resize } }).classes()).toContain(
         `fui-Textarea--resize-${resize}`,
       );
@@ -211,9 +206,7 @@ describe('FTextarea', () => {
     });
 
     const automaticTextarea = automatic.get('textarea');
-    expect(automaticTextarea.attributes('id')).toBe(
-      automatic.get('label').attributes('for'),
-    );
+    expect(automaticTextarea.attributes('id')).toBe(automatic.get('label').attributes('for'));
     expect(automaticTextarea.attributes('required')).toBeDefined();
     expect(automaticTextarea.attributes('aria-invalid')).toBe('true');
     expect(automaticTextarea.attributes('aria-describedby')?.split(' ')).toHaveLength(2);
@@ -251,7 +244,7 @@ describe('FTextarea', () => {
     await uncontrolled.setValue('Changed uncontrolled');
     controlled.element.value = 'Changed controlled';
     form.reset();
-    await new Promise(resolve => setTimeout(resolve));
+    await new Promise((resolve) => setTimeout(resolve));
 
     expect(uncontrolled.element.value).toBe('Default notes');
     expect(controlled.element.value).toBe('Controlled notes');

@@ -1,25 +1,8 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "strict": true,
-    "jsx": "preserve",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["node", "vite/client", "vitest/globals"],
-    "noEmit": true
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.vue",
-    "playground/**/*.ts",
-    "playground/**/*.vue",
-    "tests/**/*.ts",
-    "vite.config.ts"
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.lib.json" },
+    { "path": "./tsconfig.playground.json" },
+    { "path": "./tsconfig.tests.json" }
   ]
 }

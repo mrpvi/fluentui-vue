@@ -89,9 +89,7 @@ const rootAttrs = computed(() => {
 });
 
 const validationMessageRole = computed(() =>
-  validationState.value === 'error' || validationState.value === 'warning'
-    ? 'alert'
-    : undefined,
+  validationState.value === 'error' || validationState.value === 'warning' ? 'alert' : undefined,
 );
 
 defineExpose({
@@ -100,12 +98,7 @@ defineExpose({
 </script>
 
 <template>
-  <div
-    ref="root"
-    v-bind="rootAttrs"
-    :class="rootClasses"
-    :style="attrs.style"
-  >
+  <div ref="root" v-bind="rootAttrs" :class="rootClasses" :style="attrs.style">
     <FLabel
       v-if="hasLabel"
       :id="generatedLabelId"
@@ -137,41 +130,28 @@ defineExpose({
         ]"
         aria-hidden="true"
       >
-        <slot
-          name="validation-message-icon"
-          :validation-state="validationState"
-        >
-          <svg
-            v-if="validationState === 'error'"
-            viewBox="0 0 12 12"
-            focusable="false"
-          >
-            <path d="M6 1a5 5 0 1 0 0 10A5 5 0 0 0 6 1Zm1.47 6.82a.5.5 0 0 1-.7 0L6 7.06l-.76.76a.5.5 0 1 1-.71-.7l.76-.77-.76-.76a.5.5 0 1 1 .7-.71l.77.76.76-.76a.5.5 0 0 1 .71.7l-.76.77.76.76a.5.5 0 0 1 0 .71Z" />
+        <slot name="validation-message-icon" :validation-state="validationState">
+          <svg v-if="validationState === 'error'" viewBox="0 0 12 12" focusable="false">
+            <path
+              d="M6 1a5 5 0 1 0 0 10A5 5 0 0 0 6 1Zm1.47 6.82a.5.5 0 0 1-.7 0L6 7.06l-.76.76a.5.5 0 1 1-.71-.7l.76-.77-.76-.76a.5.5 0 1 1 .7-.71l.77.76.76-.76a.5.5 0 0 1 .71.7l-.76.77.76.76a.5.5 0 0 1 0 .71Z"
+            />
           </svg>
-          <svg
-            v-else-if="validationState === 'warning'"
-            viewBox="0 0 12 12"
-            focusable="false"
-          >
-            <path d="M5.12 1.5a1 1 0 0 1 1.76 0l4.02 7.53A1 1 0 0 1 10.02 10H1.98a1 1 0 0 1-.88-1.47L5.12 1.5ZM6 3.25a.5.5 0 0 0-.5.5v2.5a.5.5 0 0 0 1 0v-2.5a.5.5 0 0 0-.5-.5Zm0 5.5a.63.63 0 1 0 0-1.25.63.63 0 0 0 0 1.25Z" />
+          <svg v-else-if="validationState === 'warning'" viewBox="0 0 12 12" focusable="false">
+            <path
+              d="M5.12 1.5a1 1 0 0 1 1.76 0l4.02 7.53A1 1 0 0 1 10.02 10H1.98a1 1 0 0 1-.88-1.47L5.12 1.5ZM6 3.25a.5.5 0 0 0-.5.5v2.5a.5.5 0 0 0 1 0v-2.5a.5.5 0 0 0-.5-.5Zm0 5.5a.63.63 0 1 0 0-1.25.63.63 0 0 0 0 1.25Z"
+            />
           </svg>
-          <svg
-            v-else-if="validationState === 'success'"
-            viewBox="0 0 12 12"
-            focusable="false"
-          >
-            <path d="M6 1a5 5 0 1 0 0 10A5 5 0 0 0 6 1Zm2.35 3.85-2.7 3a.5.5 0 0 1-.73.02L3.6 6.55a.5.5 0 1 1 .7-.7l.95.94 2.36-2.61a.5.5 0 1 1 .74.67Z" />
+          <svg v-else-if="validationState === 'success'" viewBox="0 0 12 12" focusable="false">
+            <path
+              d="M6 1a5 5 0 1 0 0 10A5 5 0 0 0 6 1Zm2.35 3.85-2.7 3a.5.5 0 0 1-.73.02L3.6 6.55a.5.5 0 1 1 .7-.7l.95.94 2.36-2.61a.5.5 0 1 1 .74.67Z"
+            />
           </svg>
         </slot>
       </span>
       <slot name="validation-message">{{ validationMessage }}</slot>
     </div>
 
-    <div
-      v-if="hasHint"
-      :id="generatedHintId"
-      class="fui-Field__hint"
-    >
+    <div v-if="hasHint" :id="generatedHintId" class="fui-Field__hint">
       <slot name="hint">{{ hint }}</slot>
     </div>
   </div>

@@ -201,7 +201,7 @@ describe('FLink', () => {
     expect(wrapper.emitted('click')).toBeUndefined();
   });
 
-  it.each(['Enter', ' '])('prevents and stops disabled %s keydown activation', key => {
+  it.each(['Enter', ' '])('prevents and stops disabled %s keydown activation', (key) => {
     const wrapper = mount(Link, { props: { disabledFocusable: true } });
     const event = new KeyboardEvent('keydown', {
       key,
@@ -231,7 +231,7 @@ describe('FLink', () => {
     expect(wrapper.emitted('keydown')?.[0]?.[0]).toBe(event);
   });
 
-  it.each(['Enter', ' '])('synthesizes one span click for %s', key => {
+  it.each(['Enter', ' '])('synthesizes one span click for %s', (key) => {
     const wrapper = mount(Link, { props: { as: 'span' } });
     const event = new KeyboardEvent('keydown', {
       key,
@@ -308,9 +308,7 @@ describe('FLink', () => {
       attrs: { onClickCapture, onKeydownCapture },
     });
 
-    wrapper.element.dispatchEvent(
-      new MouseEvent('click', { bubbles: true, cancelable: true }),
-    );
+    wrapper.element.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
     wrapper.element.dispatchEvent(
       new KeyboardEvent('keydown', {
         key: 'Enter',

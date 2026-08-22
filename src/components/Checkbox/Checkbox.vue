@@ -1,22 +1,8 @@
 <script setup lang="ts">
-import {
-  computed,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  useAttrs,
-  useId,
-  watch,
-} from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useAttrs, useId, watch } from 'vue';
 import { useFieldControlProps } from '../../composables/useFieldControlProps';
 import { useIsPropProvided } from '../../composables/useIsPropProvided';
-import type {
-  CheckboxEmits,
-  CheckboxProps,
-  CheckboxSlots,
-  CheckboxValue,
-} from './Checkbox.types';
+import type { CheckboxEmits, CheckboxProps, CheckboxSlots, CheckboxValue } from './Checkbox.types';
 
 defineOptions({
   name: 'FCheckbox',
@@ -40,7 +26,7 @@ const internalChecked = ref<CheckboxValue>(initialChecked);
 const isControlled = useIsPropProvided('modelValue');
 let form: HTMLFormElement | null = null;
 const checked = computed<CheckboxValue>(() =>
-  isControlled ? props.modelValue ?? false : internalChecked.value,
+  isControlled ? (props.modelValue ?? false) : internalChecked.value,
 );
 const isMixed = computed(() => checked.value === 'mixed');
 const isChecked = computed(() => checked.value === true);
@@ -53,9 +39,7 @@ const fieldControlProps = useFieldControlProps(
   },
 );
 const inputId = computed(
-  () =>
-    (fieldControlProps.value.id as string | undefined) ??
-    `fui-checkbox-${generatedId}`,
+  () => (fieldControlProps.value.id as string | undefined) ?? `fui-checkbox-${generatedId}`,
 );
 
 const classes = computed(() => [
@@ -147,9 +131,9 @@ defineExpose({
 <template>
   <span :class="classes" :style="attrs.style">
     <input
-      ref="input"
       v-bind="inputAttrs"
       :id="inputId"
+      ref="input"
       :class="[
         'fui-Checkbox__input',
         `fui-Checkbox__input--${size}`,
@@ -164,7 +148,11 @@ defineExpose({
     <label
       v-if="hasLabel && labelPosition === 'before'"
       :for="inputId"
-      :class="['fui-Checkbox__label', `fui-Checkbox__label--${size}`, 'fui-Checkbox__label--before']"
+      :class="[
+        'fui-Checkbox__label',
+        `fui-Checkbox__label--${size}`,
+        'fui-Checkbox__label--before',
+      ]"
     >
       <slot name="label">{{ label }}</slot>
     </label>
@@ -174,13 +162,10 @@ defineExpose({
       aria-hidden="true"
     >
       <slot name="indicator" :checked="checked">
-        <svg
-          v-if="isChecked"
-          class="fui-Checkbox__checkmark"
-          viewBox="0 0 16 16"
-          focusable="false"
-        >
-          <path d="M13.2 4.2a.75.75 0 0 1 .1 1.06l-6 7a.75.75 0 0 1-1.1.04l-3.5-3.5a.75.75 0 0 1 1.06-1.06l2.93 2.93 5.47-6.38a.75.75 0 0 1 1.05-.09Z" />
+        <svg v-if="isChecked" class="fui-Checkbox__checkmark" viewBox="0 0 16 16" focusable="false">
+          <path
+            d="M13.2 4.2a.75.75 0 0 1 .1 1.06l-6 7a.75.75 0 0 1-1.1.04l-3.5-3.5a.75.75 0 0 1 1.06-1.06l2.93 2.93 5.47-6.38a.75.75 0 0 1 1.05-.09Z"
+          />
         </svg>
         <span v-else-if="isMixed" class="fui-Checkbox__mixedMark" />
       </slot>

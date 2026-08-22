@@ -276,7 +276,8 @@
 
 @supports (-moz-appearance: button) {
   .fui-Button:focus-visible {
-    box-shadow: 0 0 0 calc(var(--fui-stroke-width-thin) + 0.25px) var(--fui-color-stroke-focus-2) inset;
+    box-shadow: 0 0 0 calc(var(--fui-stroke-width-thin) + 0.25px) var(--fui-color-stroke-focus-2)
+      inset;
   }
 
   .fui-Button--primary:focus-visible {

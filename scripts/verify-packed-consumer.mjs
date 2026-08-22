@@ -28,13 +28,33 @@ try {
   );
   await writeFile(
     resolve(consumer, 'src/main.ts'),
-    `import { createApp, h } from 'vue';
-import { FButton, FField, FInput, FLabel, FLink, FText, FTextarea } from '@local/fluent-vue';
+    `import { createApp, h, ref } from 'vue';
+import {
+  FButton,
+  FCheckbox,
+  FField,
+  FInput,
+  FLabel,
+  FLink,
+  FText,
+  FTextarea,
+  FluentVue,
+  packageVersion,
+  type ButtonAppearance,
+  type CheckboxValue,
+  type FluentTheme,
+  type TextareaResize,
+} from '@local/fluent-vue';
 import '@local/fluent-vue/style.css';
+
+const accepted = ref<CheckboxValue>('mixed');
+const appearance: ButtonAppearance = 'primary';
+const resize: TextareaResize = 'vertical';
+const theme: FluentTheme = 'light';
 
 createApp({
   render: () =>
-    h('main', [
+    h('main', { 'data-version': packageVersion, 'data-theme': theme }, [
       h(FText, { as: 'h1', size: 700, weight: 'semibold' }, () => 'Fluent Vue'),
       h(FLabel, { for: 'standalone-email', required: true }, () => 'Standalone email'),
       h(FInput, { id: 'standalone-email', type: 'email', required: true }),
@@ -57,21 +77,52 @@ createApp({
           default: () =>
             h(FTextarea, {
               defaultValue: 'Native Vue components',
-              resize: 'vertical',
+              resize,
             }),
         },
       ),
+      h(FCheckbox, {
+        modelValue: accepted.value,
+        'onUpdate:modelValue': value => (accepted.value = value),
+        label: 'Accept terms',
+      }),
       h(FLink, { href: '#docs', inline: true }, () => 'Read documentation'),
-      h(FButton, { appearance: 'primary' }, () => 'Save'),
+      h(FButton, { appearance }, () => 'Save'),
     ]),
-}).mount('#app');
+})
+  .use(FluentVue)
+  .mount('#app');
 `,
   );
+  await writeFile(
+    resolve(consumer, 'tsconfig.json'),
+    JSON.stringify(
+      {
+        compilerOptions: {
+          target: 'ES2022',
+          module: 'ESNext',
+          moduleResolution: 'Bundler',
+          strict: true,
+          skipLibCheck: true,
+          noEmit: true,
+        },
+        include: ['src/**/*.ts'],
+      },
+      null,
+      2,
+    ),
+  );
 
+  execFileSync(resolve(root, 'node_modules/.bin/vue-tsc'), ['--noEmit', '-p', 'tsconfig.json'], {
+    cwd: consumer,
+    stdio: 'inherit',
+  });
   execFileSync(resolve(root, 'node_modules/.bin/vite'), ['build'], {
     cwd: consumer,
     stdio: 'inherit',
   });
+
+  console.log('Packed consumer typecheck and production build passed.');
 } finally {
   await rm(consumer, { recursive: true, force: true });
 }

@@ -30,7 +30,7 @@ describe('FField', () => {
 
   it.each<FieldOrientation>(['vertical', 'horizontal'])(
     'applies the %s orientation',
-    orientation => {
+    (orientation) => {
       expect(mount(Field, { props: { orientation } }).classes()).toContain(
         `fui-Field--${orientation}`,
       );
@@ -39,7 +39,7 @@ describe('FField', () => {
 
   it.each<FieldSize>(['small', 'medium', 'large'])(
     'applies the %s size to the field and label',
-    size => {
+    (size) => {
       const wrapper = mount(Field, {
         props: { label: 'Name', size },
       });
@@ -51,7 +51,7 @@ describe('FField', () => {
 
   it.each<FieldValidationState>(['none', 'error', 'warning', 'success'])(
     'applies the %s validation state',
-    validationState => {
+    (validationState) => {
       const wrapper = mount(Field, {
         props: { validationMessage: 'Status', validationState },
       });
@@ -72,9 +72,7 @@ describe('FField', () => {
     expect(wrapper.classes()).toContain('fui-Field--validation-error');
     expect(message.attributes('role')).toBe('alert');
     expect(message.text()).toBe('Enter a value.');
-    expect(wrapper.get('.fui-Field__validationMessageIcon').attributes('aria-hidden')).toBe(
-      'true',
-    );
+    expect(wrapper.get('.fui-Field__validationMessageIcon').attributes('aria-hidden')).toBe('true');
   });
 
   it('uses alert semantics only for error and warning messages', () => {
@@ -110,9 +108,7 @@ describe('FField', () => {
 
     expect(wrapper.element.children[0].tagName).toBe('LABEL');
     expect(wrapper.element.children[1].classList).toContain('fui-Input');
-    expect(wrapper.element.children[2].classList).toContain(
-      'fui-Field__validationMessage',
-    );
+    expect(wrapper.element.children[2].classList).toContain('fui-Field__validationMessage');
     expect(wrapper.element.children[3].classList).toContain('fui-Field__hint');
   });
 
@@ -182,9 +178,7 @@ describe('FField', () => {
     expect(input.attributes('aria-labelledby')).toBe('external-label');
     expect(input.attributes('aria-invalid')).toBe('false');
     expect(input.attributes('required')).toBeUndefined();
-    expect(input.attributes('aria-describedby')).toBe(
-      `${messageId} ${hintId} external-help`,
-    );
+    expect(input.attributes('aria-describedby')).toBe(`${messageId} ${hintId} external-help`);
   });
 
   it('uses aria-labelledby when an explicit control id no longer matches the generated label for', () => {

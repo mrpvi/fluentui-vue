@@ -27,7 +27,5 @@ export interface FieldSlots {
   hint?: () => unknown;
   'validation-message'?: () => unknown;
   /** Decorative status icon hidden from assistive technology. */
-  'validation-message-icon'?: (props: {
-    validationState: FieldValidationState;
-  }) => unknown;
+  'validation-message-icon'?: (props: { validationState: FieldValidationState }) => unknown;
 }

@@ -2,11 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, useAttrs, watch } from 'vue';
 import { useFieldControlProps } from '../../composables/useFieldControlProps';
 import { useIsPropProvided } from '../../composables/useIsPropProvided';
-import type {
-  TextareaEmits,
-  TextareaProps,
-  TextareaSize,
-} from './Textarea.types';
+import type { TextareaEmits, TextareaProps, TextareaSize } from './Textarea.types';
 
 defineOptions({
   name: 'FTextarea',
@@ -115,7 +111,7 @@ onBeforeUnmount(() => form?.removeEventListener('reset', handleFormReset));
 
 watch(
   () => props.modelValue,
-  value => {
+  (value) => {
     if (isControlled && textarea.value) {
       textarea.value.value = value ?? '';
     }

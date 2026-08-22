@@ -1,9 +1,5 @@
 export type TextareaAppearance =
-  | 'outline'
-  | 'filled-darker'
-  | 'filled-lighter'
-  | 'filled-darker-shadow'
-  | 'filled-lighter-shadow';
+  'outline' | 'filled-darker' | 'filled-lighter' | 'filled-darker-shadow' | 'filled-lighter-shadow';
 
 export type TextareaResize = 'none' | 'horizontal' | 'vertical' | 'both';
 export type TextareaSize = 'small' | 'medium' | 'large';

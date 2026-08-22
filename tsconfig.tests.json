@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node", "vite/client", "vitest/globals", "@playwright/test"]
+  },
+  "include": [
+    "tests/**/*.ts",
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "vite.config.ts",
+    "vitest.ssr.config.ts",
+    "playwright.config.ts",
+    "playwright.a11y.config.ts",
+    "eslint.config.js"
+  ]
+}

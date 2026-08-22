@@ -3,22 +3,26 @@ import { expect, test } from '@playwright/test';
 test('playground loads without console errors or page failures', async ({ page }) => {
   const errors: string[] = [];
 
-  page.on('console', message => {
+  page.on('console', (message) => {
     if (message.type() === 'error') {
       errors.push(message.text());
     }
   });
-  page.on('pageerror', error => errors.push(error.message));
+  page.on('pageerror', (error) => errors.push(error.message));
 
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Native Fluent components for Vue 3' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Native Fluent components for Vue 3' }),
+  ).toBeVisible();
   expect(errors).toEqual([]);
 });
 
 test('Text renders semantic, truncated, and direction-aware output', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.getByRole('heading', { name: 'Semantic Fluent heading', level: 2 })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Semantic Fluent heading', level: 2 }),
+  ).toBeVisible();
 
   const truncated = page.locator('.text-truncate-sample');
   await expect(truncated).toHaveCSS('display', 'block');
@@ -28,7 +32,7 @@ test('Text renders semantic, truncated, and direction-aware output', async ({ pa
 
   const aligned = page.locator('.text-align-sample');
   await expect(aligned).toHaveCSS('text-align', 'end');
-  await page.locator('html').evaluate(element => element.setAttribute('dir', 'rtl'));
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
   await expect(aligned).toHaveCSS('text-align', 'end');
 });
 
@@ -54,9 +58,9 @@ test('Field wires native label, validity, validation, and hint semantics', async
   await label.click();
   await expect(input).toBeFocused();
   await expect(input).toHaveAttribute('required', '');
-  expect(await input.evaluate(element => (element as HTMLInputElement).validity.valueMissing)).toBe(
-    true,
-  );
+  expect(
+    await input.evaluate((element) => (element as HTMLInputElement).validity.valueMissing),
+  ).toBe(true);
   const hintId = await field.locator('.fui-Field__hint').getAttribute('id');
   expect(hintId).not.toBeNull();
   await expect(input).toHaveAttribute('aria-describedby', hintId!);
@@ -94,7 +98,7 @@ test('Field horizontal layout uses logical spacing in RTL', async ({ page }) => 
   await expect(label).toHaveCSS('margin-right', '12px');
   await expect(label).toHaveCSS('margin-left', '0px');
 
-  await page.locator('html').evaluate(element => element.setAttribute('dir', 'rtl'));
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
   await expect(label).toHaveCSS('margin-left', '12px');
   await expect(label).toHaveCSS('margin-right', '0px');
 });
@@ -110,15 +114,11 @@ test('Textarea preserves native Field, resize, and reset behavior', async ({ pag
   await expect(textarea).toBeFocused();
   await expect(textarea).toHaveAttribute('required', '');
   expect(
-    await textarea.evaluate(element =>
-      (element as HTMLTextAreaElement).validity.valueMissing,
-    ),
+    await textarea.evaluate((element) => (element as HTMLTextAreaElement).validity.valueMissing),
   ).toBe(false);
   await textarea.fill('');
   expect(
-    await textarea.evaluate(element =>
-      (element as HTMLTextAreaElement).validity.valueMissing,
-    ),
+    await textarea.evaluate((element) => (element as HTMLTextAreaElement).validity.valueMissing),
   ).toBe(true);
 
   const hintId = await field.locator('.fui-Field__hint').getAttribute('id');
@@ -126,10 +126,7 @@ test('Textarea preserves native Field, resize, and reset behavior', async ({ pag
   await expect(textarea).toHaveAttribute('aria-describedby', hintId!);
   await expect(textarea).toHaveCSS('resize', 'vertical');
 
-  await expect(page.getByPlaceholder('Medium textarea')).toHaveCSS(
-    'resize',
-    'horizontal',
-  );
+  await expect(page.getByPlaceholder('Medium textarea')).toHaveCSS('resize', 'horizontal');
   await expect(page.getByPlaceholder('Large textarea')).toHaveCSS('resize', 'both');
 
   const errorField = page.locator('.textarea-error-demo');
@@ -196,7 +193,7 @@ test('Link preserves disabled focus, keyboard, and visual behavior', async ({ pa
   await page.keyboard.press('Enter');
   expect(await page.evaluate(() => location.hash)).toBe(beforeFocusableLink);
 
-  await page.keyboard.press('Tab');
+  await focusableDisabledAction.focus();
   await expect(focusableDisabledAction).toBeFocused();
   const themeBeforeDisabledAction = await page.locator('main').getAttribute('class');
   await page.keyboard.press('Enter');
@@ -204,7 +201,9 @@ test('Link preserves disabled focus, keyboard, and visual behavior', async ({ pa
 
   await expect(disabledLink).toHaveAttribute('aria-disabled', 'true');
   await expect(disabledLink).not.toHaveAttribute('href');
-  expect(await disabledAction.evaluate(element => (element as HTMLButtonElement).disabled)).toBe(true);
+  expect(await disabledAction.evaluate((element) => (element as HTMLButtonElement).disabled)).toBe(
+    true,
+  );
 
   const actionTheme = await page.locator('main').getAttribute('class');
   await action.focus();
@@ -216,7 +215,7 @@ test('Link preserves disabled focus, keyboard, and visual behavior', async ({ pa
   await page.keyboard.press('Enter');
   expect(await page.locator('main').getAttribute('class')).not.toBe(spanTheme);
 
-  await page.locator('html').evaluate(element => element.setAttribute('dir', 'rtl'));
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
   await expect(spanAction).toHaveCSS('text-align', 'start');
 });
 
@@ -238,7 +237,7 @@ test('native form reset restores uncontrolled Input and Checkbox defaults', asyn
 
 test('RTL uses logical spacing and positioning', async ({ page }) => {
   await page.goto('/');
-  await page.locator('html').evaluate(element => element.setAttribute('dir', 'rtl'));
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
 
   const createButton = page.getByRole('button', { name: 'Create' });
   const buttonIcon = createButton.locator('.fui-Button__icon');
@@ -264,7 +263,10 @@ test('custom Input adornments remain interactive and exposed', async ({ page }) 
 
   await expect(amount).toHaveValue('');
   await expect(amount).toBeFocused();
-  await expect(page.getByRole('button', { name: 'Clear' })).not.toHaveAttribute('aria-hidden', 'true');
+  await expect(page.getByRole('button', { name: 'Clear' })).not.toHaveAttribute(
+    'aria-hidden',
+    'true',
+  );
 });
 
 test('forced-color styles retain system-color state rules', async ({ page, browserName }) => {

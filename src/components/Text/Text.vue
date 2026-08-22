@@ -54,13 +54,7 @@ defineExpose({
 </script>
 
 <template>
-  <component
-    :is="as"
-    ref="root"
-    v-bind="rootAttrs"
-    :class="classes"
-    :style="attrs.style"
-  >
+  <component :is="as" ref="root" v-bind="rootAttrs" :class="classes" :style="attrs.style">
     <slot />
   </component>
 </template>

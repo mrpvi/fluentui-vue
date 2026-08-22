@@ -37,8 +37,8 @@ function clearUncontrolledAmount(event: MouseEvent) {
         <p class="eyebrow">@local/fluent-vue · 0.1.0</p>
         <h1>Native Fluent components for Vue 3</h1>
         <p>
-          Native Button, Input, Checkbox, Text, Label, Field, Textarea, and Link components translated
-          from Fluent UI React v9 to Vue props, slots, emits, and semantic HTML.
+          Native Button, Input, Checkbox, Text, Label, Field, Textarea, and Link components
+          translated from Fluent UI React v9 to Vue props, slots, emits, and semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -87,7 +87,9 @@ function clearUncontrolledAmount(event: MouseEvent) {
         <div class="column label-field">
           <FLabel for="label-email" :required="true">Email address</FLabel>
           <FInput id="label-email" required type="email" placeholder="name@example.com" />
-          <FText :size="200">The marker is visual; the input carries native required semantics.</FText>
+          <FText :size="200"
+            >The marker is visual; the input carries native required semantics.</FText
+          >
         </div>
         <div class="row">
           <FLabel size="small">Small label</FLabel>
@@ -119,10 +121,7 @@ function clearUncontrolledAmount(event: MouseEvent) {
         </form>
 
         <div class="field-status-grid">
-          <FField
-            label="Username"
-            validation-message="This username is already taken."
-          >
+          <FField label="Username" validation-message="This username is already taken.">
             <FInput value="fluent" />
           </FField>
           <FField
@@ -165,11 +164,7 @@ function clearUncontrolledAmount(event: MouseEvent) {
           hint="This native input uses the scoped control attributes."
         >
           <template #default="controlProps">
-            <input
-              v-bind="controlProps"
-              class="native-field-input"
-              placeholder="Native input"
-            />
+            <input v-bind="controlProps" class="native-field-input" placeholder="Native input" />
           </template>
         </FField>
       </div>
@@ -221,13 +216,21 @@ function clearUncontrolledAmount(event: MouseEvent) {
       <div class="row">
         <FButton appearance="primary">
           <template #icon>
-            <svg viewBox="0 0 20 20"><path d="M10 2a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H3a1 1 0 1 1 0-2h6V3a1 1 0 0 1 1-1Z" /></svg>
+            <svg viewBox="0 0 20 20">
+              <path
+                d="M10 2a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H3a1 1 0 1 1 0-2h6V3a1 1 0 0 1 1-1Z"
+              />
+            </svg>
           </template>
           Create
         </FButton>
         <FButton aria-label="Add item" shape="circular">
           <template #icon>
-            <svg viewBox="0 0 20 20"><path d="M10 2a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H3a1 1 0 1 1 0-2h6V3a1 1 0 0 1 1-1Z" /></svg>
+            <svg viewBox="0 0 20 20">
+              <path
+                d="M10 2a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H3a1 1 0 1 1 0-2h6V3a1 1 0 0 1 1-1Z"
+              />
+            </svg>
           </template>
         </FButton>
         <FButton disabled>Disabled</FButton>
@@ -247,7 +250,7 @@ function clearUncontrolledAmount(event: MouseEvent) {
         <FInput appearance="underline" placeholder="Underline" />
         <FInput appearance="filled-darker" placeholder="Filled darker" />
         <FInput appearance="filled-lighter" placeholder="Filled lighter" />
-        <FInput aria-invalid="true" value="Invalid" />
+        <FInput aria-label="Invalid input" aria-invalid="true" value="Invalid" />
         <FInput disabled placeholder="Disabled" />
       </div>
       <div class="row inputs">
@@ -280,11 +283,7 @@ function clearUncontrolledAmount(event: MouseEvent) {
           hint="Write a short summary for your profile."
           required
         >
-          <FTextarea
-            v-model="biography"
-            placeholder="Tell us about yourself"
-            resize="vertical"
-          />
+          <FTextarea v-model="biography" placeholder="Tell us about yourself" resize="vertical" />
         </FField>
         <small>Biography: {{ biography }}</small>
 
@@ -294,9 +293,13 @@ function clearUncontrolledAmount(event: MouseEvent) {
           <FTextarea size="large" placeholder="Large textarea" resize="both" />
           <FTextarea appearance="filled-darker" placeholder="Filled darker" />
           <FTextarea appearance="filled-lighter" placeholder="Filled lighter" />
-          <FTextarea aria-invalid="true" default-value="Invalid textarea" />
+          <FTextarea
+            aria-label="Invalid textarea"
+            aria-invalid="true"
+            default-value="Invalid textarea"
+          />
           <FTextarea disabled placeholder="Disabled textarea" />
-          <FTextarea readonly default-value="Read-only textarea" />
+          <FTextarea aria-label="Read-only textarea" readonly default-value="Read-only textarea" />
         </div>
 
         <FField
@@ -311,10 +314,7 @@ function clearUncontrolledAmount(event: MouseEvent) {
 
         <form class="textarea-reset-demo">
           <FField label="Resettable notes">
-            <FTextarea
-              default-value="Resettable textarea value"
-              resize="vertical"
-            />
+            <FTextarea default-value="Resettable textarea value" resize="vertical" />
           </FField>
           <FButton type="reset">Reset textarea form</FButton>
         </form>
@@ -337,12 +337,19 @@ function clearUncontrolledAmount(event: MouseEvent) {
 
 <style scoped>
 .playground {
+  color-scheme: light;
   min-height: 100vh;
   box-sizing: border-box;
   padding: 3rem max(1.5rem, calc((100vw - 72rem) / 2));
   color: var(--fui-color-neutral-foreground-1);
   background: var(--fui-color-neutral-background-1);
-  transition: color 160ms ease, background 160ms ease;
+  transition:
+    color 160ms ease,
+    background 160ms ease;
+}
+
+.playground.fui-theme-dark {
+  color-scheme: dark;
 }
 
 .hero {

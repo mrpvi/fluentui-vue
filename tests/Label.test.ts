@@ -11,21 +11,14 @@ describe('FLabel', () => {
     expect(wrapper.element.tagName).toBe('LABEL');
     expect(wrapper.text()).toBe('Email address');
     expect(wrapper.classes()).toEqual(
-      expect.arrayContaining([
-        'fui-Label',
-        'fui-Label--medium',
-        'fui-Label--regular',
-      ]),
+      expect.arrayContaining(['fui-Label', 'fui-Label--medium', 'fui-Label--regular']),
     );
   });
 
   it('associates with a native input through the forwarded for attribute', () => {
     const Host = defineComponent({
       render: () =>
-        h('div', [
-          h(Label, { for: 'email' }, () => 'Email address'),
-          h('input', { id: 'email' }),
-        ]),
+        h('div', [h(Label, { for: 'email' }, () => 'Email address'), h('input', { id: 'email' })]),
     });
     const wrapper = mount(Host);
     const label = wrapper.get('label');
@@ -59,11 +52,11 @@ describe('FLabel', () => {
     expect(onClick).toHaveBeenCalledOnce();
   });
 
-  it.each<LabelSize>(['small', 'medium', 'large'])('applies the %s size', size => {
+  it.each<LabelSize>(['small', 'medium', 'large'])('applies the %s size', (size) => {
     expect(mount(Label, { props: { size } }).classes()).toContain(`fui-Label--${size}`);
   });
 
-  it.each<LabelWeight>(['regular', 'semibold'])('applies the %s weight', weight => {
+  it.each<LabelWeight>(['regular', 'semibold'])('applies the %s weight', (weight) => {
     expect(mount(Label, { props: { weight } }).classes()).toContain(`fui-Label--${weight}`);
   });
 

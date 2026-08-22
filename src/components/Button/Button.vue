@@ -31,9 +31,7 @@ const root = ref<HTMLButtonElement | HTMLAnchorElement | null>(null);
 
 const isDisabled = computed(() => props.disabled || props.disabledFocusable);
 const iconOnly = computed(() => Boolean(slots.icon) && !slots.default);
-const hasAccessibleName = computed(
-  () => Boolean(attrs['aria-label'] || attrs['aria-labelledby']),
-);
+const hasAccessibleName = computed(() => Boolean(attrs['aria-label'] || attrs['aria-labelledby']));
 
 if (import.meta.env.DEV) {
   let warnedAboutMissingName = false;

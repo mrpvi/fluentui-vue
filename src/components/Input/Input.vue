@@ -2,12 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, useAttrs, watch } from 'vue';
 import { useFieldControlProps } from '../../composables/useFieldControlProps';
 import { useIsPropProvided } from '../../composables/useIsPropProvided';
-import type {
-  InputEmits,
-  InputProps,
-  InputSize,
-  InputSlots,
-} from './Input.types';
+import type { InputEmits, InputProps, InputSize, InputSlots } from './Input.types';
 
 defineOptions({
   name: 'FInput',
@@ -38,7 +33,7 @@ if (import.meta.env.DEV && props.appearance.endsWith('-shadow')) {
 
 watch(
   () => props.appearance,
-  appearance => {
+  (appearance) => {
     if (import.meta.env.DEV && appearance.endsWith('-shadow')) {
       console.error(`[FInput] appearance="${appearance}" is deprecated.`);
     }
@@ -118,7 +113,7 @@ onBeforeUnmount(() => form?.removeEventListener('reset', handleFormReset));
 
 watch(
   () => props.modelValue,
-  value => {
+  (value) => {
     if (isControlled && input.value) {
       input.value.value = value ?? '';
     }

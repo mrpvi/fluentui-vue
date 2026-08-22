@@ -27,13 +27,20 @@ npm run dev
 Quality checks:
 
 ```bash
-npm run test:run
-npm run test:browser
+npm run format:check
+npm run lint
 npm run typecheck
+npm run test:run
+npm run test:a11y
+npm run test:ssr
 npm run build
 npm run pack:check
 npm run consumer:check
+npm run test:browser
+npm run test:visual
 ```
+
+Use `npm run format` and `npm run lint:fix` to apply deterministic formatting and safe lint fixes. Install local browser binaries with `npx playwright install chromium firefox webkit` before running browser-based checks. Browser tests run semantic and keyboard coverage in Chromium, Firefox, and WebKit. The visual suite currently records deterministic Chromium light/dark playground baselines, and the automated accessibility suite fails on axe violations. The CI workflow installs all three browser engines with their Linux system dependencies.
 
 ## Test this package in another local Vue project
 
@@ -106,7 +113,17 @@ Components can be imported without installing the global plugin:
 
 ```vue
 <script setup lang="ts">
-import { FButton, FCheckbox, FField, FInput, FLabel, FLink, FText, FTextarea, type CheckboxValue } from '@local/fluent-vue';
+import {
+  FButton,
+  FCheckbox,
+  FField,
+  FInput,
+  FLabel,
+  FLink,
+  FText,
+  FTextarea,
+  type CheckboxValue,
+} from '@local/fluent-vue';
 import { ref } from 'vue';
 
 const name = ref('');
@@ -371,11 +388,7 @@ const biography = ref('');
     validation-message="A biography is required."
     required
   >
-    <FTextarea
-      v-model="biography"
-      placeholder="Tell us about yourself"
-      resize="vertical"
-    />
+    <FTextarea v-model="biography" placeholder="Tell us about yourself" resize="vertical" />
   </FField>
 </template>
 ```
@@ -430,6 +443,8 @@ The `label` slot supplies semantic label content. The scoped `indicator` slot re
 As with Input, supplying `modelValue` makes the component controlled even when the bound value is `undefined`; controlled `undefined` renders as unchecked. In uncontrolled mode, `defaultChecked` initializes the native checkbox once and native form reset restores the initial state.
 
 ## Themes
+
+`src/styles/tokens.css` is generated from the complete 459-token `webLightTheme` and `webDarkTheme` exports in the pinned `@fluentui/react-theme@9.2.2` dependency. Invariant values are emitted once and theme-specific values are emitted in stable sorted light/dark blocks. Do not edit the generated file directly; use `npm run tokens:generate`, and use `npm run tokens:check` to detect stale output.
 
 The default variables use Fluent's web light token values. Apply `.fui-theme-dark` to an ancestor to use the included dark values:
 
