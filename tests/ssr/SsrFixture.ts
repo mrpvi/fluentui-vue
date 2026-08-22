@@ -11,6 +11,7 @@ import {
   FLabel,
   FLink,
   FPresenceBadge,
+  FSpinner,
   FText,
   FTextarea,
 } from '../../src';
@@ -57,6 +58,12 @@ export const SsrFixture = defineComponent({
           'aria-label': 'Server notifications',
         }),
         h(FPresenceBadge, { status: 'away', outOfOffice: true, size: 'large' }),
+        h(FSpinner, { label: 'Server loading', labelPosition: 'before', size: 'large' }),
+        h(FSpinner, {
+          class: 'ssr-delayed-spinner',
+          delay: 1000,
+          label: 'Delayed server loading',
+        }),
         h(FLink, { href: '#details' }, () => 'View details'),
         h(FButton, { appearance: 'primary' }, () => 'Continue'),
       ]);

@@ -28,7 +28,7 @@ Status legend:
     - `FBadge`
     - `FCounterBadge`
     - `FPresenceBadge`
-11. ❌ **Spinner → `FSpinner`**
+11. ✅ **Spinner → `FSpinner`** — definition-of-done gates complete for `@fluentui/react-spinner@9.8.5`
 12. ❌ **ProgressBar → `FProgressBar`**
 13. ❌ **Skeleton family**
     - `FSkeleton`

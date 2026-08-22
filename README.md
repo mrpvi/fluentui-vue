@@ -12,6 +12,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 - `FDivider` — adapted from `@fluentui/react-divider` 9.7.4
 - `FImage` — adapted from `@fluentui/react-image` 9.4.4
 - `FBadge`, `FCounterBadge`, and `FPresenceBadge` — adapted from `@fluentui/react-badge` 9.5.5
+- `FSpinner` — adapted from `@fluentui/react-spinner` 9.8.5
 - `FText` — adapted from `@fluentui/react-text` 9.6.19
 - `FLabel` — adapted from `@fluentui/react-label` 9.4.4
 - `FField` — adapted from `@fluentui/react-field` 9.5.4
@@ -128,6 +129,7 @@ import {
   FLabel,
   FLink,
   FPresenceBadge,
+  FSpinner,
   FText,
   FTextarea,
   type CheckboxValue,
@@ -152,6 +154,7 @@ const accepted = ref<CheckboxValue>(false);
   <FBadge appearance="tint" color="success">Verified</FBadge>
   <FCounterBadge :count="120" role="img" aria-label="120 unread notifications" />
   <FPresenceBadge status="available" aria-label="Available for support" />
+  <FSpinner label="Loading account" size="large" />
   <FLink inline href="/privacy">Read the privacy policy</FLink>
   <FButton appearance="primary" :disabled="!accepted">Continue</FButton>
 </template>
@@ -448,6 +451,41 @@ Slots:
 - Consumer-provided icon slots are **not automatically `aria-hidden`** because arbitrary slot content may carry intended semantics. If the root or visible text already supplies the accessible name, mark the slotted SVG or icon `aria-hidden="true"` and `focusable="false"`. If the icon itself must contribute to the name, give it appropriate accessible semantics and avoid duplicating the root label. Never place interactive controls in these icon slots.
 
 The private fallback presence SVG path data is adapted from `@fluentui/react-icons@2.0.245`; it is bundled as internal data rather than exposing React or a runtime icon dependency. React root/icon slot objects are intentionally translated to fixed Vue roots, typed Vue slots, and fallthrough attributes.
+
+## Spinner
+
+`FSpinner` is an indeterminate `role="progressbar"` adapted from the released `@fluentui/react-spinner@9.8.5` package. Use it when progress is active but a meaningful completion percentage is not available.
+
+```vue
+<FSpinner label="Loading account" />
+<FSpinner label="Loading messages" label-position="above" size="huge" />
+<FSpinner appearance="inverted" label="Submitting" />
+<FSpinner as="span" aria-label="Loading inline result" size="extra-tiny" />
+<FSpinner :delay="500" label="Loading search results" />
+
+<FSpinner label="Loading with a custom indicator">
+  <template #indicator>
+    <MyDecorativeLoader />
+  </template>
+</FSpinner>
+```
+
+Key props:
+
+- `appearance`: `primary | inverted`
+- `size`: `extra-tiny | tiny | extra-small | small | medium | large | extra-large | huge`
+- `labelPosition`: `above | below | before | after`
+- `label` for visible progress text
+- `delay` in milliseconds before the indicator and visible label appear
+- `as`: `div | span`
+
+The defaults are `as="div"`, `appearance="primary"`, `size="medium"`, `label-position="after"`, and no delay. The root always remains in the DOM with managed `role="progressbar"`, including during a positive delay; only the indicator and visible label are delayed. Positive-delay server markup is therefore deterministic and hydrates to the same empty progressbar root before the client timer reveals its contents.
+
+A visible `label` prop or `label` slot receives a deterministic generated ID that is applied to the root through `aria-labelledby`. A consumer-supplied `aria-labelledby` remains authoritative. Without a visible label, provide `aria-label` or `aria-labelledby` whenever surrounding context does not already identify the progress operation. Do not add `aria-valuenow`, because Spinner represents indeterminate progress.
+
+The `indicator` slot replaces the package's animated tail inside the fixed decorative `.fui-Spinner__spinner` wrapper. Its content is always inside `aria-hidden="true"`, so it must be visual-only and must not contain interactive controls or the spinner's accessible name. Top-level `class`, `style`, native, ARIA, data attributes, and listeners are forwarded to the root. The managed progressbar role cannot be overridden. The root exposes its native `element`, defines no component events, and is not focusable unless a consumer explicitly adds focusability, which is normally inappropriate.
+
+The animation follows document direction, uses Fluent forced-color system colors, and simplifies the tail for `prefers-reduced-motion: reduce`. `appearance="inverted"` is intended for brand or dark contrasting surfaces. React root, spinner, spinner-tail, and Label slot objects are translated to a constrained Vue root plus `label` and decorative `indicator` slots. React Spinner context sizing is intentionally omitted until this package introduces a shared provider/context contract.
 
 ## Input
 

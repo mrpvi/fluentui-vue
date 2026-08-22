@@ -531,6 +531,160 @@ test('PresenceBadge preserves status labels, OOO, sizes, and icon accessibility'
   );
 });
 
+test('Spinner preserves dimensions, layout, labels, roots, delay, and nonfocusability', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#spinner');
+  const expectedSizes = {
+    'extra-tiny': 16,
+    tiny: 20,
+    'extra-small': 24,
+    small: 28,
+    medium: 32,
+    large: 36,
+    'extra-large': 40,
+    huge: 44,
+  } as const;
+
+  for (const [size, dimension] of Object.entries(expectedSizes)) {
+    const root = section.locator(`.spinner-size-${size}`);
+    const indicator = root.locator('.fui-Spinner__spinner');
+    await expect(indicator).toHaveCSS('width', `${dimension}px`);
+    await expect(indicator).toHaveCSS('height', `${dimension}px`);
+    expect(
+      await indicator.evaluate((element) => ({
+        width: (element as HTMLElement).offsetWidth,
+        height: (element as HTMLElement).offsetHeight,
+      })),
+    ).toEqual({ width: dimension, height: dimension });
+    const sizeLabelId = await root.locator('.fui-Spinner__label').getAttribute('id');
+    expect(sizeLabelId).not.toBeNull();
+    await expect(root).toHaveAttribute('aria-labelledby', sizeLabelId!);
+  }
+
+  for (const position of ['above', 'below', 'before', 'after'] as const) {
+    const root = section.locator(`.spinner-position-${position}`);
+    const rootBox = await root.boundingBox();
+    const indicatorBox = await root.locator('.fui-Spinner__spinner').boundingBox();
+    const label = root.locator('.fui-Spinner__label');
+    const labelBox = await label.boundingBox();
+    const labelId = await label.getAttribute('id');
+    expect(rootBox).not.toBeNull();
+    expect(indicatorBox).not.toBeNull();
+    expect(labelBox).not.toBeNull();
+    expect(labelId).not.toBeNull();
+    await expect(root).toHaveAttribute('aria-labelledby', labelId!);
+    await expect(root).toHaveCSS(
+      'flex-direction',
+      position === 'above' || position === 'below' ? 'column' : 'row',
+    );
+
+    if (position === 'above') {
+      expect(labelBox!.y).toBeLessThan(indicatorBox!.y);
+    } else if (position === 'below') {
+      expect(labelBox!.y).toBeGreaterThan(indicatorBox!.y);
+    } else if (position === 'before') {
+      expect(labelBox!.x).toBeLessThan(indicatorBox!.x);
+    } else {
+      expect(labelBox!.x).toBeGreaterThan(indicatorBox!.x);
+    }
+  }
+
+  await expect(section.locator('.spinner-primary .fui-Spinner__spinner')).toHaveCSS(
+    'animation-duration',
+    '1.5s',
+  );
+  expect(await section.locator('.spinner-span-root').evaluate((element) => element.tagName)).toBe(
+    'SPAN',
+  );
+  await expect(section.locator('.spinner-custom-indicator .fui-Spinner__spinnerTail')).toHaveCount(
+    0,
+  );
+  await expect(
+    section.locator('.spinner-custom-indicator .spinner-custom-indicator-shape'),
+  ).toBeVisible();
+
+  const delayed = section.locator('.spinner-delayed');
+  await expect(delayed).toHaveAttribute('role', 'progressbar');
+  await expect(delayed).toHaveAttribute('aria-label', 'Delayed spinner');
+  await expect(delayed.locator('.fui-Spinner__spinner')).toHaveCount(0);
+  await expect(delayed.locator('.fui-Spinner__label')).toHaveCount(0);
+  await expect(delayed).toHaveAttribute('aria-labelledby', /^fui-spinner-.+__label$/);
+  await expect(delayed.locator('.fui-Spinner__spinner')).toBeVisible({ timeout: 2_000 });
+  const delayedLabel = delayed.locator('.fui-Spinner__label');
+  await expect(delayedLabel).toHaveText('Delayed spinner');
+  const delayedLabelId = await delayedLabel.getAttribute('id');
+  expect(delayedLabelId).not.toBeNull();
+  await expect(delayed).toHaveAttribute('aria-labelledby', delayedLabelId!);
+
+  const focusableRoots = await section
+    .locator('.fui-Spinner')
+    .evaluateAll(
+      (roots) =>
+        roots.filter((root) => root.matches('a, button, input, select, textarea, [tabindex]'))
+          .length,
+    );
+  expect(focusableRoots).toBe(0);
+});
+
+test('Spinner RTL reverses horizontal label placement and tail styles where exposed', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const section = page.locator('#spinner');
+  const before = section.locator('.spinner-position-before');
+  const label = before.locator('.fui-Spinner__label');
+  const indicator = before.locator('.fui-Spinner__spinner');
+  const ltrLabel = await label.boundingBox();
+  const ltrIndicator = await indicator.boundingBox();
+  expect(ltrLabel).not.toBeNull();
+  expect(ltrIndicator).not.toBeNull();
+  expect(ltrLabel!.x).toBeLessThan(ltrIndicator!.x);
+
+  const ltrTail = await before.locator('.fui-Spinner__spinnerTail').evaluate((element) => ({
+    maskImage: getComputedStyle(element).maskImage,
+    animationName: getComputedStyle(element).animationName,
+  }));
+
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  const rtlLabel = await label.boundingBox();
+  const rtlIndicator = await indicator.boundingBox();
+  expect(rtlLabel).not.toBeNull();
+  expect(rtlIndicator).not.toBeNull();
+  expect(rtlLabel!.x).toBeGreaterThan(rtlIndicator!.x);
+
+  const rtlTail = await before.locator('.fui-Spinner__spinnerTail').evaluate((element) => ({
+    maskImage: getComputedStyle(element).maskImage,
+    animationName: getComputedStyle(element).animationName,
+  }));
+  if (ltrTail.maskImage !== 'none' && rtlTail.maskImage !== 'none') {
+    expect(rtlTail.maskImage).not.toBe(ltrTail.maskImage);
+  }
+  if (ltrTail.animationName !== 'none' && rtlTail.animationName !== 'none') {
+    expect(rtlTail.animationName).not.toBe(ltrTail.animationName);
+  }
+});
+
+test('Spinner reduced motion simplifies the animated tail', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Reduced-motion computed-style coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const spinner = page.locator('#spinner .spinner-primary .fui-Spinner__spinner');
+  const tail = page.locator('#spinner .spinner-primary .fui-Spinner__spinnerTail');
+  await expect(spinner).toHaveCSS('animation-duration', '1.8s');
+  await expect(tail).toHaveCSS('animation-name', 'none');
+  await expect(tail).toHaveCSS(
+    'background-image',
+    'conic-gradient(rgba(0, 0, 0, 0) 120deg, rgb(15, 108, 189) 360deg)',
+  );
+  expect(await tail.evaluate((element) => getComputedStyle(element, '::before').content)).toBe(
+    'none',
+  );
+});
+
 test('native form reset restores uncontrolled Input and Checkbox defaults', async ({ page }) => {
   await page.goto('/');
 
@@ -600,6 +754,7 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
     .locator('.fui-Field__validationMessageIcon');
   const outlinedBadge = page.locator('#badge').getByText('Outline', { exact: true });
   const filledBadge = page.locator('#badge').getByText('Filled', { exact: true });
+  const spinnerIndicator = page.locator('#spinner .spinner-primary .fui-Spinner__spinner');
 
   await expect(indicator).toHaveCSS('border-color', 'rgb(0, 0, 0)');
   await expect(invalidInput).toHaveCSS('forced-color-adjust', 'none');
@@ -607,6 +762,14 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   await expect(primary).toHaveCSS('forced-color-adjust', 'none');
   await expect(outlinedBadge).toHaveCSS('border-color', 'rgb(0, 0, 0)');
   await expect(filledBadge).toHaveCSS('border-color', 'rgb(0, 0, 0)');
+  await expect(spinnerIndicator).toHaveCSS('forced-color-adjust', 'none');
+  const spinnerSystemColors = await spinnerIndicator.evaluate((element) => ({
+    background: getComputedStyle(element).backgroundColor,
+    color: getComputedStyle(element).color,
+  }));
+  expect(spinnerSystemColors.background).not.toBe('rgba(0, 0, 0, 0)');
+  expect(spinnerSystemColors.color).not.toBe('rgba(0, 0, 0, 0)');
+  expect(spinnerSystemColors.background).not.toBe(spinnerSystemColors.color);
 
   const grayText = await page.evaluate(() => {
     const probe = document.createElement('span');

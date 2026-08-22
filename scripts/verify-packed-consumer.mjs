@@ -41,6 +41,7 @@ import {
   FLabel,
   FLink,
   FPresenceBadge,
+  FSpinner,
   FText,
   FTextarea,
   FluentVue,
@@ -54,6 +55,8 @@ import {
   type ImageFit,
   type ImageShape,
   type PresenceBadgeStatus,
+  type SpinnerLabelPosition,
+  type SpinnerSize,
   type TextareaResize,
 } from '@local/fluent-vue';
 import '@local/fluent-vue/style.css';
@@ -67,6 +70,8 @@ const dividerAppearance: DividerAppearance = 'brand';
 const imageFit: ImageFit = 'cover';
 const imageShape: ImageShape = 'rounded';
 const presenceStatus: PresenceBadgeStatus = 'available';
+const spinnerLabelPosition: SpinnerLabelPosition = 'after';
+const spinnerSize: SpinnerSize = 'large';
 const theme: FluentTheme = 'light';
 
 createApp({
@@ -111,6 +116,17 @@ createApp({
         'aria-label': 'Packed notifications',
       }),
       h(FPresenceBadge, { status: presenceStatus, size: 'large' }),
+      h(FSpinner, {
+        as: 'span',
+        label: 'Packed spinner',
+        labelPosition: spinnerLabelPosition,
+        size: spinnerSize,
+      }),
+      h(
+        FSpinner,
+        { label: 'Packed custom spinner' },
+        { indicator: () => h('span', { class: 'packed-indicator' }) },
+      ),
       h(FLink, { href: '#docs', inline: true }, () => 'Read documentation'),
       h(FDivider, { appearance: dividerAppearance }, () => 'Review'),
       h(FDivider, { vertical: true, 'aria-label': 'Column boundary' }),

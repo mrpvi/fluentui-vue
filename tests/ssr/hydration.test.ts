@@ -2,11 +2,19 @@
 
 import { createSSRApp, nextTick } from 'vue';
 import { renderToString } from '@vue/server-renderer';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { SsrFixture } from './SsrFixture';
 
 describe('hydration', () => {
-  it('hydrates generated IDs and interactive controls without warnings', async () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('hydrates generated IDs, delayed spinner markup, and interactive controls without warnings', async () => {
     const html = await renderToString(createSSRApp(SsrFixture));
     const container = document.createElement('div');
     container.innerHTML = html;
@@ -36,6 +44,32 @@ describe('hydration', () => {
       expect(content).not.toBeNull();
       expect(divider.getAttribute('aria-labelledby')).toBe(content?.id);
     }
+
+    const spinners = [...container.querySelectorAll<HTMLElement>('[role="progressbar"]')];
+    expect(spinners).toHaveLength(2);
+    expect(spinners[0]?.querySelector('.fui-Spinner__spinner')).not.toBeNull();
+    expect(spinners[0]?.getAttribute('aria-labelledby')).toBe(
+      spinners[0]?.querySelector<HTMLElement>('.fui-Spinner__label')?.id,
+    );
+
+    const delayedSpinner = container.querySelector<HTMLElement>('.ssr-delayed-spinner');
+    expect(delayedSpinner).not.toBeNull();
+    expect(delayedSpinner?.children).toHaveLength(0);
+    expect(delayedSpinner?.getAttribute('aria-labelledby')).toMatch(/^fui-spinner-.+__label$/);
+
+    await vi.advanceTimersByTimeAsync(999);
+    expect(delayedSpinner?.children).toHaveLength(0);
+    expect(warning).not.toHaveBeenCalled();
+    expect(error).not.toHaveBeenCalled();
+
+    await vi.advanceTimersByTimeAsync(1);
+    await nextTick();
+    const delayedLabel = delayedSpinner?.querySelector<HTMLElement>('.fui-Spinner__label');
+    expect(delayedSpinner?.querySelector('.fui-Spinner__spinner')).not.toBeNull();
+    expect(delayedLabel?.textContent).toBe('Delayed server loading');
+    expect(delayedSpinner?.getAttribute('aria-labelledby')).toBe(delayedLabel?.id);
+    expect(warning).not.toHaveBeenCalled();
+    expect(error).not.toHaveBeenCalled();
 
     app.unmount();
     warning.mockRestore();

@@ -12,6 +12,7 @@ import {
   FLabel,
   FLink,
   FPresenceBadge,
+  FSpinner,
   FText,
   FTextarea,
   type CheckboxValue,
@@ -45,8 +46,8 @@ function clearUncontrolledAmount(event: MouseEvent) {
         <p class="eyebrow">@local/fluent-vue · 0.1.0</p>
         <h1>Native Fluent components for Vue 3</h1>
         <p>
-          Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, Image, and
-          Badge components translated from Fluent UI React v9 to Vue props, slots, emits, and
+          Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, Image, Badge,
+          and Spinner components translated from Fluent UI React v9 to Vue props, slots, emits, and
           semantic HTML.
         </p>
       </div>
@@ -529,6 +530,74 @@ function clearUncontrolledAmount(event: MouseEvent) {
       </div>
     </section>
 
+    <section id="spinner">
+      <h2>Spinner</h2>
+      <div class="spinner-samples">
+        <div class="spinner-group">
+          <h3>Label positions</h3>
+          <div class="spinner-position-grid">
+            <FSpinner
+              v-for="position in ['above', 'below', 'before', 'after'] as const"
+              :key="position"
+              :class="`spinner-position-${position}`"
+              :label="position"
+              :label-position="position"
+            />
+          </div>
+        </div>
+
+        <div class="spinner-group">
+          <h3>Sizes</h3>
+          <div class="spinner-size-grid">
+            <FSpinner
+              v-for="size in [
+                'extra-tiny',
+                'tiny',
+                'extra-small',
+                'small',
+                'medium',
+                'large',
+                'extra-large',
+                'huge',
+              ] as const"
+              :key="size"
+              :class="`spinner-size-${size}`"
+              :label="size"
+              :size="size"
+            />
+          </div>
+        </div>
+
+        <div class="spinner-group">
+          <h3>Appearance, root, delay, and indicator slot</h3>
+          <div class="spinner-feature-grid">
+            <FSpinner class="spinner-primary" label="Primary spinner" />
+            <div class="spinner-inverted-surface">
+              <FSpinner appearance="inverted" label="Inverted spinner" />
+            </div>
+            <FSpinner
+              as="span"
+              class="spinner-span-root"
+              label="Inline span spinner"
+              size="small"
+            />
+            <FSpinner
+              class="spinner-delayed"
+              :delay="1200"
+              aria-label="Delayed spinner"
+              label="Delayed spinner"
+              size="extra-small"
+            />
+            <FSpinner class="spinner-custom-indicator" label="Custom indicator">
+              <template #indicator>
+                <span class="spinner-custom-indicator-shape"></span>
+              </template>
+            </FSpinner>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section>
       <h2>Button</h2>
       <div class="row">
@@ -736,20 +805,62 @@ section {
   gap: 1rem;
 }
 
-.badge-samples {
+.badge-samples,
+.spinner-samples {
   display: grid;
   gap: 1.5rem;
 }
 
-.badge-group {
+.badge-group,
+.spinner-group {
   display: grid;
   gap: 0.75rem;
 }
 
+.spinner-group h3,
 .badge-group h3 {
   margin: 0;
   color: var(--fui-color-neutral-foreground-2);
   font-size: var(--fui-font-size-base-300);
+}
+
+.spinner-position-grid,
+.spinner-size-grid,
+.spinner-feature-grid {
+  display: grid;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.spinner-position-grid {
+  grid-template-columns: repeat(4, minmax(8rem, 1fr));
+  min-height: 7.5rem;
+}
+
+.spinner-size-grid {
+  grid-template-columns: repeat(4, minmax(10rem, 1fr));
+}
+
+.spinner-feature-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+}
+
+.spinner-inverted-surface {
+  display: grid;
+  min-height: 5rem;
+  padding: 1rem;
+  color: var(--fui-color-neutral-foreground-static-inverted);
+  background: var(--fui-color-brand-background);
+  place-items: center;
+}
+
+.spinner-custom-indicator-shape {
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 4px dotted currentcolor;
+  border-radius: 50%;
 }
 
 .badge-matrix {
@@ -993,6 +1104,8 @@ small {
   }
 
   .field-validity-demo,
+  .spinner-position-grid,
+  .spinner-size-grid,
   .textarea-reset-demo {
     grid-template-columns: 1fr;
   }
