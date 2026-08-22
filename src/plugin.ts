@@ -26,6 +26,7 @@ import { FSpinButton } from './components/SpinButton';
 import { FSwitch } from './components/Switch';
 import { FText } from './components/Text';
 import { FTextarea } from './components/Textarea';
+import { FToggleButton } from './components/ToggleButton';
 
 export const FluentVue: Plugin = {
   install(app: App) {
@@ -56,5 +57,6 @@ export const FluentVue: Plugin = {
     app.component('FSwitch', FSwitch);
     app.component('FText', FText);
     app.component('FTextarea', FTextarea);
+    app.component('FToggleButton', FToggleButton);
   },
 };

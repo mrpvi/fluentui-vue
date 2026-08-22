@@ -1,0 +1,228 @@
+.fui-ToggleButton--checked {
+  color: var(--fui-color-neutral-foreground-1-selected);
+  background-color: var(--fui-color-neutral-background-1-selected);
+  border-color: var(--fui-color-neutral-stroke-1);
+  border-width: var(--fui-stroke-width-thin);
+}
+
+.fui-ToggleButton--checked .fui-Icon-filled {
+  display: inline;
+}
+
+.fui-ToggleButton--checked .fui-Icon-regular {
+  display: none;
+}
+
+.fui-ToggleButton--checked:hover {
+  color: var(--fui-color-neutral-foreground-1-hover);
+  background-color: var(--fui-color-neutral-background-1-hover);
+  border-color: var(--fui-color-neutral-stroke-1-hover);
+}
+
+.fui-ToggleButton--checked:hover:active,
+.fui-ToggleButton--checked:active:focus-visible {
+  color: var(--fui-color-neutral-foreground-1-pressed);
+  background-color: var(--fui-color-neutral-background-1-pressed);
+  border-color: var(--fui-color-neutral-stroke-1-pressed);
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--outline {
+  background-color: var(--fui-color-transparent-background-selected);
+  border-color: var(--fui-color-neutral-stroke-1);
+  border-width: var(--fui-stroke-width-thicker);
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--outline:hover {
+  background-color: var(--fui-color-transparent-background-hover);
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--outline:hover:active,
+.fui-ToggleButton--checked.fui-ToggleButton--outline:active:focus-visible {
+  background-color: var(--fui-color-transparent-background-pressed);
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--outline:focus-visible {
+  border-color: var(--fui-color-neutral-stroke-1);
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--primary {
+  color: var(--fui-color-neutral-foreground-on-brand);
+  background-color: var(--fui-color-brand-background-selected);
+  border-color: transparent;
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--primary:hover {
+  color: var(--fui-color-neutral-foreground-on-brand);
+  background-color: var(--fui-color-brand-background-hover);
+  border-color: transparent;
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--primary:hover:active,
+.fui-ToggleButton--checked.fui-ToggleButton--primary:active:focus-visible {
+  color: var(--fui-color-neutral-foreground-on-brand);
+  background-color: var(--fui-color-brand-background-pressed);
+  border-color: transparent;
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--subtle {
+  color: var(--fui-color-neutral-foreground-2-selected);
+  background-color: var(--fui-color-subtle-background-selected);
+  border-color: transparent;
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--subtle:hover {
+  color: var(--fui-color-neutral-foreground-2-hover);
+  background-color: var(--fui-color-subtle-background-hover);
+  border-color: transparent;
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--subtle:hover:active,
+.fui-ToggleButton--checked.fui-ToggleButton--subtle:active:focus-visible {
+  color: var(--fui-color-neutral-foreground-2-pressed);
+  background-color: var(--fui-color-subtle-background-pressed);
+  border-color: transparent;
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--transparent {
+  color: var(--fui-color-neutral-foreground-2-brand-selected);
+  background-color: var(--fui-color-transparent-background-selected);
+  border-color: transparent;
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--transparent:hover {
+  color: var(--fui-color-neutral-foreground-2-brand-hover);
+  background-color: var(--fui-color-transparent-background-hover);
+  border-color: transparent;
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--transparent:hover:active,
+.fui-ToggleButton--checked.fui-ToggleButton--transparent:active:focus-visible {
+  color: var(--fui-color-neutral-foreground-2-brand-pressed);
+  background-color: var(--fui-color-transparent-background-pressed);
+  border-color: transparent;
+}
+
+.fui-ToggleButton--checked:not(.fui-ToggleButton--accessible).fui-ToggleButton--subtle
+  .fui-ToggleButton__icon,
+.fui-ToggleButton--checked:not(.fui-ToggleButton--accessible).fui-ToggleButton--transparent
+  .fui-ToggleButton__icon {
+  color: var(--fui-color-neutral-foreground-2-brand-selected);
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--accessible {
+  color: var(--fui-color-neutral-foreground-on-brand);
+  background-color: var(--fui-color-brand-background);
+  border-color: transparent;
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--accessible:hover {
+  color: var(--fui-color-neutral-foreground-on-brand);
+  background-color: var(--fui-color-brand-background-hover);
+  border-color: transparent;
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--accessible:hover:active,
+.fui-ToggleButton--checked.fui-ToggleButton--accessible:active:focus-visible {
+  color: var(--fui-color-neutral-foreground-on-brand);
+  background-color: var(--fui-color-brand-background-pressed);
+  border-color: transparent;
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--accessible.fui-ToggleButton--outline {
+  border-width: var(--fui-stroke-width-thin);
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--accessible.fui-ToggleButton--primary {
+  outline: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-foreground-on-brand);
+  outline-offset: calc(var(--fui-stroke-width-thicker) * -1);
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--accessible.fui-ToggleButton--primary:focus-visible {
+  outline: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-foreground-on-brand);
+  outline-offset: calc(var(--fui-stroke-width-thickest) * -1);
+}
+
+.fui-ToggleButton--checked.fui-ToggleButton--accessible.fui-ToggleButton--subtle:hover
+  .fui-ToggleButton__icon {
+  color: var(--fui-color-neutral-foreground-on-brand);
+}
+
+.fui-ToggleButton--disabled,
+.fui-ToggleButton--disabled-focusable,
+.fui-ToggleButton--disabled:hover,
+.fui-ToggleButton--disabled-focusable:hover,
+.fui-ToggleButton--disabled:hover:active,
+.fui-ToggleButton--disabled-focusable:hover:active,
+.fui-ToggleButton--disabled:active:focus-visible,
+.fui-ToggleButton--disabled-focusable:active:focus-visible {
+  color: var(--fui-color-neutral-foreground-disabled);
+  background-color: var(--fui-color-neutral-background-disabled);
+  border-color: var(--fui-color-neutral-stroke-disabled);
+  outline: none;
+}
+
+.fui-ToggleButton--disabled.fui-ToggleButton--primary,
+.fui-ToggleButton--disabled-focusable.fui-ToggleButton--primary {
+  border-color: transparent;
+}
+
+.fui-ToggleButton--disabled.fui-ToggleButton--subtle,
+.fui-ToggleButton--disabled-focusable.fui-ToggleButton--subtle,
+.fui-ToggleButton--disabled.fui-ToggleButton--transparent,
+.fui-ToggleButton--disabled-focusable.fui-ToggleButton--transparent {
+  background-color: var(--fui-color-transparent-background);
+  border-color: transparent;
+}
+
+.fui-ToggleButton--disabled.fui-ToggleButton--subtle:hover,
+.fui-ToggleButton--disabled-focusable.fui-ToggleButton--subtle:hover,
+.fui-ToggleButton--disabled.fui-ToggleButton--transparent:hover,
+.fui-ToggleButton--disabled-focusable.fui-ToggleButton--transparent:hover {
+  background-color: var(--fui-color-transparent-background-hover);
+}
+
+.fui-ToggleButton--disabled.fui-ToggleButton--subtle:hover:active,
+.fui-ToggleButton--disabled-focusable.fui-ToggleButton--subtle:hover:active,
+.fui-ToggleButton--disabled.fui-ToggleButton--transparent:hover:active,
+.fui-ToggleButton--disabled-focusable.fui-ToggleButton--transparent:hover:active {
+  background-color: var(--fui-color-transparent-background-pressed);
+}
+
+@media (forced-colors: active) {
+  .fui-ToggleButton.fui-ToggleButton--primary {
+    color: ButtonText;
+    background-color: ButtonFace;
+    border-color: ButtonBorder;
+    forced-color-adjust: auto;
+  }
+
+  .fui-ToggleButton--checked {
+    color: HighlightText;
+    background-color: Highlight;
+    border-color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  .fui-ToggleButton--checked .fui-ToggleButton__icon {
+    forced-color-adjust: auto;
+  }
+
+  .fui-ToggleButton--checked:hover,
+  .fui-ToggleButton--checked:hover:active,
+  .fui-ToggleButton--checked:active:focus-visible {
+    color: Highlight;
+    background-color: HighlightText;
+    border-color: Highlight;
+  }
+
+  .fui-ToggleButton--checked:focus-visible {
+    border: var(--fui-stroke-width-thin) solid HighlightText;
+    outline-color: Highlight;
+  }
+
+  .fui-ToggleButton--disabled.fui-ToggleButton--primary,
+  .fui-ToggleButton--disabled-focusable.fui-ToggleButton--primary {
+    color: GrayText;
+    border-color: GrayText;
+  }
+}

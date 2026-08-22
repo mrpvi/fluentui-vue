@@ -25,6 +25,7 @@ export * from './components/SpinButton';
 export * from './components/Switch';
 export * from './components/Text';
 export * from './components/Textarea';
+export * from './components/ToggleButton';
 export { FluentVue } from './plugin';
 export type { FluentTheme } from './types';
 
