@@ -61,11 +61,7 @@ defineExpose({
     :aria-orientation="vertical ? 'vertical' : 'horizontal'"
     :aria-labelledby="hasContent ? generatedContentId : undefined"
   >
-    <div
-      v-if="hasContent"
-      :id="generatedContentId"
-      class="fui-Divider__wrapper"
-    >
+    <div v-if="hasContent" :id="generatedContentId" class="fui-Divider__wrapper">
       <slot />
     </div>
   </div>

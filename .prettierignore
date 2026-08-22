@@ -4,5 +4,6 @@ coverage/
 playwright-report/
 test-results/
 .playwright-mcp/
+.claude/
 src/styles/tokens.css
 package-lock.json

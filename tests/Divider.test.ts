@@ -48,7 +48,7 @@ describe('FDivider', () => {
 
   it.each<DividerAlignContent>(['start', 'center', 'end'])(
     'applies the %s content alignment',
-    alignContent => {
+    (alignContent) => {
       expect(mount(Divider, { props: { alignContent } }).classes()).toContain(
         `fui-Divider--align-${alignContent}`,
       );
@@ -57,7 +57,7 @@ describe('FDivider', () => {
 
   it.each<DividerAppearance>(['brand', 'default', 'strong', 'subtle'])(
     'applies the %s appearance',
-    appearance => {
+    (appearance) => {
       expect(mount(Divider, { props: { appearance } }).classes()).toContain(
         `fui-Divider--${appearance}`,
       );
