@@ -12,6 +12,7 @@ import { FPresenceBadge } from './components/PresenceBadge';
 import { FProgressBar } from './components/ProgressBar';
 import { FRadio } from './components/Radio';
 import { FRadioGroup } from './components/RadioGroup';
+import { FSearchBox } from './components/SearchBox';
 import { FSelect } from './components/Select';
 import { FLink } from './components/Link';
 import { FSkeleton } from './components/Skeleton';
@@ -38,6 +39,7 @@ export const FluentVue: Plugin = {
     app.component('FProgressBar', FProgressBar);
     app.component('FRadio', FRadio);
     app.component('FRadioGroup', FRadioGroup);
+    app.component('FSearchBox', FSearchBox);
     app.component('FLabel', FLabel);
     app.component('FLink', FLink);
     app.component('FSkeleton', FSkeleton);

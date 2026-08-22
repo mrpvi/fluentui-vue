@@ -11,6 +11,7 @@ export * from './components/PresenceBadge';
 export * from './components/ProgressBar';
 export * from './components/Radio';
 export * from './components/RadioGroup';
+export * from './components/SearchBox';
 export * from './components/Select';
 export * from './components/Link';
 export * from './components/Skeleton';

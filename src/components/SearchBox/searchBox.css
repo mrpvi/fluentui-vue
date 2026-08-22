@@ -1,0 +1,305 @@
+.fui-SearchBox {
+  --fui-searchbox-root-padding: var(--fui-spacing-horizontal-s);
+  --fui-searchbox-input-start-padding: var(--fui-spacing-horizontal-s-nudge);
+  --fui-searchbox-input-end-padding: var(--fui-spacing-horizontal-s);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 468px;
+  min-height: 32px;
+  padding-inline: var(--fui-searchbox-root-padding);
+  vertical-align: middle;
+  color: var(--fui-color-neutral-foreground-1);
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-300);
+  font-weight: var(--fui-font-weight-regular);
+  line-height: var(--fui-line-height-base-300);
+  background-color: var(--fui-color-neutral-background-1);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible);
+  border-radius: var(--fui-border-radius-medium);
+}
+
+.fui-SearchBox::after {
+  position: absolute;
+  inset-inline: -1px;
+  bottom: -1px;
+  box-sizing: border-box;
+  height: max(2px, var(--fui-border-radius-medium));
+  content: '';
+  border-bottom: 2px solid var(--fui-color-compound-brand-stroke);
+  border-end-end-radius: var(--fui-border-radius-medium);
+  border-end-start-radius: var(--fui-border-radius-medium);
+  clip-path: inset(calc(100% - 2px) 0 0 0);
+  transform: scaleX(0);
+  transition-delay: var(--fui-curve-accelerate-mid);
+  transition-duration: var(--fui-duration-ultra-fast);
+  transition-property: transform;
+}
+
+.fui-SearchBox:focus-within {
+  outline: 2px solid transparent;
+}
+
+.fui-SearchBox:focus-within::after {
+  transform: scaleX(1);
+  transition-delay: var(--fui-curve-decelerate-mid);
+  transition-duration: var(--fui-duration-normal);
+}
+
+.fui-SearchBox:focus-within:active::after {
+  border-bottom-color: var(--fui-color-compound-brand-stroke-pressed);
+}
+
+.fui-SearchBox--outline:hover {
+  border-color: var(--fui-color-neutral-stroke-1-hover);
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible-hover);
+}
+
+.fui-SearchBox--outline:active,
+.fui-SearchBox--outline:focus-within {
+  border-color: var(--fui-color-neutral-stroke-1-pressed);
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible-pressed);
+}
+
+.fui-SearchBox--underline {
+  background-color: var(--fui-color-transparent-background);
+  border-top-style: none;
+  border-inline-style: none;
+  border-radius: 0;
+}
+
+.fui-SearchBox--underline::after {
+  inset-inline: 0;
+  border-radius: 0;
+}
+
+.fui-SearchBox--underline:hover {
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible-hover);
+}
+
+.fui-SearchBox--underline:active,
+.fui-SearchBox--underline:focus-within {
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible-pressed);
+}
+
+.fui-SearchBox--filled-darker,
+.fui-SearchBox--filled-lighter,
+.fui-SearchBox--filled-darker-shadow,
+.fui-SearchBox--filled-lighter-shadow {
+  border-color: var(--fui-color-transparent-stroke);
+}
+
+.fui-SearchBox--filled-darker,
+.fui-SearchBox--filled-darker-shadow {
+  background-color: var(--fui-color-neutral-background-3);
+}
+
+.fui-SearchBox--filled-lighter,
+.fui-SearchBox--filled-lighter-shadow {
+  background-color: var(--fui-color-neutral-background-1);
+}
+
+.fui-SearchBox--filled-darker-shadow,
+.fui-SearchBox--filled-lighter-shadow {
+  box-shadow: var(--fui-shadow-2);
+}
+
+.fui-SearchBox--filled-darker:hover,
+.fui-SearchBox--filled-darker:focus-within,
+.fui-SearchBox--filled-lighter:hover,
+.fui-SearchBox--filled-lighter:focus-within,
+.fui-SearchBox--filled-darker-shadow:hover,
+.fui-SearchBox--filled-darker-shadow:focus-within,
+.fui-SearchBox--filled-lighter-shadow:hover,
+.fui-SearchBox--filled-lighter-shadow:focus-within {
+  border-color: var(--fui-color-transparent-stroke-interactive);
+}
+
+.fui-SearchBox--small {
+  --fui-searchbox-root-padding: var(--fui-spacing-horizontal-s-nudge);
+  --fui-searchbox-input-end-padding: var(--fui-spacing-horizontal-s-nudge);
+  min-height: 24px;
+  font-size: var(--fui-font-size-base-200);
+  line-height: var(--fui-line-height-base-200);
+}
+
+.fui-SearchBox--large {
+  --fui-searchbox-root-padding: var(--fui-spacing-horizontal-m-nudge);
+  --fui-searchbox-input-end-padding: var(--fui-spacing-horizontal-m-nudge);
+  min-height: 40px;
+  font-size: var(--fui-font-size-base-400);
+  line-height: var(--fui-line-height-base-400);
+}
+
+.fui-SearchBox__input {
+  align-self: stretch;
+  box-sizing: border-box;
+  flex-grow: 1;
+  min-width: 0;
+  padding: 0 var(--fui-searchbox-input-end-padding) 0 var(--fui-searchbox-input-start-padding);
+  color: var(--fui-color-neutral-foreground-1);
+  font: inherit;
+  background-color: transparent;
+  border-style: none;
+  outline-style: none;
+}
+
+.fui-SearchBox--focused .fui-SearchBox__input {
+  padding-inline-end: 0;
+}
+
+.fui-SearchBox__input::-webkit-search-decoration,
+.fui-SearchBox__input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.fui-SearchBox__input::placeholder {
+  color: var(--fui-color-neutral-foreground-4);
+  opacity: 1;
+}
+
+.fui-SearchBox__contentBefore,
+.fui-SearchBox__contentAfter,
+.fui-SearchBox__customContentAfter,
+.fui-SearchBox__dismiss {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.fui-SearchBox__contentBefore {
+  flex: 0 0 auto;
+  color: var(--fui-color-neutral-foreground-3);
+}
+
+.fui-SearchBox__contentAfter {
+  flex: 0 0 auto;
+  width: 0;
+  height: 0;
+  padding-inline-start: 0;
+  overflow: hidden;
+  column-gap: var(--fui-spacing-horizontal-xs);
+}
+
+.fui-SearchBox__contentAfter--visible {
+  width: auto;
+  height: auto;
+  padding-inline-start: var(--fui-spacing-horizontal-m);
+  overflow: visible;
+}
+
+.fui-SearchBox__dismiss {
+  color: var(--fui-color-neutral-foreground-3);
+  cursor: pointer;
+}
+
+.fui-SearchBox__contentBefore > svg,
+.fui-SearchBox__dismiss > svg {
+  width: 1em;
+  height: 1em;
+  font-size: 20px;
+  fill: currentColor;
+}
+
+.fui-SearchBox--small .fui-SearchBox__contentBefore > svg,
+.fui-SearchBox--small .fui-SearchBox__dismiss > svg {
+  font-size: 16px;
+}
+
+.fui-SearchBox--large .fui-SearchBox__contentBefore > svg,
+.fui-SearchBox--large .fui-SearchBox__dismiss > svg {
+  font-size: 24px;
+}
+
+.fui-SearchBox--invalid:not(:focus-within),
+.fui-SearchBox--invalid:hover:not(:focus-within) {
+  border-color: var(--fui-color-palette-red-border-2);
+}
+
+.fui-SearchBox--disabled {
+  cursor: not-allowed;
+  background-color: var(--fui-color-transparent-background);
+  border-color: var(--fui-color-neutral-stroke-disabled);
+}
+
+.fui-SearchBox--disabled::after {
+  content: unset;
+}
+
+.fui-SearchBox--disabled:focus-within {
+  outline-style: none;
+}
+
+.fui-SearchBox--disabled .fui-SearchBox__input,
+.fui-SearchBox__input:disabled,
+.fui-SearchBox--disabled .fui-SearchBox__contentBefore,
+.fui-SearchBox--disabled .fui-SearchBox__contentAfter,
+.fui-SearchBox--disabled .fui-SearchBox__dismiss {
+  color: var(--fui-color-neutral-foreground-disabled);
+  cursor: not-allowed;
+}
+
+.fui-SearchBox--readonly .fui-SearchBox__dismiss {
+  color: var(--fui-color-neutral-foreground-disabled);
+  cursor: default;
+}
+
+.fui-SearchBox__input:disabled::placeholder {
+  color: var(--fui-color-neutral-foreground-disabled);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fui-SearchBox::after,
+  .fui-SearchBox:focus-within::after {
+    transition-delay: 0.01ms;
+    transition-duration: 0.01ms;
+  }
+}
+
+@media (forced-colors: active) {
+  .fui-SearchBox {
+    color: FieldText;
+    background-color: Field;
+    border-color: FieldText;
+    forced-color-adjust: none;
+  }
+
+  .fui-SearchBox::after {
+    border-bottom-color: Highlight;
+  }
+
+  .fui-SearchBox:focus-within {
+    outline-color: Highlight;
+  }
+
+  .fui-SearchBox--invalid:not(:focus-within),
+  .fui-SearchBox--invalid:hover:not(:focus-within) {
+    border-color: Mark;
+  }
+
+  .fui-SearchBox__input,
+  .fui-SearchBox__contentBefore,
+  .fui-SearchBox__contentAfter,
+  .fui-SearchBox__dismiss {
+    color: FieldText;
+  }
+
+  .fui-SearchBox__input::placeholder {
+    color: GrayText;
+  }
+
+  .fui-SearchBox--disabled,
+  .fui-SearchBox--disabled .fui-SearchBox__input,
+  .fui-SearchBox__input:disabled,
+  .fui-SearchBox--disabled .fui-SearchBox__contentBefore,
+  .fui-SearchBox--disabled .fui-SearchBox__contentAfter,
+  .fui-SearchBox--disabled .fui-SearchBox__dismiss {
+    color: GrayText;
+    background-color: Field;
+    border-color: GrayText;
+  }
+}
