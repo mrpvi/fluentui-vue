@@ -24,6 +24,7 @@ import {
   FSlider,
   FSelect,
   FSpinner,
+  FSpinButton,
   FSwitch,
   FText,
   FTextarea,
@@ -36,6 +37,10 @@ const accepted = ref<CheckboxValue>(false);
 const triState = ref<CheckboxValue>('mixed');
 const selectedPet = ref('dog');
 const lockedPet = ref('cat');
+const controlledSpinValue = ref(10);
+const controlledSpinDisplay = ref('$10.00');
+const rollbackSpinValue = ref(4);
+const spinFormData = ref('not submitted');
 const dark = ref(false);
 const switchEnabled = ref(false);
 const controlledSwitch = ref(true);
@@ -66,6 +71,16 @@ function captureRadioSubmission(event: SubmitEvent) {
   const value = new FormData(form).get('radio-form-choice');
   radioSubmission.value = typeof value === 'string' ? value : '';
 }
+
+function updateControlledSpin(value: number | null) {
+  controlledSpinValue.value = value ?? 0;
+  controlledSpinDisplay.value = `$${controlledSpinValue.value.toFixed(2)}`;
+}
+
+function submitSpinForm(event: Event) {
+  const form = event.currentTarget as HTMLFormElement;
+  spinFormData.value = String(new FormData(form).get('quantity'));
+}
 </script>
 
 <template>
@@ -76,9 +91,9 @@ function captureRadioSubmission(event: SubmitEvent) {
         <h1>Native Fluent components for Vue 3</h1>
         <p>
           Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, Image, Badge,
-          Spinner, ProgressBar, Switch, Radio, RadioGroup, Select, Skeleton, Slider, and Card
-          components translated from Fluent UI React v9 to Vue props, slots, emits, and semantic
-          HTML.
+          Spinner, ProgressBar, SpinButton, Switch, Radio, RadioGroup, Select, Skeleton, Slider, and
+          Card components translated from Fluent UI React v9 to Vue props, slots, emits, and
+          semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -613,7 +628,7 @@ function captureRadioSubmission(event: SubmitEvent) {
             />
             <FSpinner
               class="spinner-delayed"
-              :delay="5000"
+              :delay="3000"
               aria-label="Delayed spinner"
               label="Delayed spinner"
               size="extra-small"
@@ -700,6 +715,96 @@ function captureRadioSubmission(event: SubmitEvent) {
             >
               <FProgressBar class="progress-bar-field-success" :value="1" />
             </FField>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="spin-button">
+      <h2>SpinButton</h2>
+      <div class="spin-button-samples">
+        <div class="spin-button-group">
+          <h3>Appearances and sizes</h3>
+          <div class="spin-button-grid">
+            <FSpinButton
+              v-for="appearance in [
+                'outline',
+                'underline',
+                'filled-darker',
+                'filled-lighter',
+              ] as const"
+              :key="appearance"
+              :class="`spin-button-${appearance}`"
+              :appearance="appearance"
+              :aria-label="`${appearance} SpinButton`"
+              :default-value="2"
+            />
+            <FSpinButton
+              class="spin-button-small"
+              size="small"
+              aria-label="Small SpinButton"
+              :default-value="3"
+            />
+          </div>
+        </div>
+
+        <div class="spin-button-group">
+          <h3>Bounds, precision, and formatted controlled values</h3>
+          <div class="spin-button-grid">
+            <FSpinButton
+              class="spin-button-bounded"
+              aria-label="Bounded quantity"
+              :default-value="5"
+              :min="0"
+              :max="20"
+              :step="2"
+              :step-page="10"
+            />
+            <FSpinButton
+              class="spin-button-precision"
+              aria-label="Precise amount"
+              :default-value="0.1"
+              :step="0.2"
+            />
+            <FSpinButton
+              class="spin-button-formatted"
+              :model-value="controlledSpinValue"
+              :display-value="controlledSpinDisplay"
+              aria-label="Formatted price"
+              @update:model-value="updateControlledSpin"
+            />
+            <FSpinButton
+              class="spin-button-controlled-rollback"
+              :model-value="rollbackSpinValue"
+              aria-label="Controlled rollback"
+            />
+          </div>
+        </div>
+
+        <div class="spin-button-group">
+          <h3>Field, form, and states</h3>
+          <div class="spin-button-field-grid">
+            <FField label="Cases" hint="Use whole cases." required size="small">
+              <FSpinButton class="spin-button-field" :default-value="1" :min="0" :max="12" />
+            </FField>
+            <FField label="Invalid quantity" validation-message="Choose a supported quantity.">
+              <FSpinButton class="spin-button-invalid" :default-value="99" />
+            </FField>
+          </div>
+          <form class="spin-button-form" @submit.prevent="submitSpinForm">
+            <FSpinButton
+              class="spin-button-form-control"
+              name="quantity"
+              aria-label="Resettable quantity"
+              :default-value="2"
+            />
+            <FButton type="reset">Reset SpinButton form</FButton>
+            <FButton type="submit">Submit SpinButton form</FButton>
+            <output aria-live="polite">Submitted quantity: {{ spinFormData }}</output>
+          </form>
+          <div class="spin-button-grid spin-button-states">
+            <FSpinButton aria-label="Disabled SpinButton" :default-value="1" disabled />
+            <FSpinButton aria-label="Read-only SpinButton" :default-value="1" read-only />
           </div>
         </div>
       </div>
@@ -1584,6 +1689,7 @@ section {
 .card-samples,
 .spinner-samples,
 .progress-bar-samples,
+.spin-button-samples,
 .switch-samples,
 .skeleton-samples {
   display: grid;
@@ -1594,6 +1700,7 @@ section {
 .card-group,
 .spinner-group,
 .progress-bar-group,
+.spin-button-group,
 .switch-group,
 .skeleton-group {
   display: grid;
@@ -1604,6 +1711,7 @@ section {
 .badge-group h3,
 .card-group > h3,
 .progress-bar-group h3,
+.spin-button-group h3,
 .switch-group h3,
 .skeleton-group h3 {
   margin: 0;
@@ -1806,6 +1914,36 @@ section {
 
 .progress-bar-field-grid .fui-Field {
   align-content: start;
+}
+
+.spin-button-grid,
+.spin-button-field-grid {
+  display: grid;
+  align-items: start;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+}
+
+.spin-button-grid .fui-SpinButton {
+  width: 100%;
+}
+
+.spin-button-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+}
+
+.spin-button-form output {
+  color: var(--fui-color-neutral-foreground-3);
+  font-size: var(--fui-font-size-base-200);
+}
+
+.spin-button-states {
+  width: min(100%, 30rem);
 }
 
 .switch-position-grid,

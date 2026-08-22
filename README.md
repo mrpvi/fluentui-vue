@@ -20,6 +20,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 - `FCard`, `FCardHeader`, `FCardPreview`, and `FCardFooter` — adapted from `@fluentui/react-card` 9.7.2
 - `FRadio` and `FRadioGroup` — adapted from `@fluentui/react-radio` 9.6.5
 - `FSelect` — adapted from `@fluentui/react-select` 9.5.5
+- `FSpinButton` — adapted from `@fluentui/react-spinbutton` 9.6.5
 - `FText` — adapted from `@fluentui/react-text` 9.6.19
 - `FLabel` — adapted from `@fluentui/react-label` 9.4.4
 - `FField` — adapted from `@fluentui/react-field` 9.5.4
@@ -148,6 +149,7 @@ import {
   FSlider,
   FSelect,
   FSpinner,
+  FSpinButton,
   FSwitch,
   FText,
   FTextarea,
@@ -183,6 +185,7 @@ const companion = ref('dog');
   <FPresenceBadge status="available" aria-label="Available for support" />
   <FSpinner label="Loading account" size="large" />
   <FProgressBar :value="0.6" aria-label="Account setup progress" />
+  <FSpinButton :default-value="1" :min="0" :max="10" aria-label="Quantity" />
   <FSwitch label="Enable notifications" />
   <FSkeleton aria-label="Loading account card" style="display: grid; gap: 0.5rem">
     <FSkeletonItem shape="circle" :size="48" />
@@ -291,7 +294,7 @@ Key props:
 - `size`: `small | medium | large`
 - `required`
 
-`FInput`, `FCheckbox`, `FTextarea`, `FSwitch`, `FSlider`, `FRadioGroup`, and `FSelect` automatically consume the enclosing Field context. Field generates the control ID, connects `label for` to that ID, merges validation and hint IDs into `aria-describedby`, applies native `required`, and defaults `aria-invalid="true"` for errors. Explicit control attributes remain authoritative; for example, an explicit `aria-invalid="false"` or `:required="false"` is preserved.
+`FInput`, `FCheckbox`, `FTextarea`, `FSwitch`, `FSlider`, `FRadioGroup`, `FSelect`, and `FSpinButton` automatically consume the enclosing Field context. Field generates the control ID, connects `label for` to that ID, merges validation and hint IDs into `aria-describedby`, applies native `required`, and defaults `aria-invalid="true"` for errors. Explicit control attributes remain authoritative; for example, an explicit `aria-invalid="false"` or `:required="false"` is preserved.
 
 Error and warning messages use `role="alert"`. Success and `none` messages do not. Validation icons are decorative and hidden from assistive technology. The required asterisk is also visual; native required semantics are applied separately to supported controls.
 
@@ -560,6 +563,56 @@ The fixed root is a `<div role="progressbar">`. Determinate bars expose managed 
 Top-level `class`, `style`, native, ARIA, data attributes, and listeners are forwarded to the root, while the managed role and determinate value attributes cannot be overridden. The root exposes its native `element`, defines no component events, and is not focusable unless a consumer explicitly adds focusability, which is normally inappropriate.
 
 Indeterminate motion uses the released three-second linear slide. Under `prefers-reduced-motion: reduce`, it changes to an opacity pulse without translation. Forced-colors mode uses `CanvasText` for the track and `Highlight` for the bar. The upstream React root and bar slot objects are translated to a fixed semantic Vue structure; `indeterminateMotion={null}` is represented by `:indeterminate-motion="false"`. Fluent's internal custom-style hook is intentionally omitted in favor of fallthrough classes, styles, and CSS token overrides.
+
+## SpinButton
+
+`FSpinButton` is a text-editable ARIA spinbutton with increment/decrement controls, keyboard stepping, optional bounds, precision, formatted controlled values, native form participation, and automatic `FField` integration. It is adapted from `@fluentui/react-spinbutton@9.6.5`.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { FField, FSpinButton } from '@local/fluent-vue';
+
+const price = ref<number | null>(10);
+const formattedPrice = ref('$10.00');
+
+function updatePrice(value: number | null) {
+  price.value = value;
+  formattedPrice.value = value === null ? '(none)' : `$${value.toFixed(2)}`;
+}
+</script>
+
+<template>
+  <FField label="Quantity" hint="Choose between 0 and 20." required>
+    <FSpinButton :default-value="5" :min="0" :max="20" :step="1" :step-page="10" />
+  </FField>
+
+  <FSpinButton
+    :model-value="price"
+    :display-value="formattedPrice"
+    aria-label="Price"
+    @update:model-value="updatePrice"
+  />
+</template>
+```
+
+Key props:
+
+- `modelValue`: controlled `number | null`; prop presence, including explicit `undefined`, selects controlled mode
+- `defaultValue`: initial uncontrolled `number | null`, default `0`
+- `displayValue`: formatted text for controlled usage; also supplies `aria-valuetext` unless explicitly overridden
+- `min`, `max`, `step` (default `1`), `stepPage` (default `1`), and `precision`
+- `appearance`: `outline | underline | filled-darker | filled-lighter`
+- `size`: `small | medium`
+- `disabled` and `readOnly`
+
+The fixed visual root is a `<span>`. Top-level `class` and `style` apply to that root; native input, form, ARIA, data, and supported event attributes are routed to the internal `<input type="text" role="spinbutton">`. Managed `type`, `role`, value and range ARIA attributes remain authoritative. Increment/decrement buttons are removed from the tab order, have accessible labels, preserve input focus on mouse press, disable at exact bounds, and repeat while held.
+
+Typing remains uncommitted until blur or Enter. Escape restores the prior displayed value. Text commits emit `update:modelValue` plus `change` data containing `{ displayValue }`; step, Page, Home, End, and button commits contain `{ value }`. In controlled mode the DOM rolls back to `modelValue`/`displayValue` until the parent updates. Directly typed numeric values are intentionally not clamped to `min`/`max`, matching upstream; subsequent step operations clamp them. Arrow Up/Down use `step`, Page Up/Down use `stepPage`, and unshifted Home/End move to defined bounds.
+
+The native text input participates in form data using its current displayed value. Form reset restores the original uncontrolled default or the current controlled value without emitting a change. `FField` supplies the generated label relationship, descriptions, required/invalid state, and size unless explicitly overridden. The component exposes the native `element` and `focus()`.
+
+The focus underline respects reduced motion, custom controls retain forced-color system colors, and logical positioning moves the step buttons to the inline end in both LTR and RTL. React root/input/button slot replacement and shared input-appearance context are intentionally omitted; Vue uses the fixed accessible structure, fallthrough attributes, props, and CSS token overrides.
 
 ## Switch
 
@@ -931,7 +984,7 @@ All theme values are CSS custom properties and can be overridden by applications
 ## Intentional scope limits
 
 - This is an early eighteen-component parity slice, not a complete Fluent UI Vue library.
-- `FField` integrates the current Input, Checkbox, Textarea, Switch, RadioGroup, Select, ProgressBar, and Slider controls; future form controls will adopt the same internal context contract as they are ported.
+- `FField` integrates the current Input, Checkbox, Textarea, Switch, RadioGroup, Select, ProgressBar, Slider, and SpinButton controls; future form controls will adopt the same internal context contract as they are ported.
 - The default checkbox marks are package-owned SVG/CSS primitives. Presence fallback SVG paths are the only privately bundled Fluent System Icons adaptation and are covered by the third-party notice.
 - Griffel and React-specific Tabster bindings are not included.
 - Visual parity is based on the reviewed upstream versions and should be regression-tested before public release.

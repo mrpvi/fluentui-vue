@@ -23,6 +23,7 @@ import {
   FSlider,
   FSelect,
   FSpinner,
+  FSpinButton,
   FSwitch,
   FText,
   FTextarea,
@@ -138,6 +139,29 @@ export const SsrFixture = defineComponent({
             size: 'small',
           },
           { default: () => h(FSlider, { class: 'ssr-field-slider', vertical: true }) },
+        ),
+        h(FSpinButton, {
+          class: 'ssr-spin-button',
+          defaultValue: 2,
+          min: 0,
+          max: 10,
+          step: 2,
+          'aria-label': 'Server quantity',
+        }),
+        h(FSpinButton, {
+          class: 'ssr-formatted-spin-button',
+          modelValue: 3,
+          displayValue: '$3.00',
+          'aria-label': 'Server price',
+        }),
+        h(
+          FField,
+          {
+            label: 'Server field quantity',
+            hint: 'Rendered with SpinButton Field context.',
+            required: true,
+          },
+          { default: () => h(FSpinButton, { class: 'ssr-field-spin-button', defaultValue: 1 }) },
         ),
         h(FSwitch, {
           class: 'ssr-switch',

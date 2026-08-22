@@ -76,6 +76,15 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /id="fui-field-[^"]+__control" aria-labelledby="fui-field-[^"]+__label" aria-describedby="fui-field-[^"]+__validation-message fui-field-[^"]+__hint" class="fui-ProgressBar fui-ProgressBar--rounded fui-ProgressBar--medium ssr-field-progress"[^>]*role="progressbar" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.75">/,
     );
+    expect(firstRender).toMatch(
+      /class="fui-SpinButton fui-SpinButton--outline fui-SpinButton--medium ssr-spin-button"[^>]*><input aria-label="Server quantity" class="fui-SpinButton__input" type="text" role="spinbutton" autocomplete="off" value="2" aria-valuemin="0" aria-valuemax="10" aria-valuenow="2"/,
+    );
+    expect(firstRender).toMatch(
+      /class="fui-SpinButton fui-SpinButton--outline fui-SpinButton--medium ssr-formatted-spin-button"[^>]*><input aria-label="Server price" class="fui-SpinButton__input" type="text" role="spinbutton" autocomplete="off" value="\$3.00" aria-valuenow="3" aria-valuetext="\$3.00"/,
+    );
+    expect(firstRender).toMatch(
+      /<label id="fui-field-[^"]+__label" for="(fui-field-[^"]+__control)"[^>]*>.*Server field quantity.*<input id="\1" aria-describedby="fui-field-[^"]+__hint" required class="fui-SpinButton__input" type="text" role="spinbutton" autocomplete="off" value="1" aria-valuenow="1"/s,
+    );
     const delayedMarkup = firstRender.match(
       /<div class="[^"]*ssr-delayed-spinner[\s\S]*?<\/div>/,
     )?.[0];

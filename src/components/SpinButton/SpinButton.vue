@@ -38,6 +38,33 @@ let spinTimeout: ReturnType<typeof setTimeout> | undefined;
 let form: HTMLFormElement | null = null;
 let resetTimeout: ReturnType<typeof setTimeout> | undefined;
 
+type NativeHandler = ((event: Event) => void) | NativeHandler[];
+
+function invokeNativeHandler(handler: unknown, event: Event) {
+  if (Array.isArray(handler)) {
+    for (const callback of handler as NativeHandler[]) invokeNativeHandler(callback, event);
+  } else if (typeof handler === 'function') {
+    handler(event);
+  }
+}
+
+function warnInvalidBounds(min: number | undefined, max: number | undefined) {
+  if (import.meta.env.DEV && min !== undefined && max !== undefined && min > max) {
+    console.error(
+      `[FSpinButton] min value "${min}" is greater than max value "${max}". ` +
+        'min must be less than or equal to max; step operations will remain unclamped.',
+    );
+  }
+}
+
+warnInvalidBounds(props.min, props.max);
+watch(
+  () => [props.min, props.max] as const,
+  ([min, max], [previousMin, previousMax]) => {
+    if (min !== previousMin || max !== previousMax) warnInvalidBounds(min, max);
+  },
+);
+
 const fieldControlProps = useFieldControlProps(
   () => ({ ...attrs, ...(isSizeProvided ? { size: props.size } : {}) }),
   { supportsLabelFor: true, supportsRequired: true, supportsSize: true },
@@ -123,6 +150,10 @@ const inputAttrs = computed(() => {
     onKeyup: _onKeyup,
     onKeyUp: _onKeyUp,
     onWheel: _onWheel,
+    onMousedown: _onMousedown,
+    onMouseDown: _onMouseDown,
+    onMouseup: _onMouseup,
+    onMouseUp: _onMouseUp,
     'aria-valuemin': _ariaValueMin,
     'aria-valuemax': _ariaValueMax,
     'aria-valuenow': _ariaValueNow,
@@ -229,12 +260,20 @@ function handleInput(event: Event) {
   if (previousTextValue.value === undefined) previousTextValue.value = valueToDisplay.value;
   textValue.value = target.value;
   target.setAttribute('aria-valuenow', target.value);
+  invokeNativeHandler(fieldControlProps.value.onInput, event);
 }
 function handleBlur(event: FocusEvent) {
   commitText(event);
+  invokeNativeHandler(fieldControlProps.value.onBlur, event);
 }
 function handleKeydown(event: KeyboardEvent) {
-  if (readonly.value) return;
+  if (readonly.value) {
+    invokeNativeHandler(
+      fieldControlProps.value.onKeydown ?? fieldControlProps.value.onKeyDown,
+      event,
+    );
+    return;
+  }
   let nextState: 'rest' | 'up' | 'down' = 'rest';
   let handled = false;
   if (event.key === 'ArrowUp') {
@@ -270,10 +309,15 @@ function handleKeydown(event: KeyboardEvent) {
   }
   if (handled) event.preventDefault();
   keyboardSpinState.value = nextState;
+  invokeNativeHandler(
+    fieldControlProps.value.onKeydown ?? fieldControlProps.value.onKeyDown,
+    event,
+  );
 }
-function handleKeyup() {
+function handleKeyup(event: KeyboardEvent) {
   keyboardSpinState.value = 'rest';
   spinState = 'rest';
+  invokeNativeHandler(fieldControlProps.value.onKeyup ?? fieldControlProps.value.onKeyUp, event);
 }
 function handleIncrementMouseDown(event: MouseEvent) {
   if (incrementDisabled.value || event.button !== 0) return;
@@ -296,9 +340,31 @@ function handleButtonMouseDown(event: MouseEvent, direction: 'up' | 'down') {
   if (direction === 'up') handleIncrementMouseDown(event);
   else handleDecrementMouseDown(event);
 }
+function handleButtonMouseUp(event: MouseEvent) {
+  stopSpinning();
+  invokeNativeHandler(
+    fieldControlProps.value.onMouseup ?? fieldControlProps.value.onMouseUp,
+    event,
+  );
+}
+function handleInputMouseDown(event: MouseEvent) {
+  invokeNativeHandler(
+    fieldControlProps.value.onMousedown ?? fieldControlProps.value.onMouseDown,
+    event,
+  );
+}
+function handleInputMouseUp(event: MouseEvent) {
+  invokeNativeHandler(
+    fieldControlProps.value.onMouseup ?? fieldControlProps.value.onMouseUp,
+    event,
+  );
+}
 function handleWheel(event: WheelEvent) {
   // Released SpinButton uses a text input and intentionally does not change values with the wheel.
-  if (document.activeElement === input.value) event.stopPropagation();
+  if (typeof document !== 'undefined' && document.activeElement === input.value) {
+    event.stopPropagation();
+  }
+  invokeNativeHandler(fieldControlProps.value.onWheel, event);
 }
 function handleFormReset() {
   resetTimeout = setTimeout(() => {
@@ -346,6 +412,8 @@ defineExpose({ element: input, focus: () => input.value?.focus() });
       @blur="handleBlur"
       @keydown="handleKeydown"
       @keyup="handleKeyup"
+      @mousedown="handleInputMouseDown"
+      @mouseup="handleInputMouseUp"
       @wheel="handleWheel"
     />
     <button
@@ -356,7 +424,7 @@ defineExpose({ element: input, focus: () => input.value?.focus() });
       aria-label="Increment value"
       :disabled="incrementDisabled"
       @mousedown="handleButtonMouseDown($event, 'up')"
-      @mouseup="stopSpinning"
+      @mouseup="handleButtonMouseUp"
       @mouseleave="stopSpinning"
     >
       <svg aria-hidden="true" viewBox="0 0 16 16">
@@ -371,7 +439,7 @@ defineExpose({ element: input, focus: () => input.value?.focus() });
       aria-label="Decrement value"
       :disabled="decrementDisabled"
       @mousedown="handleButtonMouseDown($event, 'down')"
-      @mouseup="stopSpinning"
+      @mouseup="handleButtonMouseUp"
       @mouseleave="stopSpinning"
     >
       <svg aria-hidden="true" viewBox="0 0 16 16">

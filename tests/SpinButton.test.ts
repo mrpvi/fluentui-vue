@@ -309,6 +309,48 @@ describe('FSpinButton', () => {
     expect(input.attributes('aria-valuenow')).toBe('2');
   });
 
+  it('preserves supported native input listeners while managing commits', async () => {
+    const onInput = vi.fn();
+    const onBlur = vi.fn();
+    const onKeydown = vi.fn();
+    const onKeyup = vi.fn();
+    const onWheel = vi.fn();
+    const wrapper = mount(SpinButton, {
+      props: { defaultValue: 1 },
+      attrs: { onInput, onBlur, onKeydown, onKeyup, onWheel },
+    });
+    const input = inputOf(wrapper);
+
+    input.element.value = '2';
+    await input.trigger('input');
+    await input.trigger('keydown', { key: 'Enter' });
+    await input.trigger('keyup', { key: 'Enter' });
+    await input.trigger('wheel', { deltaY: 1 });
+    await input.trigger('blur');
+
+    expect(onInput).toHaveBeenCalledOnce();
+    expect(onKeydown).toHaveBeenCalledOnce();
+    expect(onKeyup).toHaveBeenCalledOnce();
+    expect(onWheel).toHaveBeenCalledOnce();
+    expect(onBlur).toHaveBeenCalledOnce();
+    expect(wrapper.emitted('change')).toHaveLength(1);
+  });
+
+  it('warns once per invalid min/max update and leaves stepping unclamped', async () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const wrapper = mount(SpinButton, {
+      props: { defaultValue: 5, min: 10, max: 0 },
+    });
+
+    expect(error).toHaveBeenCalledOnce();
+    await pressButton(buttonsOf(wrapper)[0]);
+    expect(inputOf(wrapper).element.value).toBe('6');
+
+    await wrapper.setProps({ min: 20 });
+    expect(error).toHaveBeenCalledTimes(2);
+    error.mockRestore();
+  });
+
   it('uses native disabled and readOnly semantics', async () => {
     const disabled = mount(SpinButton, { props: { defaultValue: 1, disabled: true } });
     expect(inputOf(disabled).attributes('disabled')).toBeDefined();

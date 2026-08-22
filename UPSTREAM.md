@@ -2,43 +2,44 @@
 
 This package is a native Vue adaptation of selected Microsoft Fluent UI React v9 components. It does not embed React or wrap the React packages.
 
-| Vue component   | Upstream npm package       | Version reviewed | Upstream source                                                               |
-| --------------- | -------------------------- | ---------------: | ----------------------------------------------------------------------------- |
-| Button          | `@fluentui/react-button`   |           9.11.0 | `packages/react-components/react-button/library/src/components/Button`        |
-| Input           | `@fluentui/react-input`    |            9.8.6 | `packages/react-components/react-input/library/src/components/Input`          |
-| Checkbox        | `@fluentui/react-checkbox` |            9.6.4 | `packages/react-components/react-checkbox/library/src/components/Checkbox`    |
-| Text            | `@fluentui/react-text`     |           9.6.19 | `packages/react-components/react-text/library/src/components/Text`            |
-| Label           | `@fluentui/react-label`    |            9.4.4 | `packages/react-components/react-label/library/src/components/Label`          |
-| Field           | `@fluentui/react-field`    |            9.5.4 | `packages/react-components/react-field/library/src/components/Field`          |
-| Textarea        | `@fluentui/react-textarea` |            9.7.6 | `packages/react-components/react-textarea/library/src/components/Textarea`    |
-| Link            | `@fluentui/react-link`     |            9.8.4 | `packages/react-components/react-link/library/src/components/Link`            |
-| Divider         | `@fluentui/react-divider`  |            9.7.4 | `packages/react-components/react-divider/library/src/components/Divider`      |
-| Image           | `@fluentui/react-image`    |            9.4.4 | `packages/react-components/react-image/library/src/components/Image`          |
-| Badge family    | `@fluentui/react-badge`    |            9.5.5 | `packages/react-components/react-badge/library/src/components`                |
-| Spinner         | `@fluentui/react-spinner`  |            9.8.5 | `packages/react-components/react-spinner/library/src/components/Spinner`      |
-| ProgressBar     | `@fluentui/react-progress` |            9.5.4 | `packages/react-components/react-progress/library/src/components/ProgressBar` |
-| Switch          | `@fluentui/react-switch`   |            9.7.5 | `packages/react-components/react-switch/library/src/components/Switch`        |
-| Skeleton family | `@fluentui/react-skeleton` |            9.7.5 | `packages/react-components/react-skeleton/library/src/components`             |
-| Slider          | `@fluentui/react-slider`   |            9.6.5 | `packages/react-components/react-slider/library/src/components/Slider`        |
-| Card family     | `@fluentui/react-card`     |            9.7.2 | `packages/react-components/react-card/library/src/components`                 |
-| Vue component   | Upstream npm package       | Version reviewed | Upstream source                                                               |
-| -------------   | -------------------------- | ---------------: | ----------------------------------------------------------------------------- |
-| Button          | `@fluentui/react-button`   |           9.11.0 | `packages/react-components/react-button/library/src/components/Button`        |
-| Input           | `@fluentui/react-input`    |            9.8.6 | `packages/react-components/react-input/library/src/components/Input`          |
-| Checkbox        | `@fluentui/react-checkbox` |            9.6.4 | `packages/react-components/react-checkbox/library/src/components/Checkbox`    |
-| Text            | `@fluentui/react-text`     |           9.6.19 | `packages/react-components/react-text/library/src/components/Text`            |
-| Label           | `@fluentui/react-label`    |            9.4.4 | `packages/react-components/react-label/library/src/components/Label`          |
-| Field           | `@fluentui/react-field`    |            9.5.4 | `packages/react-components/react-field/library/src/components/Field`          |
-| Textarea        | `@fluentui/react-textarea` |            9.7.6 | `packages/react-components/react-textarea/library/src/components/Textarea`    |
-| Link            | `@fluentui/react-link`     |            9.8.4 | `packages/react-components/react-link/library/src/components/Link`            |
-| Divider         | `@fluentui/react-divider`  |            9.7.4 | `packages/react-components/react-divider/library/src/components/Divider`      |
-| Image           | `@fluentui/react-image`    |            9.4.4 | `packages/react-components/react-image/library/src/components/Image`          |
-| Badge family    | `@fluentui/react-badge`    |            9.5.5 | `packages/react-components/react-badge/library/src/components`                |
-| Spinner         | `@fluentui/react-spinner`  |            9.8.5 | `packages/react-components/react-spinner/library/src/components/Spinner`      |
-| ProgressBar     | `@fluentui/react-progress` |            9.5.4 | `packages/react-components/react-progress/library/src/components/ProgressBar` |
-| Switch          | `@fluentui/react-switch`   |            9.7.5 | `packages/react-components/react-switch/library/src/components/Switch`        |
-| Radio family    | `@fluentui/react-radio`    |            9.6.5 | `packages/react-components/react-radio/library/src/components`                |
-| Select          | `@fluentui/react-select`   |            9.5.5 | `packages/react-components/react-select/library/src/components/Select`        |
+| Vue component   | Upstream npm package         | Version reviewed | Upstream source                                                                |
+| --------------- | ---------------------------- | ---------------: | ------------------------------------------------------------------------------ |
+| Button          | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/Button`         |
+| Input           | `@fluentui/react-input`      |            9.8.6 | `packages/react-components/react-input/library/src/components/Input`           |
+| Checkbox        | `@fluentui/react-checkbox`   |            9.6.4 | `packages/react-components/react-checkbox/library/src/components/Checkbox`     |
+| Text            | `@fluentui/react-text`       |           9.6.19 | `packages/react-components/react-text/library/src/components/Text`             |
+| Label           | `@fluentui/react-label`      |            9.4.4 | `packages/react-components/react-label/library/src/components/Label`           |
+| Field           | `@fluentui/react-field`      |            9.5.4 | `packages/react-components/react-field/library/src/components/Field`           |
+| Textarea        | `@fluentui/react-textarea`   |            9.7.6 | `packages/react-components/react-textarea/library/src/components/Textarea`     |
+| Link            | `@fluentui/react-link`       |            9.8.4 | `packages/react-components/react-link/library/src/components/Link`             |
+| Divider         | `@fluentui/react-divider`    |            9.7.4 | `packages/react-components/react-divider/library/src/components/Divider`       |
+| Image           | `@fluentui/react-image`      |            9.4.4 | `packages/react-components/react-image/library/src/components/Image`           |
+| Badge family    | `@fluentui/react-badge`      |            9.5.5 | `packages/react-components/react-badge/library/src/components`                 |
+| Spinner         | `@fluentui/react-spinner`    |            9.8.5 | `packages/react-components/react-spinner/library/src/components/Spinner`       |
+| ProgressBar     | `@fluentui/react-progress`   |            9.5.4 | `packages/react-components/react-progress/library/src/components/ProgressBar`  |
+| Switch          | `@fluentui/react-switch`     |            9.7.5 | `packages/react-components/react-switch/library/src/components/Switch`         |
+| Skeleton family | `@fluentui/react-skeleton`   |            9.7.5 | `packages/react-components/react-skeleton/library/src/components`              |
+| Slider          | `@fluentui/react-slider`     |            9.6.5 | `packages/react-components/react-slider/library/src/components/Slider`         |
+| Card family     | `@fluentui/react-card`       |            9.7.2 | `packages/react-components/react-card/library/src/components`                  |
+| Vue component   | Upstream npm package         | Version reviewed | Upstream source                                                                |
+| -------------   | --------------------------   | ---------------: | -----------------------------------------------------------------------------  |
+| Button          | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/Button`         |
+| Input           | `@fluentui/react-input`      |            9.8.6 | `packages/react-components/react-input/library/src/components/Input`           |
+| Checkbox        | `@fluentui/react-checkbox`   |            9.6.4 | `packages/react-components/react-checkbox/library/src/components/Checkbox`     |
+| Text            | `@fluentui/react-text`       |           9.6.19 | `packages/react-components/react-text/library/src/components/Text`             |
+| Label           | `@fluentui/react-label`      |            9.4.4 | `packages/react-components/react-label/library/src/components/Label`           |
+| Field           | `@fluentui/react-field`      |            9.5.4 | `packages/react-components/react-field/library/src/components/Field`           |
+| Textarea        | `@fluentui/react-textarea`   |            9.7.6 | `packages/react-components/react-textarea/library/src/components/Textarea`     |
+| Link            | `@fluentui/react-link`       |            9.8.4 | `packages/react-components/react-link/library/src/components/Link`             |
+| Divider         | `@fluentui/react-divider`    |            9.7.4 | `packages/react-components/react-divider/library/src/components/Divider`       |
+| Image           | `@fluentui/react-image`      |            9.4.4 | `packages/react-components/react-image/library/src/components/Image`           |
+| Badge family    | `@fluentui/react-badge`      |            9.5.5 | `packages/react-components/react-badge/library/src/components`                 |
+| Spinner         | `@fluentui/react-spinner`    |            9.8.5 | `packages/react-components/react-spinner/library/src/components/Spinner`       |
+| ProgressBar     | `@fluentui/react-progress`   |            9.5.4 | `packages/react-components/react-progress/library/src/components/ProgressBar`  |
+| Switch          | `@fluentui/react-switch`     |            9.7.5 | `packages/react-components/react-switch/library/src/components/Switch`         |
+| Radio family    | `@fluentui/react-radio`      |            9.6.5 | `packages/react-components/react-radio/library/src/components`                 |
+| Select          | `@fluentui/react-select`     |            9.5.5 | `packages/react-components/react-select/library/src/components/Select`         |
+| SpinButton      | `@fluentui/react-spinbutton` |            9.6.5 | `packages/react-components/react-spinbutton/library/src/components/SpinButton` |
 
 Source repository: https://github.com/microsoft/fluentui
 
@@ -79,6 +80,10 @@ Pinned source commits:
 - Card family 9.7.2 release tag object (`@fluentui/react-card_v9.7.2`): `bed832b0eac0d09ee49f8e1ee81671cf20ac59da`
 - Card family 9.7.2 release tag commit: `b6351802032e9af61bf03033d22cb354b2e2822c`
 - Card family 9.7.2 registry tarball: `https://registry.npmjs.org/@fluentui/react-card/-/react-card-9.7.2.tgz` (SHA-1 `d4a5d96606531d169cd5a39b074dab64e630be0c`, SHA-256 `0658ceb666bb523d7a4d3225b6d094bd4133ece7020c467c767543b74da02e13`, SHA-512 `16c4a649882e228ae30cf29c21f697288611a3e66041fbbbb68c8a2d166cc6d5223dada2f82d1b0530f061577494b4e8f6824de5d2223ec872f4906fc3de0167`)
+- SpinButton 9.6.5 registry source (`gitHead`): `2dd2a9a96210919c35b210a1aa8e873ab67dbada`
+- SpinButton 9.6.5 release tag object (`@fluentui/react-spinbutton_v9.6.5`): `5c288d87f5a1bc8afcf1b9d62746bb8e320c17e4`
+- SpinButton 9.6.5 release tag commit: `b6351802032e9af61bf03033d22cb354b2e2822c`
+- SpinButton 9.6.5 registry tarball: `https://registry.npmjs.org/@fluentui/react-spinbutton/-/react-spinbutton-9.6.5.tgz` (SHA-1 `34aabd50e83b65336ccfb81a467f79faa8a8544f`, SHA-256 `cdb1d3d21d441e4d55356fc0ea2a75c5588527b0f4b0e9baf4d59348e9f36e1e`, SHA-512 `a281a0b354093368a72c694ed0b0cb02d393c3f7ab1bbf197cf3616de29390e01c3589e83b2930f56437ad3a9846e36615f848472bac8dc0e4cb96a26180aa26`; npm integrity `sha512-ooGgs1QJM2inLGlO0LDLAtOTw/erG78ZfPNhbeKTkOAcNYnoOykw9WQ3rTqYRuNmFfhIRyusjcDky5aiYYCqJg==`)
 - Presence fallback icon data: `@fluentui/react-icons@2.0.245`, registry source `c0c9576b8ffdfd36da8b2b3005a5e5c2bf210f0c`, registry tarball `https://registry.npmjs.org/@fluentui/react-icons/-/react-icons-2.0.245.tgz` (SHA-1 `66df74bf52861046b8171b49c2d05f8f29a28a1a`)
 - Radio family 9.6.5 registry source (`gitHead`): `2dd2a9a96210919c35b210a1aa8e873ab67dbada`
 - Radio family 9.6.5 registry tarball: `https://registry.npmjs.org/@fluentui/react-radio/-/react-radio-9.6.5.tgz` (SHA-1 `a4595efa53f48da8e28e1eb8a56e6b746a4f978b`)
@@ -100,4 +105,6 @@ The Card family review used the exact `@fluentui/react-card@9.7.2` registry tarb
 
 The Select review used the exact `@fluentui/react-select@9.5.5` registry tarball, its declarations and README, compiled and source hooks, render structure, raw Griffel styles, source tests, specification, package stories, registry `gitHead`, and annotated release tag. Vue preserves the fixed wrapper/native-select/icon structure, native option and optgroup children, appearances, sizes, disabled and invalid styling, Field association, scalar change data, native keyboard and form behavior, forced-color handling, reduced-motion focus underline, and direction-aware icon placement. React `value`/`defaultValue` and `onChange` become Vue `modelValue`/`defaultValue`, `update:modelValue`, and typed `change`; controlled DOM selection rolls back until the parent updates. React root/select slot objects and provider-driven input appearance overrides are translated to a fixed root, fallthrough attribute routing, typed option and decorative icon slots, and explicit props. Released runtime forwarding of a raw `multiple` attribute is retained for compatibility while the documented contract remains scalar and multiple selection plus native numeric `size` remain unsupported, matching Fluent guidance.
 
-The implementation preserves public behavior, DOM semantics, accessibility intent, and relevant design-token values while translating the API to Vue conventions. It does not copy Fluent UI fonts; only the documented private presence SVG path subset is adapted from Fluent System Icons. Components without an exact source SHA above still require pinning before public release; Divider is pinned to both the registry source commit and its 9.7.4 release tag commit, while Image, Spinner, Switch, ProgressBar, Skeleton, and Slider are pinned to their released registry tarballs and registry source commits; ProgressBar and Slider also record their release tag objects and commits.
+The SpinButton review used the exact `@fluentui/react-spinbutton@9.6.5` registry tarball, registry `gitHead`, annotated release tag object and commit, published declarations and README, compiled base/full hooks, render structure, source maps with released TypeScript source, raw Griffel styles, utility tests, the complete upstream component test suite, specification, accessibility guidance, best-practice notes, and the default, appearance, bounds, controlled, display-value, disabled, read-only, size, step, and uncontrolled stories. Vue preserves the fixed `span` root, text input with `role="spinbutton"`, accessible increment/decrement controls outside the tab order, controlled/uncontrolled numeric and null values, formatted controlled display values and `aria-valuetext`, text editing committed on blur or Enter and cancelled by Escape, Arrow/Page/Home/End stepping, precision and bounds behavior, held-button repeat, input focus on button press, read-only/disabled states, Field integration, native form data/reset, logical RTL placement, reduced-motion focus transition, and forced-color system colors. React `value`/`onChange` translate to `modelValue`, `update:modelValue`, and a typed `change` emit whose data follows the released `{ value?, displayValue? }` split. React root/input/button slot replacement and shared input-appearance context are intentionally omitted in favor of the fixed accessible Vue structure, fallthrough attributes, component props, and CSS token overrides. Explicitly bound `undefined` follows this package's prop-presence controlledness rule rather than React's value-undefined rule.
+
+The implementation preserves public behavior, DOM semantics, accessibility intent, and relevant design-token values while translating the API to Vue conventions. It does not copy Fluent UI fonts; only the documented private presence SVG path subset is adapted from Fluent System Icons. Components without an exact source SHA above still require pinning before public release; Divider is pinned to both the registry source commit and its 9.7.4 release tag commit, while Image, Spinner, Switch, ProgressBar, Skeleton, Slider, and SpinButton are pinned to their released registry tarballs and registry source commits; ProgressBar, Slider, and SpinButton also record their release tag objects and commits.

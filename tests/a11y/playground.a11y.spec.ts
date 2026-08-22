@@ -21,6 +21,35 @@ for (const theme of ['light', 'dark'] as const) {
   });
 }
 
+test('SpinButton fixtures expose names, bounds, Field relationships, and states', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const bounded = page.getByRole('spinbutton', { name: 'Bounded quantity' });
+  await expect(bounded).toHaveAttribute('aria-valuemin', '0');
+  await expect(bounded).toHaveAttribute('aria-valuemax', '20');
+  await expect(bounded).toHaveAttribute('aria-valuenow', '5');
+
+  const formatted = page.getByRole('spinbutton', { name: 'Formatted price' });
+  await expect(formatted).toHaveAttribute('aria-valuetext', '$10.00');
+
+  const fieldInput = page.getByRole('spinbutton', { name: 'Cases' });
+  const field = fieldInput.locator('xpath=../..');
+  const fieldLabel = field.locator('label');
+  const fieldInputId = await fieldInput.getAttribute('id');
+  expect(fieldInputId).not.toBeNull();
+  await expect(fieldLabel).toHaveAttribute('for', fieldInputId!);
+  await expect(fieldInput).toHaveAttribute('required', '');
+  await expect(fieldInput).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
+
+  await expect(page.getByRole('spinbutton', { name: 'Disabled SpinButton' })).toBeDisabled();
+  await expect(page.getByRole('spinbutton', { name: 'Read-only SpinButton' })).toHaveAttribute(
+    'readonly',
+    '',
+  );
+});
+
 test('ProgressBar fixtures expose determinate, indeterminate, and Field-derived names', async ({
   page,
 }) => {

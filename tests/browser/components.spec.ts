@@ -1664,6 +1664,142 @@ test('Select reduced motion shortens focus underline transitions', async ({
   expect(afterFocus).toEqual({ duration: '1e-05s', delay: '1e-05s' });
 });
 
+test('SpinButton commits editing with blur and Enter and cancels with Escape', async ({ page }) => {
+  await page.goto('/');
+
+  const input = page.getByRole('spinbutton', { name: 'Bounded quantity' });
+  await input.fill('7');
+  await input.blur();
+  await expect(input).toHaveValue('7');
+
+  await input.fill('9');
+  await input.press('Enter');
+  await expect(input).toHaveValue('9');
+
+  await input.fill('13');
+  await input.press('Escape');
+  await expect(input).toHaveValue('9');
+});
+
+test('SpinButton handles Arrow, Page, Home, End, precision, and bounds', async ({ page }) => {
+  await page.goto('/');
+
+  const bounded = page.getByRole('spinbutton', { name: 'Bounded quantity' });
+  await bounded.focus();
+  await bounded.press('ArrowUp');
+  await expect(bounded).toHaveValue('7');
+  await bounded.press('ArrowDown');
+  await expect(bounded).toHaveValue('5');
+  await bounded.press('PageUp');
+  await expect(bounded).toHaveValue('15');
+  await bounded.press('PageDown');
+  await expect(bounded).toHaveValue('5');
+  await bounded.press('Home');
+  await expect(bounded).toHaveValue('0');
+  await bounded.press('End');
+  await expect(bounded).toHaveValue('20');
+  await expect(
+    bounded.locator('xpath=..').getByRole('button', { name: 'Increment value' }),
+  ).toBeDisabled();
+
+  const precise = page.getByRole('spinbutton', { name: 'Precise amount' });
+  await precise.focus();
+  await precise.press('ArrowUp');
+  await expect(precise).toHaveValue('0.3');
+});
+
+test('SpinButton buttons retain input focus, repeat, and controlled rollback', async ({ page }) => {
+  await page.goto('/');
+
+  const bounded = page.getByRole('spinbutton', { name: 'Bounded quantity' });
+  const increment = bounded.locator('xpath=..').getByRole('button', { name: 'Increment value' });
+  await bounded.focus();
+  await increment.dispatchEvent('mousedown', { button: 0 });
+  await increment.dispatchEvent('mouseup', { button: 0 });
+  await expect(bounded).toBeFocused();
+  const valueAfterPress = Number(await bounded.inputValue());
+  expect(valueAfterPress).toBeGreaterThan(5);
+
+  await increment.dispatchEvent('mousedown', { button: 0 });
+  await page.waitForTimeout(360);
+  await increment.dispatchEvent('mouseup', { button: 0 });
+  await expect
+    .poll(async () => Number(await bounded.inputValue()))
+    .toBeGreaterThan(valueAfterPress);
+
+  const rollback = page.getByRole('spinbutton', { name: 'Controlled rollback' });
+  await rollback.fill('99');
+  await rollback.press('Enter');
+  await expect(rollback).toHaveValue('4');
+  await rollback.press('ArrowUp');
+  await expect(rollback).toHaveValue('4');
+});
+
+test('SpinButton preserves form data, reset, Field, states, and appearances', async ({ page }) => {
+  await page.goto('/');
+
+  const form = page.locator('.spin-button-form');
+  const quantity = form.getByRole('spinbutton', { name: 'Resettable quantity' });
+  await quantity.fill('8');
+  await quantity.press('Enter');
+  await form.getByRole('button', { name: 'Submit SpinButton form' }).click();
+  await expect(form.getByText('Submitted quantity: 8')).toBeVisible();
+  await form.getByRole('button', { name: 'Reset SpinButton form' }).click();
+  await expect(quantity).toHaveValue('2');
+
+  const fieldInput = page.getByRole('spinbutton', { name: 'Cases' });
+  const field = fieldInput.locator('xpath=../..');
+  const label = field.locator('label');
+  await label.click();
+  await expect(fieldInput).toBeFocused();
+  await expect(fieldInput).toHaveAttribute('required', '');
+  await expect(fieldInput.locator('xpath=..')).toHaveClass(/fui-SpinButton--small/);
+
+  await expect(page.getByRole('spinbutton', { name: 'Disabled SpinButton' })).toBeDisabled();
+  await expect(page.getByRole('spinbutton', { name: 'Read-only SpinButton' })).toHaveAttribute(
+    'readonly',
+    '',
+  );
+  for (const appearance of ['outline', 'underline', 'filled-darker', 'filled-lighter']) {
+    await expect(page.locator(`.spin-button-${appearance}`)).toHaveClass(
+      new RegExp(`fui-SpinButton--${appearance}`),
+    );
+  }
+});
+
+test('SpinButton uses logical button placement in RTL', async ({ page }) => {
+  await page.goto('/');
+  const input = page.getByRole('spinbutton', { name: 'Bounded quantity' });
+  const root = input.locator('xpath=..');
+  const increment = root.getByRole('button', { name: 'Increment value' });
+  const ltrRoot = await root.boundingBox();
+  const ltrButton = await increment.boundingBox();
+  expect(ltrRoot).not.toBeNull();
+  expect(ltrButton).not.toBeNull();
+  expect(ltrButton!.x).toBeGreaterThan(ltrRoot!.x + ltrRoot!.width / 2);
+
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  const rtlRoot = await root.boundingBox();
+  const rtlButton = await increment.boundingBox();
+  expect(rtlRoot).not.toBeNull();
+  expect(rtlButton).not.toBeNull();
+  expect(rtlButton!.x).toBeLessThan(rtlRoot!.x + rtlRoot!.width / 2);
+});
+
+test('SpinButton reduced motion minimizes focus transition', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Reduced-motion computed-style coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const root = page.getByRole('spinbutton', { name: 'Bounded quantity' }).locator('xpath=..');
+  const transition = await root.evaluate((element) => ({
+    duration: getComputedStyle(element, '::after').transitionDuration,
+    delay: getComputedStyle(element, '::after').transitionDelay,
+  }));
+  expect(Number.parseFloat(transition.duration)).toBeLessThanOrEqual(0.00001);
+  expect(Number.parseFloat(transition.delay)).toBeLessThanOrEqual(0.00001);
+});
+
 test('native form reset restores uncontrolled Input and Checkbox defaults', async ({ page }) => {
   await page.goto('/');
 
@@ -1764,6 +1900,10 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   await selectedCard.locator('input[type="checkbox"]').check({ force: true });
   await expect(selectedCard).toHaveClass(/fui-Card--selected/);
   const disabledCard = page.locator('#card .card-disabled');
+  const spinRoot = page.getByRole('spinbutton', { name: 'Bounded quantity' }).locator('xpath=..');
+  const spinInput = spinRoot.getByRole('spinbutton');
+  const spinIncrement = spinRoot.getByRole('button', { name: 'Increment value' });
+  const disabledSpinInput = page.getByRole('spinbutton', { name: 'Disabled SpinButton' });
 
   await expect(indicator).toHaveCSS('border-color', 'rgb(0, 0, 0)');
   await expect(invalidInput).toHaveCSS('forced-color-adjust', 'none');
@@ -1864,6 +2004,9 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   expect(progressSystemColors.bar).not.toBe(progressSystemColors.track);
   expect(progressSystemColors.barForcedColorAdjust).toBe('none');
   await expect(progressBar).toHaveCSS('forced-color-adjust', 'none');
+  await expect(spinRoot).toHaveCSS('forced-color-adjust', 'none');
+  await expect(spinInput).toHaveCSS('color', 'rgb(0, 0, 0)');
+  await expect(spinIncrement).toHaveCSS('color', 'rgb(0, 0, 0)');
   const skeletonWaveAfter = await skeletonWave.evaluate((element) => ({
     backgroundColor: getComputedStyle(element, '::after').backgroundColor,
     animationName: getComputedStyle(element, '::after').animationName,
@@ -1886,6 +2029,7 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   await expect(disabledSwitchIndicator).toHaveCSS('color', grayText);
   await expect(disabledTextarea).toHaveCSS('-webkit-text-fill-color', grayText);
   await expect(disabledLink).toHaveCSS('color', grayText);
+  await expect(disabledSpinInput).toHaveCSS('color', grayText);
 
   const linkText = await page.evaluate(() => {
     const probe = document.createElement('span');

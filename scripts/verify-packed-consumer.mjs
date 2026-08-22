@@ -60,6 +60,7 @@ import {
   FRadioGroup,
   FSelect,
   FSpinner,
+  FSpinButton,
   FSwitch,
   FText,
   FTextarea,
@@ -89,6 +90,8 @@ import {
   type SelectSize,
   type SpinnerLabelPosition,
   type SpinnerSize,
+  type SpinButtonAppearance,
+  type SpinButtonValue,
   type SwitchLabelPosition,
   type SwitchSize,
   type TextareaResize,
@@ -120,6 +123,8 @@ const selectAppearance: SelectAppearance = 'outline';
 const selectSize: SelectSize = 'medium';
 const spinnerLabelPosition: SpinnerLabelPosition = 'after';
 const spinnerSize: SpinnerSize = 'large';
+const spinButtonAppearance: SpinButtonAppearance = 'outline';
+const spinButtonValue = ref<SpinButtonValue>(2);
 const switchLabelPosition: SwitchLabelPosition = 'before';
 const switchSize: SwitchSize = 'small';
 const theme: FluentTheme = 'light';
@@ -237,6 +242,18 @@ createApp({
       h(FProgressBar, {
         indeterminateMotion: false,
         'aria-label': 'Packed indeterminate progress',
+      }),
+      h(FSpinButton, {
+        modelValue: spinButtonValue.value,
+        'onUpdate:modelValue': value => (spinButtonValue.value = value),
+        appearance: spinButtonAppearance,
+        min: 0,
+        max: 10,
+        name: 'packed-quantity',
+        'aria-label': 'Packed quantity',
+      }),
+      h(FField, { label: 'Packed field quantity', required: true }, {
+        default: () => h(FSpinButton, { defaultValue: 1 }),
       }),
       h(FSwitch, {
         defaultChecked: true,

@@ -172,6 +172,29 @@ describe('hydration', () => {
     expect(cardCheckbox?.checked).toBe(false);
     expect(container.querySelector('.ssr-article-card')?.tagName).toBe('ARTICLE');
 
+    const spinButtons = [...container.querySelectorAll<HTMLElement>('.fui-SpinButton')];
+    expect(spinButtons).toHaveLength(3);
+    const serverQuantity = container.querySelector<HTMLInputElement>('.ssr-spin-button input');
+    expect(serverQuantity?.value).toBe('2');
+    expect(serverQuantity?.getAttribute('aria-valuemin')).toBe('0');
+    expect(serverQuantity?.getAttribute('aria-valuemax')).toBe('10');
+    expect(serverQuantity?.getAttribute('aria-valuenow')).toBe('2');
+    const serverPrice = container.querySelector<HTMLInputElement>(
+      '.ssr-formatted-spin-button input',
+    );
+    expect(serverPrice?.value).toBe('$3.00');
+    expect(serverPrice?.getAttribute('aria-valuetext')).toBe('$3.00');
+    const fieldSpinButton = container.querySelector<HTMLInputElement>(
+      '.ssr-field-spin-button input',
+    );
+    expect(fieldSpinButton?.required).toBe(true);
+    expect(fieldSpinButton?.id).toBe(
+      fieldSpinButton?.closest('.fui-Field')?.querySelector<HTMLLabelElement>('label')?.htmlFor,
+    );
+    expect(fieldSpinButton?.getAttribute('aria-describedby')).toBe(
+      fieldSpinButton?.closest('.fui-Field')?.querySelector<HTMLElement>('.fui-Field__hint')?.id,
+    );
+
     const delayedSpinner = container.querySelector<HTMLElement>('.ssr-delayed-spinner');
     expect(delayedSpinner).not.toBeNull();
     expect(delayedSpinner?.children).toHaveLength(0);
