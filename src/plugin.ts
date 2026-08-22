@@ -7,6 +7,7 @@ import { FDivider } from './components/Divider';
 import { FField } from './components/Field';
 import { FImage } from './components/Image';
 import { FPresenceBadge } from './components/PresenceBadge';
+import { FProgressBar } from './components/ProgressBar';
 import { FInput } from './components/Input';
 import { FLabel } from './components/Label';
 import { FLink } from './components/Link';
@@ -25,6 +26,7 @@ export const FluentVue: Plugin = {
     app.component('FField', FField);
     app.component('FImage', FImage);
     app.component('FPresenceBadge', FPresenceBadge);
+    app.component('FProgressBar', FProgressBar);
     app.component('FLabel', FLabel);
     app.component('FLink', FLink);
     app.component('FSpinner', FSpinner);

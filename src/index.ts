@@ -6,6 +6,7 @@ export * from './components/Divider';
 export * from './components/Field';
 export * from './components/Image';
 export * from './components/PresenceBadge';
+export * from './components/ProgressBar';
 export * from './components/Input';
 export * from './components/Label';
 export * from './components/Link';

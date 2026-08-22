@@ -1,0 +1,109 @@
+@keyframes fui-progress-bar-indeterminate {
+  from {
+    translate: -100%;
+  }
+
+  to {
+    translate: 300%;
+  }
+}
+
+@keyframes fui-progress-bar-indeterminate-reduced-motion {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.fui-ProgressBar {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--fui-color-neutral-background-6);
+}
+
+.fui-ProgressBar--rounded {
+  border-radius: var(--fui-border-radius-medium);
+}
+
+.fui-ProgressBar--square {
+  border-radius: var(--fui-border-radius-none);
+}
+
+.fui-ProgressBar--medium {
+  height: 2px;
+}
+
+.fui-ProgressBar--large {
+  height: 4px;
+}
+
+.fui-ProgressBar__bar {
+  height: 100%;
+  border-radius: inherit;
+  background-color: var(--fui-color-compound-brand-background);
+}
+
+.fui-ProgressBar__bar--determinate-transition {
+  transition: width 0.3s ease;
+}
+
+.fui-ProgressBar__bar--error {
+  background-color: var(--fui-color-palette-red-background-3);
+}
+
+.fui-ProgressBar__bar--warning {
+  background-color: var(--fui-color-palette-dark-orange-background-3);
+}
+
+.fui-ProgressBar__bar--success {
+  background-color: var(--fui-color-palette-green-background-3);
+}
+
+.fui-ProgressBar__bar--indeterminate {
+  position: relative;
+  max-width: 33%;
+  background-color: var(--fui-color-compound-brand-background);
+  background-image: linear-gradient(
+    to right,
+    var(--fui-color-neutral-background-6) 0%,
+    var(--fui-color-transparent-background) 50%,
+    var(--fui-color-neutral-background-6) 100%
+  );
+}
+
+.fui-ProgressBar__indeterminateMotion {
+  width: 100%;
+  height: 100%;
+}
+
+.fui-ProgressBar__indeterminateMotion > .fui-ProgressBar__bar {
+  animation: fui-progress-bar-indeterminate 3s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fui-ProgressBar__bar--indeterminate {
+    max-width: 100%;
+  }
+
+  .fui-ProgressBar__indeterminateMotion > .fui-ProgressBar__bar {
+    translate: none;
+    animation-name: fui-progress-bar-indeterminate-reduced-motion;
+    animation-duration: 3s;
+  }
+}
+
+@media (forced-colors: active) {
+  .fui-ProgressBar {
+    background-color: CanvasText;
+  }
+
+  .fui-ProgressBar__bar {
+    background-color: Highlight;
+    forced-color-adjust: none;
+  }
+}
