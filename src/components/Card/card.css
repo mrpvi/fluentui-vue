@@ -1,0 +1,262 @@
+.fui-Card {
+  --fui-card-size: 12px;
+  --fui-card-border-radius: var(--fui-border-radius-medium);
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  gap: var(--fui-card-size);
+  overflow: hidden;
+  padding: var(--fui-card-size);
+  color: var(--fui-color-neutral-foreground-1);
+  font-family: var(--fui-font-family-base);
+  background-color: var(--fui-color-neutral-background-1);
+  border: 0;
+  border-radius: var(--fui-card-border-radius);
+  outline: none;
+  box-shadow: var(--fui-shadow-4);
+  transition-duration: var(--fui-duration-faster);
+  transition-property: color, background-color, box-shadow;
+  transition-timing-function: var(--fui-curve-easy-ease);
+}
+
+.fui-Card::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  pointer-events: none;
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-transparent-stroke);
+  border-radius: var(--fui-card-border-radius);
+}
+
+.fui-Card--vertical {
+  flex-direction: column;
+}
+
+.fui-Card--horizontal {
+  flex-direction: row;
+  align-items: center;
+}
+
+.fui-Card--small {
+  --fui-card-size: 8px;
+  --fui-card-border-radius: var(--fui-border-radius-small);
+}
+
+.fui-Card--large {
+  --fui-card-size: 16px;
+  --fui-card-border-radius: var(--fui-border-radius-large);
+}
+
+.fui-Card--filled-alternative {
+  background-color: var(--fui-color-neutral-background-2);
+}
+
+.fui-Card--outline {
+  background-color: var(--fui-color-transparent-background);
+  box-shadow: none;
+}
+
+.fui-Card--outline::after {
+  border-color: var(--fui-color-neutral-stroke-1);
+}
+
+.fui-Card--subtle {
+  background-color: var(--fui-color-subtle-background);
+  box-shadow: none;
+}
+
+.fui-Card--interactive {
+  cursor: pointer;
+}
+
+.fui-Card--filled.fui-Card--interactive:hover {
+  color: var(--fui-color-neutral-foreground-1-hover);
+  background-color: var(--fui-color-neutral-background-1-hover);
+  box-shadow: var(--fui-shadow-8);
+}
+
+.fui-Card--filled.fui-Card--interactive:active {
+  background-color: var(--fui-color-neutral-background-1-pressed);
+}
+
+.fui-Card--filled-alternative.fui-Card--interactive:hover {
+  color: var(--fui-color-neutral-foreground-2-hover);
+  background-color: var(--fui-color-neutral-background-2-hover);
+  box-shadow: var(--fui-shadow-8);
+}
+
+.fui-Card--filled-alternative.fui-Card--interactive:active {
+  background-color: var(--fui-color-neutral-background-2-pressed);
+}
+
+.fui-Card--outline.fui-Card--interactive:hover {
+  color: var(--fui-color-neutral-foreground-1-hover);
+  background-color: var(--fui-color-transparent-background-hover);
+}
+
+.fui-Card--outline.fui-Card--interactive:hover::after {
+  border-color: var(--fui-color-neutral-stroke-1-hover);
+}
+
+.fui-Card--outline.fui-Card--interactive:active {
+  background-color: var(--fui-color-transparent-background-pressed);
+}
+
+.fui-Card--outline.fui-Card--interactive:active::after {
+  border-color: var(--fui-color-neutral-stroke-1-pressed);
+}
+
+.fui-Card--subtle.fui-Card--interactive:hover {
+  color: var(--fui-color-neutral-foreground-1-hover);
+  background-color: var(--fui-color-subtle-background-hover);
+}
+
+.fui-Card--subtle.fui-Card--interactive:active {
+  background-color: var(--fui-color-subtle-background-pressed);
+}
+
+.fui-Card--filled.fui-Card--selected {
+  background-color: var(--fui-color-neutral-background-1-selected);
+}
+
+.fui-Card--filled-alternative.fui-Card--selected {
+  background-color: var(--fui-color-neutral-background-2-selected);
+}
+
+.fui-Card--outline.fui-Card--selected {
+  background-color: var(--fui-color-transparent-background-selected);
+}
+
+.fui-Card--subtle.fui-Card--selected {
+  background-color: var(--fui-color-subtle-background-selected);
+}
+
+.fui-Card--selected::after {
+  border-color: var(--fui-color-neutral-stroke-1-selected);
+}
+
+.fui-Card:focus-visible,
+.fui-Card--selectable.fui-Card--focus-within {
+  outline: var(--fui-stroke-width-thick) solid var(--fui-color-stroke-focus-2);
+  outline-offset: -2px;
+}
+
+.fui-Card--selectable.fui-Card--focus-within:has(:focus-visible) {
+  outline-color: var(--fui-color-stroke-focus-2);
+}
+
+.fui-Card--disabled,
+.fui-Card--disabled:hover,
+.fui-Card--disabled:active {
+  color: var(--fui-color-neutral-foreground-disabled);
+  cursor: not-allowed;
+  user-select: none;
+  background-color: var(--fui-color-neutral-background-disabled);
+  box-shadow: var(--fui-shadow-2);
+}
+
+.fui-Card--disabled::before {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  content: '';
+}
+
+.fui-Card--disabled::after {
+  border-color: var(--fui-color-neutral-stroke-disabled);
+}
+
+.fui-Card--outline.fui-Card--disabled {
+  background-color: var(--fui-color-transparent-background);
+  box-shadow: none;
+}
+
+.fui-Card__floatingAction,
+.fui-Card__checkbox {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 4px;
+  inset-inline-end: 4px;
+}
+
+.fui-Card__checkbox {
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+}
+
+.fui-Card > .fui-CardHeader,
+.fui-Card > .fui-CardFooter {
+  flex-shrink: 0;
+}
+
+.fui-Card--vertical > .fui-CardPreview {
+  margin-inline: calc(var(--fui-card-size) * -1);
+}
+
+.fui-Card--vertical > .fui-CardPreview:first-of-type,
+.fui-Card--vertical > .fui-Card__floatingAction + .fui-CardPreview {
+  margin-block-start: calc(var(--fui-card-size) * -1);
+}
+
+.fui-Card--vertical > .fui-CardPreview:last-of-type {
+  margin-block-end: calc(var(--fui-card-size) * -1);
+}
+
+.fui-Card--horizontal > .fui-CardPreview {
+  margin-block: calc(var(--fui-card-size) * -1);
+}
+
+.fui-Card--horizontal > .fui-CardPreview:first-of-type {
+  margin-inline-start: calc(var(--fui-card-size) * -1);
+}
+
+.fui-Card--horizontal > .fui-CardPreview:last-of-type {
+  margin-inline-end: calc(var(--fui-card-size) * -1);
+}
+
+.fui-Card--horizontal > .fui-CardHeader:last-of-type,
+.fui-Card--horizontal > .fui-CardFooter:last-of-type {
+  flex-grow: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fui-Card {
+    transition-duration: 0.01ms;
+  }
+}
+
+@media (forced-colors: active) {
+  .fui-Card--interactive:hover,
+  .fui-Card--interactive:active,
+  .fui-Card--selected {
+    color: HighlightText;
+    background-color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  .fui-Card--interactive:hover::after,
+  .fui-Card--interactive:active::after,
+  .fui-Card--selected::after {
+    border-color: Highlight;
+  }
+
+  .fui-Card--disabled,
+  .fui-Card--disabled:hover,
+  .fui-Card--disabled:active {
+    color: GrayText;
+    background-color: Canvas;
+  }
+
+  .fui-Card--disabled::after {
+    border-color: GrayText;
+  }
+
+  .fui-Card:focus-visible,
+  .fui-Card--selectable.fui-Card--focus-within {
+    outline-color: Highlight;
+  }
+}

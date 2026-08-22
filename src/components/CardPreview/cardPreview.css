@@ -1,0 +1,22 @@
+.fui-CardPreview {
+  position: relative;
+  min-width: 0;
+}
+
+.fui-CardPreview > :not(.fui-CardPreview__logo) {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.fui-CardPreview__logo {
+  position: absolute;
+  z-index: 1;
+}
+
+.fui-CardPreview__logo {
+  inset-block-end: 12px;
+  inset-inline-start: 12px;
+  width: 32px;
+  height: 32px;
+}

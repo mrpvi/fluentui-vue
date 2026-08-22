@@ -1,0 +1,50 @@
+.fui-CardHeader {
+  --fui-card-header-gap: 12px;
+  display: grid;
+  grid-template-columns: min-content minmax(0, 1fr) min-content;
+  align-items: center;
+}
+
+.fui-CardHeader__image {
+  display: inline-flex;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  margin-inline-end: var(--fui-card-header-gap);
+}
+
+.fui-CardHeader__header {
+  display: flex;
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+
+.fui-CardHeader__description {
+  display: flex;
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+}
+
+.fui-CardHeader__action {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  margin-inline-start: var(--fui-card-header-gap);
+}
+
+.fui-CardHeader:not(:has(.fui-CardHeader__description)) {
+  display: flex;
+}
+
+.fui-CardHeader:not(:has(.fui-CardHeader__description)) .fui-CardHeader__header {
+  flex-grow: 1;
+}
+
+@media (forced-colors: active) {
+  .fui-CardHeader__action .fui-Button,
+  .fui-CardHeader__action .fui-Link {
+    color: currentColor;
+    border-color: currentColor;
+    outline-color: currentColor;
+  }
+}

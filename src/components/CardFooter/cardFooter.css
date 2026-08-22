@@ -1,0 +1,19 @@
+.fui-CardFooter {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+}
+
+.fui-CardFooter__action {
+  margin-inline-start: auto;
+}
+
+@media (forced-colors: active) {
+  .fui-CardFooter__action .fui-Button,
+  .fui-CardFooter__action .fui-Link {
+    color: currentColor;
+    border-color: currentColor;
+    outline-color: currentColor;
+  }
+}

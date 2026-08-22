@@ -1,6 +1,10 @@
 import type { App, Plugin } from 'vue';
 import { FBadge } from './components/Badge';
 import { FButton } from './components/Button';
+import { FCard } from './components/Card';
+import { FCardFooter } from './components/CardFooter';
+import { FCardHeader } from './components/CardHeader';
+import { FCardPreview } from './components/CardPreview';
 import { FCheckbox } from './components/Checkbox';
 import { FCompoundButton } from './components/CompoundButton';
 import { FCounterBadge } from './components/CounterBadge';
@@ -33,6 +37,10 @@ export const FluentVue: Plugin = {
   install(app: App) {
     app.component('FBadge', FBadge);
     app.component('FButton', FButton);
+    app.component('FCard', FCard);
+    app.component('FCardFooter', FCardFooter);
+    app.component('FCardHeader', FCardHeader);
+    app.component('FCardPreview', FCardPreview);
     app.component('FInput', FInput);
     app.component('FSelect', FSelect);
     app.component('FCheckbox', FCheckbox);
