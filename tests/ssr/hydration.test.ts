@@ -100,6 +100,31 @@ describe('hydration', () => {
       spinners[0]?.querySelector<HTMLElement>('.fui-Spinner__label')?.id,
     );
 
+    const searchBoxes = [...container.querySelectorAll<HTMLElement>('.fui-SearchBox')];
+    expect(searchBoxes).toHaveLength(2);
+    const standaloneSearch = container.querySelector<HTMLElement>('.ssr-search-box');
+    const standaloneSearchInput = standaloneSearch?.querySelector<HTMLInputElement>('input');
+    expect(standaloneSearchInput?.type).toBe('search');
+    expect(standaloneSearchInput?.value).toBe('Server query');
+    expect(standaloneSearch?.querySelector('[role="button"]')?.getAttribute('tabindex')).toBe('-1');
+
+    const fieldSearch = container.querySelector<HTMLElement>('.ssr-field-search-box');
+    const fieldSearchInput = fieldSearch?.querySelector<HTMLInputElement>('input');
+    expect(fieldSearch?.classList.contains('fui-SearchBox--large')).toBe(true);
+    expect(fieldSearchInput?.id).toBe(
+      fieldSearch?.closest('.fui-Field')?.querySelector<HTMLLabelElement>('label')?.htmlFor,
+    );
+    expect(fieldSearchInput?.getAttribute('aria-describedby')).toBe(
+      fieldSearch?.closest('.fui-Field')?.querySelector<HTMLElement>('.fui-Field__hint')?.id,
+    );
+
+    fieldSearchInput!.value = 'Hydrated query';
+    fieldSearchInput!.dispatchEvent(new Event('input', { bubbles: true }));
+    await nextTick();
+    expect(fieldSearchInput?.value).toBe('Hydrated query');
+    expect(warning).not.toHaveBeenCalled();
+    expect(error).not.toHaveBeenCalled();
+
     const progressBars = [...container.querySelectorAll<HTMLElement>('.fui-ProgressBar')];
     expect(progressBars).toHaveLength(3);
     const determinateProgress = container.querySelector<HTMLElement>('.ssr-determinate-progress');

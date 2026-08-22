@@ -50,6 +50,31 @@ test('SpinButton fixtures expose names, bounds, Field relationships, and states'
   );
 });
 
+test('SearchBox fixtures expose native search semantics, Field naming, and clear controls', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#search-box');
+  await expect(section.getByRole('searchbox', { name: 'Search documentation' })).toBeVisible();
+  await expect(section.getByRole('searchbox', { name: 'Product search' })).toHaveAttribute(
+    'aria-describedby',
+    /^fui-field-.+__validation-message fui-field-.+__hint$/,
+  );
+
+  const controlled = section.getByRole('searchbox', { name: 'Search documentation' });
+  await controlled.focus();
+  const dismiss = controlled.locator('xpath=..').getByRole('button', { name: 'clear' });
+  await expect(dismiss).toHaveAttribute('tabindex', '-1');
+  await expect(dismiss).not.toHaveAttribute('aria-hidden', 'true');
+
+  await expect(section.getByRole('searchbox', { name: 'Disabled search' })).toBeDisabled();
+  await expect(section.getByRole('searchbox', { name: 'Read-only search' })).toHaveAttribute(
+    'readonly',
+    '',
+  );
+});
+
 test('ProgressBar fixtures expose determinate, indeterminate, and Field-derived names', async ({
   page,
 }) => {

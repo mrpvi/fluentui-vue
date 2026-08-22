@@ -59,6 +59,7 @@ import {
   FRadio,
   FRadioGroup,
   FSelect,
+  FSearchBox,
   FSpinner,
   FSpinButton,
   FSwitch,
@@ -88,6 +89,8 @@ import {
   type RadioLabelPosition,
   type SelectAppearance,
   type SelectSize,
+  type SearchBoxAppearance,
+  type SearchBoxSize,
   type SpinnerLabelPosition,
   type SpinnerSize,
   type SpinButtonAppearance,
@@ -121,6 +124,8 @@ const radioGroupLayout: RadioGroupLayout = 'horizontal';
 const radioLabelPosition: RadioLabelPosition = 'after';
 const selectAppearance: SelectAppearance = 'outline';
 const selectSize: SelectSize = 'medium';
+const searchAppearance: SearchBoxAppearance = 'filled-lighter';
+const searchSize: SearchBoxSize = 'large';
 const spinnerLabelPosition: SpinnerLabelPosition = 'after';
 const spinnerSize: SpinnerSize = 'large';
 const spinButtonAppearance: SpinButtonAppearance = 'outline';
@@ -306,6 +311,28 @@ createApp({
             h(FCardFooter, {}, { default: () => h(FButton, {}, () => 'Open packed card') }),
           ],
         },
+      ),
+      h(
+        FSearchBox,
+        {
+          defaultValue: 'Packed query',
+          appearance: searchAppearance,
+          size: searchSize,
+          name: 'packed-query',
+          'aria-label': 'Packed search',
+          'onUpdate:modelValue': value => void value,
+          onSearch: (_event, data) => void data.value,
+        },
+        {
+          'content-before': () => h('span', null, 'Search:'),
+          'content-after': () => h('span', null, 'Filter'),
+          dismiss: () => h('span', { 'aria-hidden': 'true' }, '×'),
+        },
+      ),
+      h(
+        FField,
+        { label: 'Packed field search', hint: 'Search the packed consumer.' },
+        { default: () => h(FSearchBox, { placeholder: 'Search package' }) },
       ),
       h(FLink, { href: '#docs', inline: true }, () => 'Read documentation'),
       h(FDivider, { appearance: dividerAppearance }, () => 'Review'),

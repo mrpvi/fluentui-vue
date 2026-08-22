@@ -46,7 +46,7 @@ Status legend:
 17. ✅ **Select → `FSelect`** — definition-of-done gates complete for `@fluentui/react-select@9.5.5`
 18. ✅ **Slider → `FSlider`** — definition-of-done gates complete for `@fluentui/react-slider@9.6.5`
 19. ✅ **SpinButton → `FSpinButton`** — definition-of-done gates complete for `@fluentui/react-spinbutton@9.6.5`
-20. ❌ **SearchBox → `FSearchBox`**
+20. ✅ **SearchBox → `FSearchBox`** — definition-of-done gates complete for `@fluentui/react-search@9.4.6`
 21. ❌ **Rating family**
     - `FRating`
     - `FRatingItem`

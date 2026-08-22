@@ -21,6 +21,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 - `FRadio` and `FRadioGroup` — adapted from `@fluentui/react-radio` 9.6.5
 - `FSelect` — adapted from `@fluentui/react-select` 9.5.5
 - `FSpinButton` — adapted from `@fluentui/react-spinbutton` 9.6.5
+- `FSearchBox` — adapted from `@fluentui/react-search` 9.4.6
 - `FText` — adapted from `@fluentui/react-text` 9.6.19
 - `FLabel` — adapted from `@fluentui/react-label` 9.4.4
 - `FField` — adapted from `@fluentui/react-field` 9.5.4
@@ -148,6 +149,7 @@ import {
   FSkeletonItem,
   FSlider,
   FSelect,
+  FSearchBox,
   FSpinner,
   FSpinButton,
   FSwitch,
@@ -186,6 +188,7 @@ const companion = ref('dog');
   <FSpinner label="Loading account" size="large" />
   <FProgressBar :value="0.6" aria-label="Account setup progress" />
   <FSpinButton :default-value="1" :min="0" :max="10" aria-label="Quantity" />
+  <FSearchBox aria-label="Search account settings" placeholder="Search settings" />
   <FSwitch label="Enable notifications" />
   <FSkeleton aria-label="Loading account card" style="display: grid; gap: 0.5rem">
     <FSkeletonItem shape="circle" :size="48" />
@@ -720,6 +723,46 @@ Horizontal progress follows document direction and reverses in RTL. Vertical pro
 
 React's root/input/rail/thumb slot objects are intentionally translated to a fixed Vue root and native input with fallthrough attributes; visual-part replacement is not exposed because it could break control geometry or semantics. The upstream component has no marks or two-thumb range-selection API. Vue adds native `input` and `change` emits and deterministic native form-reset synchronization. Do not use Slider for binary choices, fewer than three values, or ranges where exact typed entry is required.
 
+## SearchBox
+
+`FSearchBox` is a native search input adapted from the released `@fluentui/react-search@9.4.6` package. It combines an `<input type="search">` with Fluent leading content, focus-only trailing content, and a non-tabbable dismiss control.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { FField, FSearchBox } from '@local/fluent-vue';
+
+const query = ref('');
+</script>
+
+<template>
+  <FField label="Product search" hint="Search by product name." required>
+    <FSearchBox v-model="query" name="query" placeholder="Search products" />
+  </FField>
+
+  <FSearchBox default-value="Fluent Vue" aria-label="Search documentation">
+    <template #content-before><span>Docs:</span></template>
+    <template #content-after><button type="button">Voice</button></template>
+    <template #dismiss><span aria-hidden="true">×</span></template>
+  </FSearchBox>
+</template>
+```
+
+Key props and events:
+
+- `modelValue` for controlled Vue usage and `defaultValue` for uncontrolled initial state
+- `appearance`: `outline | underline | filled-darker | filled-lighter`
+- `size`: `small | medium | large`
+- native input attributes including `name`, `form`, `placeholder`, `autocomplete`, `readonly`, `disabled`, and `required`
+- `update:modelValue`, `input`, `change`, `search`, and `clear` emits
+- `content-before`, `content-after`, and `dismiss` slots
+
+Controlledness is determined by prop presence, including a kebab-case template `model-value` binding. User input emits the proposed value and immediately restores the controlled prop until the parent updates it. Uncontrolled values participate in native form data and reset to their original `defaultValue`. Escape and the dismiss control clear an editable value, emit the native-style update events plus `clear`, prevent pointer activation defaults, and reliably return focus to the search input. Disabled and read-only values cannot be cleared.
+
+Top-level `class` and `style` apply to the visual root; native, form, ARIA, data, and listener attributes route to the input. `FField` supplies the generated ID, label, required and invalid state, descriptions, and inherited size. Use `FField`, `FLabel`, `aria-label`, or `aria-labelledby` for the accessible name. The dismiss control remains exposed to assistive technology but is removed from sequential keyboard navigation. `content-after` appears while focus remains within the SearchBox and may contain an accessible interactive control.
+
+The four released appearances and three sizes are supported. Logical spacing follows RTL. Focus-border transitions collapse under reduced motion, and forced-colors mode uses system colors for the root, focus, invalid, disabled, and input states. Typeahead/autocomplete behavior remains application-owned and requires appropriate combobox/listbox semantics when added.
+
 ## Card
 
 The Card family provides a topic container plus structured preview, header, and footer parts. It is adapted from the exact `@fluentui/react-card@9.7.2` release.
@@ -983,8 +1026,8 @@ All theme values are CSS custom properties and can be overridden by applications
 
 ## Intentional scope limits
 
-- This is an early eighteen-component parity slice, not a complete Fluent UI Vue library.
-- `FField` integrates the current Input, Checkbox, Textarea, Switch, RadioGroup, Select, ProgressBar, Slider, and SpinButton controls; future form controls will adopt the same internal context contract as they are ported.
+- This is an early nineteen-component parity slice, not a complete Fluent UI Vue library.
+- `FField` integrates the current Input, Checkbox, Textarea, Switch, RadioGroup, Select, SearchBox, ProgressBar, Slider, and SpinButton controls; future form controls will adopt the same internal context contract as they are ported.
 - The default checkbox marks are package-owned SVG/CSS primitives. Presence fallback SVG paths are the only privately bundled Fluent System Icons adaptation and are covered by the third-party notice.
 - Griffel and React-specific Tabster bindings are not included.
 - Visual parity is based on the reviewed upstream versions and should be regression-tested before public release.

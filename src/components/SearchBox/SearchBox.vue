@@ -195,6 +195,7 @@ function clear(event: MouseEvent | KeyboardEvent) {
 }
 
 function handleDismissClick(event: MouseEvent) {
+  event.preventDefault();
   clear(event);
 }
 
@@ -266,6 +267,7 @@ defineExpose({
         aria-label="clear"
         tabindex="-1"
         :aria-disabled="isDisabled || isReadOnly ? 'true' : undefined"
+        @mousedown.prevent
         @click="handleDismissClick"
       >
         <slot name="dismiss">

@@ -83,6 +83,19 @@ describe('FSearchBox', () => {
     expect(input.element.value).toBe('');
   });
 
+  it('recognizes kebab-case model-value bindings as controlled', async () => {
+    const wrapper = mount(SearchBox, {
+      attrs: { 'model-value': 'kebab controlled' },
+    });
+    const input = wrapper.get('input');
+
+    expect(input.element.value).toBe('kebab controlled');
+    input.element.value = 'proposed';
+    await input.trigger('input');
+    expect(input.element.value).toBe('kebab controlled');
+    expect(wrapper.emitted('update:modelValue')).toEqual([['proposed']]);
+  });
+
   it('reapplies a controlled value on form reset without emitting', async () => {
     const wrapper = mount({
       setup: () => () => h('form', null, [h(SearchBox, { modelValue: 'fixed' })]),
@@ -129,13 +142,16 @@ describe('FSearchBox', () => {
     expect(wrapper.emitted('clear')).toBeUndefined();
   });
 
-  it('clears on dismiss once and restores focus', async () => {
+  it('clears on dismiss once, prevents activation defaults, and restores focus', async () => {
     const wrapper = mount(SearchBox, { props: { defaultValue: 'hello' }, attachTo: document.body });
     const input = wrapper.get('input').element;
     const focus = vi.spyOn(input, 'focus');
+    const click = new MouseEvent('click', { bubbles: true, cancelable: true });
 
-    await wrapper.get('[role="button"]').trigger('click');
+    wrapper.get('[role="button"]').element.dispatchEvent(click);
+    await nextTick();
 
+    expect(click.defaultPrevented).toBe(true);
     expect(input.value).toBe('');
     expect(wrapper.emitted('update:modelValue')).toEqual([['']]);
     expect(wrapper.emitted('input')).toHaveLength(1);

@@ -22,6 +22,7 @@ import {
   FSkeletonItem,
   FSlider,
   FSelect,
+  FSearchBox,
   FSpinner,
   FSpinButton,
   FSwitch,
@@ -240,6 +241,27 @@ export const SsrFixture = defineComponent({
                   ],
                 },
               ),
+          },
+        ),
+        h(FSearchBox, {
+          class: 'ssr-search-box',
+          defaultValue: 'Server query',
+          name: 'query',
+          'aria-label': 'Server search',
+        }),
+        h(
+          FField,
+          {
+            label: 'Server field search',
+            hint: 'Rendered with SearchBox Field context.',
+            size: 'large',
+          },
+          {
+            default: () =>
+              h(FSearchBox, {
+                class: 'ssr-field-search-box',
+                placeholder: 'Search server content',
+              }),
           },
         ),
         h(FLink, { href: '#details' }, () => 'View details'),

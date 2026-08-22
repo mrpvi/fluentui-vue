@@ -1800,6 +1800,168 @@ test('SpinButton reduced motion minimizes focus transition', async ({ page, brow
   expect(Number.parseFloat(transition.delay)).toBeLessThanOrEqual(0.00001);
 });
 
+test('SearchBox preserves typing, search/change events, dismiss, Escape, and focus restoration', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#search-box');
+  const input = section.getByRole('searchbox', { name: 'Search documentation' });
+  const root = input.locator('xpath=..');
+  const dismiss = root.getByRole('button', { name: 'clear' });
+
+  await input.fill('architecture');
+  await expect(input).toHaveValue('architecture');
+  await expect(section.locator('.search-box-value')).toHaveText('Value: architecture');
+  await expect(section.locator('.search-box-event-log')).toHaveText('input: architecture');
+
+  await input.dispatchEvent('search');
+  await expect(section.locator('.search-box-event-log')).toHaveText('search: architecture');
+  await input.dispatchEvent('change');
+  await expect(section.locator('.search-box-event-log')).toHaveText('change: architecture');
+
+  await input.focus();
+  await dismiss.click();
+  await expect(input).toHaveValue('');
+  await expect(input).toBeFocused();
+  await expect(section.locator('.search-box-event-log')).toHaveText('clear');
+
+  await input.fill('escape query');
+  await input.press('Escape');
+  await expect(input).toHaveValue('');
+  await expect(input).toBeFocused();
+  await expect(section.locator('.search-box-event-log')).toHaveText('clear');
+});
+
+test('SearchBox preserves controlled rollback, native reset, and form data', async ({ page }) => {
+  await page.goto('/');
+
+  const section = page.locator('#search-box');
+  const controlled = section.getByRole('searchbox', { name: 'Controlled rollback search' });
+  await expect(controlled).toHaveValue('Locked query');
+  await controlled.fill('Proposed query');
+  await expect(controlled).toHaveValue('Locked query');
+  await expect(section.locator('.search-box-event-log')).toHaveText('proposed: Proposed query');
+
+  const form = section.locator('.search-box-reset-demo');
+  const resettable = form.getByRole('searchbox', { name: 'Resettable search' });
+  await resettable.fill('Changed query');
+  expect(
+    await form.evaluate((element) => new FormData(element as HTMLFormElement).get('reset-query')),
+  ).toBe('Changed query');
+  await form.getByRole('button', { name: 'Reset search form' }).click();
+  await expect(resettable).toHaveValue('Resettable query');
+  expect(
+    await form.evaluate((element) => new FormData(element as HTMLFormElement).get('reset-query')),
+  ).toBe('Resettable query');
+});
+
+test('SearchBox preserves content slots, appearances, sizes, Field, disabled, and read-only states', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#search-box');
+  const slotted = section.getByRole('searchbox', { name: 'Search people by voice' });
+  const slottedRoot = slotted.locator('xpath=..');
+  await expect(slottedRoot.locator('.search-box-prefix')).toHaveText('People:');
+  await slotted.focus();
+  await expect(section.getByRole('button', { name: 'Start voice search' })).toBeVisible();
+  await expect(section.getByRole('button', { name: 'Start voice search' })).not.toHaveAttribute(
+    'aria-hidden',
+    'true',
+  );
+
+  const sizes = [
+    ['Small outline search', '24px'],
+    ['Medium underline search', '32px'],
+    ['Large filled darker search', '40px'],
+  ] as const;
+  for (const [name, minHeight] of sizes) {
+    const root = section.getByRole('searchbox', { name }).locator('xpath=..');
+    await expect(root).toHaveCSS('min-height', minHeight);
+  }
+  await expect(
+    section.getByRole('searchbox', { name: 'Medium underline search' }).locator('xpath=..'),
+  ).toHaveCSS('border-top-style', 'none');
+  await expect(
+    section.getByRole('searchbox', { name: 'Large filled darker search' }).locator('xpath=..'),
+  ).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+
+  const field = section.locator('.search-box-field');
+  const fieldInput = field.getByRole('searchbox', { name: 'Product search' });
+  const label = field.locator('label');
+  await label.click();
+  await expect(fieldInput).toBeFocused();
+  await expect(fieldInput).toHaveAttribute('required', '');
+  await expect(fieldInput).toHaveAttribute('aria-invalid', 'true');
+  await expect(fieldInput.locator('xpath=..')).toHaveClass(/fui-SearchBox--large/);
+  const descriptionIds = (await fieldInput.getAttribute('aria-describedby'))?.split(' ') ?? [];
+  expect(descriptionIds).toHaveLength(2);
+
+  const disabled = section.getByRole('searchbox', { name: 'Disabled search' });
+  const readOnly = section.getByRole('searchbox', { name: 'Read-only search' });
+  await expect(disabled).toBeDisabled();
+  await expect(readOnly).toHaveAttribute('readonly', '');
+  const disabledValue = await disabled.inputValue();
+  const readOnlyValue = await readOnly.inputValue();
+  await disabled.locator('xpath=..').getByRole('button', { name: 'clear' }).click({ force: true });
+  await readOnly.locator('xpath=..').getByRole('button', { name: 'clear' }).click({ force: true });
+  await expect(disabled).toHaveValue(disabledValue);
+  await expect(readOnly).toHaveValue(readOnlyValue);
+});
+
+test('SearchBox RTL uses logical spacing and keeps trailing content on the inline end', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const section = page.locator('#search-box');
+  const input = section.getByRole('searchbox', { name: 'Search people by voice' });
+  await input.focus();
+  const before = input.locator('xpath=preceding-sibling::*[1]');
+  const after = input.locator('xpath=following-sibling::*[1]');
+
+  const ltrInput = await input.boundingBox();
+  const ltrBefore = await before.boundingBox();
+  const ltrAfter = await after.boundingBox();
+  expect(ltrInput).not.toBeNull();
+  expect(ltrBefore).not.toBeNull();
+  expect(ltrAfter).not.toBeNull();
+  expect(ltrBefore!.x).toBeLessThan(ltrInput!.x);
+  expect(ltrAfter!.x).toBeGreaterThan(ltrInput!.x);
+
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  const rtlInput = await input.boundingBox();
+  const rtlBefore = await before.boundingBox();
+  const rtlAfter = await after.boundingBox();
+  expect(rtlInput).not.toBeNull();
+  expect(rtlBefore).not.toBeNull();
+  expect(rtlAfter).not.toBeNull();
+  expect(rtlBefore!.x).toBeGreaterThan(rtlInput!.x);
+  expect(rtlAfter!.x).toBeLessThan(rtlInput!.x);
+});
+
+test('SearchBox reduced motion removes perceptible focus-border transitions', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Reduced-motion computed-style coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const root = page
+    .locator('#search-box')
+    .getByRole('searchbox', { name: 'Search documentation' })
+    .locator('xpath=..');
+  await root.locator('input').focus();
+  const transition = await root.evaluate((element) => ({
+    delay: getComputedStyle(element, '::after').transitionDelay,
+    duration: getComputedStyle(element, '::after').transitionDuration,
+  }));
+  expect(Number.parseFloat(transition.delay)).toBeLessThanOrEqual(0.00001);
+  expect(Number.parseFloat(transition.duration)).toBeLessThanOrEqual(0.00001);
+});
+
 test('native form reset restores uncontrolled Input and Checkbox defaults', async ({ page }) => {
   await page.goto('/');
 
@@ -1904,6 +2066,17 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   const spinInput = spinRoot.getByRole('spinbutton');
   const spinIncrement = spinRoot.getByRole('button', { name: 'Increment value' });
   const disabledSpinInput = page.getByRole('spinbutton', { name: 'Disabled SpinButton' });
+  const searchRoot = page
+    .locator('#search-box')
+    .getByRole('searchbox', { name: 'Search documentation' })
+    .locator('xpath=..');
+  const invalidSearch = page
+    .locator('#search-box .search-box-field')
+    .getByRole('searchbox', { name: 'Product search' })
+    .locator('xpath=..');
+  const disabledSearch = page
+    .locator('#search-box')
+    .getByRole('searchbox', { name: 'Disabled search' });
 
   await expect(indicator).toHaveCSS('border-color', 'rgb(0, 0, 0)');
   await expect(invalidInput).toHaveCSS('forced-color-adjust', 'none');
@@ -2004,6 +2177,20 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   expect(progressSystemColors.bar).not.toBe(progressSystemColors.track);
   expect(progressSystemColors.barForcedColorAdjust).toBe('none');
   await expect(progressBar).toHaveCSS('forced-color-adjust', 'none');
+  await expect(searchRoot).toHaveCSS('forced-color-adjust', 'none');
+  await searchRoot.locator('input').focus();
+  const searchSystemColors = await searchRoot.evaluate((element) => ({
+    background: getComputedStyle(element).backgroundColor,
+    color: getComputedStyle(element).color,
+    focusOutline: getComputedStyle(element).outlineColor,
+    focusBorder: getComputedStyle(element, '::after').borderBottomColor,
+  }));
+  expect(searchSystemColors.background).not.toBe('rgba(0, 0, 0, 0)');
+  expect(searchSystemColors.color).not.toBe('rgba(0, 0, 0, 0)');
+  expect(searchSystemColors.focusOutline).not.toBe('rgba(0, 0, 0, 0)');
+  expect(searchSystemColors.focusBorder).not.toBe('rgba(0, 0, 0, 0)');
+  await searchRoot.locator('input').blur();
+  await expect(invalidSearch).toHaveCSS('border-color', 'rgb(255, 255, 0)');
   await expect(spinRoot).toHaveCSS('forced-color-adjust', 'none');
   await expect(spinInput).toHaveCSS('color', 'rgb(0, 0, 0)');
   await expect(spinIncrement).toHaveCSS('color', 'rgb(0, 0, 0)');
@@ -2030,6 +2217,7 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   await expect(disabledTextarea).toHaveCSS('-webkit-text-fill-color', grayText);
   await expect(disabledLink).toHaveCSS('color', grayText);
   await expect(disabledSpinInput).toHaveCSS('color', grayText);
+  await expect(disabledSearch).toHaveCSS('color', grayText);
 
   const linkText = await page.evaluate(() => {
     const probe = document.createElement('span');

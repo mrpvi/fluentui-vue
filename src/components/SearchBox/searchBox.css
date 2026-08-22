@@ -195,6 +195,8 @@
 .fui-SearchBox__dismiss {
   color: var(--fui-color-neutral-foreground-3);
   cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 .fui-SearchBox__contentBefore > svg,

@@ -23,6 +23,7 @@ import {
   FSkeletonItem,
   FSlider,
   FSelect,
+  FSearchBox,
   FSpinner,
   FSpinButton,
   FSwitch,
@@ -41,6 +42,9 @@ const controlledSpinValue = ref(10);
 const controlledSpinDisplay = ref('$10.00');
 const rollbackSpinValue = ref(4);
 const spinFormData = ref('not submitted');
+const searchQuery = ref('Fluent Vue');
+const controlledSearch = 'Locked query';
+const searchEventLog = ref('No search interaction yet.');
 const dark = ref(false);
 const switchEnabled = ref(false);
 const controlledSwitch = ref(true);
@@ -91,9 +95,9 @@ function submitSpinForm(event: Event) {
         <h1>Native Fluent components for Vue 3</h1>
         <p>
           Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, Image, Badge,
-          Spinner, ProgressBar, SpinButton, Switch, Radio, RadioGroup, Select, Skeleton, Slider, and
-          Card components translated from Fluent UI React v9 to Vue props, slots, emits, and
-          semantic HTML.
+          Spinner, ProgressBar, SpinButton, SearchBox, Switch, Radio, RadioGroup, Select, Skeleton,
+          Slider, and Card components translated from Fluent UI React v9 to Vue props, slots, emits,
+          and semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -1337,6 +1341,125 @@ function submitSpinForm(event: Event) {
       </div>
     </section>
 
+    <section id="search-box">
+      <h2>SearchBox</h2>
+      <div class="search-box-samples">
+        <div class="search-box-group">
+          <h3>Controlled interaction and native events</h3>
+          <FField
+            label="Search documentation"
+            hint="Type a query, then clear it with Escape or the dismiss control."
+          >
+            <FSearchBox
+              v-model="searchQuery"
+              class="search-box-controlled"
+              name="documentation-query"
+              placeholder="Search documentation"
+              @input="(_event, data) => (searchEventLog = `input: ${data.value}`)"
+              @change="(_event, data) => (searchEventLog = `change: ${data.value}`)"
+              @search="(_event, data) => (searchEventLog = `search: ${data.value}`)"
+              @clear="() => (searchEventLog = 'clear')"
+            />
+          </FField>
+          <small class="search-box-value">Value: {{ searchQuery }}</small>
+          <small class="search-box-event-log">{{ searchEventLog }}</small>
+        </div>
+
+        <div class="search-box-group">
+          <h3>Appearances and sizes</h3>
+          <div class="search-box-grid">
+            <FSearchBox
+              class="search-box-appearance-outline search-box-size-small"
+              size="small"
+              aria-label="Small outline search"
+              default-value="Small"
+            />
+            <FSearchBox
+              class="search-box-appearance-underline search-box-size-medium"
+              appearance="underline"
+              aria-label="Medium underline search"
+              default-value="Underline"
+            />
+            <FSearchBox
+              class="search-box-appearance-filled-darker search-box-size-large"
+              appearance="filled-darker"
+              size="large"
+              aria-label="Large filled darker search"
+              default-value="Filled darker"
+            />
+            <FSearchBox
+              class="search-box-appearance-filled-lighter"
+              appearance="filled-lighter"
+              aria-label="Filled lighter search"
+              default-value="Filled lighter"
+            />
+          </div>
+        </div>
+
+        <div class="search-box-group">
+          <h3>Content slots and states</h3>
+          <div class="search-box-grid">
+            <FSearchBox
+              class="search-box-content-slots"
+              aria-label="Search people by voice"
+              default-value="Ada"
+            >
+              <template #content-before><span class="search-box-prefix">People:</span></template>
+              <template #content-after>
+                <button class="search-box-voice" type="button" aria-label="Start voice search">
+                  Voice
+                </button>
+              </template>
+              <template #dismiss><span aria-hidden="true">×</span></template>
+            </FSearchBox>
+            <FSearchBox
+              class="search-box-disabled"
+              disabled
+              aria-label="Disabled search"
+              default-value="Disabled query"
+            />
+            <FSearchBox
+              class="search-box-readonly"
+              read-only
+              aria-label="Read-only search"
+              default-value="Read-only query"
+            />
+            <FField
+              class="search-box-field"
+              label="Product search"
+              hint="Use a product name."
+              validation-message="A product query is required."
+              required
+              size="large"
+            >
+              <FSearchBox placeholder="Search products" />
+            </FField>
+          </div>
+        </div>
+
+        <div class="search-box-group">
+          <h3>Controlled rollback and native form reset</h3>
+          <div class="search-box-grid">
+            <FSearchBox
+              class="search-box-controlled-rollback"
+              :model-value="controlledSearch"
+              aria-label="Controlled rollback search"
+              @update:model-value="searchEventLog = `proposed: ${$event}`"
+            />
+            <form class="search-box-reset-demo">
+              <FSearchBox
+                class="search-box-resettable"
+                default-value="Resettable query"
+                name="reset-query"
+                aria-label="Resettable search"
+              />
+              <FButton type="reset">Reset search form</FButton>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section>
       <h2>Button</h2>
       <div class="row">
@@ -1617,6 +1740,59 @@ function submitSpinForm(event: Event) {
 </template>
 
 <style scoped>
+.search-box-samples {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.search-box-group {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.search-box-group h3 {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-300);
+}
+
+.search-box-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1rem;
+}
+
+.search-box-grid > .fui-SearchBox,
+.search-box-grid > .fui-Field,
+.search-box-reset-demo {
+  width: 100%;
+}
+
+.search-box-reset-demo {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+}
+
+.search-box-prefix,
+.search-box-voice {
+  color: inherit;
+  font: inherit;
+}
+
+.search-box-voice {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.search-box-voice:focus-visible {
+  outline: 2px solid var(--fui-color-stroke-focus-2);
+  outline-offset: 2px;
+}
+
 .playground {
   color-scheme: light;
   min-height: 100vh;

@@ -85,6 +85,13 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /<label id="fui-field-[^"]+__label" for="(fui-field-[^"]+__control)"[^>]*>.*Server field quantity.*<input id="\1" aria-describedby="fui-field-[^"]+__hint" required class="fui-SpinButton__input" type="text" role="spinbutton" autocomplete="off" value="1" aria-valuenow="1"/s,
     );
+    expect(firstRender).toMatch(
+      /class="fui-SearchBox fui-SearchBox--outline fui-SearchBox--medium ssr-search-box"[^>]*>.*<input name="query" aria-label="Server search" class="fui-SearchBox__input" type="search">/,
+    );
+    expect(firstRender).toMatch(
+      /<label id="fui-field-[^"]+__label" for="(fui-field-[^"]+__control)"[^>]*>.*Server field search.*<span class="fui-SearchBox fui-SearchBox--outline fui-SearchBox--large ssr-field-search-box"[^>]*>.*<input placeholder="Search server content" id="\1" aria-describedby="fui-field-[^"]+__hint" class="fui-SearchBox__input" type="search">/s,
+    );
+    expect(firstRender).toContain('aria-label="clear" tabindex="-1"');
     const delayedMarkup = firstRender.match(
       /<div class="[^"]*ssr-delayed-spinner[\s\S]*?<\/div>/,
     )?.[0];
