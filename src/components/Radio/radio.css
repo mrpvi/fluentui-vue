@@ -1,0 +1,176 @@
+.fui-Radio {
+  position: relative;
+  display: inline-flex;
+  color: var(--fui-color-neutral-foreground-3);
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-300);
+  line-height: var(--fui-line-height-base-300);
+  vertical-align: middle;
+}
+
+.fui-Radio--label-below {
+  flex-direction: column;
+  align-items: center;
+}
+
+.fui-Radio:focus-within {
+  outline: var(--fui-stroke-width-thick) solid transparent;
+  box-shadow: 0 0 0 var(--fui-stroke-width-thin) var(--fui-color-stroke-focus-2) inset;
+}
+
+.fui-Radio__input {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  box-sizing: border-box;
+  width: calc(16px + 2 * var(--fui-spacing-horizontal-s));
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.fui-Radio__input--label-below {
+  width: 100%;
+  height: calc(16px + 2 * var(--fui-spacing-vertical-s));
+}
+
+.fui-Radio__indicator {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  margin: var(--fui-spacing-vertical-s) var(--fui-spacing-horizontal-s);
+  overflow: hidden;
+  color: transparent;
+  font-size: 12px;
+  pointer-events: none;
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-accessible);
+  border-radius: var(--fui-border-radius-circular);
+  fill: currentColor;
+}
+
+.fui-Radio__indicator::after {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background-color: currentcolor;
+  border-radius: var(--fui-border-radius-circular);
+  transform: scale(0.625);
+}
+
+.fui-Radio__input:checked ~ .fui-Radio__indicator::after {
+  content: '';
+}
+
+.fui-Radio__input:not(:checked) ~ .fui-Radio__indicator > * {
+  opacity: 0;
+}
+
+.fui-Radio__label {
+  align-self: center;
+  padding: var(--fui-spacing-vertical-s) var(--fui-spacing-horizontal-s);
+  color: inherit;
+  cursor: pointer;
+}
+
+.fui-Radio__label--after {
+  padding-inline-start: var(--fui-spacing-horizontal-xs);
+  margin-block: calc((16px - var(--fui-line-height-base-300)) / 2);
+}
+
+.fui-Radio__label--below {
+  padding-block-start: var(--fui-spacing-vertical-xs);
+  text-align: center;
+}
+
+.fui-Radio__input:enabled:not(:checked):hover ~ .fui-Radio__indicator {
+  border-color: var(--fui-color-neutral-stroke-accessible-hover);
+}
+
+.fui-Radio__input:enabled:not(:checked):hover ~ .fui-Radio__label {
+  color: var(--fui-color-neutral-foreground-2);
+}
+
+.fui-Radio__input:enabled:not(:checked):active ~ .fui-Radio__indicator {
+  border-color: var(--fui-color-neutral-stroke-accessible-pressed);
+}
+
+.fui-Radio__input:enabled:not(:checked):active ~ .fui-Radio__label {
+  color: var(--fui-color-neutral-foreground-1);
+}
+
+.fui-Radio__input:enabled:checked ~ .fui-Radio__indicator {
+  color: var(--fui-color-compound-brand-foreground-1);
+  border-color: var(--fui-color-compound-brand-stroke);
+}
+
+.fui-Radio__input:enabled:checked ~ .fui-Radio__label {
+  color: var(--fui-color-neutral-foreground-1);
+}
+
+.fui-Radio__input:enabled:checked:hover ~ .fui-Radio__indicator {
+  color: var(--fui-color-compound-brand-foreground-1-hover);
+  border-color: var(--fui-color-compound-brand-stroke-hover);
+}
+
+.fui-Radio__input:enabled:checked:active ~ .fui-Radio__indicator {
+  color: var(--fui-color-compound-brand-foreground-1-pressed);
+  border-color: var(--fui-color-compound-brand-stroke-pressed);
+}
+
+.fui-Radio__input:disabled {
+  cursor: default;
+}
+
+.fui-Radio__input:disabled ~ .fui-Radio__indicator {
+  color: var(--fui-color-neutral-foreground-disabled);
+  border-color: var(--fui-color-neutral-stroke-disabled);
+}
+
+.fui-Radio__input:disabled ~ .fui-Radio__label {
+  color: var(--fui-color-neutral-foreground-disabled);
+  cursor: default;
+}
+
+.fui-RadioGroup--invalid .fui-Radio__input:enabled:not(:checked) ~ .fui-Radio__indicator {
+  border-color: var(--fui-color-status-danger-border-1);
+}
+
+@media (forced-colors: active) {
+  .fui-Radio {
+    color: CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .fui-Radio:focus-within {
+    outline-color: Highlight;
+    box-shadow: none;
+  }
+
+  .fui-Radio__input:not(:checked) ~ .fui-Radio__indicator {
+    border-color: ButtonBorder;
+  }
+
+  .fui-Radio__input:checked ~ .fui-Radio__indicator {
+    color: Highlight;
+    border-color: Highlight;
+  }
+
+  .fui-Radio__input:checked ~ .fui-Radio__indicator::after {
+    background-color: Highlight;
+  }
+
+  .fui-Radio__input:disabled ~ .fui-Radio__indicator {
+    color: GrayText;
+    border-color: GrayText;
+  }
+
+  .fui-Radio__input:disabled ~ .fui-Radio__label {
+    color: GrayText;
+  }
+}

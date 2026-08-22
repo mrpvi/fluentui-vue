@@ -1,0 +1,13 @@
+.fui-RadioGroup {
+  display: flex;
+  align-items: flex-start;
+}
+
+.fui-RadioGroup--vertical {
+  flex-direction: column;
+}
+
+.fui-RadioGroup--horizontal,
+.fui-RadioGroup--horizontal-stacked {
+  flex-flow: row wrap;
+}
