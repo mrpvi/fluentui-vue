@@ -1,0 +1,12 @@
+export * from './components/Button';
+export * from './components/Checkbox';
+export * from './components/Field';
+export * from './components/Input';
+export * from './components/Label';
+export * from './components/Link';
+export * from './components/Text';
+export * from './components/Textarea';
+export { FluentVue } from './plugin';
+export type { FluentTheme } from './types';
+
+export const packageVersion = '0.1.0';

@@ -1,0 +1,82 @@
+.fui-Link {
+  box-sizing: border-box;
+  display: inline;
+  margin: 0;
+  padding: 0;
+  overflow: inherit;
+  color: var(--fui-color-brand-foreground-link);
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-300);
+  font-weight: var(--fui-font-weight-regular);
+  text-align: start;
+  text-decoration-color: currentColor;
+  text-decoration-line: none;
+  text-decoration-thickness: var(--fui-stroke-width-thin);
+  text-overflow: inherit;
+  user-select: text;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.fui-Link:is(button) {
+  border: 0;
+}
+
+.fui-Link:is(a)[href] {
+  font-size: inherit;
+}
+
+.fui-Link:hover {
+  color: var(--fui-color-brand-foreground-link-hover);
+  text-decoration-line: underline;
+}
+
+.fui-Link:active {
+  color: var(--fui-color-brand-foreground-link-pressed);
+  text-decoration-line: underline;
+}
+
+.fui-Link:focus-visible {
+  text-decoration-color: var(--fui-color-stroke-focus-2);
+  text-decoration-line: underline;
+  text-decoration-style: double;
+  outline-style: none;
+}
+
+.fui-Link--subtle {
+  color: var(--fui-color-neutral-foreground-2-link);
+}
+
+.fui-Link--subtle:hover {
+  color: var(--fui-color-neutral-foreground-2-link-hover);
+}
+
+.fui-Link--subtle:active {
+  color: var(--fui-color-neutral-foreground-2-link-pressed);
+}
+
+.fui-Link--inline {
+  text-decoration-line: underline;
+}
+
+.fui-Link--disabled,
+.fui-Link--disabled-focusable,
+.fui-Link--disabled:hover,
+.fui-Link--disabled-focusable:hover,
+.fui-Link--disabled:active,
+.fui-Link--disabled-focusable:active {
+  color: var(--fui-color-neutral-foreground-disabled);
+  text-decoration-line: none;
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .fui-Link--disabled,
+  .fui-Link--disabled-focusable,
+  .fui-Link--disabled:hover,
+  .fui-Link--disabled-focusable:hover,
+  .fui-Link--disabled:active,
+  .fui-Link--disabled-focusable:active {
+    color: GrayText;
+  }
+}

@@ -1,0 +1,246 @@
+.fui-Textarea {
+  position: relative;
+  display: inline-flex;
+  box-sizing: border-box;
+  min-width: 160px;
+  max-width: 100%;
+  vertical-align: bottom;
+  color: var(--fui-color-neutral-foreground-1);
+  background-color: var(--fui-color-neutral-background-1);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible);
+  border-radius: var(--fui-border-radius-medium);
+}
+
+.fui-Textarea::after {
+  position: absolute;
+  inset-inline: -1px;
+  bottom: -1px;
+  box-sizing: border-box;
+  height: max(2px, var(--fui-border-radius-medium));
+  pointer-events: none;
+  content: '';
+  border-bottom: 2px solid var(--fui-color-compound-brand-stroke);
+  border-end-end-radius: var(--fui-border-radius-medium);
+  border-end-start-radius: var(--fui-border-radius-medium);
+  clip-path: inset(calc(100% - 2px) 0 0 0);
+  transform: scaleX(0);
+  transition-delay: var(--fui-curve-accelerate-mid);
+  transition-duration: var(--fui-duration-ultra-fast);
+  transition-property: transform;
+}
+
+.fui-Textarea:focus-within {
+  outline: 2px solid transparent;
+}
+
+.fui-Textarea:focus-within::after {
+  transform: scaleX(1);
+  transition-delay: var(--fui-curve-decelerate-mid);
+  transition-duration: var(--fui-duration-normal);
+}
+
+.fui-Textarea:focus-within:active::after {
+  border-bottom-color: var(--fui-color-compound-brand-stroke-pressed);
+}
+
+.fui-Textarea--outline:hover {
+  border-color: var(--fui-color-neutral-stroke-1-hover);
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible-hover);
+}
+
+.fui-Textarea--outline:active,
+.fui-Textarea--outline:focus-within {
+  border-color: var(--fui-color-neutral-stroke-1-pressed);
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible-pressed);
+}
+
+.fui-Textarea--filled-darker,
+.fui-Textarea--filled-lighter,
+.fui-Textarea--filled-darker-shadow,
+.fui-Textarea--filled-lighter-shadow {
+  border-color: var(--fui-color-transparent-stroke);
+}
+
+.fui-Textarea--filled-darker,
+.fui-Textarea--filled-darker-shadow {
+  background-color: var(--fui-color-neutral-background-3);
+}
+
+.fui-Textarea--filled-lighter,
+.fui-Textarea--filled-lighter-shadow {
+  background-color: var(--fui-color-neutral-background-1);
+}
+
+.fui-Textarea--filled-darker-shadow,
+.fui-Textarea--filled-lighter-shadow {
+  box-shadow: var(--fui-shadow-2);
+}
+
+.fui-Textarea--filled-darker:hover,
+.fui-Textarea--filled-darker:focus-within,
+.fui-Textarea--filled-lighter:hover,
+.fui-Textarea--filled-lighter:focus-within,
+.fui-Textarea--filled-darker-shadow:hover,
+.fui-Textarea--filled-darker-shadow:focus-within,
+.fui-Textarea--filled-lighter-shadow:hover,
+.fui-Textarea--filled-lighter-shadow:focus-within {
+  border-color: var(--fui-color-transparent-stroke-interactive);
+}
+
+.fui-Textarea__textarea {
+  display: block;
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+  color: inherit;
+  font-family: var(--fui-font-family-base);
+  font-weight: var(--fui-font-weight-regular);
+  background-color: transparent;
+  border: 0;
+  border-radius: inherit;
+  outline: 0;
+}
+
+.fui-Textarea--small .fui-Textarea__textarea {
+  min-height: 40px;
+  max-height: 200px;
+  padding: var(--fui-spacing-vertical-xs) var(--fui-spacing-horizontal-s);
+  font-size: var(--fui-font-size-base-200);
+  line-height: var(--fui-line-height-base-200);
+}
+
+.fui-Textarea--medium .fui-Textarea__textarea {
+  min-height: 52px;
+  max-height: 260px;
+  padding: var(--fui-spacing-vertical-s-nudge) var(--fui-spacing-horizontal-m);
+  font-size: var(--fui-font-size-base-300);
+  line-height: var(--fui-line-height-base-300);
+}
+
+.fui-Textarea--large .fui-Textarea__textarea {
+  min-height: 64px;
+  max-height: 320px;
+  padding: var(--fui-spacing-vertical-s) var(--fui-spacing-horizontal-m);
+  font-size: var(--fui-font-size-base-400);
+  line-height: var(--fui-line-height-base-400);
+}
+
+.fui-Textarea--resize-none .fui-Textarea__textarea {
+  resize: none;
+}
+
+.fui-Textarea--resize-horizontal .fui-Textarea__textarea {
+  resize: horizontal;
+}
+
+.fui-Textarea--resize-vertical .fui-Textarea__textarea {
+  resize: vertical;
+}
+
+.fui-Textarea--resize-both .fui-Textarea__textarea {
+  resize: both;
+}
+
+.fui-Textarea__textarea::placeholder {
+  color: var(--fui-color-neutral-foreground-4);
+  opacity: 1;
+}
+
+.fui-Textarea--invalid:not(:focus-within),
+.fui-Textarea--invalid:hover:not(:focus-within) {
+  border-color: var(--fui-color-palette-red-border-2);
+}
+
+.fui-Textarea--readonly {
+  background-color: var(--fui-color-transparent-background);
+  border-color: var(--fui-color-neutral-stroke-1);
+}
+
+.fui-Textarea--disabled {
+  cursor: not-allowed;
+  background-color: var(--fui-color-transparent-background);
+  border-color: var(--fui-color-neutral-stroke-disabled);
+}
+
+.fui-Textarea--disabled::after,
+.fui-Textarea--readonly::after {
+  content: unset;
+}
+
+.fui-Textarea--disabled:focus-within,
+.fui-Textarea--readonly:focus-within {
+  outline-style: none;
+}
+
+.fui-Textarea--disabled .fui-Textarea__textarea,
+.fui-Textarea__textarea:disabled {
+  color: var(--fui-color-neutral-foreground-disabled);
+  cursor: not-allowed;
+}
+
+.fui-Textarea__textarea:disabled::placeholder {
+  color: var(--fui-color-neutral-foreground-disabled);
+}
+
+.fui-Textarea--readonly .fui-Textarea__textarea,
+.fui-Textarea__textarea:read-only {
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fui-Textarea::after,
+  .fui-Textarea:focus-within::after {
+    transition-delay: 0.01ms;
+    transition-duration: 0.01ms;
+  }
+}
+
+@media (forced-colors: active) {
+  .fui-Textarea {
+    color: FieldText;
+    background-color: Field;
+    border-color: FieldText;
+    forced-color-adjust: none;
+  }
+
+  .fui-Textarea::after {
+    border-bottom-color: Highlight;
+  }
+
+  .fui-Textarea:focus-within {
+    outline-color: Highlight;
+  }
+
+  .fui-Textarea--invalid:not(:focus-within),
+  .fui-Textarea--invalid:hover:not(:focus-within) {
+    border-color: Mark;
+  }
+
+  .fui-Textarea__textarea {
+    color: FieldText;
+  }
+
+  .fui-Textarea__textarea::placeholder {
+    color: GrayText;
+  }
+
+  .fui-Textarea--disabled,
+  .fui-Textarea--disabled .fui-Textarea__textarea,
+  .fui-Textarea__textarea:disabled {
+    color: GrayText;
+    background-color: Field;
+    border-color: GrayText;
+    -webkit-text-fill-color: GrayText;
+  }
+
+  .fui-Textarea--readonly,
+  .fui-Textarea--readonly .fui-Textarea__textarea,
+  .fui-Textarea__textarea:read-only {
+    color: FieldText;
+    background-color: Field;
+    border-color: GrayText;
+  }
+}

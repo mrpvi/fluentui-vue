@@ -1,0 +1,326 @@
+.fui-Button {
+  align-items: center;
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  margin: 0;
+  min-width: 96px;
+  overflow: hidden;
+  padding: 5px var(--fui-spacing-horizontal-m);
+  vertical-align: middle;
+  color: var(--fui-color-neutral-foreground-1);
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-300);
+  font-weight: var(--fui-font-weight-semibold);
+  line-height: var(--fui-line-height-base-300);
+  text-decoration: none;
+  background-color: var(--fui-color-neutral-background-1);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+  border-radius: var(--fui-border-radius-medium);
+  outline-style: none;
+  transition-duration: var(--fui-duration-faster);
+  transition-property: background, border, color;
+  transition-timing-function: var(--fui-curve-easy-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fui-Button:hover {
+  color: var(--fui-color-neutral-foreground-1-hover);
+  cursor: pointer;
+  background-color: var(--fui-color-neutral-background-1-hover);
+  border-color: var(--fui-color-neutral-stroke-1-hover);
+}
+
+.fui-Button:hover:active,
+.fui-Button:active:focus-visible {
+  color: var(--fui-color-neutral-foreground-1-pressed);
+  background-color: var(--fui-color-neutral-background-1-pressed);
+  border-color: var(--fui-color-neutral-stroke-1-pressed);
+  outline-style: none;
+}
+
+.fui-Button:focus-visible {
+  z-index: 1;
+  border-color: var(--fui-color-stroke-focus-2);
+  outline: var(--fui-stroke-width-thick) solid var(--fui-color-transparent-stroke);
+  box-shadow: 0 0 0 var(--fui-stroke-width-thin) var(--fui-color-stroke-focus-2) inset;
+}
+
+.fui-Button--primary {
+  color: var(--fui-color-neutral-foreground-on-brand);
+  background-color: var(--fui-color-brand-background);
+  border-color: transparent;
+}
+
+.fui-Button--primary:hover {
+  color: var(--fui-color-neutral-foreground-on-brand);
+  background-color: var(--fui-color-brand-background-hover);
+  border-color: transparent;
+}
+
+.fui-Button--primary:hover:active,
+.fui-Button--primary:active:focus-visible {
+  color: var(--fui-color-neutral-foreground-on-brand);
+  background-color: var(--fui-color-brand-background-pressed);
+  border-color: transparent;
+}
+
+.fui-Button--primary:focus-visible {
+  border-color: var(--fui-color-stroke-focus-2);
+  box-shadow:
+    var(--fui-shadow-2),
+    0 0 0 var(--fui-stroke-width-thin) var(--fui-color-stroke-focus-2) inset,
+    0 0 0 var(--fui-stroke-width-thick) var(--fui-color-neutral-foreground-on-brand) inset;
+}
+
+.fui-Button--primary:hover:focus-visible {
+  border-color: var(--fui-color-stroke-focus-2);
+  box-shadow:
+    var(--fui-shadow-2),
+    0 0 0 var(--fui-stroke-width-thin) var(--fui-color-stroke-focus-2) inset;
+}
+
+.fui-Button--outline {
+  background-color: var(--fui-color-transparent-background);
+}
+
+.fui-Button--outline:hover {
+  background-color: var(--fui-color-transparent-background-hover);
+}
+
+.fui-Button--outline:hover:active,
+.fui-Button--outline:active:focus-visible {
+  background-color: var(--fui-color-transparent-background-pressed);
+}
+
+.fui-Button--subtle {
+  color: var(--fui-color-neutral-foreground-2);
+  background-color: var(--fui-color-subtle-background);
+  border-color: transparent;
+}
+
+.fui-Button--subtle:hover {
+  color: var(--fui-color-neutral-foreground-2-hover);
+  background-color: var(--fui-color-subtle-background-hover);
+  border-color: transparent;
+}
+
+.fui-Button--subtle:hover .fui-Button__icon {
+  color: var(--fui-color-neutral-foreground-2-brand-hover);
+}
+
+.fui-Button--subtle:hover:active,
+.fui-Button--subtle:active:focus-visible {
+  color: var(--fui-color-neutral-foreground-2-pressed);
+  background-color: var(--fui-color-subtle-background-pressed);
+  border-color: transparent;
+}
+
+.fui-Button--subtle:hover:active .fui-Button__icon,
+.fui-Button--subtle:active:focus-visible .fui-Button__icon {
+  color: var(--fui-color-neutral-foreground-2-brand-pressed);
+}
+
+.fui-Button--transparent {
+  color: var(--fui-color-neutral-foreground-2);
+  background-color: var(--fui-color-transparent-background);
+  border-color: transparent;
+}
+
+.fui-Button--transparent:hover {
+  color: var(--fui-color-neutral-foreground-2-brand-hover);
+  background-color: var(--fui-color-transparent-background-hover);
+  border-color: transparent;
+}
+
+.fui-Button--transparent:hover:active,
+.fui-Button--transparent:active:focus-visible {
+  color: var(--fui-color-neutral-foreground-2-brand-pressed);
+  background-color: var(--fui-color-transparent-background-pressed);
+  border-color: transparent;
+}
+
+.fui-Button--small {
+  min-width: 64px;
+  padding: 3px var(--fui-spacing-horizontal-s);
+  font-size: var(--fui-font-size-base-200);
+  font-weight: var(--fui-font-weight-regular);
+  line-height: var(--fui-line-height-base-200);
+  border-radius: var(--fui-border-radius-medium);
+}
+
+.fui-Button--small.fui-Button--with-icon {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
+.fui-Button--large {
+  min-width: 96px;
+  padding: 8px var(--fui-spacing-horizontal-l);
+  font-size: var(--fui-font-size-base-400);
+  font-weight: var(--fui-font-weight-semibold);
+  line-height: var(--fui-line-height-base-400);
+  border-radius: var(--fui-border-radius-medium);
+}
+
+.fui-Button--large.fui-Button--with-icon {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.fui-Button--circular,
+.fui-Button--circular:focus-visible {
+  border-radius: var(--fui-border-radius-circular);
+}
+
+.fui-Button--square,
+.fui-Button--square:focus-visible {
+  border-radius: var(--fui-border-radius-none);
+}
+
+.fui-Button--small:focus-visible {
+  border-radius: var(--fui-border-radius-small);
+}
+
+.fui-Button--large:focus-visible {
+  border-radius: var(--fui-border-radius-large);
+}
+
+.fui-Button__icon {
+  --fui-button-icon-spacing: var(--fui-spacing-horizontal-s-nudge);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.fui-Button__icon > svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+.fui-Button__icon--small {
+  --fui-button-icon-spacing: var(--fui-spacing-horizontal-xs);
+}
+
+.fui-Button__icon--large {
+  --fui-button-icon-spacing: var(--fui-spacing-horizontal-s-nudge);
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+}
+
+.fui-Button__icon--before {
+  margin-inline-end: var(--fui-button-icon-spacing);
+}
+
+.fui-Button__icon--after {
+  margin-inline-start: var(--fui-button-icon-spacing);
+}
+
+.fui-Button--icon-only-small {
+  min-width: 24px;
+  max-width: 24px;
+  padding: 1px;
+}
+
+.fui-Button--icon-only-medium {
+  min-width: 32px;
+  max-width: 32px;
+  padding: 5px;
+}
+
+.fui-Button--icon-only-large {
+  min-width: 40px;
+  max-width: 40px;
+  padding: 7px;
+}
+
+.fui-Button--disabled,
+.fui-Button--disabled-focusable,
+.fui-Button--disabled:hover,
+.fui-Button--disabled-focusable:hover,
+.fui-Button--disabled:hover:active,
+.fui-Button--disabled-focusable:hover:active,
+.fui-Button--disabled:active:focus-visible,
+.fui-Button--disabled-focusable:active:focus-visible {
+  color: var(--fui-color-neutral-foreground-disabled);
+  cursor: not-allowed;
+  background-color: var(--fui-color-neutral-background-disabled);
+  border-color: var(--fui-color-neutral-stroke-disabled);
+}
+
+.fui-Button--disabled .fui-Button__icon,
+.fui-Button--disabled-focusable .fui-Button__icon {
+  color: var(--fui-color-neutral-foreground-disabled);
+}
+
+.fui-Button--disabled.fui-Button--outline,
+.fui-Button--disabled-focusable.fui-Button--outline,
+.fui-Button--disabled.fui-Button--subtle,
+.fui-Button--disabled-focusable.fui-Button--subtle,
+.fui-Button--disabled.fui-Button--transparent,
+.fui-Button--disabled-focusable.fui-Button--transparent {
+  background-color: var(--fui-color-transparent-background);
+  border-color: transparent;
+}
+
+.fui-Button--disabled.fui-Button--primary,
+.fui-Button--disabled-focusable.fui-Button--primary {
+  border-color: transparent;
+}
+
+@supports (-moz-appearance: button) {
+  .fui-Button:focus-visible {
+    box-shadow: 0 0 0 calc(var(--fui-stroke-width-thin) + 0.25px) var(--fui-color-stroke-focus-2) inset;
+  }
+
+  .fui-Button--primary:focus-visible {
+    box-shadow:
+      var(--fui-shadow-2),
+      0 0 0 calc(var(--fui-stroke-width-thin) + 0.25px) var(--fui-color-stroke-focus-2) inset,
+      0 0 0 var(--fui-stroke-width-thick) var(--fui-color-neutral-foreground-on-brand) inset;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fui-Button {
+    transition-duration: 0.01ms;
+  }
+}
+
+@media (forced-colors: active) {
+  .fui-Button {
+    color: ButtonText;
+    background-color: ButtonFace;
+    border-color: ButtonText;
+    forced-color-adjust: none;
+  }
+
+  .fui-Button:focus-visible {
+    border-color: Highlight;
+    outline-color: Highlight;
+    box-shadow: none;
+  }
+
+  .fui-Button:hover,
+  .fui-Button:hover:active,
+  .fui-Button:active:focus-visible {
+    color: HighlightText;
+    background-color: Highlight;
+    border-color: Highlight;
+  }
+
+  .fui-Button--disabled,
+  .fui-Button--disabled-focusable,
+  .fui-Button--disabled:hover,
+  .fui-Button--disabled-focusable:hover {
+    color: GrayText;
+    background-color: ButtonFace;
+    border-color: GrayText;
+  }
+}

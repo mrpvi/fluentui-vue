@@ -1,0 +1,99 @@
+.fui-Field {
+  display: grid;
+}
+
+.fui-Field--horizontal {
+  grid-template-rows: auto auto auto 1fr;
+  grid-template-columns: 33% 1fr;
+}
+
+.fui-Field--horizontal-no-label {
+  grid-template-columns: 1fr;
+  padding-inline-start: 33%;
+}
+
+.fui-Field__label {
+  max-width: max-content;
+  max-height: max-content;
+  padding-block: var(--fui-spacing-vertical-xxs);
+  margin-block-end: var(--fui-spacing-vertical-xxs);
+}
+
+.fui-Field--vertical.fui-Field--large .fui-Field__label {
+  padding-block: 1px;
+  margin-block-end: var(--fui-spacing-vertical-xs);
+}
+
+.fui-Field--horizontal .fui-Field__label {
+  grid-row: 1 / -1;
+  padding-block: var(--fui-spacing-vertical-s-nudge);
+  margin-inline-end: var(--fui-spacing-horizontal-m);
+  margin-block-end: 0;
+}
+
+.fui-Field--horizontal.fui-Field--small .fui-Field__label {
+  padding-block: var(--fui-spacing-vertical-xs);
+}
+
+.fui-Field--horizontal.fui-Field--large .fui-Field__label {
+  padding-block: 9px;
+}
+
+.fui-Field__validationMessage,
+.fui-Field__hint {
+  margin-block-start: var(--fui-spacing-vertical-xxs);
+  color: var(--fui-color-neutral-foreground-3);
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-200);
+  font-weight: var(--fui-font-weight-regular);
+  line-height: var(--fui-line-height-base-200);
+}
+
+.fui-Field__validationMessage--error {
+  color: var(--fui-color-palette-red-foreground-1);
+}
+
+.fui-Field__validationMessage--with-icon {
+  padding-inline-start: calc(12px + var(--fui-spacing-horizontal-xs));
+}
+
+.fui-Field__validationMessageIcon {
+  display: inline-block;
+  margin-inline-start: calc(-12px - var(--fui-spacing-horizontal-xs));
+  margin-inline-end: var(--fui-spacing-horizontal-xs);
+  font-size: 12px;
+  line-height: 0;
+  vertical-align: -1px;
+}
+
+.fui-Field__validationMessageIcon svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+.fui-Field__validationMessageIcon--error {
+  color: var(--fui-color-palette-red-foreground-1);
+}
+
+.fui-Field__validationMessageIcon--warning {
+  color: var(--fui-color-palette-dark-orange-foreground-1);
+}
+
+.fui-Field__validationMessageIcon--success {
+  color: var(--fui-color-palette-green-foreground-1);
+}
+
+@media (forced-colors: active) {
+  .fui-Field__validationMessage,
+  .fui-Field__hint,
+  .fui-Field__validationMessageIcon {
+    color: CanvasText;
+  }
+
+  .fui-Field__validationMessage--error,
+  .fui-Field__validationMessageIcon--error,
+  .fui-Field__validationMessageIcon--warning {
+    color: LinkText;
+  }
+}

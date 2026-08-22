@@ -1,0 +1,39 @@
+.fui-Label {
+  color: var(--fui-color-neutral-foreground-1);
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-300);
+  font-weight: var(--fui-font-weight-regular);
+  line-height: var(--fui-line-height-base-300);
+}
+
+.fui-Label--small {
+  font-size: var(--fui-font-size-base-200);
+  line-height: var(--fui-line-height-base-200);
+}
+
+.fui-Label--large {
+  font-size: var(--fui-font-size-base-400);
+  font-weight: var(--fui-font-weight-semibold);
+  line-height: var(--fui-line-height-base-400);
+}
+
+.fui-Label--semibold {
+  font-weight: var(--fui-font-weight-semibold);
+}
+
+.fui-Label__required {
+  padding-inline-start: var(--fui-spacing-horizontal-xs);
+  color: var(--fui-color-palette-red-foreground-3);
+}
+
+.fui-Label--disabled,
+.fui-Label--disabled .fui-Label__required {
+  color: var(--fui-color-neutral-foreground-disabled);
+}
+
+@media (forced-colors: active) {
+  .fui-Label--disabled,
+  .fui-Label--disabled .fui-Label__required {
+    color: GrayText;
+  }
+}

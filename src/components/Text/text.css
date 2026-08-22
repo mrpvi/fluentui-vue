@@ -1,0 +1,119 @@
+.fui-Text {
+  display: inline;
+  overflow: visible;
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-300);
+  font-style: normal;
+  font-weight: var(--fui-font-weight-regular);
+  line-height: var(--fui-line-height-base-300);
+  text-align: start;
+  text-decoration-line: none;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.fui-Text--align-center {
+  text-align: center;
+}
+
+.fui-Text--align-end {
+  text-align: end;
+}
+
+.fui-Text--align-justify {
+  text-align: justify;
+}
+
+.fui-Text--font-monospace {
+  font-family: var(--fui-font-family-monospace);
+}
+
+.fui-Text--font-numeric {
+  font-family: var(--fui-font-family-numeric);
+}
+
+.fui-Text--size-100 {
+  font-size: var(--fui-font-size-base-100);
+  line-height: var(--fui-line-height-base-100);
+}
+
+.fui-Text--size-200 {
+  font-size: var(--fui-font-size-base-200);
+  line-height: var(--fui-line-height-base-200);
+}
+
+.fui-Text--size-400 {
+  font-size: var(--fui-font-size-base-400);
+  line-height: var(--fui-line-height-base-400);
+}
+
+.fui-Text--size-500 {
+  font-size: var(--fui-font-size-base-500);
+  line-height: var(--fui-line-height-base-500);
+}
+
+.fui-Text--size-600 {
+  font-size: var(--fui-font-size-base-600);
+  line-height: var(--fui-line-height-base-600);
+}
+
+.fui-Text--size-700 {
+  font-size: var(--fui-font-size-hero-700);
+  line-height: var(--fui-line-height-hero-700);
+}
+
+.fui-Text--size-800 {
+  font-size: var(--fui-font-size-hero-800);
+  line-height: var(--fui-line-height-hero-800);
+}
+
+.fui-Text--size-900 {
+  font-size: var(--fui-font-size-hero-900);
+  line-height: var(--fui-line-height-hero-900);
+}
+
+.fui-Text--size-1000 {
+  font-size: var(--fui-font-size-hero-1000);
+  line-height: var(--fui-line-height-hero-1000);
+}
+
+.fui-Text--weight-medium {
+  font-weight: var(--fui-font-weight-medium);
+}
+
+.fui-Text--weight-semibold {
+  font-weight: var(--fui-font-weight-semibold);
+}
+
+.fui-Text--weight-bold {
+  font-weight: var(--fui-font-weight-bold);
+}
+
+.fui-Text--block {
+  display: block;
+}
+
+.fui-Text--nowrap {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.fui-Text--truncate {
+  text-overflow: ellipsis;
+}
+
+.fui-Text--italic {
+  font-style: italic;
+}
+
+.fui-Text--underline {
+  text-decoration-line: underline;
+}
+
+.fui-Text--strikethrough {
+  text-decoration-line: line-through;
+}
+
+.fui-Text--underline.fui-Text--strikethrough {
+  text-decoration-line: line-through underline;
+}

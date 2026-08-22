@@ -1,0 +1,20 @@
+- main [ref=e3]:
+  - generic [ref=e4]:
+    - navigation "ناوبری صفحه" [ref=e5]:
+      - generic [ref=e6]: کامپوننت‌های وب
+      - link "کامپوننت‌های نیتیو ویو" [ref=e7] [cursor=pointer]:
+        - /url: /native-vue-components
+    - generic [ref=e8]:
+      - generic [ref=e9]: ویو ۳ · تیلویند CSS · فلوئنت ۲
+      - generic "تغییر زبان به انگلیسی" [ref=e10] [cursor=pointer]: English
+    - heading "کامپوننت‌های وب فلوئنت آماده‌اند" [level=1] [ref=e12]
+    - paragraph [ref=e13]: این صفحه از کامپوننت‌های رسمی وب فلوئنت در قالب ویو ۳ و ابزارهای تیلویند برای چیدمان استفاده می‌کند.
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]: نشانی ایمیل
+        - textbox "نشانی ایمیل" [ref=e18]:
+          - /placeholder: name@example.com
+      - generic [ref=e19] [cursor=pointer]: با ادامه فرایند موافقم
+      - generic [ref=e22]:
+        - generic [ref=e23]: ساخت حساب کاربری
+        - generic [ref=e25] [cursor=pointer]: پاک کردن

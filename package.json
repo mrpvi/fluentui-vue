@@ -1,0 +1,58 @@
+{
+  "name": "@local/fluent-vue",
+  "version": "0.1.0",
+  "description": "Native Vue 3 components adapted from Fluent UI React v9.",
+  "private": true,
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "UPSTREAM.md"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "tokens:generate": "node scripts/generate-typography-tokens.mjs",
+    "tokens:check": "node scripts/generate-typography-tokens.mjs --check",
+    "build": "npm run tokens:check && npm run typecheck && vite build && node scripts/clean-build.mjs",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "pack:check": "npm pack --dry-run",
+    "consumer:check": "npm run build && node scripts/verify-packed-consumer.mjs",
+    "test:browser": "playwright test"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@fluentui/react-theme": "9.2.2",
+    "@playwright/test": "^1.55.0",
+    "@types/node": "latest",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "@vue/test-utils": "^2.4.6",
+    "happy-dom": "^20.11.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.2.1",
+    "vite-plugin-dts": "^5.0.3",
+    "vitest": "^4.1.10",
+    "vue": "^3.5.41",
+    "vue-tsc": "latest"
+  }
+}

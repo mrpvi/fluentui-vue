@@ -1,0 +1,35 @@
+html {
+  font-family: var(--fui-font-family-base);
+}
+
+body {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-1);
+  background: var(--fui-color-neutral-background-1);
+}
+
+.fui-focus-outline:focus-visible,
+.fui-focus-within:focus-within {
+  outline: var(--fui-stroke-width-thick) solid transparent;
+  box-shadow: 0 0 0 var(--fui-stroke-width-thin) var(--fui-color-stroke-focus-2) inset;
+}
+
+.fui-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}

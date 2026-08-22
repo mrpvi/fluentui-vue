@@ -1,0 +1,7 @@
+[  370645ms] [WARNING] [Vue warn]: Missing ref owner context. ref cannot be used on hoisted vnodes. A vnode with ref must be created inside the render function. 
+  at <FInput defaultValue="initial" name="input" class="tick-0" > 
+  at <App> @ http://127.0.0.1:5174/@vite/client:528
+[  370647ms] [WARNING] [Vue warn]: Unhandled error during execution of render function 
+  at <FCheckbox defaultChecked=true name="checkbox" class="tick-0" > 
+  at <App> @ http://127.0.0.1:5174/@vite/client:528
+[ 1018787ms] [LOG] [vite] server connection lost. Polling for restart... @ http://127.0.0.1:5174/@vite/client:998

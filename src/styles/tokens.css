@@ -1,0 +1,147 @@
+:root,
+.fui-theme-light {
+  --fui-spacing-horizontal-xxs: 2px;
+  --fui-spacing-horizontal-xs: 4px;
+  --fui-spacing-horizontal-s-nudge: 6px;
+  --fui-spacing-horizontal-s: 8px;
+  --fui-spacing-horizontal-m-nudge: 10px;
+  --fui-spacing-horizontal-m: 12px;
+  --fui-spacing-horizontal-l: 16px;
+  --fui-spacing-vertical-xxs: 2px;
+  --fui-spacing-vertical-xs: 4px;
+  --fui-spacing-vertical-s-nudge: 6px;
+  --fui-spacing-vertical-s: 8px;
+
+  --fui-border-radius-none: 0;
+  --fui-border-radius-small: 2px;
+  --fui-border-radius-medium: 4px;
+  --fui-border-radius-large: 6px;
+  --fui-border-radius-circular: 10000px;
+  --fui-stroke-width-thin: 1px;
+  --fui-stroke-width-thick: 2px;
+
+  --fui-duration-ultra-fast: 50ms;
+  --fui-duration-faster: 100ms;
+  --fui-duration-normal: 200ms;
+  --fui-curve-accelerate-mid: cubic-bezier(1, 0, 1, 1);
+  --fui-curve-decelerate-mid: cubic-bezier(0, 0, 0, 1);
+  --fui-curve-easy-ease: cubic-bezier(0.33, 0, 0.67, 1);
+  --fui-shadow-2: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+
+  --fui-color-neutral-background-1: #ffffff;
+  --fui-color-neutral-background-1-hover: #f5f5f5;
+  --fui-color-neutral-background-1-pressed: #e0e0e0;
+  --fui-color-neutral-background-3: #f5f5f5;
+  --fui-color-neutral-background-disabled: #f0f0f0;
+  --fui-color-neutral-foreground-1: #242424;
+  --fui-color-neutral-foreground-1-hover: #242424;
+  --fui-color-neutral-foreground-1-pressed: #242424;
+  --fui-color-neutral-foreground-2: #424242;
+  --fui-color-neutral-foreground-2-hover: #242424;
+  --fui-color-neutral-foreground-2-pressed: #242424;
+  --fui-color-neutral-foreground-2-brand-hover: #0f6cbd;
+  --fui-color-neutral-foreground-2-brand-pressed: #115ea3;
+  --fui-color-neutral-foreground-2-link: #424242;
+  --fui-color-neutral-foreground-2-link-hover: #242424;
+  --fui-color-neutral-foreground-2-link-pressed: #242424;
+  --fui-color-neutral-foreground-3: #616161;
+  --fui-color-neutral-foreground-4: #707070;
+  --fui-color-neutral-foreground-disabled: #bdbdbd;
+  --fui-color-neutral-foreground-inverted: #ffffff;
+  --fui-color-neutral-foreground-on-brand: #ffffff;
+  --fui-color-neutral-stroke-1: #d1d1d1;
+  --fui-color-neutral-stroke-1-hover: #c7c7c7;
+  --fui-color-neutral-stroke-1-pressed: #b3b3b3;
+  --fui-color-neutral-stroke-accessible: #616161;
+  --fui-color-neutral-stroke-accessible-hover: #575757;
+  --fui-color-neutral-stroke-accessible-pressed: #4d4d4d;
+  --fui-color-neutral-stroke-disabled: #e0e0e0;
+
+  --fui-color-brand-background: #0f6cbd;
+  --fui-color-brand-background-hover: #115ea3;
+  --fui-color-brand-background-pressed: #0c3b5e;
+  --fui-color-brand-foreground-link: #115ea3;
+  --fui-color-brand-foreground-link-hover: #0f548c;
+  --fui-color-brand-foreground-link-pressed: #0c3b5e;
+  --fui-color-compound-brand-background: #0f6cbd;
+  --fui-color-compound-brand-background-hover: #115ea3;
+  --fui-color-compound-brand-background-pressed: #0f548c;
+  --fui-color-compound-brand-stroke: #0f6cbd;
+  --fui-color-compound-brand-stroke-hover: #115ea3;
+  --fui-color-compound-brand-stroke-pressed: #0f548c;
+  --fui-color-compound-brand-foreground-1: #0f6cbd;
+  --fui-color-compound-brand-foreground-1-hover: #115ea3;
+  --fui-color-compound-brand-foreground-1-pressed: #0f548c;
+
+  --fui-color-subtle-background: transparent;
+  --fui-color-subtle-background-hover: #f5f5f5;
+  --fui-color-subtle-background-pressed: #e0e0e0;
+  --fui-color-transparent-background: transparent;
+  --fui-color-transparent-background-hover: transparent;
+  --fui-color-transparent-background-pressed: transparent;
+  --fui-color-transparent-stroke: transparent;
+  --fui-color-transparent-stroke-interactive: transparent;
+  --fui-color-stroke-focus-2: #000000;
+  --fui-color-palette-red-border-2: #d13438;
+  --fui-color-palette-red-foreground-1: #bc2f32;
+  --fui-color-palette-red-foreground-3: #d13438;
+  --fui-color-palette-dark-orange-foreground-1: #c43501;
+  --fui-color-palette-green-foreground-1: #0e700e;
+}
+
+.fui-theme-dark {
+  --fui-color-neutral-background-1: #292929;
+  --fui-color-neutral-background-1-hover: #3d3d3d;
+  --fui-color-neutral-background-1-pressed: #1f1f1f;
+  --fui-color-neutral-background-3: #141414;
+  --fui-color-neutral-background-disabled: #141414;
+  --fui-color-neutral-foreground-1: #ffffff;
+  --fui-color-neutral-foreground-1-hover: #ffffff;
+  --fui-color-neutral-foreground-1-pressed: #ffffff;
+  --fui-color-neutral-foreground-2: #d6d6d6;
+  --fui-color-neutral-foreground-2-hover: #ffffff;
+  --fui-color-neutral-foreground-2-pressed: #ffffff;
+  --fui-color-neutral-foreground-2-brand-hover: #479ef5;
+  --fui-color-neutral-foreground-2-brand-pressed: #2886de;
+  --fui-color-neutral-foreground-2-link: #d6d6d6;
+  --fui-color-neutral-foreground-2-link-hover: #ffffff;
+  --fui-color-neutral-foreground-2-link-pressed: #ffffff;
+  --fui-color-neutral-foreground-3: #adadad;
+  --fui-color-neutral-foreground-4: #999999;
+  --fui-color-neutral-foreground-disabled: #5c5c5c;
+  --fui-color-neutral-foreground-inverted: #242424;
+  --fui-color-neutral-foreground-on-brand: #ffffff;
+  --fui-color-neutral-stroke-1: #666666;
+  --fui-color-neutral-stroke-1-hover: #757575;
+  --fui-color-neutral-stroke-1-pressed: #6b6b6b;
+  --fui-color-neutral-stroke-accessible: #adadad;
+  --fui-color-neutral-stroke-accessible-hover: #bdbdbd;
+  --fui-color-neutral-stroke-accessible-pressed: #b3b3b3;
+  --fui-color-neutral-stroke-disabled: #424242;
+
+  --fui-color-brand-background: #115ea3;
+  --fui-color-brand-background-hover: #0f6cbd;
+  --fui-color-brand-background-pressed: #0c3b5e;
+  --fui-color-brand-foreground-link: #479ef5;
+  --fui-color-brand-foreground-link-hover: #62abf5;
+  --fui-color-brand-foreground-link-pressed: #2886de;
+  --fui-color-compound-brand-background: #479ef5;
+  --fui-color-compound-brand-background-hover: #62abf5;
+  --fui-color-compound-brand-background-pressed: #2886de;
+  --fui-color-compound-brand-stroke: #479ef5;
+  --fui-color-compound-brand-stroke-hover: #62abf5;
+  --fui-color-compound-brand-stroke-pressed: #2886de;
+  --fui-color-compound-brand-foreground-1: #479ef5;
+  --fui-color-compound-brand-foreground-1-hover: #62abf5;
+  --fui-color-compound-brand-foreground-1-pressed: #2886de;
+
+  --fui-color-subtle-background: transparent;
+  --fui-color-subtle-background-hover: #383838;
+  --fui-color-subtle-background-pressed: #2e2e2e;
+  --fui-color-stroke-focus-2: #ffffff;
+  --fui-color-palette-red-border-2: #e37d80;
+  --fui-color-palette-red-foreground-1: #e37d80;
+  --fui-color-palette-red-foreground-3: #e37d80;
+  --fui-color-palette-dark-orange-foreground-1: #e9835e;
+  --fui-color-palette-green-foreground-1: #54b054;
+}
