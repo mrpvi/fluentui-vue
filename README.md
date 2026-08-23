@@ -6,7 +6,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 
 ## Current components
 
-- `FButton` — adapted from `@fluentui/react-button` 9.11.0
+- `FButton` and `FToggleButton` — adapted from `@fluentui/react-button` 9.11.0
 - `FInput` — adapted from `@fluentui/react-input` 9.8.6
 - `FCheckbox` — adapted from `@fluentui/react-checkbox` 9.6.4
 - `FDivider` — adapted from `@fluentui/react-divider` 9.7.4
@@ -159,10 +159,15 @@ import {
   FSwitch,
   FText,
   FTextarea,
+  FToggleButton,
   type CheckboxValue,
   type RatingColor,
   type RatingSize,
   type RatingStep,
+  type ToggleButtonAppearance,
+  type ToggleButtonIconPosition,
+  type ToggleButtonShape,
+  type ToggleButtonSize,
 } from '@local/fluent-vue';
 import { ref } from 'vue';
 
@@ -171,6 +176,7 @@ const biography = ref('');
 const accepted = ref<CheckboxValue>(false);
 const receiptMethod = ref('email');
 const companion = ref('dog');
+const pinned = ref(false);
 </script>
 
 <template>
@@ -213,6 +219,7 @@ const companion = ref('dog');
     </FSelect>
   </FField>
   <FLink inline href="/privacy">Read the privacy policy</FLink>
+  <FToggleButton v-model="pinned">Pin profile</FToggleButton>
   <FButton appearance="primary" :disabled="!accepted">Continue</FButton>
 </template>
 ```
@@ -378,6 +385,50 @@ Slots:
 
 - `default` contains the visible button label.
 - `icon` is decorative and is hidden from assistive technology. An icon-only button must therefore provide `aria-label` or `aria-labelledby`; development builds warn when the name is missing.
+
+## ToggleButton
+
+`FToggleButton` is the pressed-state Button variant adapted from the exact released `@fluentui/react-button@9.11.0` ToggleButton. It always renders a native `<button>` and exposes selection through authoritative `aria-pressed`.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { FToggleButton } from '@local/fluent-vue';
+
+const pinned = ref(false);
+</script>
+
+<template>
+  <FToggleButton v-model="pinned">Pin item</FToggleButton>
+  <FToggleButton appearance="primary" default-checked is-accessible>
+    Accessible selected action
+  </FToggleButton>
+  <FToggleButton aria-label="Toggle favorite">
+    <template #icon><FavoriteIcon /></template>
+  </FToggleButton>
+</template>
+```
+
+Key props:
+
+- `modelValue` for controlled pressed state through `v-model`
+- `defaultChecked` for initial uncontrolled pressed state
+- `isAccessible` for Fluent's alternate accessible selected treatment
+- `appearance`: `secondary | primary | outline | subtle | transparent`
+- `shape`: `rounded | circular | square`
+- `size`: `small | medium | large`
+- `iconPosition`: `before | after`
+- `disabled` and `disabledFocusable`
+
+The corresponding public types are `ToggleButtonAppearance`, `ToggleButtonShape`, `ToggleButtonSize`, and `ToggleButtonIconPosition`. An explicitly bound `undefined` `modelValue` is controlled and renders unchecked, matching the package-wide prop-presence rule. `defaultChecked` is read only during initialization, and a controlled ToggleButton remains prop-authoritative until the parent updates it.
+
+Enabled pointer, Enter, and Space activation use native button behavior. The component emits the native `click` first and then one `update:modelValue`; calling `preventDefault()` from the click listener vetoes the state transition. `disabled` uses native disabled semantics. `disabledFocusable` is used only when native `disabled` is false: it keeps focus, exposes `aria-disabled="true"`, and suppresses pointer and Enter/Space activation. If both props are true, native `disabled` takes precedence and no focusable-disabled class or ARIA state is added.
+
+The default root type is `button`; explicit `submit` and `reset` types, `name`, `value`, `form`, data attributes, and accessible naming attributes are forwarded. ToggleButton does not invent checkbox-like form-reset state: resetting a form does not reset `aria-pressed`, because this is a stateful button rather than a checkbox. Managed button semantics, disabled state, `aria-pressed`, and click handling cannot be overridden through fallthrough attributes.
+
+The `icon` slot is decorative and hidden from assistive technology; icon-only usage requires `aria-label` or `aria-labelledby`. Released regular/filled Fluent icon pairs may use `.fui-Icon-regular` and `.fui-Icon-filled`, which switch with the pressed state. Sizes, shapes, icon order, RTL logical spacing, light/dark themes, focus, forced-color selected/disabled palettes, and the base Button reduced-motion safeguard are preserved. The component exposes its native `element` and `focus()`.
+
+React's `checked`/`onClick` API is translated to Vue `modelValue`, `update:modelValue`, and a typed native `click` emit. React Button context sizing and ToggleButton anchor-root customization are intentionally omitted from this fixed-native-button Vue slice.
 
 ## Link
 

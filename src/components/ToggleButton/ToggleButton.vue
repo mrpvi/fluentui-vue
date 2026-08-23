@@ -35,7 +35,8 @@ const internalChecked = ref(props.defaultChecked);
 const checked = computed(() =>
   isControlled ? (props.modelValue ?? false) : internalChecked.value,
 );
-const isDisabled = computed(() => props.disabled || props.disabledFocusable);
+const isDisabledFocusable = computed(() => props.disabledFocusable && !props.disabled);
+const isDisabled = computed(() => props.disabled || isDisabledFocusable.value);
 const iconOnly = computed(() => Boolean(slots.icon) && !slots.default);
 const hasAccessibleName = computed(() => Boolean(attrs['aria-label'] || attrs['aria-labelledby']));
 
@@ -68,11 +69,11 @@ const classes = computed(() => [
     'fui-Button--icon-only': iconOnly.value,
     [`fui-Button--icon-only-${props.size}`]: iconOnly.value,
     'fui-Button--disabled': props.disabled,
-    'fui-Button--disabled-focusable': props.disabledFocusable,
+    'fui-Button--disabled-focusable': isDisabledFocusable.value,
     'fui-ToggleButton--checked': checked.value,
     'fui-ToggleButton--accessible': props.isAccessible,
     'fui-ToggleButton--disabled': props.disabled,
-    'fui-ToggleButton--disabled-focusable': props.disabledFocusable,
+    'fui-ToggleButton--disabled-focusable': isDisabledFocusable.value,
   },
   attrs.class,
 ]);
@@ -118,7 +119,7 @@ function handleClick(event: MouseEvent) {
 }
 
 function handleKeydown(event: KeyboardEvent) {
-  if (props.disabledFocusable && (event.key === 'Enter' || event.key === ' ')) {
+  if (isDisabledFocusable.value && (event.key === 'Enter' || event.key === ' ')) {
     event.preventDefault();
   }
 }
@@ -137,7 +138,7 @@ defineExpose({
     :style="attrs.style"
     :type="rootType"
     :disabled="disabled ? true : undefined"
-    :aria-disabled="disabledFocusable ? 'true' : undefined"
+    :aria-disabled="isDisabledFocusable ? 'true' : undefined"
     :aria-pressed="checked ? 'true' : 'false'"
     @click="handleClick"
     @keydown="handleKeydown"

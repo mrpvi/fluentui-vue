@@ -5,6 +5,10 @@
   border-width: var(--fui-stroke-width-thin);
 }
 
+.fui-ToggleButton .fui-Icon-filled {
+  display: none;
+}
+
 .fui-ToggleButton--checked .fui-Icon-filled {
   display: inline;
 }
@@ -189,14 +193,14 @@
 }
 
 @media (forced-colors: active) {
-  .fui-ToggleButton.fui-ToggleButton--primary {
+  .fui-Button.fui-ToggleButton.fui-ToggleButton--primary {
     color: ButtonText;
     background-color: ButtonFace;
     border-color: ButtonBorder;
     forced-color-adjust: auto;
   }
 
-  .fui-ToggleButton--checked {
+  .fui-Button.fui-ToggleButton.fui-ToggleButton--checked {
     color: HighlightText;
     background-color: Highlight;
     border-color: Highlight;
@@ -218,6 +222,15 @@
   .fui-ToggleButton--checked:focus-visible {
     border: var(--fui-stroke-width-thin) solid HighlightText;
     outline-color: Highlight;
+  }
+
+  .fui-Button.fui-ToggleButton--disabled,
+  .fui-Button.fui-ToggleButton--disabled-focusable,
+  .fui-Button.fui-ToggleButton--disabled:hover,
+  .fui-Button.fui-ToggleButton--disabled-focusable:hover {
+    color: GrayText;
+    background-color: ButtonFace;
+    border-color: GrayText;
   }
 
   .fui-ToggleButton--disabled.fui-ToggleButton--primary,

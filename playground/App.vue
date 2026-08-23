@@ -31,6 +31,7 @@ import {
   FSwitch,
   FText,
   FTextarea,
+  FToggleButton,
   type CheckboxValue,
 } from '../src';
 
@@ -60,6 +61,8 @@ const controlledRatingValue = ref(2);
 const controlledRatingAttempt = ref<number | null>(null);
 const selectableCard = ref(false);
 const controlledCard = ref(true);
+const toggleControlled = ref(true);
+const toggleSubmitCount = ref(0);
 const imageFixture =
   'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22320%22 height=%22180%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%230f6cbd%22/%3E%3Crect width=%22160%22 height=%2290%22 fill=%22%23479ef5%22/%3E%3Crect x=%22160%22 y=%2290%22 width=%22160%22 height=%2290%22 fill=%22%230e4775%22/%3E%3Ccircle cx=%22160%22 cy=%2290%22 r=%2242%22 fill=%22%23f7c646%22/%3E%3Cpath d=%22M0 180 96 68l58 66 44-46 122 92Z%22 fill=%22%23dff6dd%22 opacity=%22.92%22/%3E%3C/svg%3E';
 const missingImageFixture = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABINVALID';
@@ -103,10 +106,10 @@ function ratingItemLabel(value: number) {
         <p class="eyebrow">@local/fluent-vue · 0.1.0</p>
         <h1>Native Fluent components for Vue 3</h1>
         <p>
-          Native Button, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider, Image, Badge,
-          Spinner, ProgressBar, SpinButton, SearchBox, Switch, Radio, RadioGroup, Select, Skeleton,
-          Slider, Rating, RatingDisplay, and Card components translated from Fluent UI React v9 to
-          Vue props, slots, emits, and semantic HTML.
+          Native Button, ToggleButton, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider,
+          Image, Badge, Spinner, ProgressBar, SpinButton, SearchBox, Switch, Radio, RadioGroup,
+          Select, Skeleton, Slider, Rating, RatingDisplay, and Card components translated from
+          Fluent UI React v9 to Vue props, slots, emits, and semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -1094,6 +1097,124 @@ function ratingItemLabel(value: number) {
       </div>
     </section>
 
+    <section id="toggle-button">
+      <h2>ToggleButton</h2>
+      <div class="toggle-button-samples">
+        <div class="toggle-button-group">
+          <h3>Pressed appearances and accessible selection</h3>
+          <div class="toggle-button-grid">
+            <FToggleButton
+              v-for="appearance in [
+                'secondary',
+                'primary',
+                'outline',
+                'subtle',
+                'transparent',
+              ] as const"
+              :key="appearance"
+              :class="`toggle-${appearance}`"
+              :appearance="appearance"
+              default-checked
+            >
+              {{ appearance }} pinned
+            </FToggleButton>
+            <FToggleButton
+              class="toggle-accessible"
+              appearance="primary"
+              default-checked
+              is-accessible
+            >
+              Accessible selected
+            </FToggleButton>
+          </div>
+        </div>
+
+        <div class="toggle-button-group">
+          <h3>Controlled state, geometry, and icons</h3>
+          <div class="toggle-button-grid">
+            <FToggleButton v-model="toggleControlled" class="toggle-controlled">
+              Controlled pin
+            </FToggleButton>
+            <FToggleButton class="toggle-small" size="small">Small toggle</FToggleButton>
+            <FToggleButton class="toggle-large" size="large">Large toggle</FToggleButton>
+            <FToggleButton class="toggle-circular" shape="circular">Circular toggle</FToggleButton>
+            <FToggleButton class="toggle-square" shape="square">Square toggle</FToggleButton>
+            <FToggleButton class="toggle-icon-before" default-checked>
+              <template #icon>
+                <span class="toggle-dual-icon">
+                  <svg class="fui-Icon-regular" viewBox="0 0 20 20" aria-hidden="true">
+                    <circle cx="10" cy="10" r="6" fill="none" stroke="currentColor" />
+                  </svg>
+                  <svg class="fui-Icon-filled" viewBox="0 0 20 20" aria-hidden="true">
+                    <circle cx="10" cy="10" r="6" fill="currentColor" />
+                  </svg>
+                </span>
+              </template>
+              Before icon
+            </FToggleButton>
+            <FToggleButton class="toggle-icon-after" icon-position="after">
+              <template #icon>
+                <svg viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M4 10h12M10 4v12" fill="none" stroke="currentColor" />
+                </svg>
+              </template>
+              After icon
+            </FToggleButton>
+            <FToggleButton class="toggle-icon-only" aria-label="Toggle favorite">
+              <template #icon>
+                <svg viewBox="0 0 20 20" aria-hidden="true">
+                  <path
+                    d="m10 2 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8Z"
+                  />
+                </svg>
+              </template>
+            </FToggleButton>
+          </div>
+          <output aria-live="polite">Controlled toggle: {{ toggleControlled }}</output>
+        </div>
+
+        <div class="toggle-button-group">
+          <h3>Native form and disabled behavior</h3>
+          <form
+            id="toggle-target-form"
+            class="toggle-button-form"
+            @submit.prevent="toggleSubmitCount += 1"
+          >
+            <FToggleButton class="toggle-default-type" name="default-action" value="default">
+              Default type
+            </FToggleButton>
+            <FToggleButton
+              class="toggle-submit"
+              type="submit"
+              name="toggle-action"
+              value="submitted"
+              form="toggle-target-form"
+            >
+              Submit toggle form
+            </FToggleButton>
+            <FToggleButton class="toggle-disabled" type="submit" disabled>
+              Disabled toggle
+            </FToggleButton>
+            <FToggleButton class="toggle-disabled-focusable" disabled-focusable>
+              Focusable disabled toggle
+            </FToggleButton>
+            <FToggleButton class="toggle-both-disabled" disabled disabled-focusable>
+              Both disabled toggle
+            </FToggleButton>
+            <output aria-live="polite">Toggle submissions: {{ toggleSubmitCount }}</output>
+          </form>
+          <div class="toggle-rtl-surface" dir="rtl">
+            <FToggleButton class="toggle-rtl-icon">
+              <template #icon>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12" /></svg>
+              </template>
+              RTL icon toggle
+            </FToggleButton>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="card">
       <h2>Card</h2>
       <div class="card-samples">
@@ -2056,6 +2177,7 @@ section {
 }
 
 .badge-samples,
+.toggle-button-samples,
 .card-samples,
 .spinner-samples,
 .progress-bar-samples,
@@ -2067,6 +2189,7 @@ section {
 }
 
 .badge-group,
+.toggle-button-group,
 .card-group,
 .spinner-group,
 .progress-bar-group,
@@ -2079,6 +2202,7 @@ section {
 
 .spinner-group h3,
 .badge-group h3,
+.toggle-button-group h3,
 .card-group > h3,
 .progress-bar-group h3,
 .spin-button-group h3,
@@ -2087,6 +2211,43 @@ section {
   margin: 0;
   color: var(--fui-color-neutral-foreground-2);
   font-size: var(--fui-font-size-base-300);
+}
+
+.toggle-button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), max-content));
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.toggle-button-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+}
+
+.toggle-button-form output,
+.toggle-button-group > output {
+  flex-basis: 100%;
+}
+
+.toggle-button-grid svg {
+  width: 1em;
+  height: 1em;
+}
+
+.toggle-dual-icon {
+  display: inline-flex;
+}
+
+.toggle-rtl-surface {
+  width: max-content;
+  padding: 0.75rem;
+  background: var(--fui-color-neutral-background-2);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
 }
 
 .slider-samples,

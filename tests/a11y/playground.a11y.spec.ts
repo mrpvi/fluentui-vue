@@ -75,6 +75,37 @@ test('SearchBox fixtures expose native search semantics, Field naming, and clear
   );
 });
 
+test('ToggleButton fixtures expose native pressed, named, and disabled states', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#toggle-button');
+  await expect(section.getByRole('button', { name: 'primary pinned' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await expect(section.getByRole('button', { name: 'Small toggle' })).toHaveAttribute(
+    'aria-pressed',
+    'false',
+  );
+  await expect(section.getByRole('button', { name: 'Toggle favorite' })).toHaveAttribute(
+    'aria-pressed',
+    'false',
+  );
+  await expect(
+    section.getByRole('button', { name: 'Disabled toggle', exact: true }),
+  ).toBeDisabled();
+  await expect(section.getByRole('button', { name: 'Focusable disabled toggle' })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
+  await expect(section.getByRole('button', { name: 'Both disabled toggle' })).toBeDisabled();
+  await expect(section.getByRole('button', { name: 'Both disabled toggle' })).not.toHaveAttribute(
+    'aria-disabled',
+  );
+});
+
 test('ProgressBar fixtures expose determinate, indeterminate, and Field-derived names', async ({
   page,
 }) => {

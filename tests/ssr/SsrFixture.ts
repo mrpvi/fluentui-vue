@@ -30,6 +30,7 @@ import {
   FSwitch,
   FText,
   FTextarea,
+  FToggleButton,
 } from '../../src';
 
 export const SsrFixture = defineComponent({
@@ -55,6 +56,19 @@ export const SsrFixture = defineComponent({
           { default: () => h(FTextarea, { defaultValue: 'Vue-native components' }) },
         ),
         h(FCheckbox, { defaultChecked: true, label: 'Accept terms' }),
+        h(
+          FToggleButton,
+          {
+            class: 'ssr-toggle-button',
+            appearance: 'primary',
+            defaultChecked: true,
+            isAccessible: true,
+          },
+          {
+            default: () => 'Server pinned action',
+            icon: () => h('svg', { viewBox: '0 0 20 20' }),
+          },
+        ),
         h(FDivider, { 'aria-label': 'Contentless boundary' }),
         h(FDivider, { appearance: 'brand' }, () => 'Server section'),
         h(FDivider, { vertical: true }, () => 'Vertical section'),

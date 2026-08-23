@@ -48,6 +48,15 @@ describe('hydration', () => {
     await nextTick();
     expect(switches[0]?.checked).toBe(false);
 
+    const toggleButton = container.querySelector<HTMLButtonElement>('.ssr-toggle-button');
+    expect(toggleButton?.type).toBe('button');
+    expect(toggleButton?.getAttribute('aria-pressed')).toBe('true');
+    const hydratedToggle = toggleButton;
+    toggleButton?.click();
+    await nextTick();
+    expect(toggleButton?.getAttribute('aria-pressed')).toBe('false');
+    expect(container.querySelector('.ssr-toggle-button')).toBe(hydratedToggle);
+
     const radioGroup = container.querySelector<HTMLElement>('.ssr-radio-group');
     expect(radioGroup).not.toBeNull();
     const radios = [...radioGroup!.querySelectorAll<HTMLInputElement>('input[type="radio"]')];

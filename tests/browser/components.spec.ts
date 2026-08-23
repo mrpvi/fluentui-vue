@@ -693,6 +693,120 @@ test('Spinner reduced motion simplifies the animated tail', async ({ page, brows
   );
 });
 
+test('ToggleButton supports pointer, Enter, Space, controlled state, and icon naming', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#toggle-button');
+  const controlled = section.getByRole('button', { name: 'Controlled pin' });
+  const output = section.getByText(/Controlled toggle:/);
+  await expect(controlled).toHaveAttribute('aria-pressed', 'true');
+  await controlled.click();
+  await expect(controlled).toHaveAttribute('aria-pressed', 'false');
+  await expect(output).toHaveText('Controlled toggle: false');
+
+  const secondary = section.getByRole('button', { name: 'secondary pinned' });
+  await expect(secondary).toHaveAttribute('aria-pressed', 'true');
+  await secondary.click();
+  await expect(secondary).toHaveAttribute('aria-pressed', 'false');
+  await secondary.focus();
+  await page.keyboard.press('Enter');
+  await expect(secondary).toHaveAttribute('aria-pressed', 'true');
+  await page.keyboard.press('Space');
+  await expect(secondary).toHaveAttribute('aria-pressed', 'false');
+
+  const iconOnly = section.getByRole('button', { name: 'Toggle favorite' });
+  await expect(iconOnly).toHaveAttribute('aria-pressed', 'false');
+  await expect(iconOnly.locator('.fui-ToggleButton__icon')).toHaveAttribute('aria-hidden', 'true');
+
+  const dual = section.locator('.toggle-icon-before');
+  await expect(dual.locator('.fui-Icon-regular')).toHaveCSS('display', 'none');
+  await expect(dual.locator('.fui-Icon-filled')).not.toHaveCSS('display', 'none');
+  await dual.click();
+  await expect(dual.locator('.fui-Icon-regular')).not.toHaveCSS('display', 'none');
+  await expect(dual.locator('.fui-Icon-filled')).toHaveCSS('display', 'none');
+});
+
+test('ToggleButton preserves geometry, RTL, form, theme, and disabled behavior', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#toggle-button');
+  const small = section.locator('.toggle-small');
+  const large = section.locator('.toggle-large');
+  const circular = section.locator('.toggle-circular');
+  const square = section.locator('.toggle-square');
+  const rtlIcon = section.locator('.toggle-rtl-icon .fui-ToggleButton__icon');
+  await expect(small).toHaveCSS('padding-top', '3px');
+  await expect(small).toHaveCSS('font-size', '12px');
+  await expect(large).toHaveCSS('padding-top', '8px');
+  await expect(large).toHaveCSS('font-size', '16px');
+  await expect(circular).toHaveCSS('border-radius', '10000px');
+  await expect(square).toHaveCSS('border-radius', '0px');
+  await expect(rtlIcon).toHaveCSS('margin-left', '6px');
+  await expect(rtlIcon).toHaveCSS('margin-right', '0px');
+
+  const defaultType = section.getByRole('button', { name: 'Default type' });
+  const submit = section.getByRole('button', { name: 'Submit toggle form' });
+  const counter = section.getByText(/Toggle submissions:/);
+  await expect(defaultType).toHaveAttribute('type', 'button');
+  await expect(defaultType).toHaveAttribute('name', 'default-action');
+  await expect(defaultType).toHaveAttribute('value', 'default');
+  await defaultType.click();
+  await expect(counter).toHaveText('Toggle submissions: 0');
+  await expect(submit).toHaveAttribute('type', 'submit');
+  await expect(submit).toHaveAttribute('form', 'toggle-target-form');
+  await expect(submit).toHaveAttribute('name', 'toggle-action');
+  await expect(submit).toHaveAttribute('value', 'submitted');
+  await submit.click();
+  await expect(counter).toHaveText('Toggle submissions: 1');
+
+  const disabled = section.getByRole('button', { name: 'Disabled toggle', exact: true });
+  await expect(disabled).toBeDisabled();
+  await disabled.click({ force: true });
+  await expect(counter).toHaveText('Toggle submissions: 1');
+
+  const focusableDisabled = section.getByRole('button', { name: 'Focusable disabled toggle' });
+  await expect(focusableDisabled).toHaveAttribute('aria-disabled', 'true');
+  await focusableDisabled.focus();
+  await expect(focusableDisabled).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(focusableDisabled).toHaveAttribute('aria-pressed', 'false');
+  await page.keyboard.press('Space');
+  await expect(focusableDisabled).toHaveAttribute('aria-pressed', 'false');
+  await focusableDisabled.dispatchEvent('click');
+  await expect(focusableDisabled).toHaveAttribute('aria-pressed', 'false');
+
+  const both = section.getByRole('button', { name: 'Both disabled toggle' });
+  await expect(both).toBeDisabled();
+  await expect(both).not.toHaveAttribute('aria-disabled');
+  await expect(both).not.toHaveClass(/disabled-focusable/);
+  await both.focus();
+  await expect(both).not.toBeFocused();
+
+  const primary = section.locator('.toggle-primary');
+  const secondary = section.locator('.toggle-secondary');
+  const accessible = section.locator('.toggle-accessible');
+  await expect(primary).toHaveAttribute('aria-pressed', 'true');
+  await expect(primary).toHaveCSS('background-color', 'rgb(15, 84, 140)');
+  await expect(accessible).toHaveClass(/fui-ToggleButton--accessible/);
+  await expect(accessible).toHaveCSS('outline-style', 'solid');
+  const lightSecondary = await secondary.evaluate((element) => ({
+    background: getComputedStyle(element).backgroundColor,
+    color: getComputedStyle(element).color,
+  }));
+  await page.getByRole('button', { name: 'Use dark theme' }).click();
+  await expect(page.locator('main')).toHaveClass(/fui-theme-dark/);
+  await expect(primary).toHaveAttribute('aria-pressed', 'true');
+  const darkSecondary = await secondary.evaluate((element) => ({
+    background: getComputedStyle(element).backgroundColor,
+    color: getComputedStyle(element).color,
+  }));
+  expect(darkSecondary).not.toEqual(lightSecondary);
+});
+
 test('Rating supports radios, keyboard, native forms, reset, and controlled rollback', async ({
   page,
 }) => {
@@ -2208,7 +2322,7 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   const checked = page.getByLabel('Accept terms').locator('xpath=..');
   const indicator = checked.locator('.fui-Checkbox__indicator');
   const invalidInput = page.locator('.fui-Input--invalid').first();
-  const primary = page.getByRole('button', { name: 'Primary' });
+  const primary = page.getByRole('button', { name: 'Primary', exact: true });
   const invalidTextarea = page.locator('.fui-Textarea--invalid').first();
   const disabledTextarea = page.getByPlaceholder('Disabled textarea');
   const disabledLink = page.getByRole('link', { name: 'Disabled link', exact: true });
@@ -2265,6 +2379,8 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   const disabledSearch = page
     .locator('#search-box')
     .getByRole('searchbox', { name: 'Disabled search' });
+  const toggleChecked = page.locator('#toggle-button .toggle-primary');
+  const toggleDisabled = page.locator('#toggle-button .toggle-disabled');
 
   await expect(indicator).toHaveCSS('border-color', 'rgb(0, 0, 0)');
   await expect(invalidInput).toHaveCSS('forced-color-adjust', 'none');
@@ -2274,15 +2390,23 @@ test('forced-color styles retain system-color state rules', async ({ page, brows
   await expect(filledBadge).toHaveCSS('border-color', 'rgb(0, 0, 0)');
   await expect(spinnerIndicator).toHaveCSS('forced-color-adjust', 'none');
   await expect(checkedRadioRoot).toHaveCSS('forced-color-adjust', 'none');
-  const highlight = await page.evaluate(() => {
+  const toggleSystemColors = await page.evaluate(() => {
     const probe = document.createElement('span');
-    probe.style.color = 'Highlight';
     document.body.append(probe);
-    const color = getComputedStyle(probe).color;
+    probe.style.color = 'Highlight';
+    const highlight = getComputedStyle(probe).color;
+    probe.style.color = 'HighlightText';
+    const highlightText = getComputedStyle(probe).color;
+    probe.style.color = 'GrayText';
+    const grayText = getComputedStyle(probe).color;
     probe.remove();
-    return color;
+    return { highlight, highlightText, grayText };
   });
-  await expect(checkedRadioIndicator).toHaveCSS('border-color', highlight);
+  await expect(checkedRadioIndicator).toHaveCSS('border-color', toggleSystemColors.highlight);
+  await expect(toggleChecked).toHaveCSS('forced-color-adjust', 'none');
+  await expect(toggleChecked).toHaveCSS('background-color', toggleSystemColors.highlight);
+  await expect(toggleChecked).toHaveCSS('color', toggleSystemColors.highlightText);
+  await expect(toggleDisabled).toHaveCSS('color', toggleSystemColors.grayText);
   await expect(select).toHaveCSS('forced-color-adjust', 'none');
   const selectSystemColors = await page.evaluate(() => {
     const probe = document.createElement('span');

@@ -56,7 +56,7 @@ These components should reuse the controlled/uncontrolled state, native form beh
 
 ## Phase 4 — Remaining Button family
 
-22. ❌ **ToggleButton → `FToggleButton`**
+22. ✅ **ToggleButton → `FToggleButton`** — definition-of-done gates complete for `@fluentui/react-button@9.11.0`
 23. ❌ **CompoundButton → `FCompoundButton`**
 
 Delay these components until Menu exists:
@@ -319,7 +319,7 @@ These components come last because they combine overlays, focus management, navi
 
 ## Immediate next development batch
 
-The current form-control completion batch is finished through the Rating family. The next incomplete roadmap work begins with the remaining Button family, but it requires a separate approved request.
+The current form-control completion batch and ToggleButton are complete. The next incomplete roadmap work begins with CompoundButton, but it requires a separate approved request.
 
 ## Rules for updating this roadmap
 

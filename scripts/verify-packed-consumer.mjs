@@ -68,6 +68,7 @@ import {
   FSwitch,
   FText,
   FTextarea,
+  FToggleButton,
   FluentVue,
   packageVersion,
   type BadgeAppearance,
@@ -104,6 +105,10 @@ import {
   type SwitchLabelPosition,
   type SwitchSize,
   type TextareaResize,
+  type ToggleButtonAppearance,
+  type ToggleButtonIconPosition,
+  type ToggleButtonShape,
+  type ToggleButtonSize,
 } from '@local/fluent-vue';
 import '@local/fluent-vue/style.css';
 
@@ -112,6 +117,10 @@ const radioValue = ref('email');
 const badgeAppearance: BadgeAppearance = 'tint';
 const badgeColor: BadgeColor = 'success';
 const appearance: ButtonAppearance = 'primary';
+const toggleAppearance: ToggleButtonAppearance = 'primary';
+const toggleIconPosition: ToggleButtonIconPosition = 'after';
+const toggleShape: ToggleButtonShape = 'circular';
+const toggleSize: ToggleButtonSize = 'small';
 const cardAppearance: CardAppearance = 'outline';
 const cardFocusMode: CardFocusMode = 'tab-only';
 const cardOrientation: CardOrientation = 'vertical';
@@ -376,6 +385,22 @@ createApp({
         width: 64,
         height: 48,
       }),
+      h(
+        FToggleButton,
+        {
+          appearance: toggleAppearance,
+          iconPosition: toggleIconPosition,
+          shape: toggleShape,
+          size: toggleSize,
+          defaultChecked: true,
+        },
+        () => 'Packed toggle action',
+      ),
+      h(
+        FToggleButton,
+        { 'aria-label': 'Packed icon toggle' },
+        { icon: () => h('svg', { viewBox: '0 0 20 20' }) },
+      ),
       h(FButton, { appearance }, () => 'Save'),
     ]),
 })

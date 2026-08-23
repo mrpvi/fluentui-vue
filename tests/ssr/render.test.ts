@@ -14,6 +14,9 @@ describe('SSR rendering', () => {
     expect(firstRender).toContain('aria-describedby=');
     expect(firstRender).toContain('required');
     expect(firstRender).toContain('type="checkbox"');
+    expect(firstRender).toMatch(
+      /<button class="[^"]*fui-ToggleButton[^"]*fui-ToggleButton--checked[^"]*fui-ToggleButton--accessible[^"]*ssr-toggle-button[^"]*"[^>]*type="button"[^>]*aria-pressed="true"[^>]*><span[^>]*aria-hidden="true"[^>]*>.*<\/span>.*Server pinned action.*<\/button>/,
+    );
     expect(firstRender).toContain('role="switch"');
     expect(firstRender).toContain('name="server-switch"');
     expect(firstRender).toContain('value="enabled"');

@@ -1,7 +1,15 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import ToggleButton from '../src/components/ToggleButton/ToggleButton.vue';
+
+const toggleButtonCss = readFileSync(
+  resolve(process.cwd(), 'src/components/ToggleButton/toggleButton.css'),
+  'utf8',
+);
+const buttonCss = readFileSync(resolve(process.cwd(), 'src/components/Button/button.css'), 'utf8');
 
 afterEach(() => {
   document.body.innerHTML = '';
@@ -79,6 +87,23 @@ describe('FToggleButton', () => {
     expect(button.attributes('aria-pressed')).toBe('false');
   });
 
+  it('keeps template kebab-case explicit undefined controlled', async () => {
+    const wrapper = mount({
+      components: { ToggleButton },
+      data: () => ({ checked: undefined as boolean | undefined }),
+      template:
+        '<ToggleButton :model-value="checked" default-checked>Template controlled</ToggleButton>',
+    });
+    const toggle = wrapper.getComponent(ToggleButton);
+    const button = wrapper.get('button');
+
+    expect(button.attributes('aria-pressed')).toBe('false');
+    await button.trigger('click');
+
+    expect(toggle.emitted('update:modelValue')).toEqual([[true]]);
+    expect(button.attributes('aria-pressed')).toBe('false');
+  });
+
   it('ignores later defaultChecked changes in uncontrolled mode', async () => {
     const wrapper = mount(ToggleButton, { props: { defaultChecked: false } });
 
@@ -134,7 +159,7 @@ describe('FToggleButton', () => {
     expect(button.attributes('aria-pressed')).toBe('true');
   });
 
-  it('keeps disabledFocusable focusable and blocks pointer and keyboard activation', async () => {
+  it('keeps disabledFocusable focusable and suppresses component activation', async () => {
     const wrapper = mount(ToggleButton, {
       attachTo: document.body,
       props: { disabledFocusable: true },
@@ -156,19 +181,34 @@ describe('FToggleButton', () => {
     expect(button.attributes('aria-pressed')).toBe('false');
   });
 
-  it('uses native Space and Enter keyboard click activation', async () => {
-    const wrapper = mount(ToggleButton, { attachTo: document.body });
+  it('gives native disabled precedence when both disabled props are set', async () => {
+    const wrapper = mount(ToggleButton, {
+      props: { disabled: true, disabledFocusable: true },
+    });
     const button = wrapper.get('button');
 
-    button.element.focus();
-    button.element.click();
-    await nextTick();
-    expect(button.attributes('aria-pressed')).toBe('true');
+    expect(button.attributes('disabled')).toBeDefined();
+    expect(button.attributes('aria-disabled')).toBeUndefined();
+    expect(button.classes()).toContain('fui-Button--disabled');
+    expect(button.classes()).toContain('fui-ToggleButton--disabled');
+    expect(button.classes()).not.toContain('fui-Button--disabled-focusable');
+    expect(button.classes()).not.toContain('fui-ToggleButton--disabled-focusable');
+    await button.trigger('click');
+    expect(wrapper.emitted('click')).toBeUndefined();
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+  });
 
-    button.element.click();
-    await nextTick();
-    expect(button.attributes('aria-pressed')).toBe('false');
-    expect(wrapper.emitted('click')).toHaveLength(2);
+  it('delegates enabled keyboard activation to the native button', () => {
+    const wrapper = mount(ToggleButton);
+    const button = wrapper.get('button');
+    const enter = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true });
+    const space = new KeyboardEvent('keydown', { key: ' ', cancelable: true });
+
+    button.element.dispatchEvent(enter);
+    button.element.dispatchEvent(space);
+
+    expect(enter.defaultPrevented).toBe(false);
+    expect(space.defaultPrevented).toBe(false);
   });
 
   it('defaults to type button and preserves explicit native submit behavior', async () => {
@@ -309,6 +349,17 @@ describe('FToggleButton', () => {
     await button.trigger('click');
     expect(wrapper.emitted('click')).toBeUndefined();
     expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+  });
+
+  it('defines forced-color specificity, logical spacing, focus, and inherited reduced motion', () => {
+    expect(toggleButtonCss).toContain('.fui-Button.fui-ToggleButton.fui-ToggleButton--checked');
+    expect(toggleButtonCss).toContain('.fui-Button.fui-ToggleButton--disabled');
+    expect(toggleButtonCss).toContain('color: HighlightText');
+    expect(toggleButtonCss).toContain('background-color: Highlight');
+    expect(toggleButtonCss).toContain('color: GrayText');
+    expect(toggleButtonCss).toContain(':focus-visible');
+    expect(buttonCss).toContain('margin-inline-end');
+    expect(buttonCss).toMatch(/@media \(prefers-reduced-motion: reduce\)/);
   });
 
   it('exposes the native element and focus operation', () => {
