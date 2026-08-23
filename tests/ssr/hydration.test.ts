@@ -57,6 +57,17 @@ describe('hydration', () => {
     expect(toggleButton?.getAttribute('aria-pressed')).toBe('false');
     expect(container.querySelector('.ssr-toggle-button')).toBe(hydratedToggle);
 
+    const compoundButton = container.querySelector<HTMLButtonElement>('.ssr-compound-button');
+    expect(compoundButton?.type).toBe('button');
+    expect(compoundButton?.textContent).toContain('Server compound action');
+    expect(compoundButton?.textContent).toContain('Server secondary content');
+    expect(
+      compoundButton?.querySelector('.fui-CompoundButton__icon')?.getAttribute('aria-hidden'),
+    ).toBe('true');
+    const compoundLink = container.querySelector<HTMLAnchorElement>('.ssr-compound-link');
+    expect(compoundLink?.href).toContain('#compound-details');
+    expect(compoundLink?.getAttribute('role')).toBeNull();
+
     const radioGroup = container.querySelector<HTMLElement>('.ssr-radio-group');
     expect(radioGroup).not.toBeNull();
     const radios = [...radioGroup!.querySelectorAll<HTMLInputElement>('input[type="radio"]')];

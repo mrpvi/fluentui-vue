@@ -8,6 +8,7 @@ import {
   FCardHeader,
   FCardPreview,
   FCheckbox,
+  FCompoundButton,
   FCounterBadge,
   FDivider,
   FField,
@@ -63,6 +64,7 @@ const selectableCard = ref(false);
 const controlledCard = ref(true);
 const toggleControlled = ref(true);
 const toggleSubmitCount = ref(0);
+const compoundSubmitCount = ref(0);
 const imageFixture =
   'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22320%22 height=%22180%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%230f6cbd%22/%3E%3Crect width=%22160%22 height=%2290%22 fill=%22%23479ef5%22/%3E%3Crect x=%22160%22 y=%2290%22 width=%22160%22 height=%2290%22 fill=%22%230e4775%22/%3E%3Ccircle cx=%22160%22 cy=%2290%22 r=%2242%22 fill=%22%23f7c646%22/%3E%3Cpath d=%22M0 180 96 68l58 66 44-46 122 92Z%22 fill=%22%23dff6dd%22 opacity=%22.92%22/%3E%3C/svg%3E';
 const missingImageFixture = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABINVALID';
@@ -1817,6 +1819,155 @@ function ratingItemLabel(value: number) {
       </div>
     </section>
 
+    <section id="compound-button">
+      <h2>CompoundButton</h2>
+      <div class="compound-button-samples">
+        <div class="compound-button-group">
+          <h3>Appearances and accessible content</h3>
+          <div class="compound-button-grid compound-button-appearance-grid">
+            <FCompoundButton
+              v-for="appearance in [
+                'secondary',
+                'primary',
+                'outline',
+                'subtle',
+                'transparent',
+              ] as const"
+              :key="appearance"
+              :class="`compound-${appearance}`"
+              :appearance="appearance"
+              :secondary-content="`${appearance} details`"
+            >
+              {{ appearance }} action
+            </FCompoundButton>
+          </div>
+        </div>
+
+        <div class="compound-button-group">
+          <h3>Sizes, shapes, and icons</h3>
+          <div class="compound-button-grid">
+            <FCompoundButton
+              v-for="size in ['small', 'medium', 'large'] as const"
+              :key="size"
+              :class="`compound-size-${size}`"
+              :size="size"
+              :secondary-content="`${size} secondary content`"
+            >
+              {{ size }} action
+            </FCompoundButton>
+            <FCompoundButton
+              class="compound-circular"
+              shape="circular"
+              secondary-content="Circular shape"
+            >
+              Circular action
+            </FCompoundButton>
+            <FCompoundButton
+              class="compound-square"
+              shape="square"
+              secondary-content="Square shape"
+            >
+              Square action
+            </FCompoundButton>
+            <FCompoundButton
+              class="compound-icon-before"
+              secondary-content="Decorative icon before"
+            >
+              <template #icon>
+                <svg viewBox="0 0 40 40">
+                  <path
+                    d="M20 4a2 2 0 0 1 2 2v12h12a2 2 0 1 1 0 4H22v12a2 2 0 1 1-4 0V22H6a2 2 0 1 1 0-4h12V6a2 2 0 0 1 2-2Z"
+                  />
+                </svg>
+              </template>
+              Create project
+            </FCompoundButton>
+            <FCompoundButton
+              class="compound-icon-after"
+              icon-position="after"
+              secondary-content="Decorative icon after"
+            >
+              Continue setup
+              <template #icon>
+                <svg viewBox="0 0 40 40">
+                  <path d="m15 7 13 13-13 13-3-3 10-10-10-10 3-3Z" />
+                </svg>
+              </template>
+            </FCompoundButton>
+            <FCompoundButton class="compound-icon-only" aria-label="Open calendar">
+              <template #icon>
+                <svg viewBox="0 0 40 40">
+                  <path d="M10 4h4v4h12V4h4v4h4v28H6V8h4V4Zm20 14H10v14h20V18Z" />
+                </svg>
+              </template>
+            </FCompoundButton>
+          </div>
+        </div>
+
+        <div class="compound-button-group">
+          <h3>Native behavior, disabled focus, and long text</h3>
+          <form class="compound-button-form" @submit.prevent="compoundSubmitCount += 1">
+            <FCompoundButton
+              class="compound-default-type"
+              secondary-content="Does not submit the form"
+            >
+              Default type
+            </FCompoundButton>
+            <FCompoundButton
+              class="compound-submit"
+              type="submit"
+              secondary-content="Submits this native form"
+            >
+              Submit compound form
+            </FCompoundButton>
+            <output aria-live="polite">Compound submissions: {{ compoundSubmitCount }}</output>
+          </form>
+          <div class="compound-button-grid">
+            <FCompoundButton class="compound-disabled" disabled secondary-content="Unavailable">
+              Disabled action
+            </FCompoundButton>
+            <FCompoundButton
+              class="compound-disabled-focusable"
+              disabled-focusable
+              secondary-content="Focus reveals why this is unavailable"
+            >
+              Focusable disabled action
+            </FCompoundButton>
+            <FCompoundButton
+              class="compound-both-disabled"
+              disabled
+              disabled-focusable
+              secondary-content="Native disabled takes precedence"
+            >
+              Both disabled action
+            </FCompoundButton>
+            <FCompoundButton
+              as="a"
+              class="compound-anchor"
+              href="#textarea"
+              secondary-content="Uses native anchor navigation"
+            >
+              Go to Textarea examples
+            </FCompoundButton>
+            <FCompoundButton
+              as="a"
+              class="compound-anchor-button"
+              secondary-content="Anchor root with button keyboard behavior"
+              @click="dark = !dark"
+            >
+              Toggle theme from anchor button
+            </FCompoundButton>
+            <FCompoundButton
+              class="compound-long-text"
+              secondary-content="This descriptive line is deliberately long so wrapping and content containment remain visible in the representative browser and visual fixtures."
+            >
+              A compound action with a long primary label that wraps naturally
+            </FCompoundButton>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="input">
       <h2>Input</h2>
       <div class="column">
@@ -2178,6 +2329,7 @@ section {
 
 .badge-samples,
 .toggle-button-samples,
+.compound-button-samples,
 .card-samples,
 .spinner-samples,
 .progress-bar-samples,
@@ -2190,6 +2342,7 @@ section {
 
 .badge-group,
 .toggle-button-group,
+.compound-button-group,
 .card-group,
 .spinner-group,
 .progress-bar-group,
@@ -2203,6 +2356,7 @@ section {
 .spinner-group h3,
 .badge-group h3,
 .toggle-button-group h3,
+.compound-button-group h3,
 .card-group > h3,
 .progress-bar-group h3,
 .spin-button-group h3,
@@ -2237,6 +2391,53 @@ section {
 .toggle-button-grid svg {
   width: 1em;
   height: 1em;
+}
+
+.compound-button-grid {
+  display: grid;
+  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1rem;
+}
+
+.compound-button-appearance-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+}
+
+.compound-button-grid > .fui-CompoundButton {
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.compound-button-grid > .compound-icon-only {
+  width: auto;
+}
+
+.compound-button-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: var(--fui-color-neutral-background-2);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+}
+
+.compound-button-form output {
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-200);
+}
+
+.compound-long-text {
+  max-width: 22rem;
+  white-space: normal;
+}
+
+.compound-button-grid svg {
+  width: 1em;
+  height: 1em;
+  fill: currentcolor;
 }
 
 .toggle-dual-icon {

@@ -6,7 +6,7 @@ A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. T
 
 ## Current components
 
-- `FButton` and `FToggleButton` — adapted from `@fluentui/react-button` 9.11.0
+- `FButton`, `FToggleButton`, and `FCompoundButton` — adapted from `@fluentui/react-button` 9.11.0
 - `FInput` — adapted from `@fluentui/react-input` 9.8.6
 - `FCheckbox` — adapted from `@fluentui/react-checkbox` 9.6.4
 - `FDivider` — adapted from `@fluentui/react-divider` 9.7.4
@@ -135,6 +135,7 @@ import {
   FCardHeader,
   FCardPreview,
   FCheckbox,
+  FCompoundButton,
   FCounterBadge,
   FDivider,
   FField,
@@ -220,6 +221,7 @@ const pinned = ref(false);
   </FField>
   <FLink inline href="/privacy">Read the privacy policy</FLink>
   <FToggleButton v-model="pinned">Pin profile</FToggleButton>
+  <FCompoundButton secondary-content="Includes account preferences"> Save profile </FCompoundButton>
   <FButton appearance="primary" :disabled="!accepted">Continue</FButton>
 </template>
 ```
@@ -385,6 +387,42 @@ Slots:
 
 - `default` contains the visible button label.
 - `icon` is decorative and is hidden from assistive technology. An icon-only button must therefore provide `aria-label` or `aria-labelledby`; development builds warn when the name is missing.
+
+## CompoundButton
+
+`FCompoundButton` is the two-line Button variant adapted from the exact released `@fluentui/react-button@9.11.0` CompoundButton. It preserves native Button and anchor behavior while adding visible secondary content and the released CompoundButton dimensions.
+
+```vue
+<FCompoundButton appearance="primary" secondary-content="Includes sharing settings">
+  Save changes
+</FCompoundButton>
+
+<FCompoundButton as="a" href="/reports" secondary-content="Updated five minutes ago">
+  Open report
+</FCompoundButton>
+
+<FCompoundButton aria-label="Open calendar" shape="circular">
+  <template #icon><CalendarIcon /></template>
+</FCompoundButton>
+```
+
+Key props:
+
+- `secondaryContent` for the descriptive second line; the `secondary-content` slot takes precedence
+- `appearance`: `secondary | primary | outline | subtle | transparent`
+- `shape`: `rounded | circular | square`
+- `size`: `small | medium | large`
+- `as`: `button | a`
+- `iconPosition`: `before | after`
+- `href`, `disabled`, and `disabledFocusable`
+
+The default root is `<button type="button">`, so it submits only when an explicit `type="submit"` is supplied. `as="a"` with `href` preserves native link navigation. An anchor without `href` receives `role="button"`, enters the tab order, and supports Enter and Space activation. Consumer `keydown` and `keyup` listeners are composed with that managed keyboard behavior without duplicate click delivery.
+
+`disabled` uses native disabled semantics for a button and removes anchor navigation. `disabledFocusable` retains focus, exposes `aria-disabled="true"`, and suppresses pointer and Enter/Space activation. If both props are present, native `disabled` takes precedence and the focusable-disabled classes and redundant `aria-disabled` are omitted.
+
+Primary and secondary visible content form the accessible name. The `icon` slot is decorative and receives `aria-hidden="true"`; icon-only usage therefore requires `aria-label` or `aria-labelledby`, with a development warning when missing. Native form, anchor, ARIA, data, class, and style attributes are forwarded while managed root semantics remain authoritative. The component emits one typed native `click`, exposes its native `element` and `focus()`, uses logical icon spacing for RTL, and preserves light/dark themes, forced colors, focus visibility, and reduced motion.
+
+React slot objects, shorthand slot resolution, and Button context sizing are intentionally translated to direct Vue props and named slots.
 
 ## ToggleButton
 

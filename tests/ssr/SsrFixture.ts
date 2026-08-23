@@ -7,6 +7,7 @@ import {
   FCardHeader,
   FCardPreview,
   FCheckbox,
+  FCompoundButton,
   FCounterBadge,
   FDivider,
   FField,
@@ -68,6 +69,28 @@ export const SsrFixture = defineComponent({
             default: () => 'Server pinned action',
             icon: () => h('svg', { viewBox: '0 0 20 20' }),
           },
+        ),
+        h(
+          FCompoundButton,
+          {
+            class: 'ssr-compound-button',
+            appearance: 'primary',
+            secondaryContent: 'Server secondary content',
+          },
+          {
+            default: () => 'Server compound action',
+            icon: () => h('svg', { viewBox: '0 0 40 40' }),
+          },
+        ),
+        h(
+          FCompoundButton,
+          {
+            as: 'a',
+            class: 'ssr-compound-link',
+            href: '#compound-details',
+            secondaryContent: 'Server compound destination',
+          },
+          () => 'Server compound link',
         ),
         h(FDivider, { 'aria-label': 'Contentless boundary' }),
         h(FDivider, { appearance: 'brand' }, () => 'Server section'),

@@ -152,7 +152,7 @@ test('Textarea preserves native Field, resize, and reset behavior', async ({ pag
 test('Link preserves disabled focus, keyboard, and visual behavior', async ({ page }) => {
   await page.goto('/');
 
-  const navigation = page.getByRole('link', { name: 'Go to Textarea examples' });
+  const navigation = page.getByRole('link', { name: 'Go to Textarea examples', exact: true });
   const inline = page.getByRole('link', { name: 'an inline underline' });
   const action = page.getByRole('button', { name: 'Toggle theme action' });
   const spanAction = page.getByRole('button', { name: 'Span theme action' });
@@ -163,6 +163,7 @@ test('Link preserves disabled focus, keyboard, and visual behavior', async ({ pa
   const disabledAction = page.getByRole('button', { name: 'Disabled action', exact: true });
   const focusableDisabledAction = page.getByRole('button', {
     name: 'Focusable disabled action',
+    exact: true,
   });
 
   await expect(inline).toHaveCSS('text-decoration-line', 'underline');
@@ -691,6 +692,136 @@ test('Spinner reduced motion simplifies the animated tail', async ({ page, brows
   expect(await tail.evaluate((element) => getComputedStyle(element, '::before').content)).toBe(
     'none',
   );
+});
+
+test('CompoundButton preserves structure, roles, names, and released geometry', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#compound-button');
+  const primary = section.getByRole('button', { name: 'primary action primary details' });
+  const iconBefore = section.getByRole('button', {
+    name: 'Create project Decorative icon before',
+  });
+  const iconAfter = section.getByRole('button', {
+    name: 'Continue setup Decorative icon after',
+  });
+  const iconOnly = section.getByRole('button', { name: 'Open calendar' });
+  const anchor = section.getByRole('link', {
+    name: 'Go to Textarea examples Uses native anchor navigation',
+  });
+  const anchorButton = section.getByRole('button', {
+    name: 'Toggle theme from anchor button Anchor root with button keyboard behavior',
+  });
+
+  await expect(primary).toHaveCSS('background-color', 'rgb(15, 108, 189)');
+  await expect(iconBefore.locator('.fui-CompoundButton__icon')).toHaveAttribute(
+    'aria-hidden',
+    'true',
+  );
+  await expect(iconBefore.locator('.fui-CompoundButton__secondaryContent')).toHaveText(
+    'Decorative icon before',
+  );
+  expect(
+    await iconBefore.evaluate((element) =>
+      element.firstElementChild?.classList.contains('fui-CompoundButton__icon'),
+    ),
+  ).toBe(true);
+  expect(
+    await iconAfter.evaluate((element) =>
+      element.lastElementChild?.classList.contains('fui-CompoundButton__icon'),
+    ),
+  ).toBe(true);
+  await expect(iconOnly).toHaveClass(/fui-CompoundButton--icon-only/);
+  await expect(iconOnly.locator('.fui-CompoundButton__contentContainer')).toHaveCount(0);
+  await expect(iconOnly).toHaveCSS('width', '52px');
+  await expect(anchor).toHaveAttribute('href', '#textarea');
+  await expect(anchor).not.toHaveAttribute('role');
+  await expect(anchorButton).toHaveAttribute('role', 'button');
+  await expect(anchorButton).toHaveAttribute('tabindex', '0');
+
+  await expect(section.locator('.compound-size-small')).toHaveCSS('padding-top', '8px');
+  await expect(section.locator('.compound-size-medium')).toHaveCSS('padding-top', '14px');
+  await expect(section.locator('.compound-size-large')).toHaveCSS('padding-top', '18px');
+  await expect(section.locator('.compound-circular')).toHaveCSS('border-radius', '10000px');
+  await expect(section.locator('.compound-square')).toHaveCSS('border-radius', '0px');
+});
+
+test('CompoundButton preserves submit, disabled, keyboard, RTL, and theme behavior', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#compound-button');
+  const defaultType = section.getByRole('button', {
+    name: 'Default type Does not submit the form',
+  });
+  const submit = section.getByRole('button', {
+    name: 'Submit compound form Submits this native form',
+  });
+  const counter = section.locator('output');
+  const disabled = section.getByRole('button', { name: 'Disabled action Unavailable' });
+  const focusableDisabled = section.getByRole('button', {
+    name: 'Focusable disabled action Focus reveals why this is unavailable',
+  });
+  const bothDisabled = section.getByRole('button', {
+    name: 'Both disabled action Native disabled takes precedence',
+  });
+  const anchorButton = section.getByRole('button', {
+    name: 'Toggle theme from anchor button Anchor root with button keyboard behavior',
+  });
+
+  await expect(defaultType).toHaveAttribute('type', 'button');
+  await expect(submit).toHaveAttribute('type', 'submit');
+  await defaultType.click();
+  await expect(counter).toHaveText('Compound submissions: 0');
+  await submit.click();
+  await expect(counter).toHaveText('Compound submissions: 1');
+
+  await expect(disabled).toBeDisabled();
+  await expect(disabled).not.toHaveAttribute('aria-disabled');
+  expect(
+    await focusableDisabled.evaluate((element) => (element as HTMLButtonElement).disabled),
+  ).toBe(false);
+  await expect(focusableDisabled).toHaveAttribute('aria-disabled', 'true');
+  await focusableDisabled.focus();
+  await expect(focusableDisabled).toBeFocused();
+  const themeBeforeDisabled = await page.locator('main').getAttribute('class');
+  await page.keyboard.press('Enter');
+  expect(await page.locator('main').getAttribute('class')).toBe(themeBeforeDisabled);
+  await expect(bothDisabled).toBeDisabled();
+  await expect(bothDisabled).not.toHaveAttribute('aria-disabled');
+  await expect(bothDisabled).not.toHaveClass(/disabled-focusable/);
+
+  await anchorButton.focus();
+  const themeBeforeAnchor = await page.locator('main').getAttribute('class');
+  await page.keyboard.press('Enter');
+  expect(await page.locator('main').getAttribute('class')).not.toBe(themeBeforeAnchor);
+
+  const before = section.locator('.compound-icon-before');
+  await expect(before.locator('.fui-CompoundButton__icon')).toHaveCSS('margin-right', '12px');
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await expect(before.locator('.fui-CompoundButton__icon')).toHaveCSS('margin-left', '12px');
+  const primary = section.locator('.compound-primary');
+  const lightBackground = await primary.evaluate(
+    (element) => getComputedStyle(element).backgroundColor,
+  );
+  await page.getByRole('button', { name: 'Use light theme' }).click();
+  expect(await primary.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(
+    lightBackground,
+  );
+});
+
+test('CompoundButton removes transitions for reduced motion', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Reduced-motion computed-style coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const duration = await page
+    .locator('#compound-button .compound-primary')
+    .evaluate((element) => Number.parseFloat(getComputedStyle(element).transitionDuration));
+  expect(duration).toBeLessThanOrEqual(0.00001);
 });
 
 test('ToggleButton supports pointer, Enter, Space, controlled state, and icon naming', async ({

@@ -106,6 +106,31 @@ test('ToggleButton fixtures expose native pressed, named, and disabled states', 
   );
 });
 
+test('CompoundButton fixtures expose names and native disabled precedence', async ({ page }) => {
+  await page.goto('/');
+
+  const section = page.locator('#compound-button');
+  await expect(
+    section.getByRole('button', { name: 'primary action primary details' }),
+  ).toBeVisible();
+  await expect(section.getByRole('button', { name: 'Open calendar' })).toBeVisible();
+  await expect(
+    section.getByRole('link', {
+      name: 'Go to Textarea examples Uses native anchor navigation',
+    }),
+  ).toHaveAttribute('href', '#textarea');
+  await expect(
+    section.getByRole('button', {
+      name: 'Focusable disabled action Focus reveals why this is unavailable',
+    }),
+  ).toHaveAttribute('aria-disabled', 'true');
+  const bothDisabled = section.getByRole('button', {
+    name: 'Both disabled action Native disabled takes precedence',
+  });
+  await expect(bothDisabled).toBeDisabled();
+  await expect(bothDisabled).not.toHaveAttribute('aria-disabled');
+});
+
 test('ProgressBar fixtures expose determinate, indeterminate, and Field-derived names', async ({
   page,
 }) => {

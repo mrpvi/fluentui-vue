@@ -1,8 +1,16 @@
 /* eslint-disable vue/one-component-per-file */
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { mount } from '@vue/test-utils';
 import { defineComponent, nextTick, ref } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 import CompoundButton from '../src/components/CompoundButton/CompoundButton.vue';
+
+const compoundButtonCss = readFileSync(
+  resolve(process.cwd(), 'src/components/CompoundButton/compoundButton.css'),
+  'utf8',
+);
+const buttonCss = readFileSync(resolve(process.cwd(), 'src/components/Button/button.css'), 'utf8');
 
 describe('FCompoundButton', () => {
   it('renders a native button with upstream defaults and content structure', () => {
@@ -206,6 +214,46 @@ describe('FCompoundButton', () => {
     wrapper.unmount();
   });
 
+  it('composes consumer keyboard listeners with managed anchor-button activation', async () => {
+    const onKeydown = vi.fn();
+    const onKeyup = vi.fn();
+    const wrapper = mount(CompoundButton, {
+      props: { as: 'a' },
+      attrs: { onKeydown, onKeyup },
+    });
+    const anchor = wrapper.get('a');
+
+    await anchor.trigger('keydown', { key: 'Enter' });
+    expect(onKeydown).toHaveBeenCalledOnce();
+    expect(wrapper.emitted('click')).toHaveLength(1);
+
+    await anchor.trigger('keydown', { key: ' ' });
+    await anchor.trigger('keyup', { key: ' ' });
+    expect(onKeydown).toHaveBeenCalledTimes(2);
+    expect(onKeyup).toHaveBeenCalledOnce();
+    expect(wrapper.emitted('click')).toHaveLength(2);
+  });
+
+  it('preserves keyboard listeners while suppressing disabled activation', async () => {
+    const onKeydown = vi.fn();
+    const onKeyup = vi.fn();
+    const wrapper = mount(CompoundButton, {
+      props: { as: 'a', disabledFocusable: true },
+      attrs: { onKeydown, onKeyup },
+    });
+    const anchor = wrapper.get('a');
+
+    const keydown = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true });
+    const keyup = new KeyboardEvent('keyup', { key: 'Enter', cancelable: true });
+    anchor.element.dispatchEvent(keydown);
+    anchor.element.dispatchEvent(keyup);
+
+    expect(keydown.defaultPrevented).toBe(true);
+    expect(onKeydown).toHaveBeenCalledOnce();
+    expect(onKeyup).toHaveBeenCalledOnce();
+    expect(wrapper.emitted('click')).toBeUndefined();
+  });
+
   it('suppresses interaction for disabled and disabledFocusable buttons', async () => {
     const parentClick = vi.fn();
     const disabled = mount(CompoundButton, {
@@ -224,11 +272,32 @@ describe('FCompoundButton', () => {
 
     expect(disabled.emitted('click')).toBeUndefined();
     expect(disabled.get('button').attributes('disabled')).toBeDefined();
-    expect(disabled.get('button').attributes('aria-disabled')).toBe('true');
+    expect(disabled.get('button').attributes('aria-disabled')).toBeUndefined();
     expect(focusable.emitted('click')).toBeUndefined();
     expect(focusable.get('button').attributes('disabled')).toBeUndefined();
     expect(focusable.get('button').attributes('aria-disabled')).toBe('true');
     expect(keydown.defaultPrevented).toBe(true);
+    expect(parentClick).not.toHaveBeenCalled();
+  });
+
+  it('gives native disabled precedence when both disabled props are set', async () => {
+    const parentClick = vi.fn();
+    const wrapper = mount(CompoundButton, {
+      props: { disabled: true, disabledFocusable: true },
+      attrs: { onClick: parentClick },
+    });
+    const button = wrapper.get('button');
+
+    expect(button.attributes('disabled')).toBeDefined();
+    expect(button.attributes('aria-disabled')).toBeUndefined();
+    expect(button.attributes('tabindex')).toBe('-1');
+    expect(button.classes()).toContain('fui-Button--disabled');
+    expect(button.classes()).toContain('fui-CompoundButton--disabled');
+    expect(button.classes()).not.toContain('fui-Button--disabled-focusable');
+    expect(button.classes()).not.toContain('fui-CompoundButton--disabled-focusable');
+
+    await button.trigger('click');
+    expect(wrapper.emitted('click')).toBeUndefined();
     expect(parentClick).not.toHaveBeenCalled();
   });
 
@@ -277,5 +346,20 @@ describe('FCompoundButton', () => {
     component.value?.focus();
     expect(focus).toHaveBeenCalledOnce();
     wrapper.unmount();
+  });
+
+  it('defines released geometry specificity, logical spacing, reduced motion, and forced colors', () => {
+    for (const size of ['small', 'medium', 'large']) {
+      expect(compoundButtonCss).toContain(`.fui-Button.fui-CompoundButton--${size}`);
+      expect(compoundButtonCss).toContain(`.fui-Button.fui-CompoundButton--icon-only-${size}`);
+    }
+
+    expect(compoundButtonCss).toContain('margin-inline-end');
+    expect(compoundButtonCss).toContain('margin-inline-start');
+    expect(compoundButtonCss).toContain('@media (prefers-reduced-motion: reduce)');
+    expect(compoundButtonCss).toContain('@media (forced-colors: active)');
+    expect(compoundButtonCss).toContain('color: HighlightText');
+    expect(compoundButtonCss).toContain('color: GrayText');
+    expect(buttonCss).toContain('.fui-Button:focus-visible');
   });
 });

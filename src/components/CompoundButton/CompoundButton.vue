@@ -29,7 +29,8 @@ const slots = defineSlots<CompoundButtonSlots>();
 const attrs = useAttrs();
 const root = ref<HTMLButtonElement | HTMLAnchorElement | null>(null);
 
-const isDisabled = computed(() => props.disabled || props.disabledFocusable);
+const isDisabledFocusable = computed(() => props.disabledFocusable && !props.disabled);
+const isDisabled = computed(() => props.disabled || isDisabledFocusable.value);
 const hasPrimaryContent = computed(() => Boolean(slots.default));
 const hasSecondaryContent = computed(
   () => Boolean(slots['secondary-content']) || props.secondaryContent !== undefined,
@@ -70,9 +71,9 @@ const classes = computed(() => [
     'fui-CompoundButton--icon-only': iconOnly.value,
     [`fui-CompoundButton--icon-only-${props.size}`]: iconOnly.value,
     'fui-Button--disabled': props.disabled,
-    'fui-Button--disabled-focusable': props.disabledFocusable,
+    'fui-Button--disabled-focusable': isDisabledFocusable.value,
     'fui-CompoundButton--disabled': props.disabled,
-    'fui-CompoundButton--disabled-focusable': props.disabledFocusable,
+    'fui-CompoundButton--disabled-focusable': isDisabledFocusable.value,
   },
   attrs.class,
 ]);
@@ -119,17 +120,37 @@ const rootRole = computed(() => {
   return undefined;
 });
 
+const rootAriaDisabled = computed(() => {
+  if (props.as === 'button') {
+    return isDisabledFocusable.value ? 'true' : undefined;
+  }
+
+  return isDisabled.value ? 'true' : undefined;
+});
+
 const rootTabIndex = computed(() => {
   if (props.disabled) {
     return -1;
   }
 
-  if (props.as === 'a' && (!props.href || props.disabledFocusable)) {
+  if (props.as === 'a' && (!props.href || isDisabledFocusable.value)) {
     return 0;
   }
 
   return undefined;
 });
+
+type NativeHandler = ((event: Event) => void) | NativeHandler[];
+
+function invokeNativeHandler(handler: unknown, event: Event) {
+  if (Array.isArray(handler)) {
+    for (const callback of handler as NativeHandler[]) {
+      invokeNativeHandler(callback, event);
+    }
+  } else if (typeof handler === 'function') {
+    handler(event);
+  }
+}
 
 function handleClick(event: MouseEvent) {
   if (isDisabled.value) {
@@ -146,6 +167,8 @@ function handleKeydown(event: KeyboardEvent) {
     if (isDisabled.value && (event.key === 'Enter' || event.key === ' ')) {
       event.preventDefault();
     }
+
+    invokeNativeHandler(attrs.onKeydown, event);
     return;
   }
 
@@ -155,6 +178,8 @@ function handleKeydown(event: KeyboardEvent) {
   } else if (event.key === ' ') {
     event.preventDefault();
   }
+
+  invokeNativeHandler(attrs.onKeydown, event);
 }
 
 function handleKeyup(event: KeyboardEvent) {
@@ -162,6 +187,8 @@ function handleKeyup(event: KeyboardEvent) {
     event.preventDefault();
     root.value?.click();
   }
+
+  invokeNativeHandler(attrs.onKeyup, event);
 }
 
 defineExpose({
@@ -182,7 +209,7 @@ defineExpose({
     :role="rootRole"
     :tabindex="rootTabIndex"
     :disabled="as === 'button' && disabled ? true : undefined"
-    :aria-disabled="isDisabled ? 'true' : undefined"
+    :aria-disabled="rootAriaDisabled"
     @click="handleClick"
     @keydown="handleKeydown"
     @keyup="handleKeyup"

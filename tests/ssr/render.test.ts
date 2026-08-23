@@ -17,6 +17,12 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /<button class="[^"]*fui-ToggleButton[^"]*fui-ToggleButton--checked[^"]*fui-ToggleButton--accessible[^"]*ssr-toggle-button[^"]*"[^>]*type="button"[^>]*aria-pressed="true"[^>]*><span[^>]*aria-hidden="true"[^>]*>.*<\/span>.*Server pinned action.*<\/button>/,
     );
+    expect(firstRender).toMatch(
+      /<button class="[^"]*fui-CompoundButton[^"]*ssr-compound-button[^"]*"[^>]*type="button"[^>]*>[\s\S]*?aria-hidden="true"[\s\S]*?Server compound action[\s\S]*?fui-CompoundButton__secondaryContent[\s\S]*?Server secondary content[\s\S]*?<\/button>/,
+    );
+    expect(firstRender).toMatch(
+      /<a class="[^"]*fui-CompoundButton[^"]*ssr-compound-link[^"]*"[^>]*href="#compound-details"[^>]*>[\s\S]*?Server compound link[\s\S]*?Server compound destination[\s\S]*?<\/a>/,
+    );
     expect(firstRender).toContain('role="switch"');
     expect(firstRender).toContain('name="server-switch"');
     expect(firstRender).toContain('value="enabled"');

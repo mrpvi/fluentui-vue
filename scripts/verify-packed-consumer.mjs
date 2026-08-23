@@ -44,6 +44,7 @@ import {
   FCardHeader,
   FCardPreview,
   FCheckbox,
+  FCompoundButton,
   FCounterBadge,
   FDivider,
   FField,
@@ -79,6 +80,10 @@ import {
   type CardOrientation,
   type CardSize,
   type CheckboxValue,
+  type CompoundButtonAppearance,
+  type CompoundButtonIconPosition,
+  type CompoundButtonShape,
+  type CompoundButtonSize,
   type DividerAppearance,
   type FluentTheme,
   type ImageFit,
@@ -121,6 +126,10 @@ const toggleAppearance: ToggleButtonAppearance = 'primary';
 const toggleIconPosition: ToggleButtonIconPosition = 'after';
 const toggleShape: ToggleButtonShape = 'circular';
 const toggleSize: ToggleButtonSize = 'small';
+const compoundAppearance: CompoundButtonAppearance = 'primary';
+const compoundIconPosition: CompoundButtonIconPosition = 'after';
+const compoundShape: CompoundButtonShape = 'rounded';
+const compoundSize: CompoundButtonSize = 'medium';
 const cardAppearance: CardAppearance = 'outline';
 const cardFocusMode: CardFocusMode = 'tab-only';
 const cardOrientation: CardOrientation = 'vertical';
@@ -400,6 +409,29 @@ createApp({
         FToggleButton,
         { 'aria-label': 'Packed icon toggle' },
         { icon: () => h('svg', { viewBox: '0 0 20 20' }) },
+      ),
+      h(
+        FCompoundButton,
+        {
+          appearance: compoundAppearance,
+          iconPosition: compoundIconPosition,
+          shape: compoundShape,
+          size: compoundSize,
+          secondaryContent: 'Packed secondary content',
+        },
+        {
+          default: () => 'Packed compound action',
+          icon: () => h('svg', { viewBox: '0 0 40 40' }),
+        },
+      ),
+      h(
+        FCompoundButton,
+        {
+          as: 'a',
+          href: '#packed-compound',
+          secondaryContent: 'Packed compound destination',
+        },
+        () => 'Packed compound link',
       ),
       h(FButton, { appearance }, () => 'Save'),
     ]),

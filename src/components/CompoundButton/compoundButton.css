@@ -3,38 +3,40 @@
   text-align: start;
 }
 
-.fui-CompoundButton--small {
+.fui-Button.fui-CompoundButton--small {
   padding: var(--fui-spacing-horizontal-s) var(--fui-spacing-horizontal-s)
-    var(--fui-spacing-horizontal-m-nudge);
+    var(--fui-spacing-horizontal-m-nudge) var(--fui-spacing-horizontal-s);
   font-size: var(--fui-font-size-base-300);
   line-height: var(--fui-line-height-base-300);
 }
 
-.fui-CompoundButton--medium {
-  padding: 14px var(--fui-spacing-horizontal-m) var(--fui-spacing-horizontal-l);
+.fui-Button.fui-CompoundButton--medium {
+  padding: 14px var(--fui-spacing-horizontal-m) var(--fui-spacing-horizontal-l)
+    var(--fui-spacing-horizontal-m);
   font-size: var(--fui-font-size-base-300);
   line-height: var(--fui-line-height-base-300);
 }
 
-.fui-CompoundButton--large {
-  padding: 18px var(--fui-spacing-horizontal-l) var(--fui-spacing-horizontal-xl);
+.fui-Button.fui-CompoundButton--large {
+  padding: 18px var(--fui-spacing-horizontal-l) var(--fui-spacing-horizontal-xl)
+    var(--fui-spacing-horizontal-l);
   font-size: var(--fui-font-size-base-400);
   line-height: var(--fui-line-height-base-400);
 }
 
-.fui-CompoundButton--icon-only-small {
+.fui-Button.fui-CompoundButton--icon-only-small {
   min-width: 48px;
   max-width: 48px;
   padding: var(--fui-spacing-horizontal-xs);
 }
 
-.fui-CompoundButton--icon-only-medium {
+.fui-Button.fui-CompoundButton--icon-only-medium {
   min-width: 52px;
   max-width: 52px;
   padding: var(--fui-spacing-horizontal-s-nudge);
 }
 
-.fui-CompoundButton--icon-only-large {
+.fui-Button.fui-CompoundButton--icon-only-large {
   min-width: 56px;
   max-width: 56px;
   padding: var(--fui-spacing-horizontal-s);

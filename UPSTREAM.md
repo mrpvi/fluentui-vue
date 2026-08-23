@@ -6,6 +6,7 @@ This package is a native Vue adaptation of selected Microsoft Fluent UI React v9
 | --------------- | ---------------------------- | ---------------: | ------------------------------------------------------------------------------ |
 | Button          | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/Button`         |
 | ToggleButton    | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/ToggleButton`   |
+| CompoundButton  | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/CompoundButton` |
 | Input           | `@fluentui/react-input`      |            9.8.6 | `packages/react-components/react-input/library/src/components/Input`           |
 | Checkbox        | `@fluentui/react-checkbox`   |            9.6.4 | `packages/react-components/react-checkbox/library/src/components/Checkbox`     |
 | Text            | `@fluentui/react-text`       |           9.6.19 | `packages/react-components/react-text/library/src/components/Text`             |
@@ -37,6 +38,7 @@ Pinned source commits:
 - Button family 9.11.0 release tag commit: `b6351802032e9af61bf03033d22cb354b2e2822c`
 - Button family 9.11.0 registry tarball: `https://registry.npmjs.org/@fluentui/react-button/-/react-button-9.11.0.tgz` (SHA-1 `f46ff389dbd2310b3f99e0cff3fb618e2f92b724`, SHA-256 `da18f0db0a652086f5787ec8e88e33d3d05d636c5609b22f23ab156373bbe3bb`, registry integrity `sha512-81zsqSvJSZx1SEG0kztcmEZb2kS8YUX0uPYsPp2bZCPEJB9YIBQn9kPrdt0M0YeAkoPKXQXG5gudSun9M80maA==`)
 - ToggleButton reviewed declarations and released implementation: `ToggleButton`, `ToggleButton.types`, `useToggleButton`, `useToggleState`, the render alias, raw/emitted styles and source maps, package README, exact ToggleButton tests, and representative default, controlled, appearance, accessible, disabled, icon, shape, and size stories under `packages/react-components/react-button`.
+- CompoundButton reviewed declarations and released implementation: `CompoundButton.tsx`, `CompoundButton.types.ts`, `useCompoundButton.ts`, `renderCompoundButton.tsx`, released raw styles, package README, `CompoundButton.test.tsx`, `useCompoundButton.test.tsx`, `useCompoundButtonBase.test.tsx`, and the Default, Appearance, Disabled, Icon, Shape, Size, and WithLongText stories. The Vue adaptation preserves released dimensions, appearances, secondary-content colors, native button/link semantics, disabled behavior, RTL logical spacing, forced colors, and reduced motion; React slot objects, shorthand resolution, and Button context sizing are translated to direct Vue props and named slots.
 - Text: `9f5caa6307ef35a60f6d8c28e95ff336d5dbb222`
 - Label: `2dd2a9a96210919c35b210a1aa8e873ab67dbada`
 - Field: `2dd2a9a96210919c35b210a1aa8e873ab67dbada`
