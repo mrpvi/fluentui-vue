@@ -1,8 +1,8 @@
-# @local/fluent-vue
+# fluentui-vue
 
 A native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. This package does not require React and does not wrap Fluent Web Components.
 
-> The package name is temporary and the package is currently private. It is not an official Microsoft package.
+> This is an independent, unofficial package and is not affiliated with or endorsed by Microsoft.
 
 ## Current components
 
@@ -112,8 +112,8 @@ Import the emitted stylesheet once in the consuming application's entry file. Ja
 
 ```ts
 import { createApp } from 'vue';
-import { FluentVue } from '@local/fluent-vue';
-import '@local/fluent-vue/style.css';
+import { FluentVue } from 'fluentui-vue';
+import 'fluentui-vue/style.css';
 import App from './App.vue';
 
 createApp(App).use(FluentVue).mount('#app');
@@ -169,7 +169,7 @@ import {
   type ToggleButtonIconPosition,
   type ToggleButtonShape,
   type ToggleButtonSize,
-} from '@local/fluent-vue';
+} from 'fluentui-vue';
 import { ref } from 'vue';
 
 const name = ref('');
@@ -256,7 +256,7 @@ For frequent iterations, incrementing the package version before packing—such 
 After the package receives an approved publishable name and is published, installation will use the npm registry instead of a local tarball:
 
 ```bash
-npm install @local/fluent-vue
+npm install fluentui-vue
 ```
 
 The package name is currently temporary, so this registry command is not available yet.
@@ -291,7 +291,7 @@ The upstream preset wrappers such as `Body1`, `Caption1`, and `Title1` are not i
 
 ```vue
 <script setup lang="ts">
-import { FField, FInput } from '@local/fluent-vue';
+import { FField, FInput } from 'fluentui-vue';
 </script>
 
 <template>
@@ -431,7 +431,7 @@ React slot objects, shorthand slot resolution, and Button context sizing are int
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FToggleButton } from '@local/fluent-vue';
+import { FToggleButton } from 'fluentui-vue';
 
 const pinned = ref(false);
 </script>
@@ -672,7 +672,7 @@ Indeterminate motion uses the released three-second linear slide. Under `prefers
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FRating, FRatingDisplay } from '@local/fluent-vue';
+import { FField, FRating, FRatingDisplay } from 'fluentui-vue';
 
 const rating = ref(3);
 </script>
@@ -701,7 +701,7 @@ Both components use deterministic Vue IDs for SSR/hydration, logical RTL styling
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FSpinButton } from '@local/fluent-vue';
+import { FField, FSpinButton } from 'fluentui-vue';
 
 const price = ref<number | null>(10);
 const formattedPrice = ref('$10.00');
@@ -751,7 +751,7 @@ The focus underline respects reduced motion, custom controls retain forced-color
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FSwitch } from '@local/fluent-vue';
+import { FField, FSwitch } from 'fluentui-vue';
 
 const enabled = ref(false);
 </script>
@@ -820,7 +820,7 @@ React root slot objects and context hooks are translated to fixed Vue `div`/`spa
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FSlider } from '@local/fluent-vue';
+import { FField, FSlider } from 'fluentui-vue';
 
 const volume = ref(40);
 </script>
@@ -857,7 +857,7 @@ React's root/input/rail/thumb slot objects are intentionally translated to a fix
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FSearchBox } from '@local/fluent-vue';
+import { FField, FSearchBox } from 'fluentui-vue';
 
 const query = ref('');
 </script>
@@ -897,7 +897,7 @@ The Card family provides a topic container plus structured preview, header, and 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FButton, FCard, FCardFooter, FCardHeader, FCardPreview } from '@local/fluent-vue';
+import { FButton, FCard, FCardFooter, FCardHeader, FCardPreview } from 'fluentui-vue';
 
 const selected = ref(false);
 </script>
@@ -945,7 +945,7 @@ The family preserves released appearance, selected, disabled, focus, size, verti
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FRadio, FRadioGroup } from '@local/fluent-vue';
+import { FField, FRadio, FRadioGroup } from 'fluentui-vue';
 
 const contactMethod = ref('email');
 </script>
@@ -1000,7 +1000,7 @@ The React root, input, label, and indicator slot-object APIs are translated to a
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FSelect } from '@local/fluent-vue';
+import { FField, FSelect } from 'fluentui-vue';
 
 const animal = ref('dog');
 </script>
@@ -1071,7 +1071,7 @@ The shadow appearances are retained for source compatibility but are deprecated,
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FTextarea } from '@local/fluent-vue';
+import { FField, FTextarea } from 'fluentui-vue';
 
 const biography = ref('');
 </script>
@@ -1112,7 +1112,7 @@ Use `FField`, `FLabel`, `aria-label`, or `aria-labelledby` to provide an accessi
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { CheckboxValue } from '@local/fluent-vue';
+import type { CheckboxValue } from 'fluentui-vue';
 
 const state = ref<CheckboxValue>('mixed');
 </script>

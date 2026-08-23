@@ -1,12 +1,36 @@
 {
-  "name": "@local/fluent-vue",
+  "name": "fluentui-vue",
   "version": "0.1.0",
   "description": "Native Vue 3 components adapted from Fluent UI React v9.",
-  "private": true,
+  "private": false,
+  "license": "MIT",
+  "author": "mrpvi",
+  "keywords": [
+    "vue",
+    "vue3",
+    "fluent-ui",
+    "fluent-design",
+    "components",
+    "ui-library",
+    "accessibility",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrpvi/fluentui-vue.git"
+  },
+  "homepage": "https://github.com/mrpvi/fluentui-vue#readme",
+  "bugs": {
+    "url": "https://github.com/mrpvi/fluentui-vue/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "files": [
     "dist",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
     "UPSTREAM.md"

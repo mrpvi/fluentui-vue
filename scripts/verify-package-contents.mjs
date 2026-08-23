@@ -8,6 +8,7 @@ const packed = JSON.parse(
 
 const files = packed.files.map((file) => file.path).sort();
 const requiredFiles = [
+  'CHANGELOG.md',
   'LICENSE',
   'README.md',
   'THIRD_PARTY_NOTICES.md',
