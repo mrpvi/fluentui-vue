@@ -101,7 +101,7 @@ Avatar should be implemented before Persona because Persona composes avatar, tex
 
 ## Phase 7 — Selection and Combobox foundations
 
-31. ❌ **Listbox family**
+31. ✅ **Listbox family** — definition-of-done gates complete for `@fluentui/react-combobox@9.17.5`
     - `FListbox`
     - `FOption`
     - `FOptionGroup`

@@ -312,6 +312,40 @@ test('List fixtures expose list, listbox, grid, selection, and disabled semantic
   await expect(projects.getByRole('button', { name: 'More Roadmap actions' })).toBeVisible();
 });
 
+test('Listbox fixtures expose names, active descendants, groups, and released selection semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#listbox');
+  const single = section.getByRole('listbox', { name: 'Favorite animal' });
+  const singleOptions = single.getByRole('option');
+  await expect(singleOptions).toHaveCount(5);
+  await expect(single).toHaveAttribute(
+    'aria-activedescendant',
+    (await singleOptions.nth(1).getAttribute('id'))!,
+  );
+  await expect(singleOptions.nth(1)).toHaveAttribute('aria-selected', 'true');
+  await expect(single.getByRole('option', { name: 'Horse · unavailable' })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
+  const labelledGroup = single.getByRole('group', { name: 'Land animals' });
+  await expect(labelledGroup).toHaveAttribute('aria-labelledby', /^fui-option-group-label-.+$/);
+
+  const multiple = section.getByRole('menu', { name: 'Companion animals' });
+  await expect(multiple).not.toHaveAttribute('aria-multiselectable');
+  await expect(multiple.getByRole('menuitemcheckbox')).toHaveCount(4);
+  await expect(multiple.getByRole('menuitemcheckbox', { name: 'Dog' })).toHaveAttribute(
+    'aria-checked',
+    'true',
+  );
+
+  const fieldListbox = section.getByRole('listbox', { name: 'Deployment region' });
+  await expect(fieldListbox).toHaveAttribute('aria-required', 'true');
+  await expect(fieldListbox).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
+});
+
 test('Avatar fixtures expose image names, group semantics, and overflow list structure', async ({
   page,
 }) => {

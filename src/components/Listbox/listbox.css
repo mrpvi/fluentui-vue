@@ -1,0 +1,21 @@
+.fui-Listbox {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-width: 160px;
+  padding: var(--fui-spacing-horizontal-xs);
+  overflow-y: auto;
+  row-gap: var(--fui-spacing-horizontal-xxs);
+  outline: var(--fui-stroke-width-thin) solid var(--fui-color-transparent-stroke);
+  background-color: var(--fui-color-neutral-background-1);
+}
+
+.fui-Listbox:focus {
+  outline-color: var(--fui-color-transparent-stroke);
+}
+
+@media (forced-colors: active) {
+  .fui-Listbox {
+    border: var(--fui-stroke-width-thin) solid CanvasText;
+  }
+}

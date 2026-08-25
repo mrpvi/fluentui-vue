@@ -245,6 +245,50 @@ describe('hydration', () => {
     expect(skeletonStatus?.getAttribute('aria-busy')).toBe('false');
     expect(skeletonStatus?.style.width).toBe('180px');
 
+    const singleListbox = container.querySelector<HTMLElement>('.ssr-listbox');
+    expect(singleListbox?.getAttribute('role')).toBe('listbox');
+    expect(singleListbox?.getAttribute('tabindex')).toBe('0');
+    expect(singleListbox?.getAttribute('aria-required')).toBe('true');
+    expect(singleListbox?.getAttribute('aria-labelledby')).toBe(
+      singleListbox?.closest('.fui-Field')?.querySelector<HTMLElement>('label')?.id,
+    );
+    expect(singleListbox?.getAttribute('aria-describedby')).toBe(
+      singleListbox?.closest('.fui-Field')?.querySelector<HTMLElement>('.fui-Field__hint')?.id,
+    );
+    const singleOptions = [
+      ...(singleListbox?.querySelectorAll<HTMLElement>('[role="option"]') ?? []),
+    ];
+    expect(singleOptions).toHaveLength(2);
+    expect(singleOptions[0]?.id).toMatch(/^fui-option-/);
+    expect(singleOptions[0]?.getAttribute('aria-selected')).toBe('true');
+    expect(singleOptions[1]?.getAttribute('aria-disabled')).toBe('true');
+    expect(singleListbox?.getAttribute('aria-activedescendant')).toBe(singleOptions[0]?.id);
+    const optionGroup = singleListbox?.querySelector<HTMLElement>('[role="group"]');
+    expect(optionGroup?.getAttribute('aria-labelledby')).toBe(
+      optionGroup?.querySelector<HTMLElement>('.fui-OptionGroup__label')?.id,
+    );
+
+    singleListbox?.focus();
+    singleListbox?.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowDown' }));
+    singleListbox?.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'Enter' }));
+    await nextTick();
+    expect(singleListbox?.getAttribute('aria-activedescendant')).toBe(singleOptions[1]?.id);
+    expect(singleOptions[0]?.getAttribute('aria-selected')).toBe('true');
+    expect(singleOptions[1]?.getAttribute('aria-selected')).toBe('false');
+
+    const multiselectListbox = container.querySelector<HTMLElement>('.ssr-multiselect-listbox');
+    expect(multiselectListbox?.getAttribute('role')).toBe('menu');
+    expect(multiselectListbox?.getAttribute('aria-multiselectable')).toBeNull();
+    const multiselectOptions = [
+      ...(multiselectListbox?.querySelectorAll<HTMLElement>('[role="menuitemcheckbox"]') ?? []),
+    ];
+    expect(multiselectOptions).toHaveLength(2);
+    expect(multiselectOptions[0]?.getAttribute('aria-checked')).toBe('true');
+    multiselectOptions[1]?.click();
+    await nextTick();
+    expect(multiselectOptions[0]?.getAttribute('aria-checked')).toBe('true');
+    expect(multiselectOptions[1]?.getAttribute('aria-checked')).toBe('true');
+
     const card = container.querySelector<HTMLElement>('.ssr-card');
     const cardCheckbox = card?.querySelector<HTMLInputElement>('input[type="checkbox"]');
     expect(card?.getAttribute('role')).toBe('group');

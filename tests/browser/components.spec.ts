@@ -2085,6 +2085,92 @@ test('List preserves forced-color focus and selected checkmark safeguards', asyn
   );
 });
 
+test('Listbox preserves active-descendant navigation, controlled state, and released semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#listbox');
+  const single = section.getByRole('listbox', { name: 'Favorite animal' });
+  const cat = single.getByRole('option', { name: 'Cat' });
+  const dog = single.getByRole('option', { name: 'Dog' });
+  const horse = single.getByRole('option', { name: 'Horse · unavailable' });
+
+  await expect(single).toHaveAttribute('tabindex', '0');
+  await expect(single).toHaveAttribute('aria-activedescendant', (await dog.getAttribute('id'))!);
+  await expect(dog).toHaveAttribute('aria-selected', 'true');
+  await expect(horse).toHaveAttribute('aria-disabled', 'true');
+  await single.focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(single).toHaveAttribute('aria-activedescendant', (await horse.getAttribute('id'))!);
+  await page.keyboard.press('Enter');
+  await expect(dog).toHaveAttribute('aria-selected', 'true');
+  await page.keyboard.press('End');
+  await expect(single).toHaveAttribute(
+    'aria-activedescendant',
+    (await single.getByRole('option', { name: 'Dolphin' }).getAttribute('id'))!,
+  );
+  await page.keyboard.press('Home');
+  await expect(single).toHaveAttribute('aria-activedescendant', (await cat.getAttribute('id'))!);
+  await page.keyboard.press(' ');
+  await expect(cat).toHaveAttribute('aria-selected', 'true');
+  await expect(dog).toHaveAttribute('aria-selected', 'false');
+
+  const multiple = section.getByRole('menu', { name: 'Companion animals' });
+  const multipleDog = multiple.getByRole('menuitemcheckbox', { name: 'Dog' });
+  const multipleBird = multiple.getByRole('menuitemcheckbox', { name: 'Bird' });
+  const multipleRabbit = multiple.getByRole('menuitemcheckbox', { name: 'Rabbit · unavailable' });
+  await expect(multiple).not.toHaveAttribute('aria-multiselectable');
+  await expect(multipleDog).toHaveAttribute('aria-checked', 'true');
+  await multipleBird.click();
+  await expect(multipleBird).toHaveAttribute('aria-checked', 'true');
+  await expect(section.getByText('Selected companions: dog, bird')).toBeVisible();
+  await multipleRabbit.click({ force: true });
+  await expect(multipleRabbit).toHaveAttribute('aria-checked', 'false');
+
+  const controlled = section.getByRole('listbox', { name: 'Deployment region' });
+  const west = controlled.getByRole('option', { name: 'West Europe' });
+  const east = controlled.getByRole('option', { name: 'East US' });
+  await expect(controlled).toHaveAttribute('aria-required', 'true');
+  await expect(controlled).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
+  await east.click();
+  await expect(west).toHaveAttribute('aria-selected', 'true');
+  await expect(east).toHaveAttribute('aria-selected', 'false');
+  await expect(section.getByText('Controlled attempt: east')).toBeVisible();
+
+  await page.locator('main').evaluate((main) => main.setAttribute('dir', 'rtl'));
+  const checkIcon = multipleDog.locator('.fui-Option__checkIcon');
+  await expect(checkIcon).toHaveCSS('margin-right', '-2px');
+  expect(
+    Number.parseFloat(await checkIcon.evaluate((element) => getComputedStyle(element).marginLeft)),
+  ).toBeGreaterThan(0);
+});
+
+test('Listbox preserves forced-color focus and selection safeguards', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Computed forced-color coverage is Chromium-only.');
+  await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/');
+
+  const listbox = page.locator('#listbox').getByRole('listbox', { name: 'Favorite animal' });
+  await listbox.focus();
+  const activeId = await listbox.getAttribute('aria-activedescendant');
+  const activeOption = page.locator(`#${activeId}`);
+  const focusOverlay = await activeOption.evaluate((element) => {
+    const after = getComputedStyle(element, '::after');
+    return { borderStyle: after.borderStyle, borderWidth: after.borderWidth };
+  });
+  expect(focusOverlay.borderStyle).toBe('solid');
+  expect(focusOverlay.borderWidth).toBe('2px');
+
+  const selectedCheck = listbox
+    .getByRole('option', { name: 'Dog' })
+    .locator('.fui-Option__checkIcon');
+  await expect(selectedCheck).toHaveCSS('color', 'rgb(0, 0, 0)');
+});
+
 test('Avatar preserves fallbacks, group layouts, and overflow interaction', async ({ page }) => {
   await page.goto('/');
 

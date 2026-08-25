@@ -29,7 +29,10 @@ import {
   FLabel,
   FLink,
   FList,
+  FListbox,
   FListItem,
+  FOption,
+  FOptionGroup,
   FPersona,
   FPresenceBadge,
   FProgressBar,
@@ -82,6 +85,8 @@ const controlledCard = ref(true);
 const selectedTab = ref('overview');
 const automaticTab = ref('activity');
 const selectedListItems = ref<Array<string | number>>(['Ada']);
+const selectedListboxOptions = ref(['dog']);
+const selectedListboxAttempt = ref<string[]>([]);
 const avatarOverflowOpen = ref(false);
 const toggleControlled = ref(true);
 const toggleSubmitCount = ref(0);
@@ -132,8 +137,8 @@ function ratingItemLabel(value: number) {
           Native Button, ToggleButton, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider,
           Image, Badge, Spinner, ProgressBar, SpinButton, SearchBox, Switch, Radio, RadioGroup,
           Select, Skeleton, Slider, Rating, RatingDisplay, Card, Accordion, Tabs, Breadcrumb, List,
-          and Avatar components translated from Fluent UI React v9 to Vue props, slots, emits, and
-          semantic HTML.
+          Listbox, Avatar, and Persona components translated from Fluent UI React v9 to Vue props,
+          slots, emits, and semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -1592,6 +1597,67 @@ function ratingItemLabel(value: number) {
       </div>
     </section>
 
+    <section id="listbox">
+      <h2>Listbox</h2>
+      <div class="listbox-samples">
+        <div>
+          <h3>Single selection and groups</h3>
+          <FListbox
+            class="listbox-single"
+            :default-selected-options="['dog']"
+            aria-label="Favorite animal"
+          >
+            <FOptionGroup label="Land animals">
+              <FOption value="cat">Cat</FOption>
+              <FOption value="dog">Dog</FOption>
+              <FOption value="horse" disabled>Horse · unavailable</FOption>
+            </FOptionGroup>
+            <FOptionGroup label="Water animals">
+              <FOption value="fish">Fish</FOption>
+              <FOption value="dolphin">Dolphin</FOption>
+            </FOptionGroup>
+          </FListbox>
+        </div>
+        <div>
+          <h3>Controlled multiselect</h3>
+          <FListbox
+            v-model="selectedListboxOptions"
+            class="listbox-multiselect"
+            multiselect
+            aria-label="Companion animals"
+          >
+            <FOption value="cat">Cat</FOption>
+            <FOption value="dog">Dog</FOption>
+            <FOption value="bird">Bird</FOption>
+            <FOption value="rabbit" disabled>Rabbit · unavailable</FOption>
+          </FListbox>
+          <small>Selected companions: {{ selectedListboxOptions.join(', ') || 'none' }}</small>
+        </div>
+        <div>
+          <h3>Field and controlled rollback</h3>
+          <FField
+            class="listbox-field"
+            label="Deployment region"
+            hint="Arrow keys move the active option; Enter or Space selects it."
+            required
+          >
+            <FListbox
+              class="listbox-controlled"
+              :model-value="['west']"
+              @update:model-value="selectedListboxAttempt = $event"
+            >
+              <FOption value="west">West Europe</FOption>
+              <FOption value="east">East US</FOption>
+              <FOption value="central" text="Central India">
+                <span>Central India</span>
+              </FOption>
+            </FListbox>
+          </FField>
+          <small>Controlled attempt: {{ selectedListboxAttempt.join(', ') || 'none' }}</small>
+        </div>
+      </div>
+    </section>
+
     <section id="avatar">
       <h2>Avatar</h2>
       <div class="avatar-samples">
@@ -2689,6 +2755,7 @@ section {
 .tab-samples,
 .breadcrumb-samples,
 .list-samples,
+.listbox-samples,
 .spinner-samples,
 .progress-bar-samples,
 .spin-button-samples,
@@ -2739,6 +2806,32 @@ section {
 .list-primary {
   flex: 1;
   font-weight: var(--fui-font-weight-semibold);
+}
+
+.listbox-samples {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.listbox-samples > div {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+}
+
+.listbox-samples h3 {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-300);
+}
+
+.listbox-samples .fui-Listbox {
+  max-height: 17rem;
+  border-radius: var(--fui-border-radius-medium);
+  box-shadow: var(--fui-shadow-4);
+}
+
+.listbox-field {
+  align-content: start;
 }
 
 .avatar-samples {

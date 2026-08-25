@@ -65,7 +65,10 @@ import {
   FLabel,
   FLink,
   FList,
+  FListbox,
   FListItem,
+  FOption,
+  FOptionGroup,
   FPersona,
   FPresenceBadge,
   FProgressBar,
@@ -177,6 +180,7 @@ const imageShape: ImageShape = 'rounded';
 const listNavigationMode: ListNavigationMode = 'items';
 const listSelectionMode: ListSelectionMode = 'multiselect';
 const selectedListItems = ref<ListValue[]>(['packed-one']);
+const selectedOptions = ref<string[]>(['packed-cat']);
 const personaSize: PersonaSize = 'large';
 const personaTextPosition: PersonaTextPosition = 'after';
 const presenceStatus: PresenceBadgeStatus = 'available';
@@ -456,6 +460,37 @@ createApp({
               () => 'Packed disabled item',
             ),
           ],
+        },
+      ),
+      h(
+        FField,
+        { label: 'Packed companion', hint: 'Choose packed options.', required: true },
+        {
+          default: () =>
+            h(
+              FListbox,
+              {
+                modelValue: selectedOptions.value,
+                'onUpdate:modelValue': value => (selectedOptions.value = value),
+                multiselect: true,
+              },
+              {
+                default: () => [
+                  h(
+                    FOptionGroup,
+                    { label: 'Packed animals' },
+                    {
+                      default: () => [
+                        h(FOption, { value: 'packed-cat' }, () => 'Packed Cat'),
+                        h(FOption, { value: 'packed-dog', text: 'Packed Dog' }, () =>
+                          h('strong', null, 'Packed Dog'),
+                        ),
+                      ],
+                    },
+                  ),
+                ],
+              },
+            ),
         },
       ),
       h(FAvatar, {

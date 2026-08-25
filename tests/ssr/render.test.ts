@@ -162,6 +162,23 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /<ul(?=[^>]*class="fui-List ssr-list")(?=[^>]*role="listbox")(?=[^>]*aria-multiselectable="true")(?=[^>]*aria-label="Server list")[^>]*>.*<li(?=[^>]*id="server-one")(?=[^>]*class="fui-ListItem[^>]*fui-ListItem--selected")(?=[^>]*role="option")(?=[^>]*aria-selected="true")[^>]*>.*Server selected item.*<li(?=[^>]*id="server-two")(?=[^>]*aria-selected="false")(?=[^>]*aria-disabled="true")[^>]*>.*Server disabled selection/s,
     );
+    expect(firstRender).toContain('class="fui-Listbox ssr-listbox"');
+    expect(firstRender).toContain('class="fui-OptionGroup"');
+    expect(firstRender).toContain('class="fui-OptionGroup__label" role="presentation"');
+    expect(firstRender).toContain('Server regions');
+    expect(firstRender).toContain('Server West');
+    expect(firstRender).toContain('Server East');
+    expect(firstRender).toMatch(/class="fui-Listbox ssr-listbox"[^>]*role="listbox" tabindex="0"/);
+    expect(firstRender).toMatch(
+      /class="fui-Option[^"]*fui-Option--selected[^"]*"[^>]*role="option"[^>]*aria-selected="true"/,
+    );
+    expect(firstRender).toMatch(
+      /class="fui-Option__content"><!--\[-->Server West<!--\]--><\/span>/,
+    );
+    expect(firstRender).toMatch(/role="option"[^>]*aria-disabled="true"[^>]*aria-selected="false"/);
+    expect(firstRender).toMatch(
+      /<div(?=[^>]*aria-label="Server companions")(?=[^>]*class="fui-Listbox fui-Listbox--multiselect ssr-multiselect-listbox")(?=[^>]*role="menu")(?=[^>]*tabindex="0")[^>]*>.*<div(?=[^>]*class="fui-Option[^>]*fui-Option--multiselect[^>]*fui-Option--selected")(?=[^>]*role="menuitemcheckbox")(?=[^>]*aria-checked="true")[^>]*>.*Server Cat.*<div(?=[^>]*role="menuitemcheckbox")(?=[^>]*aria-checked="false")[^>]*>.*Server Dog/s,
+    );
     expect(firstRender).toMatch(
       /<span(?=[^>]*class="fui-Avatar[^>]*fui-Avatar--size-48[^>]*fui-Avatar--active[^>]*ssr-avatar")(?=[^>]*role="img")(?=[^>]*aria-label="Server Person, available, active")[^>]*>.*fui-Avatar__initials.*SP.*fui-PresenceBadge/s,
     );

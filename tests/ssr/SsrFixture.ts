@@ -28,7 +28,10 @@ import {
   FLabel,
   FLink,
   FList,
+  FListbox,
   FListItem,
+  FOption,
+  FOptionGroup,
   FPersona,
   FPresenceBadge,
   FProgressBar,
@@ -435,6 +438,53 @@ export const SsrFixture = defineComponent({
                 { value: 'server-two', disabledSelection: true },
                 () => 'Server disabled selection',
               ),
+            ],
+          },
+        ),
+        h(
+          FField,
+          {
+            label: 'Server region',
+            hint: 'Choose one server region.',
+            required: true,
+          },
+          {
+            default: () =>
+              h(
+                FListbox,
+                {
+                  class: 'ssr-listbox',
+                  defaultSelectedOptions: ['west'],
+                },
+                {
+                  default: () => [
+                    h(
+                      FOptionGroup,
+                      { label: 'Server regions' },
+                      {
+                        default: () => [
+                          h(FOption, { value: 'west' }, () => 'Server West'),
+                          h(FOption, { value: 'east', disabled: true }, () => 'Server East'),
+                        ],
+                      },
+                    ),
+                  ],
+                },
+              ),
+          },
+        ),
+        h(
+          FListbox,
+          {
+            class: 'ssr-multiselect-listbox',
+            multiselect: true,
+            defaultSelectedOptions: ['cat'],
+            'aria-label': 'Server companions',
+          },
+          {
+            default: () => [
+              h(FOption, { value: 'cat' }, () => 'Server Cat'),
+              h(FOption, { value: 'dog' }, () => 'Server Dog'),
             ],
           },
         ),
