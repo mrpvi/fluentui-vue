@@ -1,0 +1,90 @@
+.fui-ListItem {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  text-indent: 0;
+}
+
+.fui-ListItem--selectable,
+.fui-ListItem--navigable {
+  display: flex;
+  cursor: pointer;
+}
+
+.fui-ListItem--disabled {
+  cursor: default;
+}
+
+.fui-ListItem:focus {
+  outline: var(--fui-stroke-width-thick, 2px) solid var(--fui-color-stroke-focus-2);
+  outline-offset: 2px;
+  border-radius: var(--fui-border-radius-medium);
+}
+
+.fui-ListItem__checkmark {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-self: center;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  margin: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.fui-ListItem__checkmarkControl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: inherit;
+}
+
+.fui-ListItem__checkmarkIndicator {
+  display: inline-flex;
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  border: var(--fui-stroke-width-thin, 1px) solid var(--fui-color-neutral-stroke-accessible);
+  border-radius: var(--fui-border-radius-small);
+  background-color: var(--fui-color-neutral-background-1);
+  color: var(--fui-color-neutral-foreground-inverted);
+}
+
+.fui-ListItem__checkmark--selected .fui-ListItem__checkmarkIndicator {
+  border-color: var(--fui-color-compound-brand-background);
+  background-color: var(--fui-color-compound-brand-background);
+}
+
+.fui-ListItem__checkmarkIndicator svg {
+  width: 12px;
+  height: 12px;
+  fill: currentcolor;
+}
+
+.fui-ListItem__checkmarkControl[aria-disabled='true'] .fui-ListItem__checkmarkIndicator {
+  border-color: var(--fui-color-neutral-stroke-disabled);
+  background-color: var(--fui-color-neutral-background-disabled);
+  color: var(--fui-color-neutral-foreground-disabled);
+}
+
+@media (forced-colors: active) {
+  .fui-ListItem:focus {
+    outline-color: Highlight;
+  }
+
+  .fui-ListItem__checkmark--selected .fui-ListItem__checkmarkIndicator {
+    border-color: Highlight;
+    background-color: Highlight;
+    color: HighlightText;
+  }
+
+  .fui-ListItem__checkmarkControl[aria-disabled='true'] .fui-ListItem__checkmarkIndicator {
+    border-color: GrayText;
+    background-color: Canvas;
+    color: GrayText;
+  }
+}

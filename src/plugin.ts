@@ -31,6 +31,8 @@ import { FRatingItem } from './components/RatingItem';
 import { FSearchBox } from './components/SearchBox';
 import { FSelect } from './components/Select';
 import { FLink } from './components/Link';
+import { FList } from './components/List';
+import { FListItem } from './components/ListItem';
 import { FSkeleton } from './components/Skeleton';
 import { FSkeletonItem } from './components/SkeletonItem';
 import { FSlider } from './components/Slider';
@@ -77,6 +79,8 @@ export const FluentVue: Plugin = {
     app.component('FSearchBox', FSearchBox);
     app.component('FLabel', FLabel);
     app.component('FLink', FLink);
+    app.component('FList', FList);
+    app.component('FListItem', FListItem);
     app.component('FSkeleton', FSkeleton);
     app.component('FSkeletonItem', FSkeletonItem);
     app.component('FSlider', FSlider);

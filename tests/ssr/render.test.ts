@@ -156,5 +156,8 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /<button(?=[^>]*class="fui-BreadcrumbButton fui-BreadcrumbButton--large fui-BreadcrumbButton--current")(?=[^>]*aria-current="page")(?=[^>]*aria-disabled="true")[^>]*>.*Server current/s,
     );
+    expect(firstRender).toMatch(
+      /<ul(?=[^>]*class="fui-List ssr-list")(?=[^>]*role="listbox")(?=[^>]*aria-multiselectable="true")(?=[^>]*aria-label="Server list")[^>]*>.*<li(?=[^>]*id="server-one")(?=[^>]*class="fui-ListItem[^>]*fui-ListItem--selected")(?=[^>]*role="option")(?=[^>]*aria-selected="true")[^>]*>.*Server selected item.*<li(?=[^>]*id="server-two")(?=[^>]*aria-selected="false")(?=[^>]*aria-disabled="true")[^>]*>.*Server disabled selection/s,
+    );
   });
 });

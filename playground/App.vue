@@ -24,6 +24,8 @@ import {
   FInput,
   FLabel,
   FLink,
+  FList,
+  FListItem,
   FPresenceBadge,
   FProgressBar,
   FRating,
@@ -74,6 +76,7 @@ const selectableCard = ref(false);
 const controlledCard = ref(true);
 const selectedTab = ref('overview');
 const automaticTab = ref('activity');
+const selectedListItems = ref<Array<string | number>>(['Ada']);
 const toggleControlled = ref(true);
 const toggleSubmitCount = ref(0);
 const compoundSubmitCount = ref(0);
@@ -122,9 +125,9 @@ function ratingItemLabel(value: number) {
         <p>
           Native Button, ToggleButton, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider,
           Image, Badge, Spinner, ProgressBar, SpinButton, SearchBox, Switch, Radio, RadioGroup,
-          Select, Skeleton, Slider, Rating, RatingDisplay, Card, Accordion, Tabs, and Breadcrumb
-          components translated from Fluent UI React v9 to Vue props, slots, emits, and semantic
-          HTML.
+          Select, Skeleton, Slider, Rating, RatingDisplay, Card, Accordion, Tabs, Breadcrumb, and
+          List components translated from Fluent UI React v9 to Vue props, slots, emits, and
+          semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -1530,6 +1533,59 @@ function ratingItemLabel(value: number) {
       </div>
     </section>
 
+    <section id="list">
+      <h2>List</h2>
+      <div class="list-samples">
+        <div>
+          <h3>Semantic content list</h3>
+          <FList class="list-default" aria-label="Continents">
+            <FListItem>Asia</FListItem>
+            <FListItem>Africa</FListItem>
+            <FListItem>Europe</FListItem>
+          </FList>
+        </div>
+        <div>
+          <h3>Controlled multiselect</h3>
+          <FList
+            v-model="selectedListItems"
+            class="list-selection"
+            selection-mode="multiselect"
+            aria-label="People list"
+          >
+            <FListItem value="Ada" aria-label="Ada">Ada Lovelace</FListItem>
+            <FListItem value="Grace" aria-label="Grace">Grace Hopper</FListItem>
+            <FListItem value="Linus" aria-label="Linus" disabled-selection>
+              Linus Torvalds · selection disabled
+            </FListItem>
+          </FList>
+          <small>Selected people: {{ selectedListItems.join(', ') || 'none' }}</small>
+        </div>
+        <div>
+          <h3>Composite actions</h3>
+          <FList class="list-composite" navigation-mode="composite" aria-label="Project actions">
+            <FListItem value="roadmap" aria-label="Roadmap project">
+              <div class="list-gridcell" role="gridcell">
+                <span class="list-primary">Roadmap</span>
+                <FButton size="small">Open</FButton>
+                <FButton size="small" appearance="subtle" aria-label="More Roadmap actions"
+                  >•••</FButton
+                >
+              </div>
+            </FListItem>
+            <FListItem value="release" aria-label="Release project">
+              <div class="list-gridcell" role="gridcell">
+                <span class="list-primary">Release</span>
+                <FButton size="small">Open</FButton>
+                <FButton size="small" appearance="subtle" aria-label="More Release actions"
+                  >•••</FButton
+                >
+              </div>
+            </FListItem>
+          </FList>
+        </div>
+      </div>
+    </section>
+
     <section id="radio">
       <h2>Radio</h2>
       <div class="radio-samples">
@@ -2498,6 +2554,7 @@ section {
 .accordion-samples,
 .tab-samples,
 .breadcrumb-samples,
+.list-samples,
 .spinner-samples,
 .progress-bar-samples,
 .spin-button-samples,
@@ -2518,6 +2575,36 @@ section {
 .skeleton-group {
   display: grid;
   gap: 0.75rem;
+}
+
+.list-default,
+.list-selection,
+.list-composite {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.list-default .fui-ListItem,
+.list-selection .fui-ListItem,
+.list-composite .fui-ListItem {
+  min-height: 2.5rem;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: var(--fui-border-radius-medium);
+  background-color: var(--fui-color-neutral-background-2);
+  color: var(--fui-color-neutral-foreground-1);
+}
+
+.list-gridcell {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.list-primary {
+  flex: 1;
+  font-weight: var(--fui-font-weight-semibold);
 }
 
 .spinner-group h3,

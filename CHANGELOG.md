@@ -10,6 +10,7 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 - Accordion, AccordionItem, AccordionHeader, and AccordionPanel adaptations with controlled and uncontrolled expansion, disclosure semantics, disabled states, RTL, reduced-motion, SSR, accessibility, browser, and packed-consumer coverage.
 - Breadcrumb, BreadcrumbItem, BreadcrumbButton, and BreadcrumbDivider adaptations with native navigation/list semantics, link and button roots, current and disabled states, tab and circular arrow focus modes, released sizing, utilities, RTL dividers, forced colors, SSR, accessibility, browser, and packed-consumer coverage.
+- List and ListItem adaptations with semantic list, listbox, and grid roles; controlled and uncontrolled selection; cancelable bubbling actions; item and composite keyboard navigation; accessible checkmarks; disabled-selection behavior; SSR, accessibility, browser, and packed-consumer coverage.
 - TabList and Tab adaptations with controlled and uncontrolled selection, manual and automatic activation, circular roving focus, disabled states, four appearances, sizes, vertical layout, RTL, forced colors, reduced motion, SSR, accessibility, browser, and packed-consumer coverage.
 
 ## [0.1.0] - 2026-08-23

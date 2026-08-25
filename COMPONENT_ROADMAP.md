@@ -84,7 +84,7 @@ Delay these components until Menu exists:
     - `FBreadcrumbItem`
     - `FBreadcrumbButton`
     - `FBreadcrumbDivider`
-28. ❌ **List family**
+28. ✅ **List family** — definition-of-done gates complete for `@fluentui/react-list@9.6.18`
     - `FList`
     - `FListItem`
 

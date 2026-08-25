@@ -23,6 +23,8 @@ import {
   FInput,
   FLabel,
   FLink,
+  FList,
+  FListItem,
   FPresenceBadge,
   FProgressBar,
   FRating,
@@ -412,6 +414,25 @@ export const SsrFixture = defineComponent({
           color: 'marigold',
           'aria-label': 'Server compact rating display',
         }),
+        h(
+          FList,
+          {
+            class: 'ssr-list',
+            selectionMode: 'multiselect',
+            defaultSelectedItems: ['server-one'],
+            'aria-label': 'Server list',
+          },
+          {
+            default: () => [
+              h(FListItem, { value: 'server-one' }, () => 'Server selected item'),
+              h(
+                FListItem,
+                { value: 'server-two', disabledSelection: true },
+                () => 'Server disabled selection',
+              ),
+            ],
+          },
+        ),
         h(FLink, { href: '#details' }, () => 'View details'),
         h(FButton, { appearance: 'primary' }, () => 'Continue'),
       ]);

@@ -60,6 +60,8 @@ import {
   FInput,
   FLabel,
   FLink,
+  FList,
+  FListItem,
   FPresenceBadge,
   FProgressBar,
   FRating,
@@ -100,6 +102,9 @@ import {
   type FluentTheme,
   type ImageFit,
   type ImageShape,
+  type ListNavigationMode,
+  type ListSelectionMode,
+  type ListValue,
   type PresenceBadgeStatus,
   type ProgressBarColor,
   type ProgressBarThickness,
@@ -155,6 +160,9 @@ const resize: TextareaResize = 'vertical';
 const dividerAppearance: DividerAppearance = 'brand';
 const imageFit: ImageFit = 'cover';
 const imageShape: ImageShape = 'rounded';
+const listNavigationMode: ListNavigationMode = 'items';
+const listSelectionMode: ListSelectionMode = 'multiselect';
+const selectedListItems = ref<ListValue[]>(['packed-one']);
 const presenceStatus: PresenceBadgeStatus = 'available';
 const progressColor: ProgressBarColor = 'success';
 const progressThickness: ProgressBarThickness = 'large';
@@ -410,6 +418,26 @@ createApp({
               FBreadcrumbItem,
               {},
               { default: () => h(FBreadcrumbButton, { current: true }, () => 'Current') },
+            ),
+          ],
+        },
+      ),
+      h(
+        FList,
+        {
+          navigationMode: listNavigationMode,
+          selectionMode: listSelectionMode,
+          modelValue: selectedListItems.value,
+          'onUpdate:modelValue': value => (selectedListItems.value = value),
+          'aria-label': 'Packed list',
+        },
+        {
+          default: () => [
+            h(FListItem, { value: 'packed-one' }, () => 'Packed selected item'),
+            h(
+              FListItem,
+              { value: 'packed-two', disabledSelection: true },
+              () => 'Packed disabled item',
             ),
           ],
         },

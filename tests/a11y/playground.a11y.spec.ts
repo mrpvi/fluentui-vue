@@ -286,6 +286,32 @@ test('Breadcrumb fixtures expose navigation, list, current, disabled, and names'
   await expect(page.getByRole('navigation', { name: 'RTL breadcrumb' })).toBeVisible();
 });
 
+test('List fixtures expose list, listbox, grid, selection, and disabled semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const content = page.getByRole('list', { name: 'Continents' });
+  await expect(content.getByRole('listitem')).toHaveCount(3);
+
+  const people = page.getByRole('listbox', { name: 'People list' });
+  await expect(people).toHaveAttribute('aria-multiselectable', 'true');
+  await expect(people.getByRole('option', { name: 'Ada' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+  await expect(people.getByRole('checkbox')).toHaveCount(3);
+  await expect(people.getByRole('checkbox').first()).toHaveAttribute('aria-checked', 'true');
+  await expect(people.getByRole('option', { name: 'Linus' })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
+
+  const projects = page.getByRole('grid', { name: 'Project actions' });
+  await expect(projects.getByRole('row')).toHaveCount(2);
+  await expect(projects.getByRole('button', { name: 'More Roadmap actions' })).toBeVisible();
+});
+
 test('Skeleton fixtures expose default and explicitly overridden loading semantics', async ({
   page,
 }) => {

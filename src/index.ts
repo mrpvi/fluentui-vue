@@ -30,6 +30,8 @@ export * from './components/RatingItem';
 export * from './components/SearchBox';
 export * from './components/Select';
 export * from './components/Link';
+export * from './components/List';
+export * from './components/ListItem';
 export * from './components/Skeleton';
 export * from './components/SkeletonItem';
 export * from './components/Slider';

@@ -2017,6 +2017,74 @@ test('Breadcrumb preserves reduced-motion and forced-color safeguards', async ({
   await expect(button).toHaveCSS('color', 'rgb(0, 0, 0)');
 });
 
+test('List preserves semantics, selection, actions, and composite navigation', async ({ page }) => {
+  await page.goto('/');
+
+  const section = page.locator('#list');
+  const content = section.getByRole('list', { name: 'Continents' });
+  await expect(content.getByRole('listitem')).toHaveCount(3);
+  await expect(content).toHaveCSS('list-style-type', 'none');
+
+  const people = section.getByRole('listbox', { name: 'People list' });
+  const ada = people.getByRole('option', { name: 'Ada' });
+  const grace = people.getByRole('option', { name: 'Grace' });
+  const linus = people.getByRole('option', { name: 'Linus' });
+  await expect(people).toHaveAttribute('aria-multiselectable', 'true');
+  await expect(ada).toHaveAttribute('aria-selected', 'true');
+  await grace.click();
+  await expect(grace).toHaveAttribute('aria-selected', 'true');
+  await expect(section.getByText('Selected people: Ada, Grace')).toBeVisible();
+  await expect(linus).toHaveAttribute('aria-disabled', 'true');
+  await linus.dispatchEvent('click');
+  await expect(linus).toHaveAttribute('aria-selected', 'false');
+
+  await ada.focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(grace).toBeFocused();
+  await page.keyboard.press('End');
+  await expect(linus).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(linus).toBeFocused();
+
+  const projects = section.getByRole('grid', { name: 'Project actions' });
+  const rows = projects.getByRole('row');
+  await expect(rows).toHaveCount(2);
+  await rows.first().focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(rows.first().getByRole('button', { name: 'Open' })).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await expect(rows.first().getByRole('button', { name: 'More Roadmap actions' })).toBeFocused();
+  await page.keyboard.press('ArrowLeft');
+  await expect(rows.first().getByRole('button', { name: 'Open' })).toBeFocused();
+  await page.keyboard.press('ArrowLeft');
+  await expect(rows.first()).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('Escape');
+  await expect(rows.first()).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(rows.nth(1)).toBeFocused();
+});
+
+test('List preserves forced-color focus and selected checkmark safeguards', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Computed forced-color coverage is Chromium-only.');
+  await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/');
+
+  const ada = page
+    .locator('#list')
+    .getByRole('listbox', { name: 'People list' })
+    .getByRole('option', { name: 'Ada' });
+  await ada.focus();
+  await expect(ada).toHaveCSS('outline-style', 'solid');
+  await expect(ada.locator('.fui-ListItem__checkmarkIndicator')).toHaveCSS(
+    'background-color',
+    'rgba(5, 0, 73, 0.8)',
+  );
+});
+
 test('Radio uses native common-name selection and arrow keys across engines', async ({ page }) => {
   await page.goto('/');
 
