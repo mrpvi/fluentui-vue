@@ -1,4 +1,8 @@
 import type { App, Plugin } from 'vue';
+import { FAccordion } from './components/Accordion';
+import { FAccordionHeader } from './components/AccordionHeader';
+import { FAccordionItem } from './components/AccordionItem';
+import { FAccordionPanel } from './components/AccordionPanel';
 import { FBadge } from './components/Badge';
 import { FButton } from './components/Button';
 import { FCard } from './components/Card';
@@ -35,6 +39,10 @@ import { FToggleButton } from './components/ToggleButton';
 
 export const FluentVue: Plugin = {
   install(app: App) {
+    app.component('FAccordion', FAccordion);
+    app.component('FAccordionHeader', FAccordionHeader);
+    app.component('FAccordionItem', FAccordionItem);
+    app.component('FAccordionPanel', FAccordionPanel);
     app.component('FBadge', FBadge);
     app.component('FButton', FButton);
     app.component('FCard', FCard);

@@ -1,5 +1,9 @@
 import { defineComponent, h } from 'vue';
 import {
+  FAccordion,
+  FAccordionHeader,
+  FAccordionItem,
+  FAccordionPanel,
   FBadge,
   FButton,
   FCard,
@@ -261,6 +265,24 @@ export const SsrFixture = defineComponent({
           FCard,
           { as: 'article', class: 'ssr-article-card', 'aria-label': 'Server article' },
           () => 'Article card',
+        ),
+        h(
+          FAccordion,
+          { class: 'ssr-accordion', defaultOpenItems: 'overview' },
+          {
+            default: () => [
+              h(
+                FAccordionItem,
+                { value: 'overview' },
+                {
+                  default: () => [
+                    h(FAccordionHeader, { as: 'h2' }, () => 'Server accordion'),
+                    h(FAccordionPanel, {}, () => 'Server accordion panel'),
+                  ],
+                },
+              ),
+            ],
+          },
         ),
         h(
           FField,

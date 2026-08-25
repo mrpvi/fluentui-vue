@@ -37,6 +37,10 @@ try {
     resolve(consumer, 'src/main.ts'),
     `import { createApp, h, ref } from 'vue';
 import {
+  FAccordion,
+  FAccordionHeader,
+  FAccordionItem,
+  FAccordionPanel,
   FBadge,
   FButton,
   FCard,
@@ -334,6 +338,24 @@ createApp({
           default: () => [
             h(FSkeletonItem),
             h(FSkeletonItem, { size: 16, shape: 'rectangle', style: { width: '60%' } }),
+          ],
+        },
+      ),
+      h(
+        FAccordion,
+        { defaultOpenItems: 'packed' },
+        {
+          default: () => [
+            h(
+              FAccordionItem,
+              { value: 'packed' },
+              {
+                default: () => [
+                  h(FAccordionHeader, { as: 'h2' }, () => 'Packed accordion'),
+                  h(FAccordionPanel, {}, () => 'Packed accordion panel'),
+                ],
+              },
+            ),
           ],
         },
       ),

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import {
+  FAccordion,
+  FAccordionHeader,
+  FAccordionItem,
+  FAccordionPanel,
   FBadge,
   FButton,
   FCard,
@@ -1366,6 +1370,43 @@ function ratingItemLabel(value: number) {
       </div>
     </section>
 
+    <section id="accordion">
+      <h2>Accordion</h2>
+      <div class="accordion-samples">
+        <FAccordion class="accordion-single" default-open-items="overview">
+          <FAccordionItem value="overview">
+            <FAccordionHeader as="h3">Overview</FAccordionHeader>
+            <FAccordionPanel
+              >Accordion uses native buttons with stable disclosure relationships.</FAccordionPanel
+            >
+          </FAccordionItem>
+          <FAccordionItem value="details">
+            <FAccordionHeader as="h3" expand-icon-position="end">Details</FAccordionHeader>
+            <FAccordionPanel
+              >The final item remains open unless collapsible is enabled.</FAccordionPanel
+            >
+          </FAccordionItem>
+          <FAccordionItem value="disabled" disabled>
+            <FAccordionHeader as="h3">Disabled section</FAccordionHeader>
+            <FAccordionPanel>This content cannot be opened.</FAccordionPanel>
+          </FAccordionItem>
+        </FAccordion>
+        <FAccordion class="accordion-multiple" multiple collapsible :default-open-items="['one']">
+          <FAccordionItem value="one">
+            <FAccordionHeader size="small">First collapsible item</FAccordionHeader>
+            <FAccordionPanel>Multiple panels can remain open.</FAccordionPanel>
+          </FAccordionItem>
+          <FAccordionItem value="two">
+            <FAccordionHeader size="large">
+              <template #icon>ⓘ</template>
+              Second collapsible item
+            </FAccordionHeader>
+            <FAccordionPanel>All panels may also be closed.</FAccordionPanel>
+          </FAccordionItem>
+        </FAccordion>
+      </div>
+    </section>
+
     <section id="radio">
       <h2>Radio</h2>
       <div class="radio-samples">
@@ -2331,6 +2372,7 @@ section {
 .toggle-button-samples,
 .compound-button-samples,
 .card-samples,
+.accordion-samples,
 .spinner-samples,
 .progress-bar-samples,
 .spin-button-samples,

@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The project follows [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Added
+
+- Accordion, AccordionItem, AccordionHeader, and AccordionPanel adaptations with controlled and uncontrolled expansion, disclosure semantics, disabled states, RTL, reduced-motion, SSR, accessibility, browser, and packed-consumer coverage.
+
 ## [0.1.0] - 2026-08-23
 
 ### Added

@@ -138,5 +138,8 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /<article(?=[^>]*aria-label="Server article")(?=[^>]*class="fui-Card[^>]*ssr-article-card")[^>]*>/,
     );
+    expect(firstRender).toMatch(
+      /class="fui-Accordion ssr-accordion"[^>]*>.*<h2[^>]*class="fui-AccordionHeader[^>]*>.*<button id="(fui-accordion-header-[^"]+)"[^>]*aria-expanded="true" aria-controls="(fui-accordion-panel-[^"]+)"[^>]*>.*Server accordion.*<div id="\2" class="fui-AccordionPanel"[^>]*role="region" aria-labelledby="\1">.*Server accordion panel/s,
+    );
   });
 });

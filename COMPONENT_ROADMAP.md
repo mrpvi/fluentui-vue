@@ -71,7 +71,7 @@ Delay these components until Menu exists:
     - `FCardHeader`
     - `FCardPreview`
     - `FCardFooter`
-25. ❌ **Accordion family**
+25. ✅ **Accordion family** — definition-of-done gates complete for `@fluentui/react-accordion@9.12.3`
     - `FAccordion`
     - `FAccordionItem`
     - `FAccordionHeader`

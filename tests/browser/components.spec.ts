@@ -1834,6 +1834,61 @@ test('Card reduced motion collapses authored transitions', async ({ page, browse
   );
 });
 
+test('Accordion preserves disclosure state, relationships, disabled behavior, and layout', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#accordion');
+  const single = section.locator('.accordion-single');
+  const overview = single.getByRole('button', { name: 'Overview' });
+  const details = single.getByRole('button', { name: 'Details' });
+  const disabled = single.getByRole('button', { name: 'Disabled section' });
+
+  await expect(overview).toHaveAttribute('aria-expanded', 'true');
+  await expect(overview).toHaveAttribute('aria-disabled', 'true');
+  await expect(single.getByRole('region', { name: 'Overview' })).toBeVisible();
+  await details.click();
+  await expect(overview).toHaveAttribute('aria-expanded', 'false');
+  await expect(details).toHaveAttribute('aria-expanded', 'true');
+  await expect(single.getByRole('region', { name: 'Details' })).toBeVisible();
+  await expect(disabled).toBeDisabled();
+
+  const multiple = section.locator('.accordion-multiple');
+  const first = multiple.getByRole('button', { name: 'First collapsible item' });
+  const second = multiple.getByRole('button', { name: 'ⓘ Second collapsible item' });
+  await expect(first).toHaveAttribute('aria-expanded', 'true');
+  await second.click();
+  await expect(multiple.getByRole('region')).toHaveCount(2);
+  await first.click();
+  await second.click();
+  await expect(multiple.getByRole('region')).toHaveCount(0);
+
+  await expect(first).toHaveCSS('min-height', '32px');
+  await expect(second).toHaveCSS('font-size', '16px');
+  const detailsBox = await details.boundingBox();
+  const endIconBox = await details.locator('.fui-AccordionHeader__expandIcon').boundingBox();
+  expect(detailsBox).not.toBeNull();
+  expect(endIconBox).not.toBeNull();
+  const trailingGap = detailsBox!.x + detailsBox!.width - (endIconBox!.x + endIconBox!.width);
+  expect(trailingGap).toBeGreaterThanOrEqual(8);
+  expect(trailingGap).toBeLessThanOrEqual(20);
+});
+
+test('Accordion respects RTL chevrons and reduced motion', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Computed motion coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+
+  const overview = page.locator('#accordion').getByRole('button', { name: 'Overview' });
+  const details = page.locator('#accordion').getByRole('button', { name: 'Details' });
+  await details.click();
+  const chevron = overview.locator('.fui-AccordionHeader__chevron');
+  await expect(chevron).toHaveCSS('transform', 'matrix(-1, 0, 0, -1, 0, 0)');
+  await expect(chevron).toHaveCSS('transition-duration', /^(?:1e-05|0\.00001)s$/);
+});
+
 test('Radio uses native common-name selection and arrow keys across engines', async ({ page }) => {
   await page.goto('/');
 

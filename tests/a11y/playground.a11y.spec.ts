@@ -211,6 +211,23 @@ test('Card fixtures expose group names and native selectable checkbox semantics'
   await expect(page.locator('#card .card-disabled')).toHaveAttribute('aria-disabled', 'true');
 });
 
+test('Accordion fixtures expose disclosure relationships and disabled semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const accordion = page.locator('#accordion .accordion-single');
+  const overview = accordion.getByRole('button', { name: 'Overview' });
+  const details = accordion.getByRole('button', { name: 'Details' });
+  const disabled = accordion.getByRole('button', { name: 'Disabled section' });
+
+  await expect(overview).toHaveAttribute('aria-expanded', 'true');
+  await expect(overview).toHaveAttribute('aria-controls', /^fui-accordion-panel-/);
+  await expect(accordion.getByRole('region', { name: 'Overview' })).toBeVisible();
+  await expect(details).toHaveAttribute('aria-expanded', 'false');
+  await expect(disabled).toBeDisabled();
+});
+
 test('Skeleton fixtures expose default and explicitly overridden loading semantics', async ({
   page,
 }) => {

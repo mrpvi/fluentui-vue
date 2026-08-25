@@ -1,3 +1,7 @@
+export * from './components/Accordion';
+export * from './components/AccordionHeader';
+export * from './components/AccordionItem';
+export * from './components/AccordionPanel';
 export * from './components/Badge';
 export * from './components/Button';
 export * from './components/Card';
