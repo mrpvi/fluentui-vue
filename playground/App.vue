@@ -30,6 +30,7 @@ import {
   FLink,
   FList,
   FListItem,
+  FPersona,
   FPresenceBadge,
   FProgressBar,
   FRating,
@@ -1657,6 +1658,68 @@ function ratingItemLabel(value: number) {
       </div>
     </section>
 
+    <section id="persona">
+      <h2>Persona</h2>
+      <div class="persona-samples">
+        <div>
+          <h3>Identity and text hierarchy</h3>
+          <FPersona
+            name="Ada Lovelace"
+            :avatar="{ color: 'colorful' }"
+            :presence="{ status: 'available' }"
+          >
+            <template #secondaryText>Mathematician</template>
+            <template #tertiaryText>London, United Kingdom</template>
+            <template #quaternaryText>Available</template>
+          </FPersona>
+          <FPersona
+            name="Grace Hopper"
+            size="extra-large"
+            :avatar="{ color: 'brand', shape: 'square' }"
+            :presence="{ status: 'busy' }"
+          >
+            <template #secondaryText>Rear admiral and computer scientist</template>
+          </FPersona>
+        </div>
+        <div>
+          <h3>Position and alignment</h3>
+          <div class="persona-layouts">
+            <FPersona name="Katherine Johnson" text-position="before" text-alignment="center">
+              <template #secondaryText>Orbital mechanics</template>
+              <template #tertiaryText>NASA</template>
+            </FPersona>
+            <FPersona
+              name="Dorothy Vaughan"
+              size="large"
+              text-position="below"
+              text-alignment="center"
+            >
+              <template #secondaryText>Human computer</template>
+            </FPersona>
+          </div>
+        </div>
+        <div>
+          <h3>Presence only</h3>
+          <div class="persona-layouts">
+            <FPersona
+              name="Margaret Hamilton"
+              presence-only
+              :presence="{ status: 'do-not-disturb', outOfOffice: true }"
+            >
+              <template #secondaryText>Software engineering lead</template>
+            </FPersona>
+            <FPersona name="Radia Perlman" presence-only size="huge" text-alignment="center">
+              <template #presence>
+                <FPresenceBadge status="away" size="large" aria-label="Custom away status" />
+              </template>
+              <template #secondaryText>Network engineer</template>
+              <template #tertiaryText>Inventor of spanning tree protocol</template>
+            </FPersona>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="radio">
       <h2>Radio</h2>
       <div class="radio-samples">
@@ -2704,6 +2767,26 @@ section {
 .avatar-spread,
 .avatar-stack {
   width: max-content;
+}
+
+.persona-samples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1.5rem;
+}
+
+.persona-samples > div,
+.persona-layouts {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 1rem;
+}
+
+.persona-samples h3 {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-300);
 }
 
 .spinner-group h3,

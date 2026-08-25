@@ -66,6 +66,7 @@ import {
   FLink,
   FList,
   FListItem,
+  FPersona,
   FPresenceBadge,
   FProgressBar,
   FRating,
@@ -112,6 +113,8 @@ import {
   type ListNavigationMode,
   type ListSelectionMode,
   type ListValue,
+  type PersonaSize,
+  type PersonaTextPosition,
   type PresenceBadgeStatus,
   type ProgressBarColor,
   type ProgressBarThickness,
@@ -174,6 +177,8 @@ const imageShape: ImageShape = 'rounded';
 const listNavigationMode: ListNavigationMode = 'items';
 const listSelectionMode: ListSelectionMode = 'multiselect';
 const selectedListItems = ref<ListValue[]>(['packed-one']);
+const personaSize: PersonaSize = 'large';
+const personaTextPosition: PersonaTextPosition = 'after';
 const presenceStatus: PresenceBadgeStatus = 'available';
 const progressColor: ProgressBarColor = 'success';
 const progressThickness: ProgressBarThickness = 'large';
@@ -476,6 +481,20 @@ createApp({
               { default: () => h(FAvatarGroupItem, { name: 'Packed Margaret' }) },
             ),
           ],
+        },
+      ),
+      h(
+        FPersona,
+        {
+          name: 'Packed Persona',
+          size: personaSize,
+          textPosition: personaTextPosition,
+          avatar: { color: avatarColor, shape: 'square' },
+          presence: { status: presenceStatus },
+        },
+        {
+          secondaryText: () => 'Packed role',
+          tertiaryText: () => 'Packed location',
         },
       ),
       h(

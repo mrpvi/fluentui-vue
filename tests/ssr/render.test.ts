@@ -48,6 +48,9 @@ describe('SSR rendering', () => {
     expect(firstRender).toContain('99+');
     expect(firstRender).toContain('aria-label="away out of office"');
     expect(firstRender).toContain('fui-PresenceBadge--size-large');
+    expect(firstRender).toMatch(
+      /class="fui-Persona fui-Persona--size-large fui-Persona--text-position-after fui-Persona--text-alignment-center ssr-persona"[^>]*>.*fui-Avatar--size-36.*aria-label="Server Persona, away".*fui-Persona__primaryText.*Server Persona.*fui-Persona__secondaryText.*Server role.*fui-Persona__tertiaryText.*Server location/s,
+    );
     expect(firstRender).toContain('fui-Spinner--size-large');
     expect(firstRender).toContain(
       'class="fui-RadioGroup fui-RadioGroup--vertical ssr-radio-group"',

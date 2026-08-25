@@ -331,6 +331,18 @@ test('Avatar fixtures expose image names, group semantics, and overflow list str
   await expect(overflow.getByRole('listitem')).toHaveCount(3);
 });
 
+test('Persona fixtures expose Avatar and presence names without adding composite roles', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#persona');
+  await expect(section.getByRole('img', { name: 'Ada Lovelace, available' })).toBeVisible();
+  await expect(section.getByRole('img', { name: 'do not disturb out of office' })).toBeVisible();
+  await expect(section.locator('.fui-Persona[role]')).toHaveCount(0);
+  await expect(section.getByText('Rear admiral and computer scientist')).toBeVisible();
+});
+
 test('Skeleton fixtures expose default and explicitly overridden loading semantics', async ({
   page,
 }) => {

@@ -95,7 +95,7 @@ Delay these components until Menu exists:
     - `FAvatarGroup`
     - `FAvatarGroupItem`
     - `FAvatarGroupPopover`
-30. ❌ **Persona → `FPersona`**
+30. ✅ **Persona → `FPersona`** — definition-of-done gates complete for `@fluentui/react-persona@9.7.8`
 
 Avatar should be implemented before Persona because Persona composes avatar, text, secondary information, and presence state.
 

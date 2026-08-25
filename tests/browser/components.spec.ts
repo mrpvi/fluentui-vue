@@ -2122,6 +2122,54 @@ test('Avatar preserves fallbacks, group layouts, and overflow interaction', asyn
   await expect(pie.getByRole('button', { name: 'View more people.' })).toHaveText('');
 });
 
+test('Persona preserves media mapping, text hierarchy, and layouts', async ({ page }) => {
+  await page.goto('/');
+
+  const section = page.locator('#persona');
+  const ada = section.locator('.fui-Persona').filter({ hasText: 'Ada Lovelace' });
+  await expect(ada.locator('.fui-Avatar')).toHaveCSS('width', '32px');
+  await expect(ada.locator('.fui-Persona__secondaryText')).toHaveText('Mathematician');
+  await expect(ada.locator('.fui-Persona__quaternaryText')).toHaveText('Available');
+
+  const grace = section.locator('.fui-Persona').filter({ hasText: 'Grace Hopper' });
+  await expect(grace).toHaveClass(/fui-Persona--size-extra-large/);
+  await expect(grace.locator('.fui-Avatar')).toHaveCSS('width', '40px');
+
+  const before = section.locator('.fui-Persona').filter({ hasText: 'Katherine Johnson' });
+  await expect(before).toHaveClass(/fui-Persona--text-position-before/);
+  expect(
+    await before
+      .locator(':scope > .fui-Persona__media')
+      .evaluate((media) => !media.nextElementSibling),
+  ).toBe(true);
+
+  const below = section.locator('.fui-Persona').filter({ hasText: 'Dorothy Vaughan' });
+  await expect(below).toHaveClass(/fui-Persona--text-position-below/);
+  await expect(below).toHaveCSS('justify-items', 'center');
+
+  const presenceOnly = section.locator('.fui-Persona').filter({ hasText: 'Margaret Hamilton' });
+  await expect(presenceOnly).toHaveClass(/fui-Persona--presence-only/);
+  await expect(presenceOnly.locator('.fui-Avatar')).toHaveCount(0);
+  await expect(
+    presenceOnly.getByRole('img', { name: 'do not disturb out of office' }),
+  ).toBeVisible();
+
+  await page.locator('main').evaluate((main) => main.setAttribute('dir', 'rtl'));
+  await expect(ada.locator('.fui-Persona__media')).toHaveCSS('margin-right', '0px');
+  await expect(ada.locator('.fui-Persona__media')).toHaveCSS('margin-left', '8px');
+  await expect(before.locator('.fui-Persona__media')).toHaveCSS('margin-right', '8px');
+  await expect(before.locator('.fui-Persona__media')).toHaveCSS('margin-left', '0px');
+});
+
+test('Persona preserves forced-color text treatment', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Computed forced-color coverage is Chromium-only.');
+  await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/');
+
+  const primary = page.locator('#persona .fui-Persona__primaryText').first();
+  await expect(primary).toHaveCSS('color', 'rgb(0, 0, 0)');
+});
+
 test('Avatar preserves forced-color and reduced-motion safeguards', async ({
   page,
   browserName,

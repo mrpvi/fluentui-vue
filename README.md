@@ -75,7 +75,7 @@ const name = ref('');
 
 ### Content and layout
 
-`FText`, `FDivider`, `FImage`, `FCard`, `FCardHeader`, `FCardPreview`, `FCardFooter`, `FAccordion`, `FAccordionItem`, `FAccordionHeader`, `FAccordionPanel`, `FTabList`, `FTab`, `FBreadcrumb`, `FBreadcrumbItem`, `FBreadcrumbButton`, `FBreadcrumbDivider`, `FList`, `FListItem`, `FAvatar`, `FAvatarGroup`, `FAvatarGroupItem`, `FAvatarGroupPopover`
+`FText`, `FDivider`, `FImage`, `FCard`, `FCardHeader`, `FCardPreview`, `FCardFooter`, `FAccordion`, `FAccordionItem`, `FAccordionHeader`, `FAccordionPanel`, `FTabList`, `FTab`, `FBreadcrumb`, `FBreadcrumbItem`, `FBreadcrumbButton`, `FBreadcrumbDivider`, `FList`, `FListItem`, `FAvatar`, `FAvatarGroup`, `FAvatarGroupItem`, `FAvatarGroupPopover`, `FPersona`
 
 ### Feedback and status
 
