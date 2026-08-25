@@ -34,6 +34,8 @@ import {
   FSpinner,
   FSpinButton,
   FSwitch,
+  FTab,
+  FTabList,
   FText,
   FTextarea,
   FToggleButton,
@@ -66,6 +68,8 @@ const controlledRatingValue = ref(2);
 const controlledRatingAttempt = ref<number | null>(null);
 const selectableCard = ref(false);
 const controlledCard = ref(true);
+const selectedTab = ref('overview');
+const automaticTab = ref('activity');
 const toggleControlled = ref(true);
 const toggleSubmitCount = ref(0);
 const compoundSubmitCount = ref(0);
@@ -114,8 +118,8 @@ function ratingItemLabel(value: number) {
         <p>
           Native Button, ToggleButton, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider,
           Image, Badge, Spinner, ProgressBar, SpinButton, SearchBox, Switch, Radio, RadioGroup,
-          Select, Skeleton, Slider, Rating, RatingDisplay, and Card components translated from
-          Fluent UI React v9 to Vue props, slots, emits, and semantic HTML.
+          Select, Skeleton, Slider, Rating, RatingDisplay, Card, Accordion, and Tabs components
+          translated from Fluent UI React v9 to Vue props, slots, emits, and semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -1407,6 +1411,58 @@ function ratingItemLabel(value: number) {
       </div>
     </section>
 
+    <section id="tabs">
+      <h2>Tabs</h2>
+      <div class="tab-samples">
+        <div>
+          <h3>Controlled horizontal tabs</h3>
+          <FTabList v-model="selectedTab" aria-label="Project sections">
+            <FTab value="overview">
+              <template #icon>◫</template>
+              Overview
+            </FTab>
+            <FTab value="activity">
+              <template #icon>◷</template>
+              Activity
+            </FTab>
+            <FTab value="settings" disabled>Settings</FTab>
+          </FTabList>
+          <p>Selected tab: {{ selectedTab }}</p>
+        </div>
+        <div>
+          <h3>Vertical automatic activation</h3>
+          <FTabList
+            v-model="automaticTab"
+            vertical
+            select-tab-on-focus
+            appearance="subtle"
+            size="small"
+            aria-label="Automatic sections"
+          >
+            <FTab value="activity">Activity</FTab>
+            <FTab value="mentions">Mentions</FTab>
+            <FTab value="files">Files</FTab>
+          </FTabList>
+        </div>
+        <div>
+          <h3>Circular appearances and sizes</h3>
+          <FTabList
+            class="tab-circular"
+            appearance="filled-circular"
+            size="large"
+            default-selected-value="home"
+            aria-label="Circular navigation"
+          >
+            <FTab value="home">Home</FTab>
+            <FTab value="favorites">Favorites</FTab>
+            <FTab value="icon-only" aria-label="Notifications">
+              <template #icon>●</template>
+            </FTab>
+          </FTabList>
+        </div>
+      </div>
+    </section>
+
     <section id="radio">
       <h2>Radio</h2>
       <div class="radio-samples">
@@ -2373,6 +2429,7 @@ section {
 .compound-button-samples,
 .card-samples,
 .accordion-samples,
+.tab-samples,
 .spinner-samples,
 .progress-bar-samples,
 .spin-button-samples,

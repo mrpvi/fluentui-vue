@@ -33,6 +33,8 @@ import {
   FSpinner,
   FSpinButton,
   FSwitch,
+  FTab,
+  FTabList,
   FText,
   FTextarea,
   FToggleButton,
@@ -281,6 +283,24 @@ export const SsrFixture = defineComponent({
                   ],
                 },
               ),
+            ],
+          },
+        ),
+        h(
+          FTabList,
+          {
+            class: 'ssr-tab-list',
+            defaultSelectedValue: 'overview',
+            'aria-label': 'Server sections',
+          },
+          {
+            default: () => [
+              h(
+                FTab,
+                { value: 'overview', 'aria-controls': 'server-overview-panel' },
+                () => 'Server overview',
+              ),
+              h(FTab, { value: 'details', disabled: true }, () => 'Server details'),
             ],
           },
         ),

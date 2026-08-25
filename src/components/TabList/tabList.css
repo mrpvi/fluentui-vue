@@ -1,0 +1,26 @@
+.fui-TabList {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+}
+
+.fui-TabList--horizontal {
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.fui-TabList--vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.fui-TabList--subtle-circular,
+.fui-TabList--filled-circular {
+  gap: var(--fui-spacing-horizontal-s);
+}
+
+.fui-TabList--small.fui-TabList--subtle-circular,
+.fui-TabList--small.fui-TabList--filled-circular {
+  gap: var(--fui-spacing-horizontal-s-nudge);
+}

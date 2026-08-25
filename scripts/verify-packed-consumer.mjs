@@ -71,6 +71,8 @@ import {
   FSpinner,
   FSpinButton,
   FSwitch,
+  FTab,
+  FTabList,
   FText,
   FTextarea,
   FToggleButton,
@@ -113,6 +115,9 @@ import {
   type SpinButtonValue,
   type SwitchLabelPosition,
   type SwitchSize,
+  type TabListAppearance,
+  type TabListSize,
+  type TabValue,
   type TextareaResize,
   type ToggleButtonAppearance,
   type ToggleButtonIconPosition,
@@ -164,6 +169,9 @@ const spinButtonAppearance: SpinButtonAppearance = 'outline';
 const spinButtonValue = ref<SpinButtonValue>(2);
 const switchLabelPosition: SwitchLabelPosition = 'before';
 const switchSize: SwitchSize = 'small';
+const tabAppearance: TabListAppearance = 'subtle-circular';
+const tabSize: TabListSize = 'medium';
+const selectedTab = ref<TabValue>('overview');
 const theme: FluentTheme = 'light';
 
 createApp({
@@ -356,6 +364,22 @@ createApp({
                 ],
               },
             ),
+          ],
+        },
+      ),
+      h(
+        FTabList,
+        {
+          modelValue: selectedTab.value,
+          'onUpdate:modelValue': value => (selectedTab.value = value),
+          appearance: tabAppearance,
+          size: tabSize,
+          'aria-label': 'Packed tabs',
+        },
+        {
+          default: () => [
+            h(FTab, { value: 'overview' }, () => 'Overview'),
+            h(FTab, { value: 'details' }, () => 'Details'),
           ],
         },
       ),

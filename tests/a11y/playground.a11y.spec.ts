@@ -228,6 +228,34 @@ test('Accordion fixtures expose disclosure relationships and disabled semantics'
   await expect(disabled).toBeDisabled();
 });
 
+test('Tab fixtures expose selection, orientation, disabled, and automatic activation semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#tabs');
+  const projectTabs = section.getByRole('tablist', { name: 'Project sections' });
+  await expect(projectTabs).toHaveAttribute('aria-orientation', 'horizontal');
+  await expect(projectTabs.getByRole('tab', { name: 'Overview' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+  await expect(projectTabs.getByRole('tab', { name: 'Settings' })).toBeDisabled();
+  await expect(projectTabs.getByRole('tab', { name: 'Settings' })).not.toHaveAttribute(
+    'aria-selected',
+  );
+
+  const automatic = section.getByRole('tablist', { name: 'Automatic sections' });
+  await expect(automatic).toHaveAttribute('aria-orientation', 'vertical');
+  await automatic.getByRole('tab', { name: 'Mentions' }).focus();
+  await expect(automatic.getByRole('tab', { name: 'Mentions' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+
+  await expect(section.getByRole('tab', { name: 'Notifications' })).toBeVisible();
+});
+
 test('Skeleton fixtures expose default and explicitly overridden loading semantics', async ({
   page,
 }) => {

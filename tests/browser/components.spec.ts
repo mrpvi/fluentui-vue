@@ -804,13 +804,17 @@ test('CompoundButton preserves submit, disabled, keyboard, RTL, and theme behavi
   await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
   await expect(before.locator('.fui-CompoundButton__icon')).toHaveCSS('margin-left', '12px');
   const primary = section.locator('.compound-primary');
-  const lightBackground = await primary.evaluate(
+  const backgroundBeforeThemeChange = await primary.evaluate(
     (element) => getComputedStyle(element).backgroundColor,
   );
-  await page.getByRole('button', { name: 'Use light theme' }).click();
-  expect(await primary.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(
-    lightBackground,
-  );
+  const themeToggle = page.getByRole('button', { name: /Use (?:light|dark) theme/ });
+  const main = page.locator('main');
+  const themeBeforeChange = await main.getAttribute('class');
+  await themeToggle.click();
+  await expect(main).not.toHaveAttribute('class', themeBeforeChange!);
+  await expect
+    .poll(() => primary.evaluate((element) => getComputedStyle(element).backgroundColor))
+    .not.toBe(backgroundBeforeThemeChange);
 });
 
 test('CompoundButton removes transitions for reduced motion', async ({ page, browserName }) => {
@@ -1887,6 +1891,73 @@ test('Accordion respects RTL chevrons and reduced motion', async ({ page, browse
   const chevron = overview.locator('.fui-AccordionHeader__chevron');
   await expect(chevron).toHaveCSS('transform', 'matrix(-1, 0, 0, -1, 0, 0)');
   await expect(chevron).toHaveCSS('transition-duration', /^(?:1e-05|0\.00001)s$/);
+});
+
+test('Tabs preserve selection, roving focus, disabled state, appearances, and layout', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#tabs');
+  const project = section.getByRole('tablist', { name: 'Project sections' });
+  const overview = project.getByRole('tab', { name: 'Overview' });
+  const activity = project.getByRole('tab', { name: 'Activity' });
+  const settings = project.getByRole('tab', { name: 'Settings' });
+
+  await expect(overview).toHaveAttribute('aria-selected', 'true');
+  await expect(overview).toHaveAttribute('tabindex', '0');
+  await expect(settings).toBeDisabled();
+  await activity.focus();
+  await expect(overview).toHaveAttribute('aria-selected', 'true');
+  await page.keyboard.press('ArrowRight');
+  await expect(overview).toBeFocused();
+  await page.keyboard.press('End');
+  await expect(activity).toBeFocused();
+  await activity.click();
+  await expect(activity).toHaveAttribute('aria-selected', 'true');
+  await expect(section.getByText('Selected tab: activity')).toBeVisible();
+
+  const automatic = section.getByRole('tablist', { name: 'Automatic sections' });
+  const mentions = automatic.getByRole('tab', { name: 'Mentions' });
+  await mentions.focus();
+  await expect(mentions).toHaveAttribute('aria-selected', 'true');
+  await page.keyboard.press('ArrowDown');
+  await expect(automatic.getByRole('tab', { name: 'Files' })).toBeFocused();
+  await expect(automatic.getByRole('tab', { name: 'Files' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+
+  const circular = section.getByRole('tablist', { name: 'Circular navigation' });
+  const home = circular.getByRole('tab', { name: 'Home' });
+  const notification = circular.getByRole('tab', { name: 'Notifications' });
+  await expect(home).toHaveCSS('border-radius', '10000px');
+  await expect(home.locator('.fui-Tab__content')).toHaveCSS('font-size', '16px');
+  await expect(notification.locator('.fui-Tab__icon')).toHaveCSS('width', '24px');
+});
+
+test('Tabs preserve RTL indicators and reduced-motion safeguards', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Computed motion coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+
+  const vertical = page
+    .locator('#tabs')
+    .getByRole('tablist', { name: 'Automatic sections' })
+    .getByRole('tab', { name: 'Activity' });
+  const styles = await vertical.evaluate((element) => {
+    const after = getComputedStyle(element, '::after');
+    return {
+      insetInlineStart: after.insetInlineStart,
+      transitionDuration: after.transitionDuration,
+    };
+  });
+  expect(styles.insetInlineStart).toBe('0px');
+  expect(styles.transitionDuration).toMatch(/^(?:0s|1e-05s|0\.00001s)$/);
 });
 
 test('Radio uses native common-name selection and arrow keys across engines', async ({ page }) => {

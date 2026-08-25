@@ -141,5 +141,8 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /class="fui-Accordion ssr-accordion"[^>]*>.*<h2[^>]*class="fui-AccordionHeader[^>]*>.*<button id="(fui-accordion-header-[^"]+)"[^>]*aria-expanded="true" aria-controls="(fui-accordion-panel-[^"]+)"[^>]*>.*Server accordion.*<div id="\2" class="fui-AccordionPanel"[^>]*role="region" aria-labelledby="\1">.*Server accordion panel/s,
     );
+    expect(firstRender).toMatch(
+      /class="fui-TabList fui-TabList--transparent fui-TabList--medium fui-TabList--horizontal ssr-tab-list"[^>]*role="tablist" aria-orientation="horizontal">.*<button[^>]*class="fui-Tab[^>]*fui-Tab--selected[^>]*"[^>]*role="tab"[^>]*value="overview"[^>]*tabindex="0" aria-selected="true"[^>]*>.*Server overview.*<button[^>]*class="fui-Tab[^>]*fui-Tab--disabled[^>]*"[^>]*role="tab"[^>]*value="details" disabled[^>]*>.*Server details/s,
+    );
   });
 });
