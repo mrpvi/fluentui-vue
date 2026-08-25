@@ -65,7 +65,7 @@ The recommended local installation flow uses an npm tarball. This closely matche
 From this repository:
 
 ```bash
-cd /Users/ali/Desktop/flaunt-convert-react
+cd /path/to/fluentui-vue
 npm install
 npm run build
 npm pack
@@ -85,19 +85,19 @@ Using npm:
 
 ```bash
 cd /path/to/your-vue-project
-npm install /Users/ali/Desktop/flaunt-convert-react/mrpvi-fluentui-vue-0.1.0.tgz
+npm install /path/to/fluentui-vue/mrpvi-fluentui-vue-0.1.0.tgz
 ```
 
 Using pnpm:
 
 ```bash
-pnpm add /Users/ali/Desktop/flaunt-convert-react/mrpvi-fluentui-vue-0.1.0.tgz
+pnpm add /path/to/fluentui-vue/mrpvi-fluentui-vue-0.1.0.tgz
 ```
 
 Using Yarn:
 
 ```bash
-yarn add file:/Users/ali/Desktop/flaunt-convert-react/mrpvi-fluentui-vue-0.1.0.tgz
+yarn add file:/path/to/fluentui-vue/mrpvi-fluentui-vue-0.1.0.tgz
 ```
 
 The consuming application must use Vue 3.5 or later because Vue is a peer dependency:
@@ -231,7 +231,7 @@ const pinned = ref(false);
 After changing this library, create a fresh tarball:
 
 ```bash
-cd /Users/ali/Desktop/flaunt-convert-react
+cd /path/to/fluentui-vue
 npm run build
 npm pack
 ```
@@ -239,7 +239,7 @@ npm pack
 Reinstall it in the consuming project:
 
 ```bash
-npm install /Users/ali/Desktop/flaunt-convert-react/mrpvi-fluentui-vue-0.1.0.tgz --force
+npm install /path/to/fluentui-vue/mrpvi-fluentui-vue-0.1.0.tgz --force
 ```
 
 Restart the consuming project's development server. If Vite still uses a cached package copy, remove its dependency cache and start it again:
