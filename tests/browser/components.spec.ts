@@ -1960,6 +1960,63 @@ test('Tabs preserve RTL indicators and reduced-motion safeguards', async ({
   expect(styles.transitionDuration).toMatch(/^(?:0s|1e-05s|0\.00001s)$/);
 });
 
+test('Breadcrumb preserves semantics, current state, focus modes, sizes, and RTL dividers', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#breadcrumb');
+  const project = section.getByRole('navigation', { name: 'Project breadcrumb' });
+  const workspace = project.getByRole('link', { name: 'Workspace' });
+  const current = project.getByRole('button', { name: 'Fluent Vue' });
+  await expect(project.locator('ol')).toHaveAttribute('role', 'list');
+  await expect(workspace).toHaveAttribute('href', '#workspace');
+  await expect(workspace.locator('.fui-BreadcrumbButton__icon')).toHaveCSS('width', '16px');
+  await expect(current).toHaveAttribute('aria-current', 'page');
+  await expect(current).toHaveAttribute('aria-disabled', 'true');
+  await expect(current).toHaveCSS('font-weight', '600');
+
+  const arrow = section.getByRole('navigation', { name: 'Arrow breadcrumb' });
+  const home = arrow.getByRole('link', { name: 'Home' });
+  const disabled = arrow.getByRole('button', { name: 'Disabled', exact: true });
+  const focusableDisabled = arrow.getByRole('button', { name: 'Focusable disabled' });
+  const currentPage = arrow.getByRole('button', { name: 'Current page' });
+  await expect(home).toHaveAttribute('tabindex', '0');
+  await expect(disabled).toBeDisabled();
+  await expect(disabled).toHaveAttribute('tabindex', '-1');
+  await expect(focusableDisabled).toHaveAttribute('tabindex', '-1');
+  await home.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(focusableDisabled).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await expect(currentPage).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await expect(home).toBeFocused();
+  await expect(home).toHaveCSS('height', '40px');
+  await expect(arrow.locator('.fui-BreadcrumbDivider').first()).toHaveCSS('font-size', '20px');
+
+  const rtlDivider = section
+    .getByRole('navigation', { name: 'RTL breadcrumb' })
+    .locator('.fui-BreadcrumbDivider__icon');
+  await expect(rtlDivider).toHaveCSS('transform', 'matrix(-1, 0, 0, 1, 0, 0)');
+});
+
+test('Breadcrumb preserves reduced-motion and forced-color safeguards', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Computed media-style coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce', forcedColors: 'active' });
+  await page.goto('/');
+
+  const button = page
+    .locator('#breadcrumb')
+    .getByRole('navigation', { name: 'Project breadcrumb' })
+    .getByRole('link', { name: 'Workspace' });
+  await expect(button).toHaveCSS('transition-duration', /^(?:1e-05|0\.00001)s$/);
+  await expect(button).toHaveCSS('color', 'rgb(0, 0, 0)');
+});
+
 test('Radio uses native common-name selection and arrow keys across engines', async ({ page }) => {
   await page.goto('/');
 

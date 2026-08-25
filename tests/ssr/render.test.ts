@@ -144,5 +144,17 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /class="fui-TabList fui-TabList--transparent fui-TabList--medium fui-TabList--horizontal ssr-tab-list"[^>]*role="tablist" aria-orientation="horizontal">.*<button[^>]*class="fui-Tab[^>]*fui-Tab--selected[^>]*"[^>]*role="tab"[^>]*value="overview"[^>]*tabindex="0" aria-selected="true"[^>]*>.*Server overview.*<button[^>]*class="fui-Tab[^>]*fui-Tab--disabled[^>]*"[^>]*role="tab"[^>]*value="details" disabled[^>]*>.*Server details/s,
     );
+    expect(firstRender).toMatch(
+      /<nav(?=[^>]*class="fui-Breadcrumb fui-Breadcrumb--large ssr-breadcrumb")(?=[^>]*aria-label="Server breadcrumb")[^>]*><ol class="fui-Breadcrumb__list" role="list">/,
+    );
+    expect(firstRender).toMatch(
+      /<li[^>]*class="fui-BreadcrumbItem fui-BreadcrumbItem--large"[^>]*>.*<a(?=[^>]*class="fui-BreadcrumbButton fui-BreadcrumbButton--large")(?=[^>]*href="#server-home")[^>]*>.*Server home/s,
+    );
+    expect(firstRender).toMatch(
+      /<li(?=[^>]*class="fui-BreadcrumbDivider fui-BreadcrumbDivider--large")(?=[^>]*aria-hidden="true")[^>]*>/,
+    );
+    expect(firstRender).toMatch(
+      /<button(?=[^>]*class="fui-BreadcrumbButton fui-BreadcrumbButton--large fui-BreadcrumbButton--current")(?=[^>]*aria-current="page")(?=[^>]*aria-disabled="true")[^>]*>.*Server current/s,
+    );
   });
 });

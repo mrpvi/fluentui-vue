@@ -256,6 +256,36 @@ test('Tab fixtures expose selection, orientation, disabled, and automatic activa
   await expect(section.getByRole('tab', { name: 'Notifications' })).toBeVisible();
 });
 
+test('Breadcrumb fixtures expose navigation, list, current, disabled, and names', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const project = page.getByRole('navigation', { name: 'Project breadcrumb' });
+  await expect(project.locator('ol')).toHaveAttribute('role', 'list');
+  await expect(project.getByRole('link', { name: 'Workspace' })).toHaveAttribute(
+    'href',
+    '#workspace',
+  );
+  await expect(project.getByRole('button', { name: 'Fluent Vue' })).toHaveAttribute(
+    'aria-current',
+    'page',
+  );
+  await expect(project.getByRole('button', { name: 'Fluent Vue' })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
+  await expect(project.locator('.fui-BreadcrumbDivider')).toHaveCount(2);
+
+  const arrow = page.getByRole('navigation', { name: 'Arrow breadcrumb' });
+  await expect(arrow.getByRole('button', { name: 'Disabled', exact: true })).toBeDisabled();
+  await expect(arrow.getByRole('button', { name: 'Focusable disabled' })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
+  await expect(page.getByRole('navigation', { name: 'RTL breadcrumb' })).toBeVisible();
+});
+
 test('Skeleton fixtures expose default and explicitly overridden loading semantics', async ({
   page,
 }) => {

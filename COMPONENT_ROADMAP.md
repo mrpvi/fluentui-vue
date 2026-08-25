@@ -79,7 +79,7 @@ Delay these components until Menu exists:
 26. ✅ **Tabs family** — definition-of-done gates complete for `@fluentui/react-tabs@9.12.4`
     - `FTabList`
     - `FTab`
-27. ❌ **Breadcrumb family**
+27. ✅ **Breadcrumb family** — definition-of-done gates complete for `@fluentui/react-breadcrumb@9.4.5`
     - `FBreadcrumb`
     - `FBreadcrumbItem`
     - `FBreadcrumbButton`

@@ -2,34 +2,35 @@
 
 This package is a native Vue adaptation of selected Microsoft Fluent UI React v9 components. It does not embed React or wrap the React packages.
 
-| Vue component    | Upstream npm package         | Version reviewed | Upstream source                                                                |
-| ---------------- | ---------------------------- | ---------------: | ------------------------------------------------------------------------------ |
-| Button           | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/Button`         |
-| ToggleButton     | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/ToggleButton`   |
-| CompoundButton   | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/CompoundButton` |
-| Input            | `@fluentui/react-input`      |            9.8.6 | `packages/react-components/react-input/library/src/components/Input`           |
-| Checkbox         | `@fluentui/react-checkbox`   |            9.6.4 | `packages/react-components/react-checkbox/library/src/components/Checkbox`     |
-| Text             | `@fluentui/react-text`       |           9.6.19 | `packages/react-components/react-text/library/src/components/Text`             |
-| Label            | `@fluentui/react-label`      |            9.4.4 | `packages/react-components/react-label/library/src/components/Label`           |
-| Field            | `@fluentui/react-field`      |            9.5.4 | `packages/react-components/react-field/library/src/components/Field`           |
-| Textarea         | `@fluentui/react-textarea`   |            9.7.6 | `packages/react-components/react-textarea/library/src/components/Textarea`     |
-| Link             | `@fluentui/react-link`       |            9.8.4 | `packages/react-components/react-link/library/src/components/Link`             |
-| Divider          | `@fluentui/react-divider`    |            9.7.4 | `packages/react-components/react-divider/library/src/components/Divider`       |
-| Image            | `@fluentui/react-image`      |            9.4.4 | `packages/react-components/react-image/library/src/components/Image`           |
-| Badge family     | `@fluentui/react-badge`      |            9.5.5 | `packages/react-components/react-badge/library/src/components`                 |
-| Spinner          | `@fluentui/react-spinner`    |            9.8.5 | `packages/react-components/react-spinner/library/src/components/Spinner`       |
-| ProgressBar      | `@fluentui/react-progress`   |            9.5.4 | `packages/react-components/react-progress/library/src/components/ProgressBar`  |
-| Switch           | `@fluentui/react-switch`     |            9.7.5 | `packages/react-components/react-switch/library/src/components/Switch`         |
-| Radio family     | `@fluentui/react-radio`      |            9.6.5 | `packages/react-components/react-radio/library/src/components`                 |
-| Select           | `@fluentui/react-select`     |            9.5.5 | `packages/react-components/react-select/library/src/components/Select`         |
-| SpinButton       | `@fluentui/react-spinbutton` |            9.6.5 | `packages/react-components/react-spinbutton/library/src/components/SpinButton` |
-| SearchBox        | `@fluentui/react-search`     |            9.4.6 | `packages/react-components/react-search/library/src/components/SearchBox`      |
-| Skeleton family  | `@fluentui/react-skeleton`   |            9.7.5 | `packages/react-components/react-skeleton/library/src/components`              |
-| Slider           | `@fluentui/react-slider`     |            9.6.5 | `packages/react-components/react-slider/library/src/components/Slider`         |
-| Card family      | `@fluentui/react-card`       |            9.7.2 | `packages/react-components/react-card/library/src/components`                  |
-| Accordion family | `@fluentui/react-accordion`  |           9.12.3 | `packages/react-components/react-accordion/library/src/components`             |
-| Tabs family      | `@fluentui/react-tabs`       |           9.12.4 | `packages/react-components/react-tabs/library/src/components`                  |
-| Rating family    | `@fluentui/react-rating`     |            9.4.4 | `packages/react-components/react-rating/library/src/components`                |
+| Vue component     | Upstream npm package         | Version reviewed | Upstream source                                                                |
+| ----------------- | ---------------------------- | ---------------: | ------------------------------------------------------------------------------ |
+| Button            | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/Button`         |
+| ToggleButton      | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/ToggleButton`   |
+| CompoundButton    | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/CompoundButton` |
+| Input             | `@fluentui/react-input`      |            9.8.6 | `packages/react-components/react-input/library/src/components/Input`           |
+| Checkbox          | `@fluentui/react-checkbox`   |            9.6.4 | `packages/react-components/react-checkbox/library/src/components/Checkbox`     |
+| Text              | `@fluentui/react-text`       |           9.6.19 | `packages/react-components/react-text/library/src/components/Text`             |
+| Label             | `@fluentui/react-label`      |            9.4.4 | `packages/react-components/react-label/library/src/components/Label`           |
+| Field             | `@fluentui/react-field`      |            9.5.4 | `packages/react-components/react-field/library/src/components/Field`           |
+| Textarea          | `@fluentui/react-textarea`   |            9.7.6 | `packages/react-components/react-textarea/library/src/components/Textarea`     |
+| Link              | `@fluentui/react-link`       |            9.8.4 | `packages/react-components/react-link/library/src/components/Link`             |
+| Divider           | `@fluentui/react-divider`    |            9.7.4 | `packages/react-components/react-divider/library/src/components/Divider`       |
+| Image             | `@fluentui/react-image`      |            9.4.4 | `packages/react-components/react-image/library/src/components/Image`           |
+| Badge family      | `@fluentui/react-badge`      |            9.5.5 | `packages/react-components/react-badge/library/src/components`                 |
+| Spinner           | `@fluentui/react-spinner`    |            9.8.5 | `packages/react-components/react-spinner/library/src/components/Spinner`       |
+| ProgressBar       | `@fluentui/react-progress`   |            9.5.4 | `packages/react-components/react-progress/library/src/components/ProgressBar`  |
+| Switch            | `@fluentui/react-switch`     |            9.7.5 | `packages/react-components/react-switch/library/src/components/Switch`         |
+| Radio family      | `@fluentui/react-radio`      |            9.6.5 | `packages/react-components/react-radio/library/src/components`                 |
+| Select            | `@fluentui/react-select`     |            9.5.5 | `packages/react-components/react-select/library/src/components/Select`         |
+| SpinButton        | `@fluentui/react-spinbutton` |            9.6.5 | `packages/react-components/react-spinbutton/library/src/components/SpinButton` |
+| SearchBox         | `@fluentui/react-search`     |            9.4.6 | `packages/react-components/react-search/library/src/components/SearchBox`      |
+| Skeleton family   | `@fluentui/react-skeleton`   |            9.7.5 | `packages/react-components/react-skeleton/library/src/components`              |
+| Slider            | `@fluentui/react-slider`     |            9.6.5 | `packages/react-components/react-slider/library/src/components/Slider`         |
+| Card family       | `@fluentui/react-card`       |            9.7.2 | `packages/react-components/react-card/library/src/components`                  |
+| Accordion family  | `@fluentui/react-accordion`  |           9.12.3 | `packages/react-components/react-accordion/library/src/components`             |
+| Tabs family       | `@fluentui/react-tabs`       |           9.12.4 | `packages/react-components/react-tabs/library/src/components`                  |
+| Breadcrumb family | `@fluentui/react-breadcrumb` |            9.4.5 | `packages/react-components/react-breadcrumb/library/src/components`            |
+| Rating family     | `@fluentui/react-rating`     |            9.4.4 | `packages/react-components/react-rating/library/src/components`                |
 
 Source repository: https://github.com/microsoft/fluentui
 
@@ -82,6 +83,9 @@ Pinned source commits:
 - Tabs family 9.12.4 registry source (`gitHead`): `2dd2a9a96210919c35b210a1aa8e873ab67dbada`
 - Tabs family 9.12.4 registry tarball: `https://registry.npmjs.org/@fluentui/react-tabs/-/react-tabs-9.12.4.tgz` (SHA-1 `315ee640af8766b5fdf8b573bc379d8f5fac1775`, SHA-256 `5059d5939089c54c2d05ed58eea04cca19e4b36204f78bbcf0c6f7a12ab6a8cc`, registry integrity `sha512-YsaqjDFXcC8nvEAW3QpwdD1xIpzzyLFdftqXDA8ULmb2gmeRNWqPClCHftLa0QEIyLAIhX5pXDejHLDPFnQ2mg==`)
 - Tabs reviewed source, declarations, source maps, raw styles, tests, and stories under `packages/react-components/react-tabs/{library,stories}` for `TabList` and `Tab`, including controlled/uncontrolled selection, manual and focus selection, circular roving focus, orientation, disabled inheritance, appearances, sizes, selected-content space reservation, icon-only tabs, active and pending indicators, RTL, forced colors, and reduced motion.
+- Breadcrumb family 9.4.5 registry source (`gitHead`): `2dd2a9a96210919c35b210a1aa8e873ab67dbada`
+- Breadcrumb family 9.4.5 registry tarball: `https://registry.npmjs.org/@fluentui/react-breadcrumb/-/react-breadcrumb-9.4.5.tgz` (SHA-1 `ba651eb067515aeb58f60f5a797dc41af45f0103`, SHA-256 `1b1e5a68d81d58c0c4b9b27e77292b9ef3763cb56c37c2c2f555deabbb4ca3bf`, registry integrity `sha512-WUfOJSsiWLuNT7QCTGGWGi7bx5gRjspEE0B14eQIj5bfYhu5svfjfbf4Cgxi0Q3VYootiCciPHgom8/pFi0ItQ==`)
+- Breadcrumb reviewed published declarations, implementation modules and source maps, raw Griffel styles, utilities, and released package metadata for `Breadcrumb`, `BreadcrumbItem`, `BreadcrumbButton`, and `BreadcrumbDivider`, including native navigation/list semantics, default naming, tab and circular horizontal arrow focus modes, link/button roots, current and disabled behavior, sizes, icons, logical RTL dividers, forced colors, reduced motion, partitioning, and truncation helpers.
 - SpinButton 9.6.5 registry source (`gitHead`): `2dd2a9a96210919c35b210a1aa8e873ab67dbada`
 - SpinButton 9.6.5 release tag object (`@fluentui/react-spinbutton_v9.6.5`): `5c288d87f5a1bc8afcf1b9d62746bb8e320c17e4`
 - SpinButton 9.6.5 release tag commit: `b6351802032e9af61bf03033d22cb354b2e2822c`
@@ -127,5 +131,7 @@ The Rating family review used the exact `@fluentui/react-rating@9.4.4` registry 
 The Accordion family review used the exact `@fluentui/react-accordion@9.12.3` registry tarball and registry `gitHead`, published declarations and README, component/state/render modules and source maps, raw styles, upstream tests, specifications, guidance, and released stories. Vue preserves single and multiple disclosure state, collapsible rules, controlled/uncontrolled values, required-open focusable-disabled headers, disabled items, semantic heading roots, sizes, icon positions, stable `aria-expanded`/`aria-controls`/region relationships, logical RTL chevrons, forced-color focus and disabled palettes, and reduced motion. React slot objects and contexts translate to typed Vue slots and private injection; `openItems` becomes an array-valued `v-model`, item values are restricted to serializable string or number keys, and panels unmount while closed rather than retaining an inert collapse-motion wrapper. Deprecated arrow navigation remains available as native focus movement without React Tabster.
 
 The Tabs family review used the exact `@fluentui/react-tabs@9.12.4` registry tarball and registry `gitHead`, published declarations and README, component/state/render modules and source maps, raw Griffel styles, upstream tests, and released stories. Vue preserves native button tabs in a semantic tablist, controlled/uncontrolled selection, manual activation and `selectTabOnFocus`, circular roving focus with orientation-aware arrows plus Home/End, list and item disabled states, transparent/subtle/subtle-circular/filled-circular appearances, three sizes, icon-only tabs, selected-content space reservation, logical vertical indicators, RTL, forced-color palettes, and reduced motion. React `selectedValue`/`onTabSelect` becomes `modelValue`/`update:modelValue` plus typed `tabSelect`; serializable upstream values are deliberately restricted to primitive string, number, or boolean keys. The private Vue injection replaces React context and native focus movement replaces Tabster. Animated indicator travel between previous and current tabs is intentionally not retained; selected and pending indicators still use the released geometry and tokens.
+
+The Breadcrumb family review used the exact `@fluentui/react-breadcrumb@9.4.5` registry tarball and registry `gitHead`, published declarations, component/state/render modules and source maps, raw Griffel styles, partitioning and truncation utilities, and released package metadata. Vue preserves the native `nav` and ordered-list structure, default accessible name, item and hidden-divider list semantics, native link/button selection, current-page focusable disabled state, disabled and disabled-focusable behavior, tab traversal, circular horizontal arrow focus with remembered control, three released sizes and icon geometry, logical RTL dividers, forced colors, reduced motion, and public utility behavior. React slot objects and Tabster attributes translate to typed Vue slots, deliberate fallthrough routing, a private injection context, and native focus movement; `ariaCurrent` and `ariaDisabled` are explicit Vue props so managed ARIA remains authoritative.
 
 The implementation preserves public behavior, DOM semantics, accessibility intent, and relevant design-token values while translating the API to Vue conventions. It does not copy Fluent UI fonts; only the documented private presence SVG path subset is adapted from Fluent System Icons. Components without an exact source SHA above still require pinning before public release; the Button family and Rating are pinned to their registry source commits, exact registry tarballs, and release tag objects/commits. Divider is pinned to both the registry source commit and its 9.7.4 release tag commit, while Image, Spinner, Switch, ProgressBar, Skeleton, Slider, SpinButton, and SearchBox are pinned to their released registry tarballs and registry source commits; ProgressBar, Slider, SpinButton, and SearchBox also record their release tag objects and commits.

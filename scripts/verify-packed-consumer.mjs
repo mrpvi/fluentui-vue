@@ -42,6 +42,10 @@ import {
   FAccordionItem,
   FAccordionPanel,
   FBadge,
+  FBreadcrumb,
+  FBreadcrumbButton,
+  FBreadcrumbDivider,
+  FBreadcrumbItem,
   FButton,
   FCard,
   FCardFooter,
@@ -80,6 +84,8 @@ import {
   packageVersion,
   type BadgeAppearance,
   type BadgeColor,
+  type BreadcrumbFocusMode,
+  type BreadcrumbSize,
   type ButtonAppearance,
   type CardAppearance,
   type CardFocusMode,
@@ -130,6 +136,8 @@ const accepted = ref<CheckboxValue>('mixed');
 const radioValue = ref('email');
 const badgeAppearance: BadgeAppearance = 'tint';
 const badgeColor: BadgeColor = 'success';
+const breadcrumbFocusMode: BreadcrumbFocusMode = 'arrow';
+const breadcrumbSize: BreadcrumbSize = 'large';
 const appearance: ButtonAppearance = 'primary';
 const toggleAppearance: ToggleButtonAppearance = 'primary';
 const toggleIconPosition: ToggleButtonIconPosition = 'after';
@@ -380,6 +388,29 @@ createApp({
           default: () => [
             h(FTab, { value: 'overview' }, () => 'Overview'),
             h(FTab, { value: 'details' }, () => 'Details'),
+          ],
+        },
+      ),
+      h(
+        FBreadcrumb,
+        {
+          focusMode: breadcrumbFocusMode,
+          size: breadcrumbSize,
+          'aria-label': 'Packed breadcrumb',
+        },
+        {
+          default: () => [
+            h(
+              FBreadcrumbItem,
+              {},
+              { default: () => h(FBreadcrumbButton, { href: '#packed-home' }, () => 'Home') },
+            ),
+            h(FBreadcrumbDivider),
+            h(
+              FBreadcrumbItem,
+              {},
+              { default: () => h(FBreadcrumbButton, { current: true }, () => 'Current') },
+            ),
           ],
         },
       ),

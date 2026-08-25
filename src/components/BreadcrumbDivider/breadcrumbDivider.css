@@ -1,0 +1,33 @@
+.fui-BreadcrumbDivider {
+  display: flex;
+  align-items: center;
+  color: var(--fui-color-neutral-foreground-2);
+}
+
+.fui-BreadcrumbDivider__icon {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+.fui-BreadcrumbDivider--small {
+  font-size: 12px;
+}
+
+.fui-BreadcrumbDivider--medium {
+  font-size: 16px;
+}
+
+.fui-BreadcrumbDivider--large {
+  font-size: 20px;
+}
+
+[dir='rtl'] .fui-BreadcrumbDivider__icon {
+  transform: scaleX(-1);
+}
+
+@media (forced-colors: active) {
+  .fui-BreadcrumbDivider {
+    color: ButtonText;
+  }
+}

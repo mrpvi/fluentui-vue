@@ -1,0 +1,7 @@
+.fui-BreadcrumbItem {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  color: var(--fui-color-neutral-foreground-2);
+  text-wrap: nowrap;
+}

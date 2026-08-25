@@ -1,0 +1,162 @@
+.fui-BreadcrumbButton {
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  min-width: unset;
+  margin: 0;
+  overflow: hidden;
+  color: var(--fui-color-neutral-foreground-2);
+  font-family: var(--fui-font-family-base);
+  font-weight: var(--fui-font-weight-regular);
+  text-decoration: none;
+  text-wrap: nowrap;
+  cursor: pointer;
+  background-color: var(--fui-color-subtle-background);
+  border: var(--fui-stroke-width-thin) solid transparent;
+  border-radius: var(--fui-border-radius-medium);
+  outline-style: none;
+  transition-duration: var(--fui-duration-faster);
+  transition-property: color, background-color, border-color;
+  transition-timing-function: var(--fui-curve-easy-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fui-BreadcrumbButton:hover {
+  color: var(--fui-color-neutral-foreground-2-hover);
+  background-color: var(--fui-color-subtle-background-hover);
+}
+
+.fui-BreadcrumbButton:hover:active,
+.fui-BreadcrumbButton:active:focus-visible {
+  color: var(--fui-color-neutral-foreground-2-pressed);
+  background-color: var(--fui-color-subtle-background-pressed);
+}
+
+.fui-BreadcrumbButton:focus-visible {
+  z-index: 1;
+  border-color: var(--fui-color-stroke-focus-2);
+  outline: var(--fui-stroke-width-thick) solid transparent;
+  box-shadow: 0 0 0 var(--fui-stroke-width-thin) var(--fui-color-stroke-focus-2) inset;
+}
+
+.fui-BreadcrumbButton--small {
+  height: 24px;
+  padding: var(--fui-spacing-horizontal-s-nudge);
+  font-size: var(--fui-font-size-base-200);
+  line-height: var(--fui-line-height-base-200);
+}
+
+.fui-BreadcrumbButton--medium {
+  height: 32px;
+  padding: var(--fui-spacing-horizontal-s-nudge);
+  font-size: var(--fui-font-size-base-300);
+  line-height: var(--fui-line-height-base-300);
+}
+
+.fui-BreadcrumbButton--large {
+  height: 40px;
+  padding: var(--fui-spacing-horizontal-s);
+  font-size: var(--fui-font-size-base-400);
+  line-height: var(--fui-line-height-base-400);
+}
+
+.fui-BreadcrumbButton--current {
+  cursor: auto;
+  background-color: var(--fui-color-transparent-background);
+}
+
+.fui-BreadcrumbButton--current.fui-BreadcrumbButton--small,
+.fui-BreadcrumbButton--current.fui-BreadcrumbButton--medium,
+.fui-BreadcrumbButton--current.fui-BreadcrumbButton--large {
+  font-weight: var(--fui-font-weight-semibold);
+}
+
+.fui-BreadcrumbButton--disabled,
+.fui-BreadcrumbButton--disabled-focusable,
+.fui-BreadcrumbButton--disabled:hover,
+.fui-BreadcrumbButton--disabled-focusable:hover,
+.fui-BreadcrumbButton--disabled:hover:active,
+.fui-BreadcrumbButton--disabled-focusable:hover:active {
+  color: var(--fui-color-neutral-foreground-disabled);
+  cursor: not-allowed;
+  background-color: var(--fui-color-transparent-background);
+  border-color: transparent;
+}
+
+.fui-BreadcrumbButton--current,
+.fui-BreadcrumbButton--current:hover,
+.fui-BreadcrumbButton--current:hover:active {
+  color: var(--fui-color-neutral-foreground-2);
+  cursor: auto;
+  background-color: var(--fui-color-transparent-background);
+}
+
+.fui-BreadcrumbButton__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  margin-inline-end: var(--fui-spacing-horizontal-xs);
+}
+
+.fui-BreadcrumbButton--small .fui-BreadcrumbButton__icon {
+  width: 12px;
+  height: 12px;
+  font-size: 12px;
+  line-height: var(--fui-line-height-base-200);
+}
+
+.fui-BreadcrumbButton--medium .fui-BreadcrumbButton__icon {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  line-height: var(--fui-line-height-base-400);
+}
+
+.fui-BreadcrumbButton--large .fui-BreadcrumbButton__icon {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  line-height: var(--fui-line-height-base-600);
+}
+
+.fui-BreadcrumbButton__icon > svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fui-BreadcrumbButton {
+    transition-duration: 0.01ms;
+  }
+}
+
+@media (forced-colors: active) {
+  .fui-BreadcrumbButton {
+    color: ButtonText;
+    forced-color-adjust: none;
+  }
+
+  .fui-BreadcrumbButton:hover,
+  .fui-BreadcrumbButton:hover:active {
+    color: HighlightText;
+    background-color: Highlight;
+  }
+
+  .fui-BreadcrumbButton:focus-visible {
+    border-color: Highlight;
+    outline-color: Highlight;
+    box-shadow: none;
+  }
+
+  .fui-BreadcrumbButton--disabled,
+  .fui-BreadcrumbButton--disabled-focusable {
+    color: GrayText;
+  }
+
+  .fui-BreadcrumbButton--current {
+    color: ButtonText;
+  }
+}

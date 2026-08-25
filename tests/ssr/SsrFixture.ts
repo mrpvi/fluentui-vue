@@ -5,6 +5,10 @@ import {
   FAccordionItem,
   FAccordionPanel,
   FBadge,
+  FBreadcrumb,
+  FBreadcrumbButton,
+  FBreadcrumbDivider,
+  FBreadcrumbItem,
   FButton,
   FCard,
   FCardFooter,
@@ -301,6 +305,28 @@ export const SsrFixture = defineComponent({
                 () => 'Server overview',
               ),
               h(FTab, { value: 'details', disabled: true }, () => 'Server details'),
+            ],
+          },
+        ),
+        h(
+          FBreadcrumb,
+          { class: 'ssr-breadcrumb', size: 'large', 'aria-label': 'Server breadcrumb' },
+          {
+            default: () => [
+              h(
+                FBreadcrumbItem,
+                {},
+                {
+                  default: () =>
+                    h(FBreadcrumbButton, { href: '#server-home' }, () => 'Server home'),
+                },
+              ),
+              h(FBreadcrumbDivider),
+              h(
+                FBreadcrumbItem,
+                {},
+                { default: () => h(FBreadcrumbButton, { current: true }, () => 'Server current') },
+              ),
             ],
           },
         ),

@@ -6,6 +6,10 @@ import {
   FAccordionItem,
   FAccordionPanel,
   FBadge,
+  FBreadcrumb,
+  FBreadcrumbButton,
+  FBreadcrumbDivider,
+  FBreadcrumbItem,
   FButton,
   FCard,
   FCardFooter,
@@ -118,8 +122,9 @@ function ratingItemLabel(value: number) {
         <p>
           Native Button, ToggleButton, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider,
           Image, Badge, Spinner, ProgressBar, SpinButton, SearchBox, Switch, Radio, RadioGroup,
-          Select, Skeleton, Slider, Rating, RatingDisplay, Card, Accordion, and Tabs components
-          translated from Fluent UI React v9 to Vue props, slots, emits, and semantic HTML.
+          Select, Skeleton, Slider, Rating, RatingDisplay, Card, Accordion, Tabs, and Breadcrumb
+          components translated from Fluent UI React v9 to Vue props, slots, emits, and semantic
+          HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -1463,6 +1468,68 @@ function ratingItemLabel(value: number) {
       </div>
     </section>
 
+    <section id="breadcrumb">
+      <h2>Breadcrumb</h2>
+      <div class="breadcrumb-samples">
+        <div>
+          <h3>Tab navigation</h3>
+          <FBreadcrumb aria-label="Project breadcrumb">
+            <FBreadcrumbItem>
+              <FBreadcrumbButton href="#workspace">
+                <template #icon>⌂</template>
+                Workspace
+              </FBreadcrumbButton>
+            </FBreadcrumbItem>
+            <FBreadcrumbDivider />
+            <FBreadcrumbItem
+              ><FBreadcrumbButton href="#projects">Projects</FBreadcrumbButton></FBreadcrumbItem
+            >
+            <FBreadcrumbDivider />
+            <FBreadcrumbItem
+              ><FBreadcrumbButton current>Fluent Vue</FBreadcrumbButton></FBreadcrumbItem
+            >
+          </FBreadcrumb>
+        </div>
+        <div>
+          <h3>Arrow navigation and sizes</h3>
+          <FBreadcrumb
+            class="breadcrumb-arrow"
+            focus-mode="arrow"
+            size="large"
+            aria-label="Arrow breadcrumb"
+          >
+            <FBreadcrumbItem
+              ><FBreadcrumbButton href="#home">Home</FBreadcrumbButton></FBreadcrumbItem
+            >
+            <FBreadcrumbDivider />
+            <FBreadcrumbItem
+              ><FBreadcrumbButton disabled>Disabled</FBreadcrumbButton></FBreadcrumbItem
+            >
+            <FBreadcrumbDivider />
+            <FBreadcrumbItem>
+              <FBreadcrumbButton disabled-focusable>Focusable disabled</FBreadcrumbButton>
+            </FBreadcrumbItem>
+            <FBreadcrumbDivider />
+            <FBreadcrumbItem
+              ><FBreadcrumbButton current>Current page</FBreadcrumbButton></FBreadcrumbItem
+            >
+          </FBreadcrumb>
+        </div>
+        <div dir="rtl">
+          <h3>RTL divider</h3>
+          <FBreadcrumb size="small" aria-label="RTL breadcrumb">
+            <FBreadcrumbItem
+              ><FBreadcrumbButton href="#rtl-home">الرئيسية</FBreadcrumbButton></FBreadcrumbItem
+            >
+            <FBreadcrumbDivider />
+            <FBreadcrumbItem
+              ><FBreadcrumbButton current>المشروع</FBreadcrumbButton></FBreadcrumbItem
+            >
+          </FBreadcrumb>
+        </div>
+      </div>
+    </section>
+
     <section id="radio">
       <h2>Radio</h2>
       <div class="radio-samples">
@@ -2430,6 +2497,7 @@ section {
 .card-samples,
 .accordion-samples,
 .tab-samples,
+.breadcrumb-samples,
 .spinner-samples,
 .progress-bar-samples,
 .spin-button-samples,
