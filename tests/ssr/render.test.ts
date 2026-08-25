@@ -159,5 +159,11 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /<ul(?=[^>]*class="fui-List ssr-list")(?=[^>]*role="listbox")(?=[^>]*aria-multiselectable="true")(?=[^>]*aria-label="Server list")[^>]*>.*<li(?=[^>]*id="server-one")(?=[^>]*class="fui-ListItem[^>]*fui-ListItem--selected")(?=[^>]*role="option")(?=[^>]*aria-selected="true")[^>]*>.*Server selected item.*<li(?=[^>]*id="server-two")(?=[^>]*aria-selected="false")(?=[^>]*aria-disabled="true")[^>]*>.*Server disabled selection/s,
     );
+    expect(firstRender).toMatch(
+      /<span(?=[^>]*class="fui-Avatar[^>]*fui-Avatar--size-48[^>]*fui-Avatar--active[^>]*ssr-avatar")(?=[^>]*role="img")(?=[^>]*aria-label="Server Person, available, active")[^>]*>.*fui-Avatar__initials.*SP.*fui-PresenceBadge/s,
+    );
+    expect(firstRender).toMatch(
+      /<div(?=[^>]*class="fui-AvatarGroup fui-AvatarGroup--stack fui-AvatarGroup--size-40 ssr-avatar-group")(?=[^>]*aria-label="Server team")(?=[^>]*role="group")[^>]*>.*<div class="fui-AvatarGroupItem".*<button[^>]*aria-label="View more people\."[^>]*aria-expanded="true".*<div[^>]*role="dialog"[^>]*aria-label="Overflow".*<ul[^>]*role="list">.*<li class="fui-AvatarGroupItem fui-AvatarGroupItem--overflow"/s,
+    );
   });
 });

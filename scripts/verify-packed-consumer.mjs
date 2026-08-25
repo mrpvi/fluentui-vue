@@ -41,6 +41,10 @@ import {
   FAccordionHeader,
   FAccordionItem,
   FAccordionPanel,
+  FAvatar,
+  FAvatarGroup,
+  FAvatarGroupItem,
+  FAvatarGroupPopover,
   FBadge,
   FBreadcrumb,
   FBreadcrumbButton,
@@ -84,6 +88,9 @@ import {
   FToggleButton,
   FluentVue,
   packageVersion,
+  type AvatarColor,
+  type AvatarGroupLayout,
+  type AvatarSize,
   type BadgeAppearance,
   type BadgeColor,
   type BreadcrumbFocusMode,
@@ -138,6 +145,10 @@ import {
 import '@mrpvi/fluentui-vue/style.css';
 
 const accepted = ref<CheckboxValue>('mixed');
+const avatarColor: AvatarColor = 'colorful';
+const avatarGroupLayout: AvatarGroupLayout = 'stack';
+const avatarSize: AvatarSize = 40;
+const avatarOverflowOpen = ref(false);
 const radioValue = ref('email');
 const badgeAppearance: BadgeAppearance = 'tint';
 const badgeColor: BadgeColor = 'success';
@@ -438,6 +449,31 @@ createApp({
               FListItem,
               { value: 'packed-two', disabledSelection: true },
               () => 'Packed disabled item',
+            ),
+          ],
+        },
+      ),
+      h(FAvatar, {
+        name: 'Packed Person',
+        color: avatarColor,
+        size: avatarSize,
+        presence: { status: presenceStatus },
+      }),
+      h(
+        FAvatarGroup,
+        { layout: avatarGroupLayout, size: avatarSize, 'aria-label': 'Packed team' },
+        {
+          default: () => [
+            h(FAvatarGroupItem, { name: 'Packed Ada' }),
+            h(FAvatarGroupItem, { name: 'Packed Grace' }),
+            h(
+              FAvatarGroupPopover,
+              {
+                modelValue: avatarOverflowOpen.value,
+                'onUpdate:modelValue': value => (avatarOverflowOpen.value = value),
+                count: 1,
+              },
+              { default: () => h(FAvatarGroupItem, { name: 'Packed Margaret' }) },
             ),
           ],
         },

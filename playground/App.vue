@@ -5,6 +5,10 @@ import {
   FAccordionHeader,
   FAccordionItem,
   FAccordionPanel,
+  FAvatar,
+  FAvatarGroup,
+  FAvatarGroupItem,
+  FAvatarGroupPopover,
   FBadge,
   FBreadcrumb,
   FBreadcrumbButton,
@@ -77,6 +81,7 @@ const controlledCard = ref(true);
 const selectedTab = ref('overview');
 const automaticTab = ref('activity');
 const selectedListItems = ref<Array<string | number>>(['Ada']);
+const avatarOverflowOpen = ref(false);
 const toggleControlled = ref(true);
 const toggleSubmitCount = ref(0);
 const compoundSubmitCount = ref(0);
@@ -125,8 +130,8 @@ function ratingItemLabel(value: number) {
         <p>
           Native Button, ToggleButton, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider,
           Image, Badge, Spinner, ProgressBar, SpinButton, SearchBox, Switch, Radio, RadioGroup,
-          Select, Skeleton, Slider, Rating, RatingDisplay, Card, Accordion, Tabs, Breadcrumb, and
-          List components translated from Fluent UI React v9 to Vue props, slots, emits, and
+          Select, Skeleton, Slider, Rating, RatingDisplay, Card, Accordion, Tabs, Breadcrumb, List,
+          and Avatar components translated from Fluent UI React v9 to Vue props, slots, emits, and
           semantic HTML.
         </p>
       </div>
@@ -1586,6 +1591,72 @@ function ratingItemLabel(value: number) {
       </div>
     </section>
 
+    <section id="avatar">
+      <h2>Avatar</h2>
+      <div class="avatar-samples">
+        <div>
+          <h3>Fallbacks, color, activity, and presence</h3>
+          <div class="avatar-row">
+            <FAvatar name="Ada Lovelace" color="colorful" />
+            <FAvatar name="Grace Hopper" color="brand" shape="square" :size="40" />
+            <FAvatar
+              name="Linus Torvalds"
+              color="forest"
+              active="active"
+              active-appearance="ring-shadow"
+              :presence="{ status: 'available' }"
+              :size="48"
+            />
+            <FAvatar aria-label="Anonymous person" :size="56" />
+          </div>
+        </div>
+        <div>
+          <h3>Spread and stacked groups</h3>
+          <FAvatarGroup class="avatar-spread" aria-label="Design team">
+            <FAvatarGroupItem name="Ada Lovelace" />
+            <FAvatarGroupItem name="Grace Hopper" />
+            <FAvatarGroupItem name="Margaret Hamilton" />
+          </FAvatarGroup>
+          <FAvatarGroup
+            class="avatar-stack"
+            layout="stack"
+            :size="40"
+            aria-label="Engineering team"
+          >
+            <FAvatarGroupItem name="Linus Torvalds" />
+            <FAvatarGroupItem name="Barbara Liskov" />
+            <FAvatarGroupItem name="Edsger Dijkstra" />
+            <FAvatarGroupPopover v-model="avatarOverflowOpen" :count="3">
+              <FAvatarGroupItem name="Radia Perlman" />
+              <FAvatarGroupItem name="Donald Knuth" />
+              <FAvatarGroupItem name="Frances Allen" />
+            </FAvatarGroupPopover>
+          </FAvatarGroup>
+          <small>Overflow popover: {{ avatarOverflowOpen ? 'open' : 'closed' }}</small>
+        </div>
+        <div>
+          <h3>Pie layout</h3>
+          <FAvatarGroup
+            class="avatar-pie"
+            layout="pie"
+            :size="48"
+            aria-label="Project contributors"
+          >
+            <FAvatarGroupItem name="Katherine Johnson" />
+            <FAvatarGroupItem name="Dorothy Vaughan" />
+            <FAvatarGroupItem name="Mary Jackson" />
+            <FAvatarGroupPopover :count="5">
+              <FAvatarGroupItem name="Katherine Johnson" />
+              <FAvatarGroupItem name="Dorothy Vaughan" />
+              <FAvatarGroupItem name="Mary Jackson" />
+              <FAvatarGroupItem name="Christine Darden" />
+              <FAvatarGroupItem name="Annie Easley" />
+            </FAvatarGroupPopover>
+          </FAvatarGroup>
+        </div>
+      </div>
+    </section>
+
     <section id="radio">
       <h2>Radio</h2>
       <div class="radio-samples">
@@ -2605,6 +2676,34 @@ section {
 .list-primary {
   flex: 1;
   font-weight: var(--fui-font-weight-semibold);
+}
+
+.avatar-samples {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.avatar-samples > div {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.avatar-samples h3 {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-300);
+}
+
+.avatar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar-spread,
+.avatar-stack {
+  width: max-content;
 }
 
 .spinner-group h3,

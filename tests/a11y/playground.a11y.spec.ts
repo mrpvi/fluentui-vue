@@ -312,6 +312,25 @@ test('List fixtures expose list, listbox, grid, selection, and disabled semantic
   await expect(projects.getByRole('button', { name: 'More Roadmap actions' })).toBeVisible();
 });
 
+test('Avatar fixtures expose image names, group semantics, and overflow list structure', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#avatar');
+  await expect(section.getByRole('img', { name: 'Ada Lovelace' }).first()).toBeVisible();
+  await expect(section.getByRole('img', { name: 'Anonymous person' })).toBeVisible();
+  await expect(section.getByRole('group', { name: 'Design team' })).toBeVisible();
+
+  const engineering = section.getByRole('group', { name: 'Engineering team' });
+  const trigger = engineering.getByRole('button', { name: 'View more people.' });
+  await trigger.click();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  const overflow = engineering.getByRole('dialog', { name: 'Overflow' });
+  await expect(overflow.getByRole('list')).toBeVisible();
+  await expect(overflow.getByRole('listitem')).toHaveCount(3);
+});
+
 test('Skeleton fixtures expose default and explicitly overridden loading semantics', async ({
   page,
 }) => {

@@ -1,0 +1,99 @@
+.fui-AvatarGroupPopover {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.fui-AvatarGroupPopover__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: var(--fui-avatar-size, 32px);
+  height: var(--fui-avatar-size, 32px);
+  padding: 0 var(--fui-spacing-horizontal-xs);
+  color: var(--fui-color-neutral-foreground-2);
+  font: inherit;
+  font-weight: var(--fui-font-weight-semibold);
+  background: var(--fui-color-neutral-background-3);
+  border: 0;
+  border-radius: var(--fui-border-radius-circular);
+  cursor: pointer;
+}
+
+.fui-AvatarGroupPopover--pie {
+  position: absolute;
+  inset: 0;
+}
+
+.fui-AvatarGroupPopover--pie .fui-AvatarGroupPopover__trigger {
+  width: var(--fui-avatar-size, 32px);
+  min-width: var(--fui-avatar-size, 32px);
+  padding: 0;
+  color: transparent;
+  background: var(--fui-color-transparent-background);
+  border: var(--fui-stroke-width-thick) solid var(--fui-color-transparent-stroke);
+}
+
+.fui-AvatarGroupPopover__trigger:hover {
+  color: var(--fui-color-neutral-foreground-1);
+  background: var(--fui-color-neutral-background-3-hover);
+}
+
+.fui-AvatarGroupPopover__trigger:focus-visible {
+  outline: 2px solid var(--fui-color-stroke-focus-2);
+  outline-offset: 2px;
+}
+
+.fui-AvatarGroupPopover__icon {
+  width: 1em;
+  height: 1em;
+}
+
+.fui-AvatarGroupPopover__surface {
+  position: absolute;
+  z-index: 1000;
+  inset-block-start: calc(100% + var(--fui-spacing-vertical-xs));
+  inset-inline-end: 0;
+  box-sizing: border-box;
+  width: max-content;
+  min-width: 180px;
+  max-width: min(320px, calc(100vw - 32px));
+  max-height: min(360px, calc(100vh - 32px));
+  overflow: auto;
+  padding: var(--fui-spacing-vertical-s) var(--fui-spacing-horizontal-s);
+  color: var(--fui-color-neutral-foreground-1);
+  background: var(--fui-color-neutral-background-1);
+  border: 1px solid var(--fui-color-neutral-stroke-2);
+  border-radius: var(--fui-border-radius-medium);
+  box-shadow: var(--fui-shadow-16);
+}
+
+.fui-AvatarGroupPopover__surface:focus {
+  outline: none;
+}
+
+.fui-AvatarGroupPopover__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fui-spacing-vertical-xxs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (forced-colors: active) {
+  .fui-AvatarGroupPopover__trigger {
+    color: ButtonText;
+    background: ButtonFace;
+    border: 1px solid ButtonText;
+  }
+
+  .fui-AvatarGroupPopover__trigger:focus-visible {
+    outline-color: Highlight;
+  }
+
+  .fui-AvatarGroupPopover__surface {
+    border-color: CanvasText;
+  }
+}

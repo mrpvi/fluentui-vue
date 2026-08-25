@@ -90,7 +90,7 @@ Delay these components until Menu exists:
 
 ## Phase 6 — Identity components
 
-29. ❌ **Avatar family**
+29. ✅ **Avatar family** — definition-of-done gates complete for `@fluentui/react-avatar@9.11.6`
     - `FAvatar`
     - `FAvatarGroup`
     - `FAvatarGroupItem`

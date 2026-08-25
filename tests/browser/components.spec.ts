@@ -2085,6 +2085,62 @@ test('List preserves forced-color focus and selected checkmark safeguards', asyn
   );
 });
 
+test('Avatar preserves fallbacks, group layouts, and overflow interaction', async ({ page }) => {
+  await page.goto('/');
+
+  const section = page.locator('#avatar');
+  const ada = section.getByRole('img', { name: 'Ada Lovelace' }).first();
+  await expect(ada.locator('.fui-Avatar__initials')).toHaveText('AL');
+  await expect(ada).toHaveCSS('width', '32px');
+
+  const active = section.getByRole('img', { name: 'Linus Torvalds, available, active' });
+  await expect(active).toHaveClass(/fui-Avatar--active-ring-shadow/);
+  await expect(active.locator('.fui-PresenceBadge')).toBeVisible();
+
+  const stack = section.getByRole('group', { name: 'Engineering team' });
+  await expect(stack).toHaveClass(/fui-AvatarGroup--stack/);
+  const trigger = stack.getByRole('button', { name: 'View more people.' });
+  await trigger.click();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  const surface = stack.getByRole('dialog', { name: 'Overflow' });
+  await expect(surface).toBeFocused();
+  await expect(surface.getByRole('listitem')).toHaveCount(3);
+  await page.keyboard.press('Escape');
+  await expect(surface).toBeHidden();
+  await expect(trigger).toBeFocused();
+  await expect(section.getByText('Overflow popover: closed')).toBeVisible();
+
+  const pie = section.getByRole('group', { name: 'Project contributors' });
+  await expect(pie).toHaveClass(/fui-AvatarGroup--pie/);
+  await expect(pie).toHaveCSS('width', '48px');
+  await expect(pie).toHaveCSS('height', '48px');
+  const pieItems = pie.locator(':scope > .fui-AvatarGroupItem');
+  await expect(pieItems).toHaveCount(3);
+  await expect(pieItems.nth(0)).toHaveCSS('position', 'absolute');
+  await expect(pieItems.nth(1)).toHaveCSS('transform', 'matrix(0.5, 0, 0, 0.5, 0, 0)');
+  await expect(pieItems.nth(2)).toHaveCSS('transform', 'matrix(0.5, 0, 0, 0.5, 0, 0)');
+  await expect(pie.getByRole('button', { name: 'View more people.' })).toHaveText('');
+});
+
+test('Avatar preserves forced-color and reduced-motion safeguards', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Computed media-style coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce', forcedColors: 'active' });
+  await page.goto('/');
+
+  const active = page.locator('#avatar').getByRole('img', {
+    name: 'Linus Torvalds, available, active',
+  });
+  await expect(active).toHaveCSS('transition-duration', '0s');
+  const trigger = page
+    .locator('#avatar')
+    .getByRole('group', { name: 'Engineering team' })
+    .getByRole('button', { name: 'View more people.' });
+  await expect(trigger).toHaveCSS('border-style', 'solid');
+});
+
 test('Radio uses native common-name selection and arrow keys across engines', async ({ page }) => {
   await page.goto('/');
 
