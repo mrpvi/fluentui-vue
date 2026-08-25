@@ -9,7 +9,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const localVueTsc = resolve(root, 'node_modules/.bin/vue-tsc');
 const dependencyRoot = existsSync(localVueTsc) ? root : resolve(root, '../../..');
 const consumer = await mkdtemp(resolve(tmpdir(), 'fluent-vue-consumer-'));
-const packageDirectory = resolve(consumer, 'node_modules/fluentui-vue');
+const packageDirectory = resolve(consumer, 'node_modules/@mrpvi/fluentui-vue');
 
 try {
   const packed = JSON.parse(
@@ -114,8 +114,8 @@ import {
   type ToggleButtonIconPosition,
   type ToggleButtonShape,
   type ToggleButtonSize,
-} from 'fluentui-vue';
-import 'fluentui-vue/style.css';
+} from '@mrpvi/fluentui-vue';
+import '@mrpvi/fluentui-vue/style.css';
 
 const accepted = ref<CheckboxValue>('mixed');
 const radioValue = ref('email');

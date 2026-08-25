@@ -8,7 +8,7 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ### Added
 
-- Initial public release of `fluentui-vue`.
+- Initial public release of `@mrpvi/fluentui-vue`.
 - Vue 3 and TypeScript adaptations of Fluent UI React v9 components:
   - Badge, CounterBadge, and PresenceBadge
   - Button, ToggleButton, and CompoundButton

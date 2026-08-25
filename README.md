@@ -74,10 +74,10 @@ npm pack
 This creates a file such as:
 
 ```text
-local-fluent-vue-0.1.0.tgz
+mrpvi-fluentui-vue-0.1.0.tgz
 ```
 
-The package is marked `private`, which prevents accidental npm publication but does not prevent local installation.
+The tarball contains the same scoped package consumers receive from npm and can be installed locally before publication.
 
 ### 2. Install the tarball in another Vue project
 
@@ -85,19 +85,19 @@ Using npm:
 
 ```bash
 cd /path/to/your-vue-project
-npm install /Users/ali/Desktop/flaunt-convert-react/local-fluent-vue-0.1.0.tgz
+npm install /Users/ali/Desktop/flaunt-convert-react/mrpvi-fluentui-vue-0.1.0.tgz
 ```
 
 Using pnpm:
 
 ```bash
-pnpm add /Users/ali/Desktop/flaunt-convert-react/local-fluent-vue-0.1.0.tgz
+pnpm add /Users/ali/Desktop/flaunt-convert-react/mrpvi-fluentui-vue-0.1.0.tgz
 ```
 
 Using Yarn:
 
 ```bash
-yarn add file:/Users/ali/Desktop/flaunt-convert-react/local-fluent-vue-0.1.0.tgz
+yarn add file:/Users/ali/Desktop/flaunt-convert-react/mrpvi-fluentui-vue-0.1.0.tgz
 ```
 
 The consuming application must use Vue 3.5 or later because Vue is a peer dependency:
@@ -112,8 +112,8 @@ Import the emitted stylesheet once in the consuming application's entry file. Ja
 
 ```ts
 import { createApp } from 'vue';
-import { FluentVue } from 'fluentui-vue';
-import 'fluentui-vue/style.css';
+import { FluentVue } from '@mrpvi/fluentui-vue';
+import '@mrpvi/fluentui-vue/style.css';
 import App from './App.vue';
 
 createApp(App).use(FluentVue).mount('#app');
@@ -169,7 +169,7 @@ import {
   type ToggleButtonIconPosition,
   type ToggleButtonShape,
   type ToggleButtonSize,
-} from 'fluentui-vue';
+} from '@mrpvi/fluentui-vue';
 import { ref } from 'vue';
 
 const name = ref('');
@@ -239,7 +239,7 @@ npm pack
 Reinstall it in the consuming project:
 
 ```bash
-npm install /Users/ali/Desktop/flaunt-convert-react/local-fluent-vue-0.1.0.tgz --force
+npm install /Users/ali/Desktop/flaunt-convert-react/mrpvi-fluentui-vue-0.1.0.tgz --force
 ```
 
 Restart the consuming project's development server. If Vite still uses a cached package copy, remove its dependency cache and start it again:
@@ -251,15 +251,13 @@ npm run dev
 
 For frequent iterations, incrementing the package version before packing—such as `0.1.1`, `0.1.2`, and so on—also avoids package-manager cache ambiguity.
 
-## Future npm installation
+## npm installation
 
-After the package receives an approved publishable name and is published, installation will use the npm registry instead of a local tarball:
+Install the public scoped package from the npm registry:
 
 ```bash
-npm install fluentui-vue
+npm install @mrpvi/fluentui-vue
 ```
-
-The package name is currently temporary, so this registry command is not available yet.
 
 ## Text
 
@@ -291,7 +289,7 @@ The upstream preset wrappers such as `Body1`, `Caption1`, and `Title1` are not i
 
 ```vue
 <script setup lang="ts">
-import { FField, FInput } from 'fluentui-vue';
+import { FField, FInput } from '@mrpvi/fluentui-vue';
 </script>
 
 <template>
@@ -431,7 +429,7 @@ React slot objects, shorthand slot resolution, and Button context sizing are int
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FToggleButton } from 'fluentui-vue';
+import { FToggleButton } from '@mrpvi/fluentui-vue';
 
 const pinned = ref(false);
 </script>
@@ -672,7 +670,7 @@ Indeterminate motion uses the released three-second linear slide. Under `prefers
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FRating, FRatingDisplay } from 'fluentui-vue';
+import { FField, FRating, FRatingDisplay } from '@mrpvi/fluentui-vue';
 
 const rating = ref(3);
 </script>
@@ -701,7 +699,7 @@ Both components use deterministic Vue IDs for SSR/hydration, logical RTL styling
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FSpinButton } from 'fluentui-vue';
+import { FField, FSpinButton } from '@mrpvi/fluentui-vue';
 
 const price = ref<number | null>(10);
 const formattedPrice = ref('$10.00');
@@ -751,7 +749,7 @@ The focus underline respects reduced motion, custom controls retain forced-color
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FSwitch } from 'fluentui-vue';
+import { FField, FSwitch } from '@mrpvi/fluentui-vue';
 
 const enabled = ref(false);
 </script>
@@ -820,7 +818,7 @@ React root slot objects and context hooks are translated to fixed Vue `div`/`spa
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FSlider } from 'fluentui-vue';
+import { FField, FSlider } from '@mrpvi/fluentui-vue';
 
 const volume = ref(40);
 </script>
@@ -857,7 +855,7 @@ React's root/input/rail/thumb slot objects are intentionally translated to a fix
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FSearchBox } from 'fluentui-vue';
+import { FField, FSearchBox } from '@mrpvi/fluentui-vue';
 
 const query = ref('');
 </script>
@@ -897,7 +895,7 @@ The Card family provides a topic container plus structured preview, header, and 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FButton, FCard, FCardFooter, FCardHeader, FCardPreview } from 'fluentui-vue';
+import { FButton, FCard, FCardFooter, FCardHeader, FCardPreview } from '@mrpvi/fluentui-vue';
 
 const selected = ref(false);
 </script>
@@ -945,7 +943,7 @@ The family preserves released appearance, selected, disabled, focus, size, verti
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FRadio, FRadioGroup } from 'fluentui-vue';
+import { FField, FRadio, FRadioGroup } from '@mrpvi/fluentui-vue';
 
 const contactMethod = ref('email');
 </script>
@@ -1000,7 +998,7 @@ The React root, input, label, and indicator slot-object APIs are translated to a
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FSelect } from 'fluentui-vue';
+import { FField, FSelect } from '@mrpvi/fluentui-vue';
 
 const animal = ref('dog');
 </script>
@@ -1071,7 +1069,7 @@ The shadow appearances are retained for source compatibility but are deprecated,
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FField, FTextarea } from 'fluentui-vue';
+import { FField, FTextarea } from '@mrpvi/fluentui-vue';
 
 const biography = ref('');
 </script>
@@ -1112,7 +1110,7 @@ Use `FField`, `FLabel`, `aria-label`, or `aria-labelledby` to provide an accessi
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { CheckboxValue } from 'fluentui-vue';
+import type { CheckboxValue } from '@mrpvi/fluentui-vue';
 
 const state = ref<CheckboxValue>('mixed');
 </script>

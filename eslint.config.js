@@ -12,7 +12,7 @@ export default tseslint.config(
       'playwright-report/**',
       'test-results/**',
       '.playwright-mcp/**',
-      '.claude/**',
+      '**/worktrees/**',
       'src/styles/tokens.css',
     ],
   },

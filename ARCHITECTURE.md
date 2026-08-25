@@ -1,6 +1,6 @@
 # Architecture and engineering rules
 
-This document defines the architecture, quality standards, and implementation rules for `fluentui-vue`.
+This document defines the architecture, quality standards, and implementation rules for `@mrpvi/fluentui-vue`.
 
 The project is a native Vue 3 adaptation of selected Microsoft Fluent UI React v9 components. It must preserve Fluent UI's design intent, accessibility, behavior, and visual states while exposing idiomatic Vue APIs. It must not depend on React or mechanically reproduce React-specific architecture.
 
@@ -585,7 +585,7 @@ Before public release, CI must run on every pull request:
 
 Release requirements:
 
-- The release package name is `fluentui-vue`; recheck registry availability immediately before publishing.
+- The release package name is `@mrpvi/fluentui-vue`; recheck registry availability immediately before publishing.
 - Keep the README's independent, unofficial-project disclaimer and review npm-name and trademark considerations before each public release.
 - Publication is approved and the package is configured as public.
 - Pin upstream commit SHAs.

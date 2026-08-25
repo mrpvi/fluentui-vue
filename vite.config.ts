@@ -42,7 +42,7 @@ export default defineConfig({
       'tests/ssr/**',
       'node_modules/**',
       'dist/**',
-      '.claude/**',
+      '**/worktrees/**',
     ],
     css: true,
   },
