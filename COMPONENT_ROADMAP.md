@@ -112,7 +112,7 @@ Listbox and Option come first because Dropdown and Combobox depend on their opti
 
 ## Phase 8 — Overlay foundations
 
-34. ❌ **Portal → `FPortal`**
+34. ✅ **Portal → `FPortal`** — foundation complete for SSR-safe Teleport rendering
 35. ❌ **Popover family**
     - `FPopover`
     - `FPopoverTrigger`

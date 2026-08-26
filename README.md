@@ -71,7 +71,7 @@ const name = ref('');
 
 ### Forms and inputs
 
-`FField`, `FLabel`, `FInput`, `FTextarea`, `FCheckbox`, `FSwitch`, `FRadio`, `FRadioGroup`, `FSelect`, `FSearchBox`, `FSlider`, `FSpinButton`, `FRating`, `FRatingItem`, `FRatingDisplay`, `FListbox`, `FOption`, `FOptionGroup`, `FDropdown`
+`FField`, `FLabel`, `FInput`, `FTextarea`, `FCheckbox`, `FSwitch`, `FRadio`, `FRadioGroup`, `FSelect`, `FSearchBox`, `FSlider`, `FSpinButton`, `FRating`, `FRatingItem`, `FRatingDisplay`, `FListbox`, `FOption`, `FOptionGroup`, `FDropdown`, `FCombobox`
 
 ### Content and layout
 

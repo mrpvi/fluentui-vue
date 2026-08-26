@@ -28,6 +28,7 @@ import { FImage } from './components/Image';
 import { FInput } from './components/Input';
 import { FLabel } from './components/Label';
 import { FPersona } from './components/Persona';
+import { FPortal } from './components/Portal';
 import { FPresenceBadge } from './components/PresenceBadge';
 import { FProgressBar } from './components/ProgressBar';
 import { FRadio } from './components/Radio';
@@ -86,6 +87,7 @@ export const FluentVue: Plugin = {
     app.component('FField', FField);
     app.component('FImage', FImage);
     app.component('FPersona', FPersona);
+    app.component('FPortal', FPortal);
     app.component('FPresenceBadge', FPresenceBadge);
     app.component('FProgressBar', FProgressBar);
     app.component('FRadio', FRadio);

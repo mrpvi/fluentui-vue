@@ -35,6 +35,8 @@ This package is a native Vue adaptation of selected Microsoft Fluent UI React v9
 | Persona           | `@fluentui/react-persona`    |            9.7.8 | `packages/react-components/react-persona/library/src/components/Persona`       |
 | Listbox family    | `@fluentui/react-combobox`   |           9.17.5 | `packages/react-components/react-combobox/library/src/components`              |
 | Dropdown          | `@fluentui/react-combobox`   |           9.17.5 | `packages/react-components/react-combobox/library/src/components/Dropdown`     |
+| Combobox          | `@fluentui/react-combobox`   |           9.17.5 | `packages/react-components/react-combobox/library/src/components/Combobox`     |
+| Portal            | `@fluentui/react-portal`     |            9.4.0 | `packages/react-components/react-portal/library/src/components/Portal`         |
 | Rating family     | `@fluentui/react-rating`     |            9.4.4 | `packages/react-components/react-rating/library/src/components`                |
 
 Source repository: https://github.com/microsoft/fluentui

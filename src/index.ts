@@ -27,6 +27,7 @@ export * from './components/Image';
 export * from './components/Input';
 export * from './components/Label';
 export * from './components/Persona';
+export * from './components/Portal';
 export * from './components/PresenceBadge';
 export * from './components/ProgressBar';
 export * from './components/Radio';
