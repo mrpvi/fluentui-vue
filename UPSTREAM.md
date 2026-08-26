@@ -40,6 +40,7 @@ This package is a native Vue adaptation of selected Microsoft Fluent UI React v9
 | Popover family    | `@fluentui/react-popover`    |           9.13.0 | `packages/react-components/react-popover/library/src/components`               |
 | Tooltip           | `@fluentui/react-tooltip`    |            9.2.0 | `packages/react-components/react-tooltip/library/src/components`               |
 | Dialog            | `@fluentui/react-dialog`     |           9.18.4 | `packages/react-components/react-dialog/library/src/components`                |
+| Drawer family     | `@fluentui/react-drawer`     |           9.13.3 | `packages/react-components/react-drawer/library/src/components`                |
 | Rating family     | `@fluentui/react-rating`     |            9.4.4 | `packages/react-components/react-rating/library/src/components`                |
 
 Source repository: https://github.com/microsoft/fluentui
@@ -114,6 +115,18 @@ Pinned source commits:
 - Popover family 9.13.0 reviewed declarations, implementation, positioning and dismissal behavior, focus management, styles, tests, stories, and accessibility guidance. Vue preserves typed trigger/surface composition, controlled and uncontrolled open state, native trigger semantics, Teleport or inline rendering, fixed client-side anchoring, Escape and outside-pointer dismissal, focus restoration, optional focus trapping, and logical/document-direction styling. React slot objects, Tabster, and positioning runtime dependencies are translated to typed Vue slots, a private injection context, native focus movement, and a small client-only positioning implementation.
 - Tooltip 9.2.0 reviewed published declarations, compiled implementation, styles, positioning defaults, visibility delays, relationships, Escape handling, appearance variants, arrow rendering, and accessibility contract. Vue translates the single-child React trigger composition to a typed default slot, keeps controlled and uncontrolled visibility, delayed hover/focus behavior, `label`/`description`/`inaccessible` relationships, Teleport or inline rendering, Escape dismissal, fixed client-side anchoring, and deterministic SSR markup without bundling React positioning or Tabster runtimes.
 - Dialog 9.18.4 reviewed published declarations, compound component implementations, modal types, trigger actions, backdrop behavior, focus management, body scroll locking, inert focus trapping, styles, and accessibility contract. Vue translates React providers and motion slots to a private injection context, typed compound slots, native focus movement, Teleport rendering, controlled/uncontrolled `modelValue` state, and deterministic lifecycle cleanup.
+- Drawer family 9.13.3 reviewed published declarations, overlay and inline implementations, position and size variants, modal behavior, backdrop dismissal, focus trapping and restoration, scroll-state separators, styles, and accessibility contract. Vue translates React motion slots and providers to a private injection context, typed compound slots, native focus movement, Teleport rendering for overlay drawers, inline composition, controlled/uncontrolled `modelValue` state, and deterministic lifecycle cleanup.
+
+#### Drawer provenance
+
+- Registry tarball: `https://registry.npmjs.org/@fluentui/react-drawer/-/react-drawer-9.13.3.tgz` (SHA-1 `5d72ee792135ece8143a02b428218d77460de01f`)
+
+#### Drawer adaptation
+
+- React slot objects, motion primitives, and Dialog composition are translated to fixed semantic Vue roots, typed slots, native CSS transitions, and the existing private overlay context conventions. `FDrawer` selects the inline or overlay variant while `FInlineDrawer` and `FOverlayDrawer` expose the direct compound APIs.
+
+#### End Drawer provenance
+
 - SpinButton 9.6.5 registry source (`gitHead`): `2dd2a9a96210919c35b210a1aa8e873ab67dbada`
 - SpinButton 9.6.5 release tag object (`@fluentui/react-spinbutton_v9.6.5`): `5c288d87f5a1bc8afcf1b9d62746bb8e320c17e4`
 - SpinButton 9.6.5 release tag commit: `b6351802032e9af61bf03033d22cb354b2e2822c`

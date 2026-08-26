@@ -66,6 +66,16 @@ import {
   FDialogTitle,
   FDialogTrigger,
 } from './components/Dialog';
+import {
+  FDrawer,
+  FDrawerBody,
+  FDrawerFooter,
+  FDrawerHeader,
+  FDrawerHeaderNavigation,
+  FDrawerHeaderTitle,
+  FInlineDrawer,
+  FOverlayDrawer,
+} from './components/Drawer';
 
 export const FluentVue: Plugin = {
   install(app: App) {
@@ -136,5 +146,13 @@ export const FluentVue: Plugin = {
     app.component('FDialogSurface', FDialogSurface);
     app.component('FDialogTitle', FDialogTitle);
     app.component('FDialogTrigger', FDialogTrigger);
+    app.component('FDrawer', FDrawer);
+    app.component('FOverlayDrawer', FOverlayDrawer);
+    app.component('FInlineDrawer', FInlineDrawer);
+    app.component('FDrawerHeader', FDrawerHeader);
+    app.component('FDrawerHeaderTitle', FDrawerHeaderTitle);
+    app.component('FDrawerHeaderNavigation', FDrawerHeaderNavigation);
+    app.component('FDrawerBody', FDrawerBody);
+    app.component('FDrawerFooter', FDrawerFooter);
   },
 };

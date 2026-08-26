@@ -126,7 +126,7 @@ Listbox and Option come first because Dropdown and Combobox depend on their opti
     - `FDialogTitle`
     - `FDialogContent`
     - `FDialogActions`
-38. ❌ **Drawer family**
+38. ✅ **Drawer family** — definition-of-done gates complete for `@fluentui/react-drawer@9.13.3`
     - `FDrawer`
     - `FOverlayDrawer`
     - `FInlineDrawer`

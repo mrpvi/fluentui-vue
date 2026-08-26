@@ -57,6 +57,7 @@ export * from './components/Textarea';
 export * from './components/ToggleButton';
 export * from './components/Tooltip';
 export * from './components/Dialog';
+export * from './components/Drawer';
 export { FluentVue } from './plugin';
 export type { FluentTheme } from './types';
 
