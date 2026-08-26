@@ -136,6 +136,52 @@ import {
   FToaster,
 } from './components/Toast';
 import { FInfoButton, FInfoLabel } from './components/InfoLabel';
+import {
+  FCarousel,
+  FCarouselAutoplayButton,
+  FCarouselButton,
+  FCarouselCard,
+  FCarouselNav,
+  FCarouselNavButton,
+  FCarouselNavContainer,
+  FCarouselNavImageButton,
+  FCarouselSlider,
+  FCarouselViewport,
+} from './components/Carousel';
+import {
+  FAppItem,
+  FAppItemStatic,
+  FHamburger,
+  FNav,
+  FNavCategory,
+  FNavCategoryItem,
+  FNavDivider,
+  FNavDrawer,
+  FNavDrawerBody,
+  FNavDrawerFooter,
+  FNavDrawerHeader,
+  FNavItem,
+  FNavSectionHeader,
+  FNavSubItem,
+  FNavSubItemGroup,
+  FSplitNavItem,
+} from './components/Navigation';
+import {
+  FTeachingPopover,
+  FTeachingPopoverBody,
+  FTeachingPopoverCarousel,
+  FTeachingPopoverCarouselCard,
+  FTeachingPopoverCarouselFooter,
+  FTeachingPopoverCarouselFooterButton,
+  FTeachingPopoverCarouselNav,
+  FTeachingPopoverCarouselNavButton,
+  FTeachingPopoverCarouselPageCount,
+  FTeachingPopoverFooter,
+  FTeachingPopoverHeader,
+  FTeachingPopoverSurface,
+  FTeachingPopoverTitle,
+  FTeachingPopoverTrigger,
+} from './components/TeachingPopover';
 
 export const FluentVue: Plugin = {
   install(app: App) {
@@ -263,5 +309,45 @@ export const FluentVue: Plugin = {
     app.component('FToastFooter', FToastFooter);
     app.component('FInfoLabel', FInfoLabel);
     app.component('FInfoButton', FInfoButton);
+    app.component('FCarousel', FCarousel);
+    app.component('FCarouselViewport', FCarouselViewport);
+    app.component('FCarouselSlider', FCarouselSlider);
+    app.component('FCarouselCard', FCarouselCard);
+    app.component('FCarouselButton', FCarouselButton);
+    app.component('FCarouselAutoplayButton', FCarouselAutoplayButton);
+    app.component('FCarouselNav', FCarouselNav);
+    app.component('FCarouselNavButton', FCarouselNavButton);
+    app.component('FCarouselNavImageButton', FCarouselNavImageButton);
+    app.component('FCarouselNavContainer', FCarouselNavContainer);
+    app.component('FNav', FNav);
+    app.component('FNavItem', FNavItem);
+    app.component('FNavSubItem', FNavSubItem);
+    app.component('FNavSubItemGroup', FNavSubItemGroup);
+    app.component('FNavCategory', FNavCategory);
+    app.component('FNavCategoryItem', FNavCategoryItem);
+    app.component('FNavSectionHeader', FNavSectionHeader);
+    app.component('FNavDivider', FNavDivider);
+    app.component('FNavDrawer', FNavDrawer);
+    app.component('FNavDrawerHeader', FNavDrawerHeader);
+    app.component('FNavDrawerBody', FNavDrawerBody);
+    app.component('FNavDrawerFooter', FNavDrawerFooter);
+    app.component('FHamburger', FHamburger);
+    app.component('FAppItem', FAppItem);
+    app.component('FAppItemStatic', FAppItemStatic);
+    app.component('FSplitNavItem', FSplitNavItem);
+    app.component('FTeachingPopover', FTeachingPopover);
+    app.component('FTeachingPopoverTrigger', FTeachingPopoverTrigger);
+    app.component('FTeachingPopoverSurface', FTeachingPopoverSurface);
+    app.component('FTeachingPopoverHeader', FTeachingPopoverHeader);
+    app.component('FTeachingPopoverTitle', FTeachingPopoverTitle);
+    app.component('FTeachingPopoverBody', FTeachingPopoverBody);
+    app.component('FTeachingPopoverFooter', FTeachingPopoverFooter);
+    app.component('FTeachingPopoverCarousel', FTeachingPopoverCarousel);
+    app.component('FTeachingPopoverCarouselCard', FTeachingPopoverCarouselCard);
+    app.component('FTeachingPopoverCarouselFooter', FTeachingPopoverCarouselFooter);
+    app.component('FTeachingPopoverCarouselFooterButton', FTeachingPopoverCarouselFooterButton);
+    app.component('FTeachingPopoverCarouselNav', FTeachingPopoverCarouselNav);
+    app.component('FTeachingPopoverCarouselNavButton', FTeachingPopoverCarouselNavButton);
+    app.component('FTeachingPopoverCarouselPageCount', FTeachingPopoverCarouselPageCount);
   },
 };

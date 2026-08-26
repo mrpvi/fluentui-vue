@@ -1,0 +1,187 @@
+.fui-TeachingPopover {
+  display: inline-block;
+}
+.fui-TeachingPopoverSurface {
+  z-index: 1000;
+  box-sizing: border-box;
+  inline-size: min(360px, calc(100vw - 16px));
+  padding: var(--spacingVerticalM) var(--spacingHorizontalL);
+  border-radius: var(--borderRadiusLarge);
+  box-shadow: var(--shadow16);
+  outline: none;
+}
+.fui-TeachingPopoverSurface--brand {
+  background: var(--colorBrandBackground);
+  color: var(--colorNeutralForegroundOnBrand);
+}
+.fui-TeachingPopoverSurface--inverted {
+  background: var(--colorNeutralBackgroundInverted);
+  color: var(--colorNeutralForegroundInverted);
+}
+.fui-TeachingPopoverHeader,
+.fui-TeachingPopoverTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacingHorizontalS);
+  margin: 0 0 var(--spacingVerticalS);
+  font-weight: var(--fontWeightSemibold);
+}
+.fui-TeachingPopoverHeader {
+  font-size: var(--fontSizeBase200);
+  line-height: var(--lineHeightBase200);
+}
+.fui-TeachingPopoverHeader__content,
+.fui-TeachingPopoverTitle > span:first-child {
+  flex: 1;
+  min-inline-size: 0;
+}
+.fui-TeachingPopoverTitle {
+  font-size: var(--fontSizeBase500);
+  line-height: var(--lineHeightBase500);
+}
+.fui-TeachingPopoverDismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 28px;
+  block-size: 28px;
+  margin-inline-start: auto;
+  border: 0;
+  border-radius: var(--borderRadiusMedium);
+  background: transparent;
+  color: inherit;
+  font-size: 20px;
+  cursor: pointer;
+}
+.fui-TeachingPopoverDismiss:hover {
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+.fui-TeachingPopoverBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacingVerticalM);
+}
+.fui-TeachingPopoverBody__media {
+  overflow: hidden;
+  margin-inline: calc(var(--spacingHorizontalL) * -1);
+  background: color-mix(in srgb, currentColor 10%, transparent);
+}
+.fui-TeachingPopoverBody__media--short {
+  block-size: 120px;
+}
+.fui-TeachingPopoverBody__media--medium {
+  block-size: 180px;
+}
+.fui-TeachingPopoverBody__media--tall {
+  block-size: 240px;
+}
+.fui-TeachingPopoverBody__media > * {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+.fui-TeachingPopoverBody__content {
+  line-height: var(--lineHeightBase300);
+}
+.fui-TeachingPopoverFooter,
+.fui-TeachingPopoverCarouselFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacingHorizontalS);
+  margin-block-start: var(--spacingVerticalL);
+}
+.fui-TeachingPopoverFooter--vertical {
+  align-items: stretch;
+  flex-direction: column-reverse;
+}
+.fui-TeachingPopoverFooter button,
+.fui-TeachingPopoverCarouselFooterButton {
+  min-block-size: 32px;
+  padding: 0 var(--spacingHorizontalM);
+  border: 1px solid currentColor;
+  border-radius: var(--borderRadiusMedium);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: var(--fontWeightSemibold);
+  cursor: pointer;
+}
+.fui-TeachingPopoverFooter__primary,
+.fui-TeachingPopoverCarouselFooterButton--next {
+  background: var(--colorNeutralBackground1);
+  color: var(--colorBrandForeground1);
+  border-color: transparent;
+}
+.fui-TeachingPopoverCarousel {
+  display: block;
+}
+.fui-TeachingPopoverCarouselCard {
+  min-block-size: 80px;
+}
+.fui-TeachingPopoverCarouselNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacingHorizontalXS);
+}
+.fui-TeachingPopoverCarouselNavButton {
+  inline-size: 10px;
+  block-size: 10px;
+  padding: 0;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: transparent;
+}
+.fui-TeachingPopoverCarouselNavButton--selected {
+  background: currentColor;
+}
+.fui-TeachingPopoverCarouselPageCount {
+  font-size: var(--fontSizeBase200);
+  font-weight: var(--fontWeightSemibold);
+}
+.fui-TeachingPopoverCarouselFooter--centered {
+  justify-content: space-between;
+}
+.fui-TeachingPopoverCarouselFooter--offset {
+  justify-content: flex-end;
+}
+.fui-TeachingPopoverCarouselFooterButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.fui-TeachingPopoverCarousel__announcer {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+@media (max-width: 480px) {
+  .fui-TeachingPopoverSurface {
+    inline-size: calc(100vw - 16px);
+    padding: var(--spacingVerticalM);
+  }
+  .fui-TeachingPopoverFooter {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+  .fui-TeachingPopoverFooter button {
+    inline-size: 100%;
+  }
+}
+@media (forced-colors: active) {
+  .fui-TeachingPopoverSurface {
+    border: 1px solid CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+  .fui-TeachingPopoverCarouselNavButton--selected {
+    background: Highlight;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fui-TeachingPopoverSurface {
+    scroll-behavior: auto;
+  }
+}

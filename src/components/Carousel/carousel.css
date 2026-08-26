@@ -1,0 +1,176 @@
+.fui-Carousel {
+  position: relative;
+  display: block;
+  min-inline-size: 0;
+  color: var(--colorNeutralForeground1);
+  outline: none;
+}
+.fui-Carousel--elevated {
+  background: var(--colorNeutralBackground1);
+  border-radius: var(--borderRadiusLarge);
+  box-shadow: var(--shadow16);
+  padding: var(--spacingHorizontalM);
+}
+.fui-Carousel:focus-visible {
+  outline: 2px solid var(--colorStrokeFocus2);
+  outline-offset: 2px;
+}
+.fui-CarouselViewport {
+  overflow: hidden;
+  inline-size: 100%;
+  touch-action: pan-y;
+}
+.fui-CarouselSlider {
+  display: flex;
+  inline-size: 100%;
+  transition: transform 300ms var(--curveEasyEase);
+  will-change: transform;
+}
+.fui-CarouselSlider--fade {
+  display: grid;
+  transform: none !important;
+}
+.fui-CarouselSlider--fade > .fui-CarouselCard {
+  grid-area: 1/1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms var(--curveEasyEase);
+}
+.fui-CarouselSlider--fade > .fui-CarouselCard[data-active='true'] {
+  opacity: 1;
+  pointer-events: auto;
+}
+.fui-CarouselCard {
+  box-sizing: border-box;
+  flex: 0 0 100%;
+  min-inline-size: 0;
+}
+.fui-CarouselCard--autoSize {
+  flex-basis: auto;
+}
+.fui-CarouselButton,
+.fui-CarouselAutoplayButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 32px;
+  min-block-size: 32px;
+  border: 1px solid var(--colorNeutralStroke1);
+  border-radius: var(--borderRadiusMedium);
+  background: var(--colorNeutralBackground1);
+  color: var(--colorNeutralForeground1);
+  cursor: pointer;
+}
+.fui-CarouselButton:hover,
+.fui-CarouselAutoplayButton:hover {
+  background: var(--colorNeutralBackground1Hover);
+}
+.fui-CarouselButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.fui-CarouselNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacingHorizontalXS);
+}
+.fui-CarouselNavButton {
+  display: inline-flex;
+  inline-size: 12px;
+  block-size: 12px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--colorNeutralBackground5);
+  cursor: pointer;
+}
+.fui-CarouselNavButton--selected {
+  background: var(--colorBrandBackground);
+}
+.fui-CarouselNav--brand .fui-CarouselNavButton--selected {
+  background: var(--colorBrandBackground2);
+}
+.fui-CarouselNavImageButton {
+  padding: 2px;
+  border: 2px solid transparent;
+  border-radius: var(--borderRadiusMedium);
+  background: transparent;
+  cursor: pointer;
+}
+.fui-CarouselNavImageButton img {
+  display: block;
+  inline-size: 56px;
+  block-size: 40px;
+  object-fit: cover;
+  border-radius: var(--borderRadiusSmall);
+}
+.fui-CarouselNavImageButton--selected {
+  border-color: var(--colorBrandStroke1);
+}
+.fui-CarouselNavContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacingHorizontalS);
+  margin-block-start: var(--spacingVerticalS);
+}
+.fui-CarouselNavContainer--inline-wide,
+.fui-CarouselNavContainer--overlay-wide {
+  justify-content: space-between;
+}
+.fui-CarouselNavContainer--overlay,
+.fui-CarouselNavContainer--overlay-wide {
+  position: absolute;
+  inset-inline: var(--spacingHorizontalM);
+  inset-block-end: var(--spacingVerticalM);
+  padding: var(--spacingVerticalXS);
+  border-radius: var(--borderRadiusMedium);
+  background: color-mix(in srgb, var(--colorNeutralBackground1) 82%, transparent);
+}
+.fui-CarouselNavContainer--overlay-expanded {
+  position: absolute;
+  inset: 50% var(--spacingHorizontalS) auto;
+  justify-content: space-between;
+  transform: translateY(-50%);
+}
+.fui-CarouselAnnouncer {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 480px) {
+  .fui-Carousel--elevated {
+    padding: var(--spacingHorizontalS);
+  }
+  .fui-CarouselNavImageButton img {
+    inline-size: 40px;
+    block-size: 32px;
+  }
+  .fui-CarouselNavContainer--overlay-expanded {
+    inset-inline: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fui-CarouselSlider,
+  .fui-CarouselSlider--fade > .fui-CarouselCard {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .fui-CarouselNavButton {
+    border: 1px solid ButtonText;
+  }
+  .fui-CarouselNavButton--selected {
+    background: Highlight;
+  }
+  .fui-CarouselNavImageButton--selected {
+    border-color: Highlight;
+  }
+}

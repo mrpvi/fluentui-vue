@@ -68,6 +68,9 @@ export * from './components/AriaLiveAnnouncer';
 export * from './components/MessageBar';
 export * from './components/Toast';
 export * from './components/InfoLabel';
+export * from './components/Carousel';
+export * from './components/Navigation';
+export * from './components/TeachingPopover';
 export { FluentVue } from './plugin';
 export type { FluentTheme } from './types';
 

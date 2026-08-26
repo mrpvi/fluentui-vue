@@ -277,7 +277,7 @@ Color controls need pointer, keyboard, RTL, value-clamping, and forced-color tes
 
 ## Phase 15 — Advanced navigation and presentation
 
-55. ❌ **Carousel family**
+55. ✅ **Carousel family** — definition-of-done gates complete for `@fluentui/react-carousel@9.9.12`
     - `FCarousel`
     - `FCarouselViewport`
     - `FCarouselSlider`
@@ -288,7 +288,7 @@ Color controls need pointer, keyboard, RTL, value-clamping, and forced-color tes
     - `FCarouselNavButton`
     - `FCarouselNavImageButton`
     - `FCarouselNavContainer`
-56. ❌ **Navigation family**
+56. ✅ **Navigation family** — definition-of-done gates complete for `@fluentui/react-nav-preview@0.13.9`
     - `FNav`
     - `FNavItem`
     - `FNavSubItem`
@@ -305,7 +305,7 @@ Color controls need pointer, keyboard, RTL, value-clamping, and forced-color tes
     - `FAppItem`
     - `FAppItemStatic`
     - `FSplitNavItem`
-57. ❌ **TeachingPopover family**
+57. ✅ **TeachingPopover family** — definition-of-done gates complete for `@fluentui/react-teaching-popover@9.7.5`
     - `FTeachingPopover`
     - `FTeachingPopoverTrigger`
     - `FTeachingPopoverSurface`
@@ -319,7 +319,7 @@ These components come last because they combine overlays, focus management, navi
 
 ## Immediate next development batch
 
-The current form-control completion batch, ToggleButton, and CompoundButton are complete. The next incomplete roadmap work begins with Accordion, but it requires a separate approved request.
+The roadmap component families are complete through TeachingPopover. Future batches should focus on shared hardening, integration coverage, and release verification rather than introducing unlisted families.
 
 ## Rules for updating this roadmap
 
