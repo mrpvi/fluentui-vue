@@ -64,6 +64,10 @@ export * from './components/Menu';
 export * from './components/MenuButton';
 export * from './components/SplitButton';
 export * from './components/Toolbar';
+export * from './components/AriaLiveAnnouncer';
+export * from './components/MessageBar';
+export * from './components/Toast';
+export * from './components/InfoLabel';
 export { FluentVue } from './plugin';
 export type { FluentTheme } from './types';
 

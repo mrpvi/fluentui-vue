@@ -83,7 +83,7 @@ const name = ref('');
 
 ### Feedback and status
 
-`FBadge`, `FCounterBadge`, `FPresenceBadge`, `FSpinner`, `FProgressBar`, `FSkeleton`, `FSkeletonItem`
+`FBadge`, `FCounterBadge`, `FPresenceBadge`, `FSpinner`, `FProgressBar`, `FSkeleton`, `FSkeletonItem`, `FAriaLiveAnnouncer`, `FMessageBar`, `FMessageBarTitle`, `FMessageBarBody`, `FMessageBarActions`, `FMessageBarGroup`, `FToaster`, `FToast`, `FToastTrigger`, `FToastTitle`, `FToastBody`, `FToastFooter`, `FInfoLabel`, `FInfoButton`
 
 ### Overlays
 

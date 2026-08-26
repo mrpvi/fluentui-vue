@@ -178,22 +178,22 @@ Menu comes after Popover because it depends on positioning, dismissal, focus mov
 
 ## Phase 10 — Status and notification components
 
-43. ❌ **ARIA live announcer foundation**
+43. ✅ **ARIA live announcer foundation**
     - `FAriaLiveAnnouncer`
-44. ❌ **MessageBar family**
+44. ✅ **MessageBar family**
     - `FMessageBar`
     - `FMessageBarTitle`
     - `FMessageBarBody`
     - `FMessageBarActions`
     - `FMessageBarGroup`
-45. ❌ **Toast family**
+45. ✅ **Toast family**
     - `FToaster`
     - `FToast`
     - `FToastTrigger`
     - `FToastTitle`
     - `FToastBody`
     - `FToastFooter`
-46. ❌ **InfoLabel family**
+46. ✅ **InfoLabel family**
     - `FInfoLabel`
     - `FInfoButton`
 

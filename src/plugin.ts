@@ -119,6 +119,23 @@ import {
   FToolbarRadioGroup,
   FToolbarToggleButton,
 } from './components/Toolbar';
+import { FAriaLiveAnnouncer } from './components/AriaLiveAnnouncer';
+import {
+  FMessageBar,
+  FMessageBarActions,
+  FMessageBarBody,
+  FMessageBarGroup,
+  FMessageBarTitle,
+} from './components/MessageBar';
+import {
+  FToast,
+  FToastBody,
+  FToastFooter,
+  FToastTitle,
+  FToastTrigger,
+  FToaster,
+} from './components/Toast';
+import { FInfoButton, FInfoLabel } from './components/InfoLabel';
 
 export const FluentVue: Plugin = {
   install(app: App) {
@@ -232,5 +249,19 @@ export const FluentVue: Plugin = {
     app.component('FToolbarRadioGroup', FToolbarRadioGroup);
     app.component('FToolbarGroup', FToolbarGroup);
     app.component('FToolbarDivider', FToolbarDivider);
+    app.component('FAriaLiveAnnouncer', FAriaLiveAnnouncer);
+    app.component('FMessageBar', FMessageBar);
+    app.component('FMessageBarTitle', FMessageBarTitle);
+    app.component('FMessageBarBody', FMessageBarBody);
+    app.component('FMessageBarActions', FMessageBarActions);
+    app.component('FMessageBarGroup', FMessageBarGroup);
+    app.component('FToaster', FToaster);
+    app.component('FToast', FToast);
+    app.component('FToastTrigger', FToastTrigger);
+    app.component('FToastTitle', FToastTitle);
+    app.component('FToastBody', FToastBody);
+    app.component('FToastFooter', FToastFooter);
+    app.component('FInfoLabel', FInfoLabel);
+    app.component('FInfoButton', FInfoButton);
   },
 };
