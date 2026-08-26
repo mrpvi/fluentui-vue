@@ -163,9 +163,9 @@ Before these components, establish shared internal foundations for:
     - `FMenuGroup`
     - `FMenuGroupHeader`
     - `FMenuSplitGroup`
-40. ❌ **MenuButton → `FMenuButton`**
-41. ❌ **SplitButton → `FSplitButton`**
-42. ❌ **Toolbar family**
+40. ✅ **MenuButton → `FMenuButton`** — definition-of-done gates complete for `@fluentui/react-button@9.11.0`
+41. ✅ **SplitButton → `FSplitButton`** — definition-of-done gates complete for `@fluentui/react-button@9.11.0`
+42. ✅ **Toolbar family** — definition-of-done gates complete for `@fluentui/react-toolbar@9.8.4`
     - `FToolbar`
     - `FToolbarButton`
     - `FToolbarToggleButton`

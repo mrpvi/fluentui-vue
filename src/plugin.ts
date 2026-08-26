@@ -91,6 +91,17 @@ import {
   FMenuSplitGroup,
   FMenuTrigger,
 } from './components/Menu';
+import { FMenuButton } from './components/MenuButton';
+import { FSplitButton } from './components/SplitButton';
+import {
+  FToolbar,
+  FToolbarButton,
+  FToolbarDivider,
+  FToolbarGroup,
+  FToolbarRadioButton,
+  FToolbarRadioGroup,
+  FToolbarToggleButton,
+} from './components/Toolbar';
 
 export const FluentVue: Plugin = {
   install(app: App) {
@@ -182,5 +193,14 @@ export const FluentVue: Plugin = {
     app.component('FMenuGroup', FMenuGroup);
     app.component('FMenuGroupHeader', FMenuGroupHeader);
     app.component('FMenuSplitGroup', FMenuSplitGroup);
+    app.component('FMenuButton', FMenuButton);
+    app.component('FSplitButton', FSplitButton);
+    app.component('FToolbar', FToolbar);
+    app.component('FToolbarButton', FToolbarButton);
+    app.component('FToolbarToggleButton', FToolbarToggleButton);
+    app.component('FToolbarRadioButton', FToolbarRadioButton);
+    app.component('FToolbarRadioGroup', FToolbarRadioGroup);
+    app.component('FToolbarGroup', FToolbarGroup);
+    app.component('FToolbarDivider', FToolbarDivider);
   },
 };

@@ -67,7 +67,7 @@ const name = ref('');
 
 ### Actions and navigation
 
-`FButton`, `FCompoundButton`, `FToggleButton`, `FLink`
+`FButton`, `FCompoundButton`, `FToggleButton`, `FMenuButton`, `FSplitButton`, `FLink`
 
 ### Forms and inputs
 
@@ -76,6 +76,10 @@ const name = ref('');
 ### Content and layout
 
 `FText`, `FDivider`, `FImage`, `FCard`, `FCardHeader`, `FCardPreview`, `FCardFooter`, `FAccordion`, `FAccordionItem`, `FAccordionHeader`, `FAccordionPanel`, `FTabList`, `FTab`, `FBreadcrumb`, `FBreadcrumbItem`, `FBreadcrumbButton`, `FBreadcrumbDivider`, `FList`, `FListItem`, `FAvatar`, `FAvatarGroup`, `FAvatarGroupItem`, `FAvatarGroupPopover`, `FPersona`
+
+### Toolbars
+
+`FToolbar`, `FToolbarButton`, `FToolbarToggleButton`, `FToolbarRadioButton`, `FToolbarRadioGroup`, `FToolbarGroup`, `FToolbarDivider`
 
 ### Feedback and status
 

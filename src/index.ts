@@ -59,6 +59,9 @@ export * from './components/Tooltip';
 export * from './components/Dialog';
 export * from './components/Drawer';
 export * from './components/Menu';
+export * from './components/MenuButton';
+export * from './components/SplitButton';
+export * from './components/Toolbar';
 export { FluentVue } from './plugin';
 export type { FluentTheme } from './types';
 
