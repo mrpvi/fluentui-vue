@@ -101,7 +101,9 @@ describe('hydration', () => {
       expect(divider.getAttribute('aria-labelledby')).toBe(content?.id);
     }
 
-    const sliders = [...container.querySelectorAll<HTMLInputElement>('input[type="range"]')];
+    const sliders = [
+      ...container.querySelectorAll<HTMLInputElement>('.fui-Slider input[type="range"]'),
+    ];
     expect(sliders).toHaveLength(2);
     expect(sliders[0]?.valueAsNumber).toBe(0.3);
     expect(sliders[0]?.getAttribute('aria-label')).toBe('Server volume');
@@ -112,6 +114,24 @@ describe('hydration', () => {
     expect(sliders[1]?.getAttribute('aria-invalid')).toBe('true');
     expect(sliders[1]?.getAttribute('aria-describedby')?.split(' ')).toHaveLength(2);
     expect(container.querySelector('label[for="' + sliders[1]?.id + '"]')).not.toBeNull();
+
+    const colorPicker = container.querySelector<HTMLElement>('.ssr-color-picker');
+    expect(colorPicker?.querySelectorAll('input[type="range"]')).toHaveLength(4);
+    expect(colorPicker?.querySelector('.fui-ColorArea')).not.toBeNull();
+    expect(
+      colorPicker?.querySelector<HTMLInputElement>('input[aria-label="Server hue"]')?.valueAsNumber,
+    ).toBe(210);
+    expect(
+      colorPicker?.querySelector<HTMLInputElement>('input[aria-label="Server opacity"]')
+        ?.valueAsNumber,
+    ).toBe(60);
+
+    const swatchPicker = container.querySelector<HTMLElement>('.ssr-swatch-picker');
+    expect(swatchPicker?.getAttribute('role')).toBe('radiogroup');
+    expect(swatchPicker?.querySelectorAll('[role="radio"]')).toHaveLength(2);
+    expect(swatchPicker?.querySelector('[aria-checked="true"]')?.getAttribute('tabindex')).toBe(
+      '0',
+    );
 
     const spinners = [...container.querySelectorAll<HTMLElement>('.fui-Spinner')];
     expect(spinners).toHaveLength(2);

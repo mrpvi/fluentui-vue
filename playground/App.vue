@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import {
   FAccordion,
+  FAlphaSlider,
   FAccordionHeader,
   FAccordionItem,
   FAccordionPanel,
@@ -22,6 +23,10 @@ import {
   FCheckbox,
   FCompoundButton,
   FCombobox,
+  FColorArea,
+  FColorPicker,
+  FColorSlider,
+  FColorSwatch,
   FCounterBadge,
   FDivider,
   FDropdown,
@@ -53,6 +58,8 @@ import {
   FSpinner,
   FSpinButton,
   FSwitch,
+  FSwatchPicker,
+  FSwatchPickerRow,
   FTab,
   FTabList,
   FText,
@@ -82,6 +89,8 @@ const standaloneRadio = ref(false);
 const radioSubmission = ref('');
 const sliderValue = ref(40);
 const sliderControlled = ref(35);
+const pickerColor = ref({ h: 210, s: 0.7, v: 0.85, a: 0.75 });
+const selectedSwatch = ref('blue');
 const ratingValue = ref(3);
 const controlledRatingValue = ref(2);
 const controlledRatingAttempt = ref<number | null>(null);
@@ -154,6 +163,37 @@ function ratingItemLabel(value: number) {
         {{ dark ? 'Use light theme' : 'Use dark theme' }}
       </FButton>
     </header>
+
+    <section id="color-controls">
+      <h2>Color controls</h2>
+      <div class="row" style="align-items: flex-start">
+        <FColorPicker v-model="pickerColor" shape="rounded" aria-label="Color picker demo">
+          <FColorArea />
+          <FColorSlider channel="hue" aria-label="Hue" />
+          <FAlphaSlider aria-label="Opacity" />
+        </FColorPicker>
+        <div class="column">
+          <FSwatchPicker
+            v-model="selectedSwatch"
+            layout="grid"
+            shape="rounded"
+            aria-label="Theme colors"
+          >
+            <FSwatchPickerRow>
+              <FColorSwatch value="blue" color="#0f6cbd" aria-label="Blue" />
+              <FColorSwatch value="green" color="#107c10" aria-label="Green" />
+              <FColorSwatch value="red" color="#d13438" aria-label="Red" />
+            </FSwatchPickerRow>
+            <FSwatchPickerRow>
+              <FColorSwatch value="purple" color="#5c2e91" aria-label="Purple" />
+              <FColorSwatch value="orange" color="#ca5010" aria-label="Orange" />
+              <FColorSwatch value="yellow" color="#f7c646" aria-label="Yellow" />
+            </FSwatchPickerRow>
+          </FSwatchPicker>
+          <FText>Selected swatch: {{ selectedSwatch }}</FText>
+        </div>
+      </div>
+    </section>
 
     <section>
       <h2>Text</h2>

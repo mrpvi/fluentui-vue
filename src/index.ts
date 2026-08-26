@@ -74,6 +74,8 @@ export * from './components/FlatTreeItem';
 export * from './components/Overflow';
 export * from './components/OverflowItem';
 export * from './components/OverflowDivider';
+export * from './components/ColorPicker';
+export * from './components/SwatchPicker';
 export * from './components/Dialog';
 export * from './components/Drawer';
 export * from './components/Menu';

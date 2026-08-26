@@ -85,6 +85,10 @@ const name = ref('');
 
 `FTree`, `FTreeItem`, `FTreeItemLayout`, `FTreeItemPersonaLayout`, `FFlatTree`, `FFlatTreeItem`, `FOverflow`, `FOverflowItem`, `FOverflowDivider`
 
+### Color controls
+
+`FColorPicker`, `FColorArea`, `FColorSlider`, `FAlphaSlider`, `FSwatchPicker`, `FSwatchPickerRow`, `FColorSwatch`, `FImageSwatch`, `FEmptySwatch`
+
 ### Feedback and status
 
 `FBadge`, `FCounterBadge`, `FPresenceBadge`, `FSpinner`, `FProgressBar`, `FSkeleton`, `FSkeletonItem`, `FAriaLiveAnnouncer`, `FMessageBar`, `FMessageBarTitle`, `FMessageBarBody`, `FMessageBarActions`, `FMessageBarGroup`, `FToaster`, `FToast`, `FToastTrigger`, `FToastTitle`, `FToastBody`, `FToastFooter`, `FInfoLabel`, `FInfoButton`

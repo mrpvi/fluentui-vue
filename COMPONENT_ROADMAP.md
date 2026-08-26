@@ -261,12 +261,12 @@ These components require advanced keyboard, measurement, observer, and collectio
 
 ## Phase 14 — Color controls
 
-53. ❌ **ColorPicker family**
+53. ✅ **ColorPicker family** — definition-of-done gates complete for `@fluentui/react-color-picker@9.3.0`
     - `FColorPicker`
     - `FColorArea`
     - `FColorSlider`
     - `FAlphaSlider`
-54. ❌ **SwatchPicker family**
+54. ✅ **SwatchPicker family** — definition-of-done gates complete for `@fluentui/react-swatch-picker@9.6.1`
     - `FSwatchPicker`
     - `FSwatchPickerRow`
     - `FColorSwatch`

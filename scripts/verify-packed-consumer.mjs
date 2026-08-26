@@ -45,6 +45,7 @@ import {
   FAvatarGroup,
   FAvatarGroupItem,
   FAvatarGroupPopover,
+  FAlphaSlider,
   FBadge,
   FBreadcrumb,
   FBreadcrumbButton,
@@ -56,6 +57,10 @@ import {
   FCardHeader,
   FCardPreview,
   FCheckbox,
+  FColorArea,
+  FColorPicker,
+  FColorSlider,
+  FColorSwatch,
   FCompoundButton,
   FCounterBadge,
   FDivider,
@@ -85,6 +90,8 @@ import {
   FSearchBox,
   FSpinner,
   FSpinButton,
+  FSwatchPicker,
+  FSwatchPickerRow,
   FSwitch,
   FTab,
   FTabList,
@@ -106,6 +113,9 @@ import {
   type CardOrientation,
   type CardSize,
   type CheckboxValue,
+  type ColorPickerShape,
+  type ColorSliderChannel,
+  type HsvColor,
   type CompoundButtonAppearance,
   type CompoundButtonIconPosition,
   type CompoundButtonShape,
@@ -141,6 +151,10 @@ import {
   type SpinnerSize,
   type SpinButtonAppearance,
   type SpinButtonValue,
+  type SwatchPickerLayout,
+  type SwatchPickerShape,
+  type SwatchPickerSize,
+  type SwatchPickerSpacing,
   type SwitchLabelPosition,
   type SwitchSize,
   type TabListAppearance,
@@ -185,6 +199,14 @@ const listNavigationMode: ListNavigationMode = 'items';
 const listSelectionMode: ListSelectionMode = 'multiselect';
 const selectedListItems = ref<ListValue[]>(['packed-one']);
 const selectedOptions = ref<string[]>(['packed-cat']);
+const pickerColor = ref<HsvColor>({ h: 210, s: 0.7, v: 0.8, a: 0.6 });
+const colorPickerShape: ColorPickerShape = 'rounded';
+const colorSliderChannel: ColorSliderChannel = 'hue';
+const selectedSwatch = ref('packed-blue');
+const swatchLayout: SwatchPickerLayout = 'grid';
+const swatchShape: SwatchPickerShape = 'rounded';
+const swatchSize: SwatchPickerSize = 'medium';
+const swatchSpacing: SwatchPickerSpacing = 'small';
 const dropdownAppearance: DropdownAppearance = 'filled-lighter';
 const dropdownPositioning: DropdownPositioning = 'auto';
 const dropdownSize: DropdownSize = 'large';
@@ -273,6 +295,45 @@ createApp({
                 ],
               },
             ),
+        },
+      ),
+      h(
+        FColorPicker,
+        {
+          modelValue: pickerColor.value,
+          'onUpdate:modelValue': value => (pickerColor.value = value),
+          shape: colorPickerShape,
+        },
+        {
+          default: () => [
+            h(FColorArea),
+            h(FColorSlider, {
+              channel: colorSliderChannel,
+              'aria-label': 'Packed hue',
+            }),
+            h(FAlphaSlider, { 'aria-label': 'Packed opacity' }),
+          ],
+        },
+      ),
+      h(
+        FSwatchPicker,
+        {
+          modelValue: selectedSwatch.value,
+          'onUpdate:modelValue': value => (selectedSwatch.value = value),
+          layout: swatchLayout,
+          shape: swatchShape,
+          size: swatchSize,
+          spacing: swatchSpacing,
+          'aria-label': 'Packed swatches',
+        },
+        {
+          default: () =>
+            h(FSwatchPickerRow, {}, {
+              default: () => [
+                h(FColorSwatch, { value: 'packed-blue', color: '#0f6cbd', 'aria-label': 'Blue' }),
+                h(FColorSwatch, { value: 'packed-red', color: '#d13438', 'aria-label': 'Red' }),
+              ],
+            }),
         },
       ),
       h(FBadge, { appearance: badgeAppearance, color: badgeColor }, () => 'Packed badge'),

@@ -1,6 +1,7 @@
 import { defineComponent, h } from 'vue';
 import {
   FAccordion,
+  FAlphaSlider,
   FAccordionHeader,
   FAccordionItem,
   FAccordionPanel,
@@ -21,6 +22,10 @@ import {
   FCheckbox,
   FCompoundButton,
   FCombobox,
+  FColorArea,
+  FColorPicker,
+  FColorSlider,
+  FColorSwatch,
   FCounterBadge,
   FDivider,
   FDropdown,
@@ -55,6 +60,7 @@ import {
   FSpinner,
   FSpinButton,
   FSwitch,
+  FSwatchPicker,
   FTab,
   FTabList,
   FText,
@@ -227,6 +233,27 @@ export const SsrFixture = defineComponent({
           max: 0.5,
           step: 0.1,
         }),
+        h(
+          FColorPicker,
+          { class: 'ssr-color-picker', modelValue: { h: 210, s: 0.7, v: 0.8, a: 0.6 } },
+          {
+            default: () => [
+              h(FColorArea),
+              h(FColorSlider, { channel: 'hue', 'aria-label': 'Server hue' }),
+              h(FAlphaSlider, { 'aria-label': 'Server opacity' }),
+            ],
+          },
+        ),
+        h(
+          FSwatchPicker,
+          { class: 'ssr-swatch-picker', defaultValue: 'blue', 'aria-label': 'Server colors' },
+          {
+            default: () => [
+              h(FColorSwatch, { value: 'blue', color: '#0f6cbd', 'aria-label': 'Server blue' }),
+              h(FColorSwatch, { value: 'green', color: '#107c10', 'aria-label': 'Server green' }),
+            ],
+          },
+        ),
         h(
           FField,
           {

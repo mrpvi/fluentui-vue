@@ -50,6 +50,19 @@ import { FOptionGroup } from './components/OptionGroup';
 import { FOverflow } from './components/Overflow';
 import { FOverflowDivider } from './components/OverflowDivider';
 import { FOverflowItem } from './components/OverflowItem';
+import {
+  FAlphaSlider,
+  FColorArea,
+  FColorPicker,
+  FColorSlider,
+} from './components/ColorPicker';
+import {
+  FColorSwatch,
+  FEmptySwatch,
+  FImageSwatch,
+  FSwatchPicker,
+  FSwatchPickerRow,
+} from './components/SwatchPicker';
 import { FSkeleton } from './components/Skeleton';
 import { FSkeletonItem } from './components/SkeletonItem';
 import { FSlider } from './components/Slider';
@@ -268,6 +281,15 @@ export const FluentVue: Plugin = {
     app.component('FOverflow', FOverflow);
     app.component('FOverflowDivider', FOverflowDivider);
     app.component('FOverflowItem', FOverflowItem);
+    app.component('FColorPicker', FColorPicker);
+    app.component('FColorArea', FColorArea);
+    app.component('FColorSlider', FColorSlider);
+    app.component('FAlphaSlider', FAlphaSlider);
+    app.component('FSwatchPicker', FSwatchPicker);
+    app.component('FSwatchPickerRow', FSwatchPickerRow);
+    app.component('FColorSwatch', FColorSwatch);
+    app.component('FImageSwatch', FImageSwatch);
+    app.component('FEmptySwatch', FEmptySwatch);
     app.component('FSkeleton', FSkeleton);
     app.component('FSkeletonItem', FSkeletonItem);
     app.component('FSlider', FSlider);
