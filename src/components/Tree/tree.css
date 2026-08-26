@@ -1,0 +1,13 @@
+.fui-Tree {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--fui-color-neutral-foreground-1);
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-300);
+  line-height: var(--fui-line-height-base-300);
+}
+
+.fui-Tree[hidden] {
+  display: none;
+}

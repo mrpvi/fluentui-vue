@@ -1,0 +1,62 @@
+.fui-SplitButton {
+  display: inline-flex;
+  align-items: stretch;
+  vertical-align: middle;
+}
+
+.fui-SplitButton > .fui-Button {
+  min-width: 0;
+}
+
+.fui-SplitButton__primaryAction {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.fui-SplitButton__menuButton {
+  margin-inline-start: calc(-1 * var(--fui-stroke-width-thin));
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  padding-inline: var(--fui-spacing-horizontal-xs);
+}
+
+.fui-SplitButton__menuButton--open:not(.fui-Button--disabled):not(.fui-Button--disabled-focusable) {
+  background-color: var(--fui-color-neutral-background-1-pressed);
+  border-color: var(--fui-color-neutral-stroke-1-pressed);
+}
+
+.fui-SplitButton__menuIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+}
+
+.fui-SplitButton__menuIcon > svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
+.fui-SplitButton--circular .fui-SplitButton__primaryAction {
+  border-start-start-radius: var(--fui-border-radius-circular);
+  border-end-start-radius: var(--fui-border-radius-circular);
+}
+
+.fui-SplitButton--circular .fui-SplitButton__menuButton {
+  border-start-end-radius: var(--fui-border-radius-circular);
+  border-end-end-radius: var(--fui-border-radius-circular);
+}
+
+.fui-SplitButton--square .fui-Button {
+  border-radius: var(--fui-border-radius-none);
+}
+
+@media (forced-colors: active) {
+  .fui-SplitButton__menuButton--open {
+    color: HighlightText;
+    background-color: Highlight;
+    border-color: Highlight;
+  }
+}

@@ -1,0 +1,40 @@
+.fui-Popover {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.fui-PopoverTrigger {
+  box-sizing: border-box;
+}
+
+.fui-PopoverSurface {
+  z-index: 1000;
+  box-sizing: border-box;
+  min-width: 160px;
+  max-width: min(360px, calc(100vw - 8px));
+  padding: var(--fui-spacing-vertical-m) var(--fui-spacing-horizontal-m);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+  border-radius: var(--fui-border-radius-medium);
+  outline: 0;
+  background: var(--fui-color-neutral-background-1);
+  box-shadow: var(--fui-shadow-16);
+  color: var(--fui-color-neutral-foreground-1);
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-300);
+  line-height: var(--fui-line-height-base-300);
+}
+
+.fui-PopoverSurface:focus-visible {
+  outline: 2px solid var(--fui-color-stroke-focus-2);
+  outline-offset: 2px;
+}
+
+@media (forced-colors: active) {
+  .fui-PopoverSurface {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    forced-color-adjust: none;
+  }
+}

@@ -1,0 +1,50 @@
+@import '../TreeItemLayout/treeItemLayout.css';
+
+.fui-TreeItemPersonaLayout {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: auto auto auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  min-height: 48px;
+  margin: 1px 0;
+  padding: 4px 8px;
+  padding-inline-start: calc((var(--fui-tree-item-level, 1) - 1) * 24px + 4px);
+  border-radius: var(--fui-border-radius-medium);
+  column-gap: 8px;
+}
+
+.fui-Tree--subtle .fui-TreeItemPersonaLayout:hover,
+.fui-Tree--subtle .fui-TreeItem:focus > .fui-TreeItemPersonaLayout {
+  background: var(--fui-color-subtle-background-hover);
+}
+
+.fui-TreeItemPersonaLayout__media,
+.fui-TreeItemPersonaLayout__content,
+.fui-TreeItemPersonaLayout__main,
+.fui-TreeItemPersonaLayout__description {
+  display: block;
+  min-width: 0;
+}
+
+.fui-TreeItemPersonaLayout__main,
+.fui-TreeItemPersonaLayout__description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fui-TreeItemPersonaLayout__description {
+  color: var(--fui-color-neutral-foreground-3);
+  font-size: var(--fui-font-size-base-200);
+  line-height: var(--fui-line-height-base-200);
+}
+
+.fui-TreeItemPersonaLayout__actions {
+  visibility: hidden;
+}
+
+.fui-TreeItem:hover > .fui-TreeItemPersonaLayout .fui-TreeItemLayout__actions,
+.fui-TreeItem:focus-within > .fui-TreeItemPersonaLayout .fui-TreeItemLayout__actions,
+.fui-TreeItemPersonaLayout--actions-visible .fui-TreeItemLayout__actions {
+  visibility: visible;
+}

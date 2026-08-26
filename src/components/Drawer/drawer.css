@@ -1,0 +1,189 @@
+.fui-DrawerHost {
+  position: fixed;
+  inset: 0;
+  z-index: 1150;
+  pointer-events: none;
+}
+
+.fui-DrawerBackdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.42);
+  pointer-events: auto;
+}
+
+.fui-DrawerBackdrop--non-modal {
+  background: transparent;
+  pointer-events: none;
+}
+
+.fui-DrawerBackdrop--alert {
+  background: rgba(0, 0, 0, 0.42);
+}
+
+.fui-DrawerSurface {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: var(--fui-color-neutral-background-1);
+  color: var(--fui-color-neutral-foreground-1);
+  box-shadow: var(--fui-shadow-64);
+  pointer-events: auto;
+  overflow: auto;
+}
+
+.fui-DrawerSurface--overlay {
+  position: absolute;
+  inset-block: 0;
+  width: min(100vw, 940px);
+  padding: 24px;
+}
+
+.fui-DrawerSurface--inline {
+  min-height: 100%;
+  padding: 24px;
+  box-shadow: none;
+}
+
+.fui-DrawerSurface--start {
+  inset-inline-start: 0;
+}
+
+.fui-DrawerSurface--end {
+  inset-inline-end: 0;
+}
+
+.fui-DrawerSurface--bottom {
+  inset-inline: 0;
+  inset-block-start: auto;
+  width: 100%;
+  max-height: 100vh;
+}
+
+.fui-DrawerSurface--small {
+  max-width: 320px;
+}
+
+.fui-DrawerSurface--medium {
+  max-width: 592px;
+}
+
+.fui-DrawerSurface--large {
+  max-width: 940px;
+}
+
+.fui-DrawerSurface--full {
+  max-width: 100vw;
+}
+
+.fui-DrawerSurface--separator {
+  border-inline-end: 1px solid var(--fui-color-neutral-stroke-1);
+}
+
+.fui-DrawerSurface:focus-visible {
+  outline: 2px solid var(--fui-color-stroke-focus-2);
+  outline-offset: -2px;
+}
+
+.fui-DrawerHeader,
+.fui-DrawerFooter {
+  flex: none;
+  padding-block: 4px 16px;
+}
+
+.fui-DrawerHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-block-end: 1px solid transparent;
+}
+
+.fui-DrawerHeader[data-scroll-state='middle'],
+.fui-DrawerHeader[data-scroll-state='bottom'] {
+  border-block-end-color: var(--fui-color-neutral-stroke-2);
+}
+
+.fui-DrawerHeaderTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fui-DrawerHeaderTitle__heading {
+  flex: 1;
+  margin: 0;
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-500);
+  line-height: var(--fui-line-height-base-500);
+}
+
+.fui-DrawerHeaderTitle__action {
+  margin-inline-start: auto;
+}
+
+.fui-DrawerHeaderNavigation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fui-DrawerBody {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding-block: 8px 16px;
+}
+
+.fui-DrawerFooter {
+  padding-block: 16px 4px;
+  border-block-start: 1px solid transparent;
+}
+
+.fui-DrawerFooter[data-scroll-state='top'],
+.fui-DrawerFooter[data-scroll-state='middle'] {
+  border-block-start-color: var(--fui-color-neutral-stroke-2);
+}
+
+@media (max-width: 480px) {
+  .fui-DrawerSurface--overlay {
+    width: 100%;
+    max-width: 100vw;
+    padding: 16px;
+  }
+
+  .fui-DrawerSurface--start,
+  .fui-DrawerSurface--end {
+    max-width: min(100vw, 320px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fui-DrawerSurface--overlay {
+    animation: fui-drawer-enter 160ms ease-out;
+  }
+}
+
+@keyframes fui-drawer-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (forced-colors: active) {
+  .fui-DrawerSurface {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .fui-DrawerBackdrop {
+    background: CanvasText;
+    opacity: 0.5;
+  }
+}

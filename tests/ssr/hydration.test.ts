@@ -88,7 +88,7 @@ describe('hydration', () => {
     expect(select?.getAttribute('aria-describedby')).not.toBeNull();
     expect(select?.closest('.fui-Select')?.querySelector('.fui-Select__icon')).not.toBeNull();
 
-    const dividers = [...container.querySelectorAll<HTMLElement>('[role="separator"]')];
+    const dividers = [...container.querySelectorAll<HTMLElement>('.fui-Divider[role="separator"]')];
     expect(dividers).toHaveLength(3);
     expect(dividers[0]?.getAttribute('aria-labelledby')).toBeNull();
     expect(dividers[0]?.getAttribute('aria-label')).toBe('Contentless boundary');
@@ -101,7 +101,9 @@ describe('hydration', () => {
       expect(divider.getAttribute('aria-labelledby')).toBe(content?.id);
     }
 
-    const sliders = [...container.querySelectorAll<HTMLInputElement>('input[type="range"]')];
+    const sliders = [
+      ...container.querySelectorAll<HTMLInputElement>('.fui-Slider input[type="range"]'),
+    ];
     expect(sliders).toHaveLength(2);
     expect(sliders[0]?.valueAsNumber).toBe(0.3);
     expect(sliders[0]?.getAttribute('aria-label')).toBe('Server volume');
@@ -112,6 +114,24 @@ describe('hydration', () => {
     expect(sliders[1]?.getAttribute('aria-invalid')).toBe('true');
     expect(sliders[1]?.getAttribute('aria-describedby')?.split(' ')).toHaveLength(2);
     expect(container.querySelector('label[for="' + sliders[1]?.id + '"]')).not.toBeNull();
+
+    const colorPicker = container.querySelector<HTMLElement>('.ssr-color-picker');
+    expect(colorPicker?.querySelectorAll('input[type="range"]')).toHaveLength(4);
+    expect(colorPicker?.querySelector('.fui-ColorArea')).not.toBeNull();
+    expect(
+      colorPicker?.querySelector<HTMLInputElement>('input[aria-label="Server hue"]')?.valueAsNumber,
+    ).toBe(210);
+    expect(
+      colorPicker?.querySelector<HTMLInputElement>('input[aria-label="Server opacity"]')
+        ?.valueAsNumber,
+    ).toBe(60);
+
+    const swatchPicker = container.querySelector<HTMLElement>('.ssr-swatch-picker');
+    expect(swatchPicker?.getAttribute('role')).toBe('radiogroup');
+    expect(swatchPicker?.querySelectorAll('[role="radio"]')).toHaveLength(2);
+    expect(swatchPicker?.querySelector('[aria-checked="true"]')?.getAttribute('tabindex')).toBe(
+      '0',
+    );
 
     const spinners = [...container.querySelectorAll<HTMLElement>('.fui-Spinner')];
     expect(spinners).toHaveLength(2);
@@ -245,6 +265,78 @@ describe('hydration', () => {
     expect(skeletonStatus?.getAttribute('aria-busy')).toBe('false');
     expect(skeletonStatus?.style.width).toBe('180px');
 
+    const singleListbox = container.querySelector<HTMLElement>('.ssr-listbox');
+    expect(singleListbox?.getAttribute('role')).toBe('listbox');
+    expect(singleListbox?.getAttribute('tabindex')).toBe('0');
+    expect(singleListbox?.getAttribute('aria-required')).toBe('true');
+    expect(singleListbox?.getAttribute('aria-labelledby')).toBe(
+      singleListbox?.closest('.fui-Field')?.querySelector<HTMLElement>('label')?.id,
+    );
+    expect(singleListbox?.getAttribute('aria-describedby')).toBe(
+      singleListbox?.closest('.fui-Field')?.querySelector<HTMLElement>('.fui-Field__hint')?.id,
+    );
+    const singleOptions = [
+      ...(singleListbox?.querySelectorAll<HTMLElement>('[role="option"]') ?? []),
+    ];
+    expect(singleOptions).toHaveLength(2);
+    expect(singleOptions[0]?.id).toMatch(/^fui-option-/);
+    expect(singleOptions[0]?.getAttribute('aria-selected')).toBe('true');
+    expect(singleOptions[1]?.getAttribute('aria-disabled')).toBe('true');
+    expect(singleListbox?.getAttribute('aria-activedescendant')).toBe(singleOptions[0]?.id);
+    const optionGroup = singleListbox?.querySelector<HTMLElement>('[role="group"]');
+    expect(optionGroup?.getAttribute('aria-labelledby')).toBe(
+      optionGroup?.querySelector<HTMLElement>('.fui-OptionGroup__label')?.id,
+    );
+
+    singleListbox?.focus();
+    singleListbox?.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowDown' }));
+    singleListbox?.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'Enter' }));
+    await nextTick();
+    expect(singleListbox?.getAttribute('aria-activedescendant')).toBe(singleOptions[1]?.id);
+    expect(singleOptions[0]?.getAttribute('aria-selected')).toBe('true');
+    expect(singleOptions[1]?.getAttribute('aria-selected')).toBe('false');
+
+    const multiselectListbox = container.querySelector<HTMLElement>('.ssr-multiselect-listbox');
+    expect(multiselectListbox?.getAttribute('role')).toBe('menu');
+    expect(multiselectListbox?.getAttribute('aria-multiselectable')).toBeNull();
+    const multiselectOptions = [
+      ...(multiselectListbox?.querySelectorAll<HTMLElement>('[role="menuitemcheckbox"]') ?? []),
+    ];
+    expect(multiselectOptions).toHaveLength(2);
+    expect(multiselectOptions[0]?.getAttribute('aria-checked')).toBe('true');
+    multiselectOptions[1]?.click();
+    await nextTick();
+    expect(multiselectOptions[0]?.getAttribute('aria-checked')).toBe('true');
+    expect(multiselectOptions[1]?.getAttribute('aria-checked')).toBe('true');
+
+    const dropdown = container.querySelector<HTMLElement>('.ssr-dropdown');
+    const dropdownTrigger = dropdown?.querySelector<HTMLButtonElement>('.fui-Dropdown__button');
+    expect(dropdownTrigger?.getAttribute('role')).toBe('combobox');
+    expect(dropdownTrigger?.getAttribute('aria-expanded')).toBe('false');
+    expect(dropdownTrigger?.getAttribute('aria-required')).toBe('true');
+    expect(dropdownTrigger?.getAttribute('aria-labelledby')).toBe(
+      dropdown?.closest('.fui-Field')?.querySelector<HTMLElement>('label')?.id,
+    );
+    expect(dropdownTrigger?.getAttribute('aria-describedby')).toBe(
+      dropdown?.closest('.fui-Field')?.querySelector<HTMLElement>('.fui-Field__hint')?.id,
+    );
+    expect(dropdownTrigger?.textContent).toContain('Server Cat');
+    dropdownTrigger?.click();
+    await nextTick();
+    await nextTick();
+    const dropdownPopup = dropdown?.querySelector<HTMLElement>('.fui-Dropdown__listbox');
+    const dropdownOptions = [
+      ...(dropdownPopup?.querySelectorAll<HTMLElement>('[role="option"]') ?? []),
+    ];
+    expect(dropdownTrigger?.getAttribute('aria-expanded')).toBe('true');
+    expect(dropdownPopup?.classList.contains('fui-Dropdown__listbox--closed')).toBe(false);
+    expect(dropdownOptions).toHaveLength(2);
+    expect(dropdownTrigger?.getAttribute('aria-activedescendant')).toBe(dropdownOptions[0]?.id);
+    dropdownOptions[1]?.click();
+    await nextTick();
+    expect(dropdownTrigger?.getAttribute('aria-expanded')).toBe('false');
+    expect(dropdownTrigger?.textContent).toContain('Server Dog');
+
     const card = container.querySelector<HTMLElement>('.ssr-card');
     const cardCheckbox = card?.querySelector<HTMLInputElement>('input[type="checkbox"]');
     expect(card?.getAttribute('role')).toBe('group');
@@ -282,6 +374,22 @@ describe('hydration', () => {
     expect(fieldSpinButton?.getAttribute('aria-describedby')).toBe(
       fieldSpinButton?.closest('.fui-Field')?.querySelector<HTMLElement>('.fui-Field__hint')?.id,
     );
+
+    const tree = container.querySelector<HTMLElement>('.ssr-tree');
+    expect(tree?.getAttribute('role')).toBe('tree');
+    expect(tree?.getAttribute('aria-multiselectable')).toBe('true');
+    const treeItems = [...(tree?.querySelectorAll<HTMLElement>('[role="treeitem"]') ?? [])];
+    expect(treeItems).toHaveLength(3);
+    expect(treeItems[0]?.getAttribute('aria-expanded')).toBe('true');
+    expect(treeItems[1]?.getAttribute('aria-level')).toBe('2');
+    expect(treeItems[2]?.getAttribute('aria-checked')).toBe('true');
+    expect(tree?.querySelector('[role="group"]')).not.toBeNull();
+
+    const overflow = container.querySelector<HTMLElement>('.ssr-overflow');
+    expect(overflow?.getAttribute('data-overflowing')).toBe('false');
+    expect(overflow?.querySelectorAll('[data-overflow-item]')).toHaveLength(2);
+    expect(overflow?.querySelector('[data-overflow-divider]')).not.toBeNull();
+    expect(overflow?.querySelector('[hidden]')).toBeNull();
 
     const delayedSpinner = container.querySelector<HTMLElement>('.ssr-delayed-spinner');
     expect(delayedSpinner).not.toBeNull();

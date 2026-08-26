@@ -67,19 +67,35 @@ const name = ref('');
 
 ### Actions and navigation
 
-`FButton`, `FCompoundButton`, `FToggleButton`, `FLink`
+`FButton`, `FCompoundButton`, `FToggleButton`, `FMenuButton`, `FSplitButton`, `FLink`
 
 ### Forms and inputs
 
-`FField`, `FLabel`, `FInput`, `FTextarea`, `FCheckbox`, `FSwitch`, `FRadio`, `FRadioGroup`, `FSelect`, `FSearchBox`, `FSlider`, `FSpinButton`, `FRating`, `FRatingItem`, `FRatingDisplay`
+`FField`, `FLabel`, `FInput`, `FTextarea`, `FCheckbox`, `FSwitch`, `FRadio`, `FRadioGroup`, `FSelect`, `FSearchBox`, `FSlider`, `FSpinButton`, `FRating`, `FRatingItem`, `FRatingDisplay`, `FListbox`, `FOption`, `FOptionGroup`, `FDropdown`, `FCombobox`, `FTagPicker`, `FTagPickerControl`, `FTagPickerInput`, `FTagPickerButton`, `FTagPickerList`, `FTagPickerOption`, `FTagPickerOptionGroup`, `FTagPickerGroup`
 
 ### Content and layout
 
-`FText`, `FDivider`, `FImage`, `FCard`, `FCardHeader`, `FCardPreview`, `FCardFooter`
+`FText`, `FDivider`, `FImage`, `FTable`, `FTableHeader`, `FTableHeaderCell`, `FTableBody`, `FTableRow`, `FTableCell`, `FTableSelectionCell`, `FTableCellLayout`, `FTableCellActions`, `FTableResizeHandle`, `FDataGrid`, `FDataGridHeader`, `FDataGridHeaderCell`, `FDataGridBody`, `FDataGridRow`, `FDataGridCell`, `FDataGridSelectionCell`, `FCard`, `FCardHeader`, `FCardPreview`, `FCardFooter`, `FAccordion`, `FAccordionItem`, `FAccordionHeader`, `FAccordionPanel`, `FTabList`, `FTab`, `FBreadcrumb`, `FBreadcrumbItem`, `FBreadcrumbButton`, `FBreadcrumbDivider`, `FList`, `FListItem`, `FAvatar`, `FAvatarGroup`, `FAvatarGroupItem`, `FAvatarGroupPopover`, `FPersona`, `FTag`, `FTagGroup`, `FInteractionTag`, `FInteractionTagPrimary`, `FInteractionTagSecondary`
+
+### Toolbars
+
+`FToolbar`, `FToolbarButton`, `FToolbarToggleButton`, `FToolbarRadioButton`, `FToolbarRadioGroup`, `FToolbarGroup`, `FToolbarDivider`
+
+### Hierarchical and responsive layout
+
+`FTree`, `FTreeItem`, `FTreeItemLayout`, `FTreeItemPersonaLayout`, `FFlatTree`, `FFlatTreeItem`, `FOverflow`, `FOverflowItem`, `FOverflowDivider`
+
+### Color controls
+
+`FColorPicker`, `FColorArea`, `FColorSlider`, `FAlphaSlider`, `FSwatchPicker`, `FSwatchPickerRow`, `FColorSwatch`, `FImageSwatch`, `FEmptySwatch`
 
 ### Feedback and status
 
-`FBadge`, `FCounterBadge`, `FPresenceBadge`, `FSpinner`, `FProgressBar`, `FSkeleton`, `FSkeletonItem`
+`FBadge`, `FCounterBadge`, `FPresenceBadge`, `FSpinner`, `FProgressBar`, `FSkeleton`, `FSkeletonItem`, `FAriaLiveAnnouncer`, `FMessageBar`, `FMessageBarTitle`, `FMessageBarBody`, `FMessageBarActions`, `FMessageBarGroup`, `FToaster`, `FToast`, `FToastTrigger`, `FToastTitle`, `FToastBody`, `FToastFooter`, `FInfoLabel`, `FInfoButton`
+
+### Overlays
+
+`FPortal`, `FPopover`, `FPopoverTrigger`, `FPopoverSurface`, `FTooltip`, `FDialog`, `FDialogTrigger`, `FDialogSurface`, `FDialogBody`, `FDialogTitle`, `FDialogContent`, `FDialogActions`, `FDrawer`, `FOverlayDrawer`, `FInlineDrawer`, `FDrawerHeader`, `FDrawerHeaderTitle`, `FDrawerHeaderNavigation`, `FDrawerBody`, `FDrawerFooter`, `FMenu`, `FMenuTrigger`, `FMenuPopover`, `FMenuList`, `FMenuItem`, `FMenuItemLink`, `FMenuItemCheckbox`, `FMenuItemRadio`, `FMenuItemSwitch`, `FMenuDivider`, `FMenuGroup`, `FMenuGroupHeader`, `FMenuSplitGroup`
 
 ## Themes
 

@@ -71,54 +71,54 @@ Delay these components until Menu exists:
     - `FCardHeader`
     - `FCardPreview`
     - `FCardFooter`
-25. ❌ **Accordion family**
+25. ✅ **Accordion family** — definition-of-done gates complete for `@fluentui/react-accordion@9.12.3`
     - `FAccordion`
     - `FAccordionItem`
     - `FAccordionHeader`
     - `FAccordionPanel`
-26. ❌ **Tabs family**
+26. ✅ **Tabs family** — definition-of-done gates complete for `@fluentui/react-tabs@9.12.4`
     - `FTabList`
     - `FTab`
-27. ❌ **Breadcrumb family**
+27. ✅ **Breadcrumb family** — definition-of-done gates complete for `@fluentui/react-breadcrumb@9.4.5`
     - `FBreadcrumb`
     - `FBreadcrumbItem`
     - `FBreadcrumbButton`
     - `FBreadcrumbDivider`
-28. ❌ **List family**
+28. ✅ **List family** — definition-of-done gates complete for `@fluentui/react-list@9.6.18`
     - `FList`
     - `FListItem`
 
 ## Phase 6 — Identity components
 
-29. ❌ **Avatar family**
+29. ✅ **Avatar family** — definition-of-done gates complete for `@fluentui/react-avatar@9.11.6`
     - `FAvatar`
     - `FAvatarGroup`
     - `FAvatarGroupItem`
     - `FAvatarGroupPopover`
-30. ❌ **Persona → `FPersona`**
+30. ✅ **Persona → `FPersona`** — definition-of-done gates complete for `@fluentui/react-persona@9.7.8`
 
 Avatar should be implemented before Persona because Persona composes avatar, text, secondary information, and presence state.
 
 ## Phase 7 — Selection and Combobox foundations
 
-31. ❌ **Listbox family**
+31. ✅ **Listbox family** — definition-of-done gates complete for `@fluentui/react-combobox@9.17.5`
     - `FListbox`
     - `FOption`
     - `FOptionGroup`
-32. ❌ **Dropdown → `FDropdown`**
-33. ❌ **Combobox → `FCombobox`**
+32. ✅ **Dropdown → `FDropdown`** — definition-of-done gates complete for `@fluentui/react-combobox@9.17.5`
+33. ✅ **Combobox → `FCombobox`** — definition-of-done gates complete for `@fluentui/react-combobox@9.17.5`
 
 Listbox and Option come first because Dropdown and Combobox depend on their option model, keyboard navigation, active-descendant behavior, and selection state.
 
 ## Phase 8 — Overlay foundations
 
-34. ❌ **Portal → `FPortal`**
-35. ❌ **Popover family**
+34. ✅ **Portal → `FPortal`** — foundation complete for SSR-safe Teleport rendering
+35. ✅ **Popover family** — definition-of-done gates complete for `@fluentui/react-popover@9.13.0`
     - `FPopover`
     - `FPopoverTrigger`
     - `FPopoverSurface`
-36. ❌ **Tooltip → `FTooltip`**
-37. ❌ **Dialog family**
+36. ✅ **Tooltip → `FTooltip`** — definition-of-done gates complete for `@fluentui/react-tooltip@9.2.0`
+37. ✅ **Dialog family** — definition-of-done gates complete for `@fluentui/react-dialog@9.18.4`
     - `FDialog`
     - `FDialogTrigger`
     - `FDialogSurface`
@@ -126,7 +126,7 @@ Listbox and Option come first because Dropdown and Combobox depend on their opti
     - `FDialogTitle`
     - `FDialogContent`
     - `FDialogActions`
-38. ❌ **Drawer family**
+38. ✅ **Drawer family** — definition-of-done gates complete for `@fluentui/react-drawer@9.13.3`
     - `FDrawer`
     - `FOverlayDrawer`
     - `FInlineDrawer`
@@ -149,7 +149,7 @@ Before these components, establish shared internal foundations for:
 
 ## Phase 9 — Menu and toolbar
 
-39. ❌ **Menu family**
+39. ✅ **Menu family** — definition-of-done gates complete for `@fluentui/react-menu@9.25.4`
     - `FMenu`
     - `FMenuTrigger`
     - `FMenuPopover`
@@ -163,9 +163,9 @@ Before these components, establish shared internal foundations for:
     - `FMenuGroup`
     - `FMenuGroupHeader`
     - `FMenuSplitGroup`
-40. ❌ **MenuButton → `FMenuButton`**
-41. ❌ **SplitButton → `FSplitButton`**
-42. ❌ **Toolbar family**
+40. ✅ **MenuButton → `FMenuButton`** — definition-of-done gates complete for `@fluentui/react-button@9.11.0`
+41. ✅ **SplitButton → `FSplitButton`** — definition-of-done gates complete for `@fluentui/react-button@9.11.0`
+42. ✅ **Toolbar family** — definition-of-done gates complete for `@fluentui/react-toolbar@9.8.4`
     - `FToolbar`
     - `FToolbarButton`
     - `FToolbarToggleButton`
@@ -178,22 +178,22 @@ Menu comes after Popover because it depends on positioning, dismissal, focus mov
 
 ## Phase 10 — Status and notification components
 
-43. ❌ **ARIA live announcer foundation**
+43. ✅ **ARIA live announcer foundation**
     - `FAriaLiveAnnouncer`
-44. ❌ **MessageBar family**
+44. ✅ **MessageBar family**
     - `FMessageBar`
     - `FMessageBarTitle`
     - `FMessageBarBody`
     - `FMessageBarActions`
     - `FMessageBarGroup`
-45. ❌ **Toast family**
+45. ✅ **Toast family**
     - `FToaster`
     - `FToast`
     - `FToastTrigger`
     - `FToastTitle`
     - `FToastBody`
     - `FToastFooter`
-46. ❌ **InfoLabel family**
+46. ✅ **InfoLabel family**
     - `FInfoLabel`
     - `FInfoButton`
 
@@ -201,13 +201,13 @@ The ARIA announcer should precede notifications so dynamic messages can be annou
 
 ## Phase 11 — Tags and pickers
 
-47. ❌ **Tag family**
+47. ✅ **Tag family** — definition-of-done gates complete for `@fluentui/react-tags@9.9.5`
     - `FTag`
     - `FTagGroup`
     - `FInteractionTag`
     - `FInteractionTagPrimary`
     - `FInteractionTagSecondary`
-48. ❌ **TagPicker family**
+48. ✅ **TagPicker family** — definition-of-done gates complete for `@fluentui/react-tag-picker@9.10.3`
     - `FTagPicker`
     - `FTagPickerControl`
     - `FTagPickerInput`
@@ -221,7 +221,7 @@ TagPicker should come after Tag, Combobox, Listbox, Popover, and keyboard-select
 
 ## Phase 12 — Data components
 
-49. ❌ **Table family**
+49. ✅ **Table family** — semantic table adaptation complete for `@fluentui/react-table@9.19.20`
     - `FTable`
     - `FTableHeader`
     - `FTableHeaderCell`
@@ -232,7 +232,7 @@ TagPicker should come after Tag, Combobox, Listbox, Popover, and keyboard-select
     - `FTableCellLayout`
     - `FTableCellActions`
     - `FTableResizeHandle`
-50. ❌ **DataGrid family**
+50. ✅ **DataGrid family** — selection, sorting, keyboard navigation, and practical resizing complete for `@fluentui/react-table@9.19.20`
     - `FDataGrid`
     - `FDataGridHeader`
     - `FDataGridHeaderCell`
@@ -245,14 +245,14 @@ Implement semantic Table first. DataGrid adds sorting, selection, keyboard navig
 
 ## Phase 13 — Hierarchical components
 
-51. ❌ **Tree family**
+51. ✅ **Tree family**
     - `FTree`
     - `FTreeItem`
     - `FTreeItemLayout`
     - `FTreeItemPersonaLayout`
     - `FFlatTree`
     - `FFlatTreeItem`
-52. ❌ **Overflow family**
+52. ✅ **Overflow family**
     - `FOverflow`
     - `FOverflowItem`
     - `FOverflowDivider`
@@ -261,12 +261,12 @@ These components require advanced keyboard, measurement, observer, and collectio
 
 ## Phase 14 — Color controls
 
-53. ❌ **ColorPicker family**
+53. ✅ **ColorPicker family** — definition-of-done gates complete for `@fluentui/react-color-picker@9.3.0`
     - `FColorPicker`
     - `FColorArea`
     - `FColorSlider`
     - `FAlphaSlider`
-54. ❌ **SwatchPicker family**
+54. ✅ **SwatchPicker family** — definition-of-done gates complete for `@fluentui/react-swatch-picker@9.6.1`
     - `FSwatchPicker`
     - `FSwatchPickerRow`
     - `FColorSwatch`
@@ -277,7 +277,7 @@ Color controls need pointer, keyboard, RTL, value-clamping, and forced-color tes
 
 ## Phase 15 — Advanced navigation and presentation
 
-55. ❌ **Carousel family**
+55. ✅ **Carousel family** — definition-of-done gates complete for `@fluentui/react-carousel@9.9.12`
     - `FCarousel`
     - `FCarouselViewport`
     - `FCarouselSlider`
@@ -288,7 +288,7 @@ Color controls need pointer, keyboard, RTL, value-clamping, and forced-color tes
     - `FCarouselNavButton`
     - `FCarouselNavImageButton`
     - `FCarouselNavContainer`
-56. ❌ **Navigation family**
+56. ✅ **Navigation family** — definition-of-done gates complete for `@fluentui/react-nav-preview@0.13.9`
     - `FNav`
     - `FNavItem`
     - `FNavSubItem`
@@ -305,7 +305,7 @@ Color controls need pointer, keyboard, RTL, value-clamping, and forced-color tes
     - `FAppItem`
     - `FAppItemStatic`
     - `FSplitNavItem`
-57. ❌ **TeachingPopover family**
+57. ✅ **TeachingPopover family** — definition-of-done gates complete for `@fluentui/react-teaching-popover@9.7.5`
     - `FTeachingPopover`
     - `FTeachingPopoverTrigger`
     - `FTeachingPopoverSurface`
@@ -319,7 +319,7 @@ These components come last because they combine overlays, focus management, navi
 
 ## Immediate next development batch
 
-The current form-control completion batch, ToggleButton, and CompoundButton are complete. The next incomplete roadmap work begins with Accordion, but it requires a separate approved request.
+The roadmap component families are complete through TeachingPopover. Future batches should focus on shared hardening, integration coverage, and release verification rather than introducing unlisted families.
 
 ## Rules for updating this roadmap
 

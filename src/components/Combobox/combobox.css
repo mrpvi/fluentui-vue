@@ -1,0 +1,161 @@
+.fui-Combobox {
+  position: relative;
+  display: inline-flex;
+  box-sizing: border-box;
+  min-width: 250px;
+  max-width: 100%;
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+  border-bottom-color: var(--fui-color-neutral-stroke-accessible);
+  border-radius: var(--fui-border-radius-medium);
+  background: var(--fui-color-neutral-background-1);
+  color: var(--fui-color-neutral-foreground-1);
+  font-family: var(--fui-font-family-base);
+}
+
+.fui-Combobox::after {
+  position: absolute;
+  inset-inline: -1px;
+  bottom: -1px;
+  height: 3px;
+  border-bottom: var(--fui-stroke-width-thick) solid var(--fui-color-compound-brand-stroke);
+  border-radius: inherit;
+  clip-path: inset(calc(100% - 2px) 0 0 0);
+  content: '';
+  pointer-events: none;
+  transform: scaleX(0);
+  transition: transform var(--fui-duration-normal) var(--fui-curve-decelerate-mid);
+}
+
+.fui-Combobox:focus-within::after {
+  transform: scaleX(1);
+}
+
+.fui-Combobox--filled-lighter {
+  border-color: transparent;
+}
+.fui-Combobox--filled-darker {
+  border-color: transparent;
+  background: var(--fui-color-neutral-background-3);
+}
+.fui-Combobox--underline {
+  border-color: transparent;
+  border-radius: 0;
+  background: var(--fui-color-transparent-background);
+}
+.fui-Combobox--underline::after {
+  border-radius: 0;
+}
+
+.fui-Combobox__input {
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+  padding-block: 5px;
+  padding-inline: calc(var(--fui-spacing-horizontal-m-nudge) + var(--fui-spacing-horizontal-xxs))
+    36px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--fui-font-size-base-300);
+  line-height: var(--fui-line-height-base-300);
+}
+
+.fui-Combobox--small .fui-Combobox__input {
+  padding-block: 3px;
+  padding-inline-start: calc(
+    var(--fui-spacing-horizontal-s-nudge) + var(--fui-spacing-horizontal-xxs)
+  );
+  font-size: var(--fui-font-size-base-200);
+  line-height: var(--fui-line-height-base-200);
+}
+
+.fui-Combobox--large .fui-Combobox__input {
+  padding-block: 7px;
+  padding-inline-start: calc(
+    var(--fui-spacing-horizontal-m) + var(--fui-spacing-horizontal-s-nudge)
+  );
+  font-size: var(--fui-font-size-base-400);
+  line-height: var(--fui-line-height-base-400);
+}
+
+.fui-Combobox__input::placeholder {
+  color: var(--fui-color-neutral-foreground-4);
+}
+.fui-Combobox__expandIcon,
+.fui-Combobox__clearButton {
+  position: absolute;
+  inset-inline-end: var(--fui-spacing-horizontal-m-nudge);
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  color: var(--fui-color-neutral-stroke-accessible);
+  transform: translateY(-50%);
+}
+.fui-Combobox__expandIcon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: currentcolor;
+}
+.fui-Combobox__clearButton {
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 20px;
+}
+.fui-Combobox__clearButton:focus-visible {
+  outline: 2px solid var(--fui-color-stroke-focus-2);
+  outline-offset: 2px;
+}
+.fui-Combobox__listbox {
+  z-index: 1000;
+  box-sizing: border-box;
+  max-height: 80vh;
+  border-radius: var(--fui-border-radius-medium);
+  box-shadow: var(--fui-shadow-16);
+}
+.fui-Combobox__listbox--closed {
+  display: none;
+}
+.fui-Combobox__listbox--inline {
+  position: absolute;
+  z-index: 1;
+  inset-inline: 0;
+  top: calc(100% + 2px);
+  width: 100%;
+}
+.fui-Combobox--disabled {
+  border-color: var(--fui-color-neutral-stroke-disabled);
+  background: var(--fui-color-transparent-background);
+}
+.fui-Combobox--disabled .fui-Combobox__input,
+.fui-Combobox--disabled .fui-Combobox__expandIcon {
+  color: var(--fui-color-neutral-foreground-disabled);
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fui-Combobox::after {
+    transition-duration: 0.01ms;
+  }
+}
+
+@media (forced-colors: active) {
+  .fui-Combobox {
+    color: FieldText;
+    border-color: FieldText;
+    background: Field;
+    forced-color-adjust: none;
+  }
+  .fui-Combobox::after {
+    border-bottom-color: Highlight;
+  }
+  .fui-Combobox__input,
+  .fui-Combobox__expandIcon,
+  .fui-Combobox__clearButton {
+    color: FieldText;
+  }
+}

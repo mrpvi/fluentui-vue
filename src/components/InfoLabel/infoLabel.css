@@ -1,0 +1,68 @@
+.fui-InfoLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fui-spacing-horizontal-xxs);
+}
+.fui-InfoButton {
+  position: relative;
+  display: inline-flex;
+}
+.fui-InfoButton__trigger {
+  display: inline-grid;
+  place-items: center;
+  box-sizing: border-box;
+  inline-size: 20px;
+  block-size: 20px;
+  padding: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-200);
+  font-weight: var(--fui-font-weight-bold);
+  background: transparent;
+  border: var(--fui-stroke-width-thin) solid currentColor;
+  border-radius: var(--fui-border-radius-circular);
+  cursor: pointer;
+}
+.fui-InfoButton--small .fui-InfoButton__trigger {
+  inline-size: 16px;
+  block-size: 16px;
+  font-size: 10px;
+}
+.fui-InfoButton--large .fui-InfoButton__trigger {
+  inline-size: 24px;
+  block-size: 24px;
+  font-size: var(--fui-font-size-base-300);
+}
+.fui-InfoButton__trigger:hover {
+  color: var(--fui-color-neutral-foreground-2-hover);
+  background: var(--fui-color-subtle-background-hover);
+}
+.fui-InfoButton__trigger:focus-visible {
+  outline: var(--fui-stroke-width-thick) solid var(--fui-color-stroke-focus-2);
+  outline-offset: 2px;
+}
+.fui-InfoButton__surface {
+  z-index: 1000;
+  box-sizing: border-box;
+  inline-size: max-content;
+  max-inline-size: min(320px, calc(100vw - 8px));
+  padding: var(--fui-spacing-vertical-s) var(--fui-spacing-horizontal-m);
+  color: var(--fui-color-neutral-foreground-1);
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-300);
+  line-height: var(--fui-line-height-base-300);
+  background: var(--fui-color-neutral-background-1);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-2);
+  border-radius: var(--fui-border-radius-medium);
+  box-shadow: var(--fui-shadow-16);
+}
+.fui-InfoButton__surface--inline {
+  position: absolute;
+  inset-block-end: calc(100% + 8px);
+  inset-inline-start: 0;
+}
+@media (forced-colors: active) {
+  .fui-InfoButton__surface {
+    border-color: CanvasText;
+  }
+}

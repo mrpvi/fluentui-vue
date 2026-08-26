@@ -1,6 +1,19 @@
 import { defineComponent, h } from 'vue';
 import {
+  FAccordion,
+  FAlphaSlider,
+  FAccordionHeader,
+  FAccordionItem,
+  FAccordionPanel,
+  FAvatar,
+  FAvatarGroup,
+  FAvatarGroupItem,
+  FAvatarGroupPopover,
   FBadge,
+  FBreadcrumb,
+  FBreadcrumbButton,
+  FBreadcrumbDivider,
+  FBreadcrumbItem,
   FButton,
   FCard,
   FCardFooter,
@@ -8,13 +21,31 @@ import {
   FCardPreview,
   FCheckbox,
   FCompoundButton,
+  FCombobox,
+  FColorArea,
+  FColorPicker,
+  FColorSlider,
+  FColorSwatch,
   FCounterBadge,
   FDivider,
+  FDropdown,
   FField,
   FImage,
   FInput,
   FLabel,
   FLink,
+  FList,
+  FListbox,
+  FListItem,
+  FOverflow,
+  FOverflowDivider,
+  FOverflowItem,
+  FOption,
+  FOptionGroup,
+  FPersona,
+  FPopover,
+  FPopoverSurface,
+  FPopoverTrigger,
   FPresenceBadge,
   FProgressBar,
   FRating,
@@ -29,9 +60,15 @@ import {
   FSpinner,
   FSpinButton,
   FSwitch,
+  FSwatchPicker,
+  FTab,
+  FTabList,
   FText,
   FTextarea,
   FToggleButton,
+  FTree,
+  FTreeItem,
+  FTreeItemLayout,
 } from '../../src';
 
 export const SsrFixture = defineComponent({
@@ -80,6 +117,32 @@ export const SsrFixture = defineComponent({
           {
             default: () => 'Server compound action',
             icon: () => h('svg', { viewBox: '0 0 40 40' }),
+          },
+        ),
+        h(
+          FCombobox,
+          {
+            class: 'ssr-combobox',
+            defaultValue: 'Server Dog',
+            defaultSelectedOptions: ['dog'],
+            inlinePopup: true,
+            'aria-label': 'Server animal search',
+          },
+          {
+            default: () => [
+              h(FOption, { value: 'cat' }, () => 'Server Cat'),
+              h(FOption, { value: 'dog' }, () => 'Server Dog'),
+            ],
+          },
+        ),
+        h(
+          FPopover,
+          { class: 'ssr-popover', defaultOpen: true, inlinePopup: true },
+          {
+            default: () => [
+              h(FPopoverTrigger, {}, () => 'Server popover trigger'),
+              h(FPopoverSurface, {}, () => 'Server popover surface'),
+            ],
           },
         ),
         h(
@@ -170,6 +233,27 @@ export const SsrFixture = defineComponent({
           max: 0.5,
           step: 0.1,
         }),
+        h(
+          FColorPicker,
+          { class: 'ssr-color-picker', modelValue: { h: 210, s: 0.7, v: 0.8, a: 0.6 } },
+          {
+            default: () => [
+              h(FColorArea),
+              h(FColorSlider, { channel: 'hue', 'aria-label': 'Server hue' }),
+              h(FAlphaSlider, { 'aria-label': 'Server opacity' }),
+            ],
+          },
+        ),
+        h(
+          FSwatchPicker,
+          { class: 'ssr-swatch-picker', defaultValue: 'blue', 'aria-label': 'Server colors' },
+          {
+            default: () => [
+              h(FColorSwatch, { value: 'blue', color: '#0f6cbd', 'aria-label': 'Server blue' }),
+              h(FColorSwatch, { value: 'green', color: '#107c10', 'aria-label': 'Server green' }),
+            ],
+          },
+        ),
         h(
           FField,
           {
@@ -263,6 +347,64 @@ export const SsrFixture = defineComponent({
           () => 'Article card',
         ),
         h(
+          FAccordion,
+          { class: 'ssr-accordion', defaultOpenItems: 'overview' },
+          {
+            default: () => [
+              h(
+                FAccordionItem,
+                { value: 'overview' },
+                {
+                  default: () => [
+                    h(FAccordionHeader, { as: 'h2' }, () => 'Server accordion'),
+                    h(FAccordionPanel, {}, () => 'Server accordion panel'),
+                  ],
+                },
+              ),
+            ],
+          },
+        ),
+        h(
+          FTabList,
+          {
+            class: 'ssr-tab-list',
+            defaultSelectedValue: 'overview',
+            'aria-label': 'Server sections',
+          },
+          {
+            default: () => [
+              h(
+                FTab,
+                { value: 'overview', 'aria-controls': 'server-overview-panel' },
+                () => 'Server overview',
+              ),
+              h(FTab, { value: 'details', disabled: true }, () => 'Server details'),
+            ],
+          },
+        ),
+        h(
+          FBreadcrumb,
+          { class: 'ssr-breadcrumb', size: 'large', 'aria-label': 'Server breadcrumb' },
+          {
+            default: () => [
+              h(
+                FBreadcrumbItem,
+                {},
+                {
+                  default: () =>
+                    h(FBreadcrumbButton, { href: '#server-home' }, () => 'Server home'),
+                },
+              ),
+              h(FBreadcrumbDivider),
+              h(
+                FBreadcrumbItem,
+                {},
+                { default: () => h(FBreadcrumbButton, { current: true }, () => 'Server current') },
+              ),
+            ],
+          },
+        ),
+        h(
           FField,
           { label: 'Server companion', hint: 'Choose one animal.', required: true },
           {
@@ -344,6 +486,187 @@ export const SsrFixture = defineComponent({
           color: 'marigold',
           'aria-label': 'Server compact rating display',
         }),
+        h(
+          FList,
+          {
+            class: 'ssr-list',
+            selectionMode: 'multiselect',
+            defaultSelectedItems: ['server-one'],
+            'aria-label': 'Server list',
+          },
+          {
+            default: () => [
+              h(FListItem, { value: 'server-one' }, () => 'Server selected item'),
+              h(
+                FListItem,
+                { value: 'server-two', disabledSelection: true },
+                () => 'Server disabled selection',
+              ),
+            ],
+          },
+        ),
+        h(
+          FField,
+          {
+            label: 'Server region',
+            hint: 'Choose one server region.',
+            required: true,
+          },
+          {
+            default: () =>
+              h(
+                FListbox,
+                {
+                  class: 'ssr-listbox',
+                  defaultSelectedOptions: ['west'],
+                },
+                {
+                  default: () => [
+                    h(
+                      FOptionGroup,
+                      { label: 'Server regions' },
+                      {
+                        default: () => [
+                          h(FOption, { value: 'west' }, () => 'Server West'),
+                          h(FOption, { value: 'east', disabled: true }, () => 'Server East'),
+                        ],
+                      },
+                    ),
+                  ],
+                },
+              ),
+          },
+        ),
+        h(
+          FListbox,
+          {
+            class: 'ssr-multiselect-listbox',
+            multiselect: true,
+            defaultSelectedOptions: ['cat'],
+            'aria-label': 'Server companions',
+          },
+          {
+            default: () => [
+              h(FOption, { value: 'cat' }, () => 'Server Cat'),
+              h(FOption, { value: 'dog' }, () => 'Server Dog'),
+            ],
+          },
+        ),
+        h(
+          FField,
+          {
+            label: 'Server dropdown companion',
+            hint: 'Choose one dropdown companion.',
+            required: true,
+          },
+          {
+            default: () =>
+              h(
+                FDropdown,
+                {
+                  class: 'ssr-dropdown',
+                  defaultValue: 'Server Cat',
+                  defaultSelectedOptions: ['cat'],
+                  inlinePopup: true,
+                },
+                {
+                  default: () => [
+                    h(FOption, { value: 'cat' }, () => 'Server Cat'),
+                    h(FOption, { value: 'dog' }, () => 'Server Dog'),
+                  ],
+                },
+              ),
+          },
+        ),
+        h(FAvatar, {
+          class: 'ssr-avatar',
+          name: 'Server Person',
+          color: 'colorful',
+          active: 'active',
+          presence: { status: 'available' },
+          size: 48,
+        }),
+        h(
+          FAvatarGroup,
+          { class: 'ssr-avatar-group', layout: 'stack', size: 40, 'aria-label': 'Server team' },
+          {
+            default: () => [
+              h(FAvatarGroupItem, { name: 'Server Ada' }),
+              h(FAvatarGroupItem, { name: 'Server Grace' }),
+              h(
+                FAvatarGroupPopover,
+                { count: 1, defaultOpen: true },
+                { default: () => h(FAvatarGroupItem, { name: 'Server Margaret' }) },
+              ),
+            ],
+          },
+        ),
+        h(
+          FPersona,
+          {
+            class: 'ssr-persona',
+            name: 'Server Persona',
+            size: 'large',
+            avatar: { color: 'brand', shape: 'square' },
+            presence: { status: 'away' },
+            textAlignment: 'center',
+          },
+          {
+            secondaryText: () => 'Server role',
+            tertiaryText: () => 'Server location',
+          },
+        ),
+        h(
+          FTree,
+          {
+            class: 'ssr-tree',
+            defaultOpenItems: ['server-src'],
+            selectionMode: 'multiselect',
+            defaultCheckedItems: ['server-readme'],
+            'aria-label': 'Server files',
+          },
+          {
+            default: () => [
+              h(
+                FTreeItem,
+                { itemType: 'branch', value: 'server-src' },
+                {
+                  default: () => [
+                    h(FTreeItemLayout, {}, () => 'Server source'),
+                    h(
+                      FTree,
+                      {},
+                      {
+                        default: () =>
+                          h(FTreeItem, { itemType: 'leaf', value: 'server-index' }, () =>
+                            h(FTreeItemLayout, {}, () => 'Server index'),
+                          ),
+                      },
+                    ),
+                  ],
+                },
+              ),
+              h(FTreeItem, { itemType: 'leaf', value: 'server-readme' }, () =>
+                h(FTreeItemLayout, {}, () => 'Server readme'),
+              ),
+            ],
+          },
+        ),
+        h(
+          FOverflow,
+          { class: 'ssr-overflow', 'aria-label': 'Server overflow' },
+          {
+            default: () => [
+              h(
+                FOverflowItem,
+                { id: 'server-primary', groupId: 'server-group' },
+                () => 'Server primary action',
+              ),
+              h(FOverflowDivider, { groupId: 'server-group' }, () => '|'),
+              h(FOverflowItem, { id: 'server-secondary' }, () => 'Server secondary action'),
+            ],
+          },
+        ),
         h(FLink, { href: '#details' }, () => 'View details'),
         h(FButton, { appearance: 'primary' }, () => 'Continue'),
       ]);

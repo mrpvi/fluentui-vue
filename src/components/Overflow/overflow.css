@@ -1,0 +1,16 @@
+.fui-Overflow {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.fui-Overflow--horizontal {
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.fui-Overflow--vertical {
+  flex-flow: column nowrap;
+  align-items: stretch;
+}

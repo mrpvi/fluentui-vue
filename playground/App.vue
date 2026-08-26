@@ -1,7 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import {
+  FAccordion,
+  FAlphaSlider,
+  FAccordionHeader,
+  FAccordionItem,
+  FAccordionPanel,
+  FAvatar,
+  FAvatarGroup,
+  FAvatarGroupItem,
+  FAvatarGroupPopover,
   FBadge,
+  FBreadcrumb,
+  FBreadcrumbButton,
+  FBreadcrumbDivider,
+  FBreadcrumbItem,
   FButton,
   FCard,
   FCardFooter,
@@ -9,13 +22,28 @@ import {
   FCardPreview,
   FCheckbox,
   FCompoundButton,
+  FCombobox,
+  FColorArea,
+  FColorPicker,
+  FColorSlider,
+  FColorSwatch,
   FCounterBadge,
   FDivider,
+  FDropdown,
   FField,
   FImage,
   FInput,
   FLabel,
   FLink,
+  FList,
+  FListbox,
+  FListItem,
+  FOption,
+  FOptionGroup,
+  FPersona,
+  FPopover,
+  FPopoverSurface,
+  FPopoverTrigger,
   FPresenceBadge,
   FProgressBar,
   FRating,
@@ -30,6 +58,10 @@ import {
   FSpinner,
   FSpinButton,
   FSwitch,
+  FSwatchPicker,
+  FSwatchPickerRow,
+  FTab,
+  FTabList,
   FText,
   FTextarea,
   FToggleButton,
@@ -57,11 +89,23 @@ const standaloneRadio = ref(false);
 const radioSubmission = ref('');
 const sliderValue = ref(40);
 const sliderControlled = ref(35);
+const pickerColor = ref({ h: 210, s: 0.7, v: 0.85, a: 0.75 });
+const selectedSwatch = ref('blue');
 const ratingValue = ref(3);
 const controlledRatingValue = ref(2);
 const controlledRatingAttempt = ref<number | null>(null);
 const selectableCard = ref(false);
 const controlledCard = ref(true);
+const selectedTab = ref('overview');
+const automaticTab = ref('activity');
+const selectedListItems = ref<Array<string | number>>(['Ada']);
+const selectedListboxOptions = ref(['dog']);
+const selectedListboxAttempt = ref<string[]>([]);
+const selectedDropdownOptions = ref(['dog']);
+const selectedDropdownValue = ref('Dog');
+const multiselectDropdownOptions = ref(['cat']);
+const controlledDropdownAttempt = ref<string[]>([]);
+const avatarOverflowOpen = ref(false);
 const toggleControlled = ref(true);
 const toggleSubmitCount = ref(0);
 const compoundSubmitCount = ref(0);
@@ -110,7 +154,8 @@ function ratingItemLabel(value: number) {
         <p>
           Native Button, ToggleButton, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider,
           Image, Badge, Spinner, ProgressBar, SpinButton, SearchBox, Switch, Radio, RadioGroup,
-          Select, Skeleton, Slider, Rating, RatingDisplay, and Card components translated from
+          Select, Skeleton, Slider, Rating, RatingDisplay, Card, Accordion, Tabs, Breadcrumb, List,
+          Listbox, Dropdown, Combobox, Popover, Avatar, and Persona components translated from
           Fluent UI React v9 to Vue props, slots, emits, and semantic HTML.
         </p>
       </div>
@@ -118,6 +163,37 @@ function ratingItemLabel(value: number) {
         {{ dark ? 'Use light theme' : 'Use dark theme' }}
       </FButton>
     </header>
+
+    <section id="color-controls">
+      <h2>Color controls</h2>
+      <div class="row" style="align-items: flex-start">
+        <FColorPicker v-model="pickerColor" shape="rounded" aria-label="Color picker demo">
+          <FColorArea />
+          <FColorSlider channel="hue" aria-label="Hue" />
+          <FAlphaSlider aria-label="Opacity" />
+        </FColorPicker>
+        <div class="column">
+          <FSwatchPicker
+            v-model="selectedSwatch"
+            layout="grid"
+            shape="rounded"
+            aria-label="Theme colors"
+          >
+            <FSwatchPickerRow>
+              <FColorSwatch value="blue" color="#0f6cbd" aria-label="Blue" />
+              <FColorSwatch value="green" color="#107c10" aria-label="Green" />
+              <FColorSwatch value="red" color="#d13438" aria-label="Red" />
+            </FSwatchPickerRow>
+            <FSwatchPickerRow>
+              <FColorSwatch value="purple" color="#5c2e91" aria-label="Purple" />
+              <FColorSwatch value="orange" color="#ca5010" aria-label="Orange" />
+              <FColorSwatch value="yellow" color="#f7c646" aria-label="Yellow" />
+            </FSwatchPickerRow>
+          </FSwatchPicker>
+          <FText>Selected swatch: {{ selectedSwatch }}</FText>
+        </div>
+      </div>
+    </section>
 
     <section>
       <h2>Text</h2>
@@ -1366,6 +1442,528 @@ function ratingItemLabel(value: number) {
       </div>
     </section>
 
+    <section id="accordion">
+      <h2>Accordion</h2>
+      <div class="accordion-samples">
+        <FAccordion class="accordion-single" default-open-items="overview">
+          <FAccordionItem value="overview">
+            <FAccordionHeader as="h3">Overview</FAccordionHeader>
+            <FAccordionPanel
+              >Accordion uses native buttons with stable disclosure relationships.</FAccordionPanel
+            >
+          </FAccordionItem>
+          <FAccordionItem value="details">
+            <FAccordionHeader as="h3" expand-icon-position="end">Details</FAccordionHeader>
+            <FAccordionPanel
+              >The final item remains open unless collapsible is enabled.</FAccordionPanel
+            >
+          </FAccordionItem>
+          <FAccordionItem value="disabled" disabled>
+            <FAccordionHeader as="h3">Disabled section</FAccordionHeader>
+            <FAccordionPanel>This content cannot be opened.</FAccordionPanel>
+          </FAccordionItem>
+        </FAccordion>
+        <FAccordion class="accordion-multiple" multiple collapsible :default-open-items="['one']">
+          <FAccordionItem value="one">
+            <FAccordionHeader size="small">First collapsible item</FAccordionHeader>
+            <FAccordionPanel>Multiple panels can remain open.</FAccordionPanel>
+          </FAccordionItem>
+          <FAccordionItem value="two">
+            <FAccordionHeader size="large">
+              <template #icon>ⓘ</template>
+              Second collapsible item
+            </FAccordionHeader>
+            <FAccordionPanel>All panels may also be closed.</FAccordionPanel>
+          </FAccordionItem>
+        </FAccordion>
+      </div>
+    </section>
+
+    <section id="tabs">
+      <h2>Tabs</h2>
+      <div class="tab-samples">
+        <div>
+          <h3>Controlled horizontal tabs</h3>
+          <FTabList v-model="selectedTab" aria-label="Project sections">
+            <FTab value="overview">
+              <template #icon>◫</template>
+              Overview
+            </FTab>
+            <FTab value="activity">
+              <template #icon>◷</template>
+              Activity
+            </FTab>
+            <FTab value="settings" disabled>Settings</FTab>
+          </FTabList>
+          <p>Selected tab: {{ selectedTab }}</p>
+        </div>
+        <div>
+          <h3>Vertical automatic activation</h3>
+          <FTabList
+            v-model="automaticTab"
+            vertical
+            select-tab-on-focus
+            appearance="subtle"
+            size="small"
+            aria-label="Automatic sections"
+          >
+            <FTab value="activity">Activity</FTab>
+            <FTab value="mentions">Mentions</FTab>
+            <FTab value="files">Files</FTab>
+          </FTabList>
+        </div>
+        <div>
+          <h3>Circular appearances and sizes</h3>
+          <FTabList
+            class="tab-circular"
+            appearance="filled-circular"
+            size="large"
+            default-selected-value="home"
+            aria-label="Circular navigation"
+          >
+            <FTab value="home">Home</FTab>
+            <FTab value="favorites">Favorites</FTab>
+            <FTab value="icon-only" aria-label="Notifications">
+              <template #icon>●</template>
+            </FTab>
+          </FTabList>
+        </div>
+      </div>
+    </section>
+
+    <section id="breadcrumb">
+      <h2>Breadcrumb</h2>
+      <div class="breadcrumb-samples">
+        <div>
+          <h3>Tab navigation</h3>
+          <FBreadcrumb aria-label="Project breadcrumb">
+            <FBreadcrumbItem>
+              <FBreadcrumbButton href="#workspace">
+                <template #icon>⌂</template>
+                Workspace
+              </FBreadcrumbButton>
+            </FBreadcrumbItem>
+            <FBreadcrumbDivider />
+            <FBreadcrumbItem
+              ><FBreadcrumbButton href="#projects">Projects</FBreadcrumbButton></FBreadcrumbItem
+            >
+            <FBreadcrumbDivider />
+            <FBreadcrumbItem
+              ><FBreadcrumbButton current>Fluent Vue</FBreadcrumbButton></FBreadcrumbItem
+            >
+          </FBreadcrumb>
+        </div>
+        <div>
+          <h3>Arrow navigation and sizes</h3>
+          <FBreadcrumb
+            class="breadcrumb-arrow"
+            focus-mode="arrow"
+            size="large"
+            aria-label="Arrow breadcrumb"
+          >
+            <FBreadcrumbItem
+              ><FBreadcrumbButton href="#home">Home</FBreadcrumbButton></FBreadcrumbItem
+            >
+            <FBreadcrumbDivider />
+            <FBreadcrumbItem
+              ><FBreadcrumbButton disabled>Disabled</FBreadcrumbButton></FBreadcrumbItem
+            >
+            <FBreadcrumbDivider />
+            <FBreadcrumbItem>
+              <FBreadcrumbButton disabled-focusable>Focusable disabled</FBreadcrumbButton>
+            </FBreadcrumbItem>
+            <FBreadcrumbDivider />
+            <FBreadcrumbItem
+              ><FBreadcrumbButton current>Current page</FBreadcrumbButton></FBreadcrumbItem
+            >
+          </FBreadcrumb>
+        </div>
+        <div dir="rtl">
+          <h3>RTL divider</h3>
+          <FBreadcrumb size="small" aria-label="RTL breadcrumb">
+            <FBreadcrumbItem
+              ><FBreadcrumbButton href="#rtl-home">الرئيسية</FBreadcrumbButton></FBreadcrumbItem
+            >
+            <FBreadcrumbDivider />
+            <FBreadcrumbItem
+              ><FBreadcrumbButton current>المشروع</FBreadcrumbButton></FBreadcrumbItem
+            >
+          </FBreadcrumb>
+        </div>
+      </div>
+    </section>
+
+    <section id="list">
+      <h2>List</h2>
+      <div class="list-samples">
+        <div>
+          <h3>Semantic content list</h3>
+          <FList class="list-default" aria-label="Continents">
+            <FListItem>Asia</FListItem>
+            <FListItem>Africa</FListItem>
+            <FListItem>Europe</FListItem>
+          </FList>
+        </div>
+        <div>
+          <h3>Controlled multiselect</h3>
+          <FList
+            v-model="selectedListItems"
+            class="list-selection"
+            selection-mode="multiselect"
+            aria-label="People list"
+          >
+            <FListItem value="Ada" aria-label="Ada">Ada Lovelace</FListItem>
+            <FListItem value="Grace" aria-label="Grace">Grace Hopper</FListItem>
+            <FListItem value="Linus" aria-label="Linus" disabled-selection>
+              Linus Torvalds · selection disabled
+            </FListItem>
+          </FList>
+          <small>Selected people: {{ selectedListItems.join(', ') || 'none' }}</small>
+        </div>
+        <div>
+          <h3>Composite actions</h3>
+          <FList class="list-composite" navigation-mode="composite" aria-label="Project actions">
+            <FListItem value="roadmap" aria-label="Roadmap project">
+              <div class="list-gridcell" role="gridcell">
+                <span class="list-primary">Roadmap</span>
+                <FButton size="small">Open</FButton>
+                <FButton size="small" appearance="subtle" aria-label="More Roadmap actions"
+                  >•••</FButton
+                >
+              </div>
+            </FListItem>
+            <FListItem value="release" aria-label="Release project">
+              <div class="list-gridcell" role="gridcell">
+                <span class="list-primary">Release</span>
+                <FButton size="small">Open</FButton>
+                <FButton size="small" appearance="subtle" aria-label="More Release actions"
+                  >•••</FButton
+                >
+              </div>
+            </FListItem>
+          </FList>
+        </div>
+      </div>
+    </section>
+
+    <section id="listbox">
+      <h2>Listbox</h2>
+      <div class="listbox-samples">
+        <div>
+          <h3>Single selection and groups</h3>
+          <FListbox
+            class="listbox-single"
+            :default-selected-options="['dog']"
+            aria-label="Favorite animal"
+          >
+            <FOptionGroup label="Land animals">
+              <FOption value="cat">Cat</FOption>
+              <FOption value="dog">Dog</FOption>
+              <FOption value="horse" disabled>Horse · unavailable</FOption>
+            </FOptionGroup>
+            <FOptionGroup label="Water animals">
+              <FOption value="fish">Fish</FOption>
+              <FOption value="dolphin">Dolphin</FOption>
+            </FOptionGroup>
+          </FListbox>
+        </div>
+        <div>
+          <h3>Controlled multiselect</h3>
+          <FListbox
+            v-model="selectedListboxOptions"
+            class="listbox-multiselect"
+            multiselect
+            aria-label="Companion animals"
+          >
+            <FOption value="cat">Cat</FOption>
+            <FOption value="dog">Dog</FOption>
+            <FOption value="bird">Bird</FOption>
+            <FOption value="rabbit" disabled>Rabbit · unavailable</FOption>
+          </FListbox>
+          <small>Selected companions: {{ selectedListboxOptions.join(', ') || 'none' }}</small>
+        </div>
+        <div>
+          <h3>Field and controlled rollback</h3>
+          <FField
+            class="listbox-field"
+            label="Deployment region"
+            hint="Arrow keys move the active option; Enter or Space selects it."
+            required
+          >
+            <FListbox
+              class="listbox-controlled"
+              :model-value="['west']"
+              @update:model-value="selectedListboxAttempt = $event"
+            >
+              <FOption value="west">West Europe</FOption>
+              <FOption value="east">East US</FOption>
+              <FOption value="central" text="Central India">
+                <span>Central India</span>
+              </FOption>
+            </FListbox>
+          </FField>
+          <small>Controlled attempt: {{ selectedListboxAttempt.join(', ') || 'none' }}</small>
+        </div>
+      </div>
+    </section>
+
+    <section id="combobox">
+      <h2>Combobox</h2>
+      <div class="combobox-samples">
+        <FField label="Search animal" hint="Type to filter available animals." required>
+          <FCombobox class="combobox-search" placeholder="Search animals">
+            <FOption value="cat">Cat</FOption>
+            <FOption value="dog">Dog</FOption>
+            <FOption value="horse" disabled>Horse · unavailable</FOption>
+          </FCombobox>
+        </FField>
+        <FCombobox
+          class="combobox-inline"
+          inline-popup
+          multiselect
+          :default-selected-options="['cat']"
+          aria-label="Companion search"
+        >
+          <FOption value="cat">Cat</FOption>
+          <FOption value="dog">Dog</FOption>
+          <FOption value="bird">Bird</FOption>
+        </FCombobox>
+      </div>
+    </section>
+
+    <section id="dropdown">
+      <h2>Dropdown</h2>
+      <div class="dropdown-samples">
+        <div>
+          <h3>Field, groups, and clearable selection</h3>
+          <FField
+            class="dropdown-field"
+            label="Favorite animal"
+            hint="Type a prefix or use Arrow keys to move through the popup."
+            required
+          >
+            <FDropdown
+              v-model="selectedDropdownValue"
+              v-model:selected-options="selectedDropdownOptions"
+              class="dropdown-single"
+              clearable
+              placeholder="Choose an animal"
+            >
+              <FOptionGroup label="Land animals">
+                <FOption value="cat">Cat</FOption>
+                <FOption value="dog">Dog</FOption>
+                <FOption value="horse" disabled>Horse · unavailable</FOption>
+              </FOptionGroup>
+              <FOptionGroup label="Water animals">
+                <FOption value="fish">Fish</FOption>
+                <FOption value="dolphin">Dolphin</FOption>
+              </FOptionGroup>
+            </FDropdown>
+          </FField>
+          <small>Selected animal: {{ selectedDropdownOptions[0] || 'none' }}</small>
+        </div>
+        <div>
+          <h3>Multiselect and inline popup</h3>
+          <FDropdown
+            v-model:selected-options="multiselectDropdownOptions"
+            class="dropdown-multiselect"
+            default-value="Cat"
+            multiselect
+            inline-popup
+            placeholder="Choose companions"
+            aria-label="Companion animals"
+          >
+            <FOption value="cat">Cat</FOption>
+            <FOption value="dog">Dog</FOption>
+            <FOption value="bird">Bird</FOption>
+            <FOption value="rabbit" disabled>Rabbit · unavailable</FOption>
+          </FDropdown>
+          <small>Selected companions: {{ multiselectDropdownOptions.join(', ') || 'none' }}</small>
+        </div>
+        <div>
+          <h3>Appearances, sizes, and controlled rollback</h3>
+          <div class="dropdown-variants">
+            <FDropdown
+              class="dropdown-small"
+              size="small"
+              appearance="filled-lighter"
+              default-value="Small filled"
+              aria-label="Small filled dropdown"
+            >
+              <FOption value="small">Small filled</FOption>
+            </FDropdown>
+            <FDropdown
+              class="dropdown-large"
+              size="large"
+              appearance="underline"
+              default-value="Large underline"
+              aria-label="Large underline dropdown"
+            >
+              <FOption value="large">Large underline</FOption>
+            </FDropdown>
+            <FDropdown
+              class="dropdown-controlled"
+              model-value="Locked West Europe"
+              :selected-options="['west']"
+              aria-label="Controlled deployment region"
+              @update:selected-options="controlledDropdownAttempt = $event"
+            >
+              <FOption value="west">West Europe</FOption>
+              <FOption value="east">East US</FOption>
+            </FDropdown>
+          </div>
+          <small>Controlled attempt: {{ controlledDropdownAttempt.join(', ') || 'none' }}</small>
+        </div>
+      </div>
+    </section>
+
+    <section id="popover">
+      <h2>Popover</h2>
+      <div class="popover-samples">
+        <FPopover>
+          <FPopoverTrigger>Show details</FPopoverTrigger>
+          <FPopoverSurface>
+            <strong>Popover surface</strong>
+            <p>Anchored content rendered through the overlay foundation.</p>
+          </FPopoverSurface>
+        </FPopover>
+        <FPopover inline-popup default-open>
+          <FPopoverTrigger as="button">Inline popover</FPopoverTrigger>
+          <FPopoverSurface aria-label="Inline popover details">
+            Inline content remains in document flow.
+          </FPopoverSurface>
+        </FPopover>
+      </div>
+    </section>
+
+    <section id="avatar">
+      <h2>Avatar</h2>
+      <div class="avatar-samples">
+        <div>
+          <h3>Fallbacks, color, activity, and presence</h3>
+          <div class="avatar-row">
+            <FAvatar name="Ada Lovelace" color="colorful" />
+            <FAvatar name="Grace Hopper" color="brand" shape="square" :size="40" />
+            <FAvatar
+              name="Linus Torvalds"
+              color="forest"
+              active="active"
+              active-appearance="ring-shadow"
+              :presence="{ status: 'available' }"
+              :size="48"
+            />
+            <FAvatar aria-label="Anonymous person" :size="56" />
+          </div>
+        </div>
+        <div>
+          <h3>Spread and stacked groups</h3>
+          <FAvatarGroup class="avatar-spread" aria-label="Design team">
+            <FAvatarGroupItem name="Ada Lovelace" />
+            <FAvatarGroupItem name="Grace Hopper" />
+            <FAvatarGroupItem name="Margaret Hamilton" />
+          </FAvatarGroup>
+          <FAvatarGroup
+            class="avatar-stack"
+            layout="stack"
+            :size="40"
+            aria-label="Engineering team"
+          >
+            <FAvatarGroupItem name="Linus Torvalds" />
+            <FAvatarGroupItem name="Barbara Liskov" />
+            <FAvatarGroupItem name="Edsger Dijkstra" />
+            <FAvatarGroupPopover v-model="avatarOverflowOpen" :count="3">
+              <FAvatarGroupItem name="Radia Perlman" />
+              <FAvatarGroupItem name="Donald Knuth" />
+              <FAvatarGroupItem name="Frances Allen" />
+            </FAvatarGroupPopover>
+          </FAvatarGroup>
+          <small>Overflow popover: {{ avatarOverflowOpen ? 'open' : 'closed' }}</small>
+        </div>
+        <div>
+          <h3>Pie layout</h3>
+          <FAvatarGroup
+            class="avatar-pie"
+            layout="pie"
+            :size="48"
+            aria-label="Project contributors"
+          >
+            <FAvatarGroupItem name="Katherine Johnson" />
+            <FAvatarGroupItem name="Dorothy Vaughan" />
+            <FAvatarGroupItem name="Mary Jackson" />
+            <FAvatarGroupPopover :count="5">
+              <FAvatarGroupItem name="Katherine Johnson" />
+              <FAvatarGroupItem name="Dorothy Vaughan" />
+              <FAvatarGroupItem name="Mary Jackson" />
+              <FAvatarGroupItem name="Christine Darden" />
+              <FAvatarGroupItem name="Annie Easley" />
+            </FAvatarGroupPopover>
+          </FAvatarGroup>
+        </div>
+      </div>
+    </section>
+
+    <section id="persona">
+      <h2>Persona</h2>
+      <div class="persona-samples">
+        <div>
+          <h3>Identity and text hierarchy</h3>
+          <FPersona
+            name="Ada Lovelace"
+            :avatar="{ color: 'colorful' }"
+            :presence="{ status: 'available' }"
+          >
+            <template #secondaryText>Mathematician</template>
+            <template #tertiaryText>London, United Kingdom</template>
+            <template #quaternaryText>Available</template>
+          </FPersona>
+          <FPersona
+            name="Grace Hopper"
+            size="extra-large"
+            :avatar="{ color: 'brand', shape: 'square' }"
+            :presence="{ status: 'busy' }"
+          >
+            <template #secondaryText>Rear admiral and computer scientist</template>
+          </FPersona>
+        </div>
+        <div>
+          <h3>Position and alignment</h3>
+          <div class="persona-layouts">
+            <FPersona name="Katherine Johnson" text-position="before" text-alignment="center">
+              <template #secondaryText>Orbital mechanics</template>
+              <template #tertiaryText>NASA</template>
+            </FPersona>
+            <FPersona
+              name="Dorothy Vaughan"
+              size="large"
+              text-position="below"
+              text-alignment="center"
+            >
+              <template #secondaryText>Human computer</template>
+            </FPersona>
+          </div>
+        </div>
+        <div>
+          <h3>Presence only</h3>
+          <div class="persona-layouts">
+            <FPersona
+              name="Margaret Hamilton"
+              presence-only
+              :presence="{ status: 'do-not-disturb', outOfOffice: true }"
+            >
+              <template #secondaryText>Software engineering lead</template>
+            </FPersona>
+            <FPersona name="Radia Perlman" presence-only size="huge" text-alignment="center">
+              <template #presence>
+                <FPresenceBadge status="away" size="large" aria-label="Custom away status" />
+              </template>
+              <template #secondaryText>Network engineer</template>
+              <template #tertiaryText>Inventor of spanning tree protocol</template>
+            </FPersona>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="radio">
       <h2>Radio</h2>
       <div class="radio-samples">
@@ -2331,6 +2929,11 @@ section {
 .toggle-button-samples,
 .compound-button-samples,
 .card-samples,
+.accordion-samples,
+.tab-samples,
+.breadcrumb-samples,
+.list-samples,
+.listbox-samples,
 .spinner-samples,
 .progress-bar-samples,
 .spin-button-samples,
@@ -2351,6 +2954,143 @@ section {
 .skeleton-group {
   display: grid;
   gap: 0.75rem;
+}
+
+.list-default,
+.list-selection,
+.list-composite {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.list-default .fui-ListItem,
+.list-selection .fui-ListItem,
+.list-composite .fui-ListItem {
+  min-height: 2.5rem;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: var(--fui-border-radius-medium);
+  background-color: var(--fui-color-neutral-background-2);
+  color: var(--fui-color-neutral-foreground-1);
+}
+
+.list-gridcell {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.list-primary {
+  flex: 1;
+  font-weight: var(--fui-font-weight-semibold);
+}
+
+.listbox-samples {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.listbox-samples > div {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+}
+
+.listbox-samples h3 {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-300);
+}
+
+.listbox-samples .fui-Listbox {
+  max-height: 17rem;
+  border-radius: var(--fui-border-radius-medium);
+  box-shadow: var(--fui-shadow-4);
+}
+
+.listbox-field {
+  align-content: start;
+}
+
+.dropdown-samples {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.dropdown-samples > div,
+.dropdown-variants {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+}
+
+.dropdown-samples h3 {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-300);
+}
+
+.dropdown-field,
+.popover-samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.popover-samples p {
+  margin-block: 8px 0;
+}
+
+.dropdown-samples .fui-Dropdown {
+  width: 100%;
+}
+
+.avatar-samples {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.avatar-samples > div {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.avatar-samples h3 {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-300);
+}
+
+.avatar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar-spread,
+.avatar-stack {
+  width: max-content;
+}
+
+.persona-samples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1.5rem;
+}
+
+.persona-samples > div,
+.persona-layouts {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 1rem;
+}
+
+.persona-samples h3 {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-300);
 }
 
 .spinner-group h3,

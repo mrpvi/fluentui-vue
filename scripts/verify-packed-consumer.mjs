@@ -37,21 +37,45 @@ try {
     resolve(consumer, 'src/main.ts'),
     `import { createApp, h, ref } from 'vue';
 import {
+  FAccordion,
+  FAccordionHeader,
+  FAccordionItem,
+  FAccordionPanel,
+  FAvatar,
+  FAvatarGroup,
+  FAvatarGroupItem,
+  FAvatarGroupPopover,
+  FAlphaSlider,
   FBadge,
+  FBreadcrumb,
+  FBreadcrumbButton,
+  FBreadcrumbDivider,
+  FBreadcrumbItem,
   FButton,
   FCard,
   FCardFooter,
   FCardHeader,
   FCardPreview,
   FCheckbox,
+  FColorArea,
+  FColorPicker,
+  FColorSlider,
+  FColorSwatch,
   FCompoundButton,
   FCounterBadge,
   FDivider,
+  FDropdown,
   FField,
   FImage,
   FInput,
   FLabel,
   FLink,
+  FList,
+  FListbox,
+  FListItem,
+  FOption,
+  FOptionGroup,
+  FPersona,
   FPresenceBadge,
   FProgressBar,
   FRating,
@@ -66,28 +90,48 @@ import {
   FSearchBox,
   FSpinner,
   FSpinButton,
+  FSwatchPicker,
+  FSwatchPickerRow,
   FSwitch,
+  FTab,
+  FTabList,
   FText,
   FTextarea,
   FToggleButton,
   FluentVue,
   packageVersion,
+  type AvatarColor,
+  type AvatarGroupLayout,
+  type AvatarSize,
   type BadgeAppearance,
   type BadgeColor,
+  type BreadcrumbFocusMode,
+  type BreadcrumbSize,
   type ButtonAppearance,
   type CardAppearance,
   type CardFocusMode,
   type CardOrientation,
   type CardSize,
   type CheckboxValue,
+  type ColorPickerShape,
+  type ColorSliderChannel,
+  type HsvColor,
   type CompoundButtonAppearance,
   type CompoundButtonIconPosition,
   type CompoundButtonShape,
   type CompoundButtonSize,
   type DividerAppearance,
+  type DropdownAppearance,
+  type DropdownPositioning,
+  type DropdownSize,
   type FluentTheme,
   type ImageFit,
   type ImageShape,
+  type ListNavigationMode,
+  type ListSelectionMode,
+  type ListValue,
+  type PersonaSize,
+  type PersonaTextPosition,
   type PresenceBadgeStatus,
   type ProgressBarColor,
   type ProgressBarThickness,
@@ -107,8 +151,15 @@ import {
   type SpinnerSize,
   type SpinButtonAppearance,
   type SpinButtonValue,
+  type SwatchPickerLayout,
+  type SwatchPickerShape,
+  type SwatchPickerSize,
+  type SwatchPickerSpacing,
   type SwitchLabelPosition,
   type SwitchSize,
+  type TabListAppearance,
+  type TabListSize,
+  type TabValue,
   type TextareaResize,
   type ToggleButtonAppearance,
   type ToggleButtonIconPosition,
@@ -118,9 +169,15 @@ import {
 import '@mrpvi/fluentui-vue/style.css';
 
 const accepted = ref<CheckboxValue>('mixed');
+const avatarColor: AvatarColor = 'colorful';
+const avatarGroupLayout: AvatarGroupLayout = 'stack';
+const avatarSize: AvatarSize = 40;
+const avatarOverflowOpen = ref(false);
 const radioValue = ref('email');
 const badgeAppearance: BadgeAppearance = 'tint';
 const badgeColor: BadgeColor = 'success';
+const breadcrumbFocusMode: BreadcrumbFocusMode = 'arrow';
+const breadcrumbSize: BreadcrumbSize = 'large';
 const appearance: ButtonAppearance = 'primary';
 const toggleAppearance: ToggleButtonAppearance = 'primary';
 const toggleIconPosition: ToggleButtonIconPosition = 'after';
@@ -138,6 +195,25 @@ const resize: TextareaResize = 'vertical';
 const dividerAppearance: DividerAppearance = 'brand';
 const imageFit: ImageFit = 'cover';
 const imageShape: ImageShape = 'rounded';
+const listNavigationMode: ListNavigationMode = 'items';
+const listSelectionMode: ListSelectionMode = 'multiselect';
+const selectedListItems = ref<ListValue[]>(['packed-one']);
+const selectedOptions = ref<string[]>(['packed-cat']);
+const pickerColor = ref<HsvColor>({ h: 210, s: 0.7, v: 0.8, a: 0.6 });
+const colorPickerShape: ColorPickerShape = 'rounded';
+const colorSliderChannel: ColorSliderChannel = 'hue';
+const selectedSwatch = ref('packed-blue');
+const swatchLayout: SwatchPickerLayout = 'grid';
+const swatchShape: SwatchPickerShape = 'rounded';
+const swatchSize: SwatchPickerSize = 'medium';
+const swatchSpacing: SwatchPickerSpacing = 'small';
+const dropdownAppearance: DropdownAppearance = 'filled-lighter';
+const dropdownPositioning: DropdownPositioning = 'auto';
+const dropdownSize: DropdownSize = 'large';
+const dropdownValue = ref('Packed Cat');
+const dropdownOptions = ref<string[]>(['packed-cat']);
+const personaSize: PersonaSize = 'large';
+const personaTextPosition: PersonaTextPosition = 'after';
 const presenceStatus: PresenceBadgeStatus = 'available';
 const progressColor: ProgressBarColor = 'success';
 const progressThickness: ProgressBarThickness = 'large';
@@ -160,6 +236,9 @@ const spinButtonAppearance: SpinButtonAppearance = 'outline';
 const spinButtonValue = ref<SpinButtonValue>(2);
 const switchLabelPosition: SwitchLabelPosition = 'before';
 const switchSize: SwitchSize = 'small';
+const tabAppearance: TabListAppearance = 'subtle-circular';
+const tabSize: TabListSize = 'medium';
+const selectedTab = ref<TabValue>('overview');
 const theme: FluentTheme = 'light';
 
 createApp({
@@ -216,6 +295,45 @@ createApp({
                 ],
               },
             ),
+        },
+      ),
+      h(
+        FColorPicker,
+        {
+          modelValue: pickerColor.value,
+          'onUpdate:modelValue': value => (pickerColor.value = value),
+          shape: colorPickerShape,
+        },
+        {
+          default: () => [
+            h(FColorArea),
+            h(FColorSlider, {
+              channel: colorSliderChannel,
+              'aria-label': 'Packed hue',
+            }),
+            h(FAlphaSlider, { 'aria-label': 'Packed opacity' }),
+          ],
+        },
+      ),
+      h(
+        FSwatchPicker,
+        {
+          modelValue: selectedSwatch.value,
+          'onUpdate:modelValue': value => (selectedSwatch.value = value),
+          layout: swatchLayout,
+          shape: swatchShape,
+          size: swatchSize,
+          spacing: swatchSpacing,
+          'aria-label': 'Packed swatches',
+        },
+        {
+          default: () =>
+            h(FSwatchPickerRow, {}, {
+              default: () => [
+                h(FColorSwatch, { value: 'packed-blue', color: '#0f6cbd', 'aria-label': 'Blue' }),
+                h(FColorSwatch, { value: 'packed-red', color: '#d13438', 'aria-label': 'Red' }),
+              ],
+            }),
         },
       ),
       h(FBadge, { appearance: badgeAppearance, color: badgeColor }, () => 'Packed badge'),
@@ -335,6 +453,180 @@ createApp({
             h(FSkeletonItem),
             h(FSkeletonItem, { size: 16, shape: 'rectangle', style: { width: '60%' } }),
           ],
+        },
+      ),
+      h(
+        FAccordion,
+        { defaultOpenItems: 'packed' },
+        {
+          default: () => [
+            h(
+              FAccordionItem,
+              { value: 'packed' },
+              {
+                default: () => [
+                  h(FAccordionHeader, { as: 'h2' }, () => 'Packed accordion'),
+                  h(FAccordionPanel, {}, () => 'Packed accordion panel'),
+                ],
+              },
+            ),
+          ],
+        },
+      ),
+      h(
+        FTabList,
+        {
+          modelValue: selectedTab.value,
+          'onUpdate:modelValue': value => (selectedTab.value = value),
+          appearance: tabAppearance,
+          size: tabSize,
+          'aria-label': 'Packed tabs',
+        },
+        {
+          default: () => [
+            h(FTab, { value: 'overview' }, () => 'Overview'),
+            h(FTab, { value: 'details' }, () => 'Details'),
+          ],
+        },
+      ),
+      h(
+        FBreadcrumb,
+        {
+          focusMode: breadcrumbFocusMode,
+          size: breadcrumbSize,
+          'aria-label': 'Packed breadcrumb',
+        },
+        {
+          default: () => [
+            h(
+              FBreadcrumbItem,
+              {},
+              { default: () => h(FBreadcrumbButton, { href: '#packed-home' }, () => 'Home') },
+            ),
+            h(FBreadcrumbDivider),
+            h(
+              FBreadcrumbItem,
+              {},
+              { default: () => h(FBreadcrumbButton, { current: true }, () => 'Current') },
+            ),
+          ],
+        },
+      ),
+      h(
+        FList,
+        {
+          navigationMode: listNavigationMode,
+          selectionMode: listSelectionMode,
+          modelValue: selectedListItems.value,
+          'onUpdate:modelValue': value => (selectedListItems.value = value),
+          'aria-label': 'Packed list',
+        },
+        {
+          default: () => [
+            h(FListItem, { value: 'packed-one' }, () => 'Packed selected item'),
+            h(
+              FListItem,
+              { value: 'packed-two', disabledSelection: true },
+              () => 'Packed disabled item',
+            ),
+          ],
+        },
+      ),
+      h(
+        FField,
+        { label: 'Packed companion', hint: 'Choose packed options.', required: true },
+        {
+          default: () =>
+            h(
+              FListbox,
+              {
+                modelValue: selectedOptions.value,
+                'onUpdate:modelValue': value => (selectedOptions.value = value),
+                multiselect: true,
+              },
+              {
+                default: () => [
+                  h(
+                    FOptionGroup,
+                    { label: 'Packed animals' },
+                    {
+                      default: () => [
+                        h(FOption, { value: 'packed-cat' }, () => 'Packed Cat'),
+                        h(FOption, { value: 'packed-dog', text: 'Packed Dog' }, () =>
+                          h('strong', null, 'Packed Dog'),
+                        ),
+                      ],
+                    },
+                  ),
+                ],
+              },
+            ),
+        },
+      ),
+      h(
+        FField,
+        { label: 'Packed dropdown companion', hint: 'Choose a packed companion.', required: true },
+        {
+          default: () =>
+            h(
+              FDropdown,
+              {
+                modelValue: dropdownValue.value,
+                'onUpdate:modelValue': value => (dropdownValue.value = value),
+                selectedOptions: dropdownOptions.value,
+                'onUpdate:selectedOptions': value => (dropdownOptions.value = value),
+                appearance: dropdownAppearance,
+                positioning: dropdownPositioning,
+                size: dropdownSize,
+                clearable: true,
+                inlinePopup: true,
+              },
+              {
+                default: () => [
+                  h(FOption, { value: 'packed-cat' }, () => 'Packed Cat'),
+                  h(FOption, { value: 'packed-dog' }, () => 'Packed Dog'),
+                ],
+              },
+            ),
+        },
+      ),
+      h(FAvatar, {
+        name: 'Packed Person',
+        color: avatarColor,
+        size: avatarSize,
+        presence: { status: presenceStatus },
+      }),
+      h(
+        FAvatarGroup,
+        { layout: avatarGroupLayout, size: avatarSize, 'aria-label': 'Packed team' },
+        {
+          default: () => [
+            h(FAvatarGroupItem, { name: 'Packed Ada' }),
+            h(FAvatarGroupItem, { name: 'Packed Grace' }),
+            h(
+              FAvatarGroupPopover,
+              {
+                modelValue: avatarOverflowOpen.value,
+                'onUpdate:modelValue': value => (avatarOverflowOpen.value = value),
+                count: 1,
+              },
+              { default: () => h(FAvatarGroupItem, { name: 'Packed Margaret' }) },
+            ),
+          ],
+        },
+      ),
+      h(
+        FPersona,
+        {
+          name: 'Packed Persona',
+          size: personaSize,
+          textPosition: personaTextPosition,
+          avatar: { color: avatarColor, shape: 'square' },
+          presence: { status: presenceStatus },
+        },
+        {
+          secondaryText: () => 'Packed role',
+          tertiaryText: () => 'Packed location',
         },
       ),
       h(

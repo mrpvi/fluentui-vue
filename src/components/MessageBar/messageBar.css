@@ -1,0 +1,110 @@
+.fui-MessageBar {
+  --fui-message-bar-background: var(--fui-color-brand-background-2);
+  --fui-message-bar-border: var(--fui-color-brand-stroke-1);
+  --fui-message-bar-icon: var(--fui-color-brand-foreground-1);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'icon body actions';
+  align-items: center;
+  gap: var(--fui-spacing-horizontal-s);
+  box-sizing: border-box;
+  min-block-size: 44px;
+  padding: var(--fui-spacing-vertical-s) var(--fui-spacing-horizontal-m);
+  color: var(--fui-color-neutral-foreground-1);
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-300);
+  line-height: var(--fui-line-height-base-300);
+  background: var(--fui-message-bar-background);
+  border: var(--fui-stroke-width-thin) solid var(--fui-message-bar-border);
+}
+
+.fui-MessageBar--rounded {
+  border-radius: var(--fui-border-radius-medium);
+}
+.fui-MessageBar--square {
+  border-radius: 0;
+}
+.fui-MessageBar--success {
+  --fui-message-bar-background: var(--fui-color-status-success-background-1);
+  --fui-message-bar-border: var(--fui-color-status-success-border-1);
+  --fui-message-bar-icon: var(--fui-color-status-success-foreground-1);
+}
+.fui-MessageBar--warning {
+  --fui-message-bar-background: var(--fui-color-status-warning-background-1);
+  --fui-message-bar-border: var(--fui-color-status-warning-border-1);
+  --fui-message-bar-icon: var(--fui-color-status-warning-foreground-1);
+}
+.fui-MessageBar--error {
+  --fui-message-bar-background: var(--fui-color-status-danger-background-1);
+  --fui-message-bar-border: var(--fui-color-status-danger-border-1);
+  --fui-message-bar-icon: var(--fui-color-status-danger-foreground-1);
+}
+
+.fui-MessageBar__icon {
+  grid-area: icon;
+  display: inline-grid;
+  place-items: center;
+  inline-size: 20px;
+  block-size: 20px;
+  color: var(--fui-message-bar-icon);
+  font-weight: var(--fui-font-weight-bold);
+}
+.fui-MessageBarBody {
+  grid-area: body;
+  min-inline-size: 0;
+}
+.fui-MessageBarTitle {
+  margin-inline-end: var(--fui-spacing-horizontal-s);
+  font-weight: var(--fui-font-weight-semibold);
+}
+.fui-MessageBarActions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  gap: var(--fui-spacing-horizontal-s);
+}
+.fui-MessageBarActions__actions {
+  display: flex;
+  gap: var(--fui-spacing-horizontal-s);
+}
+.fui-MessageBarActions__containerAction {
+  display: flex;
+}
+.fui-MessageBar__spacer {
+  display: none;
+}
+
+.fui-MessageBar--multiline {
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: 'icon body' '. actions';
+  align-items: start;
+}
+.fui-MessageBar--multiline .fui-MessageBarActions {
+  justify-self: end;
+  margin-block-start: var(--fui-spacing-vertical-s);
+}
+.fui-MessageBarGroup {
+  display: grid;
+  gap: var(--fui-spacing-vertical-s);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fui-MessageBarGroup[data-animate='both'] > .fui-MessageBar {
+    animation: fui-message-bar-enter var(--fui-duration-normal) var(--fui-curve-decelerate-mid);
+  }
+}
+@keyframes fui-message-bar-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@media (forced-colors: active) {
+  .fui-MessageBar {
+    border-color: CanvasText;
+  }
+  .fui-MessageBar__icon {
+    color: CanvasText;
+  }
+}

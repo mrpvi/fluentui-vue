@@ -1,0 +1,88 @@
+.fui-AvatarGroup {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.fui-AvatarGroup--spread {
+  gap: var(--fui-spacing-horizontal-xs);
+}
+
+.fui-AvatarGroup--stack,
+.fui-AvatarGroup--pie {
+  gap: 0;
+}
+
+.fui-AvatarGroup--stack > .fui-AvatarGroupItem + .fui-AvatarGroupItem,
+.fui-AvatarGroup--stack > .fui-AvatarGroupPopover {
+  margin-inline-start: calc(var(--fui-avatar-group-overlap, 8px) * -1);
+}
+
+.fui-AvatarGroup--pie {
+  width: var(--fui-avatar-size);
+  height: var(--fui-avatar-size);
+  background-color: var(--fui-color-transparent-stroke);
+  border-radius: var(--fui-border-radius-circular);
+}
+
+.fui-AvatarGroup--stack > * {
+  position: relative;
+}
+
+.fui-AvatarGroup--stack > :nth-child(1) {
+  z-index: 4;
+}
+.fui-AvatarGroup--stack > :nth-child(2) {
+  z-index: 3;
+}
+.fui-AvatarGroup--stack > :nth-child(3) {
+  z-index: 2;
+}
+.fui-AvatarGroup--stack > :nth-child(n + 4) {
+  z-index: 1;
+}
+
+.fui-AvatarGroup--stack .fui-Avatar,
+.fui-AvatarGroup--stack .fui-AvatarGroupPopover__trigger {
+  outline: 2px solid var(--fui-color-neutral-background-1);
+}
+
+.fui-AvatarGroup--size-16 {
+  --fui-avatar-group-overlap: 4px;
+}
+.fui-AvatarGroup--size-20,
+.fui-AvatarGroup--size-24 {
+  --fui-avatar-group-overlap: 6px;
+}
+.fui-AvatarGroup--size-28,
+.fui-AvatarGroup--size-32,
+.fui-AvatarGroup--size-36 {
+  --fui-avatar-group-overlap: 8px;
+}
+.fui-AvatarGroup--size-40,
+.fui-AvatarGroup--size-48 {
+  --fui-avatar-group-overlap: 10px;
+}
+.fui-AvatarGroup--size-56,
+.fui-AvatarGroup--size-64,
+.fui-AvatarGroup--size-72 {
+  --fui-avatar-group-overlap: 12px;
+}
+.fui-AvatarGroup--size-96,
+.fui-AvatarGroup--size-120,
+.fui-AvatarGroup--size-128 {
+  --fui-avatar-group-overlap: 16px;
+}
+
+@media (forced-colors: active) {
+  .fui-AvatarGroup--pie {
+    background-color: CanvasText;
+  }
+
+  .fui-AvatarGroup--stack .fui-Avatar,
+  .fui-AvatarGroup--stack .fui-AvatarGroupPopover__trigger {
+    outline-color: Canvas;
+  }
+}

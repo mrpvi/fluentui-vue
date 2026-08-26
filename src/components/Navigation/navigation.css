@@ -1,0 +1,182 @@
+.fui-Nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  inline-size: 100%;
+  color: var(--colorNeutralForeground2);
+}
+.fui-NavItem,
+.fui-NavSubItem,
+.fui-NavCategoryItem,
+.fui-AppItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--spacingHorizontalS);
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-block-size: 40px;
+  padding: 0 var(--spacingHorizontalM);
+  border: 0;
+  border-radius: var(--borderRadiusMedium);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+}
+.fui-Nav--small .fui-NavItem,
+.fui-Nav--small .fui-NavSubItem,
+.fui-Nav--small .fui-NavCategoryItem {
+  min-block-size: 32px;
+}
+.fui-NavItem:hover,
+.fui-NavSubItem:hover,
+.fui-NavCategoryItem:hover,
+.fui-AppItem:hover {
+  background: var(--colorNeutralBackground1Hover);
+  color: var(--colorNeutralForeground1Hover);
+}
+.fui-NavItem:focus-visible,
+.fui-NavSubItem:focus-visible,
+.fui-NavCategoryItem:focus-visible,
+.fui-AppItem:focus-visible,
+.fui-Hamburger:focus-visible {
+  outline: 2px solid var(--colorStrokeFocus2);
+  outline-offset: -2px;
+}
+.fui-NavItem--selected,
+.fui-NavSubItem--selected,
+.fui-NavCategoryItem--selected {
+  background: var(--colorSubtleBackgroundSelected);
+  color: var(--colorNeutralForeground1Selected);
+  font-weight: var(--fontWeightSemibold);
+}
+.fui-NavItem--selected::before,
+.fui-NavSubItem--selected::before,
+.fui-NavCategoryItem--selected::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: 8px;
+  inline-size: 3px;
+  border-radius: var(--borderRadiusCircular);
+  background: var(--colorCompoundBrandStroke);
+}
+.fui-NavItem--disabled,
+.fui-NavSubItem--disabled {
+  color: var(--colorNeutralForegroundDisabled);
+  cursor: not-allowed;
+}
+.fui-NavItem__icon {
+  display: inline-flex;
+  flex: none;
+  inline-size: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.fui-NavItem__content {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fui-NavCategoryItem__expand {
+  margin-inline-start: auto;
+  transition: transform 160ms var(--curveEasyEase);
+}
+.fui-NavCategory[data-open='true'] > .fui-NavCategoryItem .fui-NavCategoryItem__expand {
+  transform: rotate(180deg);
+}
+.fui-NavSubItemGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-inline-start: var(--spacingHorizontalL);
+  padding-inline-start: var(--spacingHorizontalS);
+  border-inline-start: 1px solid var(--colorNeutralStroke2);
+}
+.fui-NavSubItem {
+  min-block-size: 36px;
+  padding-inline-start: var(--spacingHorizontalM);
+}
+.fui-NavSectionHeader {
+  margin: var(--spacingVerticalL) var(--spacingHorizontalM) var(--spacingVerticalXS);
+  color: var(--colorNeutralForeground3);
+  font-size: var(--fontSizeBase200);
+  font-weight: var(--fontWeightSemibold);
+  line-height: var(--lineHeightBase200);
+}
+.fui-NavDivider {
+  block-size: 1px;
+  margin: var(--spacingVerticalS) var(--spacingHorizontalM);
+  background: var(--colorNeutralStroke2);
+}
+.fui-NavDrawerBody {
+  padding: var(--spacingVerticalS);
+}
+.fui-Hamburger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 40px;
+  block-size: 40px;
+  border: 0;
+  border-radius: var(--borderRadiusMedium);
+  background: transparent;
+  color: var(--colorNeutralForeground1);
+  font-size: 20px;
+  cursor: pointer;
+}
+.fui-Hamburger:hover {
+  background: var(--colorNeutralBackground1Hover);
+}
+.fui-AppItem {
+  font-size: var(--fontSizeBase400);
+  font-weight: var(--fontWeightSemibold);
+}
+.fui-AppItem--static {
+  cursor: default;
+}
+.fui-AppItem--static:hover {
+  background: transparent;
+}
+.fui-SplitNavItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+.fui-SplitNavItem__action {
+  display: flex;
+  align-items: center;
+  padding-inline-end: var(--spacingHorizontalXS);
+}
+@media (max-width: 600px) {
+  .fui-NavDrawerBody {
+    padding-inline: var(--spacingHorizontalXS);
+  }
+  .fui-NavItem,
+  .fui-NavCategoryItem,
+  .fui-AppItem {
+    padding-inline: var(--spacingHorizontalS);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fui-NavCategoryItem__expand {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .fui-NavItem--selected,
+  .fui-NavSubItem--selected,
+  .fui-NavCategoryItem--selected {
+    color: HighlightText;
+    background: Highlight;
+  }
+  .fui-NavItem--selected::before,
+  .fui-NavSubItem--selected::before,
+  .fui-NavCategoryItem--selected::before {
+    background: HighlightText;
+  }
+}

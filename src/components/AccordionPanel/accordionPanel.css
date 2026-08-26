@@ -1,0 +1,4 @@
+.fui-AccordionPanel {
+  margin: 0 var(--fui-spacing-horizontal-m);
+  color: var(--fui-color-neutral-foreground-1);
+}

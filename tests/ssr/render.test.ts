@@ -48,6 +48,9 @@ describe('SSR rendering', () => {
     expect(firstRender).toContain('99+');
     expect(firstRender).toContain('aria-label="away out of office"');
     expect(firstRender).toContain('fui-PresenceBadge--size-large');
+    expect(firstRender).toMatch(
+      /class="fui-Persona fui-Persona--size-large fui-Persona--text-position-after fui-Persona--text-alignment-center ssr-persona"[^>]*>.*fui-Avatar--size-36.*aria-label="Server Persona, away".*fui-Persona__primaryText.*Server Persona.*fui-Persona__secondaryText.*Server role.*fui-Persona__tertiaryText.*Server location/s,
+    );
     expect(firstRender).toContain('fui-Spinner--size-large');
     expect(firstRender).toContain(
       'class="fui-RadioGroup fui-RadioGroup--vertical ssr-radio-group"',
@@ -92,6 +95,19 @@ describe('SSR rendering', () => {
     );
     expect(firstRender).toMatch(
       /class="fui-Slider fui-Slider--small fui-Slider--vertical fui-Slider--invalid ssr-field-slider" style="--fui-Slider--progress:0%;--fui-Slider--steps-percent:1%;"><input aria-describedby="[^"]+" aria-invalid="true" id="(fui-field-[^"]+)" class="fui-Slider__input" type="range" min="0" max="100" step="1" orient="vertical" value="0">/,
+    );
+    expect(firstRender).toContain('class="fui-ColorPicker ssr-color-picker"');
+    expect(firstRender).toContain('class="fui-ColorArea fui-ColorArea--rounded"');
+    expect(firstRender).toContain('aria-label="Server hue"');
+    expect(firstRender).toContain('aria-label="Server opacity"');
+    expect(firstRender).toMatch(
+      /aria-label="Server colors" class="fui-SwatchPicker fui-SwatchPicker--row fui-SwatchPicker--spacing-medium ssr-swatch-picker"[^>]*role="radiogroup"/,
+    );
+    expect(firstRender).toMatch(
+      /aria-label="Server blue"[^>]*role="radio"[^>]*tabindex="0"[^>]*aria-checked="true"/,
+    );
+    expect(firstRender).toMatch(
+      /aria-label="Server green"[^>]*role="radio"[^>]*tabindex="-1"[^>]*aria-checked="false"/,
     );
     expect(firstRender).toMatch(
       /aria-label="Server skeleton" class="fui-Skeleton ssr-skeleton" style="" role="progressbar" aria-busy="true"><!--\[--><span class="fui-SkeletonItem fui-SkeletonItem--pulse fui-SkeletonItem--translucent fui-SkeletonItem--size-24 fui-SkeletonItem--circle ssr-skeleton-item" style=""><!--\[--><!--\]--><\/span><!--\]--><\/div>/,
@@ -138,5 +154,83 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /<article(?=[^>]*aria-label="Server article")(?=[^>]*class="fui-Card[^>]*ssr-article-card")[^>]*>/,
     );
+    expect(firstRender).toMatch(
+      /class="fui-Accordion ssr-accordion"[^>]*>.*<h2[^>]*class="fui-AccordionHeader[^>]*>.*<button id="(fui-accordion-header-[^"]+)"[^>]*aria-expanded="true" aria-controls="(fui-accordion-panel-[^"]+)"[^>]*>.*Server accordion.*<div id="\2" class="fui-AccordionPanel"[^>]*role="region" aria-labelledby="\1">.*Server accordion panel/s,
+    );
+    expect(firstRender).toMatch(
+      /class="fui-TabList fui-TabList--transparent fui-TabList--medium fui-TabList--horizontal ssr-tab-list"[^>]*role="tablist" aria-orientation="horizontal">.*<button[^>]*class="fui-Tab[^>]*fui-Tab--selected[^>]*"[^>]*role="tab"[^>]*value="overview"[^>]*tabindex="0" aria-selected="true"[^>]*>.*Server overview.*<button[^>]*class="fui-Tab[^>]*fui-Tab--disabled[^>]*"[^>]*role="tab"[^>]*value="details" disabled[^>]*>.*Server details/s,
+    );
+    expect(firstRender).toMatch(
+      /<nav(?=[^>]*class="fui-Breadcrumb fui-Breadcrumb--large ssr-breadcrumb")(?=[^>]*aria-label="Server breadcrumb")[^>]*><ol class="fui-Breadcrumb__list" role="list">/,
+    );
+    expect(firstRender).toMatch(
+      /<li[^>]*class="fui-BreadcrumbItem fui-BreadcrumbItem--large"[^>]*>.*<a(?=[^>]*class="fui-BreadcrumbButton fui-BreadcrumbButton--large")(?=[^>]*href="#server-home")[^>]*>.*Server home/s,
+    );
+    expect(firstRender).toMatch(
+      /<li(?=[^>]*class="fui-BreadcrumbDivider fui-BreadcrumbDivider--large")(?=[^>]*aria-hidden="true")[^>]*>/,
+    );
+    expect(firstRender).toMatch(
+      /<button(?=[^>]*class="fui-BreadcrumbButton fui-BreadcrumbButton--large fui-BreadcrumbButton--current")(?=[^>]*aria-current="page")(?=[^>]*aria-disabled="true")[^>]*>.*Server current/s,
+    );
+    expect(firstRender).toMatch(
+      /<ul(?=[^>]*class="fui-List ssr-list")(?=[^>]*role="listbox")(?=[^>]*aria-multiselectable="true")(?=[^>]*aria-label="Server list")[^>]*>.*<li(?=[^>]*id="server-one")(?=[^>]*class="fui-ListItem[^>]*fui-ListItem--selected")(?=[^>]*role="option")(?=[^>]*aria-selected="true")[^>]*>.*Server selected item.*<li(?=[^>]*id="server-two")(?=[^>]*aria-selected="false")(?=[^>]*aria-disabled="true")[^>]*>.*Server disabled selection/s,
+    );
+    expect(firstRender).toContain('class="fui-Listbox ssr-listbox"');
+    expect(firstRender).toContain('class="fui-OptionGroup"');
+    expect(firstRender).toContain('class="fui-OptionGroup__label" role="presentation"');
+    expect(firstRender).toContain('Server regions');
+    expect(firstRender).toContain('Server West');
+    expect(firstRender).toContain('Server East');
+    expect(firstRender).toMatch(/class="fui-Listbox ssr-listbox"[^>]*role="listbox" tabindex="0"/);
+    expect(firstRender).toMatch(
+      /class="fui-Option[^"]*fui-Option--selected[^"]*"[^>]*role="option"[^>]*aria-selected="true"/,
+    );
+    expect(firstRender).toMatch(
+      /class="fui-Option__content"><!--\[-->Server West<!--\]--><\/span>/,
+    );
+    expect(firstRender).toMatch(/role="option"[^>]*aria-disabled="true"[^>]*aria-selected="false"/);
+    expect(firstRender).toMatch(
+      /<div(?=[^>]*aria-label="Server companions")(?=[^>]*class="fui-Listbox fui-Listbox--multiselect ssr-multiselect-listbox")(?=[^>]*role="menu")(?=[^>]*tabindex="0")[^>]*>.*<div(?=[^>]*class="fui-Option[^>]*fui-Option--multiselect[^>]*fui-Option--selected")(?=[^>]*role="menuitemcheckbox")(?=[^>]*aria-checked="true")[^>]*>.*Server Cat.*<div(?=[^>]*role="menuitemcheckbox")(?=[^>]*aria-checked="false")[^>]*>.*Server Dog/s,
+    );
+    expect(firstRender).toContain(
+      'class="fui-Dropdown fui-Dropdown--outline fui-Dropdown--medium ssr-dropdown"',
+    );
+    expect(firstRender).toContain(
+      'class="fui-Combobox fui-Combobox--outline fui-Combobox--medium ssr-combobox"',
+    );
+    expect(firstRender).toContain('aria-label="Server animal search"');
+    expect(firstRender).toContain('fui-Combobox__listbox');
+    expect(firstRender).toContain('fui-Combobox__listbox--inline');
+    expect(firstRender).toContain('fui-Combobox__listbox--closed');
+    expect(firstRender).toContain('Server Cat');
+    expect(firstRender).toContain('Server Dog');
+    expect(firstRender).toContain('ssr-popover');
+    expect(firstRender).toContain('Server popover trigger');
+    expect(firstRender).toContain('Server popover surface');
+    expect(firstRender).toMatch(
+      /<button(?=[^>]*id="fui-field-[^"]+__control")(?=[^>]*aria-labelledby="fui-field-[^"]+__label")(?=[^>]*aria-describedby="fui-field-[^"]+__hint")(?=[^>]*aria-required="true")(?=[^>]*class="fui-Dropdown__button")(?=[^>]*role="combobox")(?=[^>]*aria-expanded="false")(?=[^>]*aria-haspopup="listbox")[^>]*>.*Server Cat.*<\/button>/s,
+    );
+    expect(firstRender).toMatch(
+      /class="fui-Listbox fui-Dropdown__listbox fui-Dropdown__listbox--closed fui-Dropdown__listbox--inline"[^>]*role="listbox"[^>]*>.*Server Cat.*Server Dog/s,
+    );
+    expect(firstRender).toMatch(
+      /<span(?=[^>]*class="fui-Avatar[^>]*fui-Avatar--size-48[^>]*fui-Avatar--active[^>]*ssr-avatar")(?=[^>]*role="img")(?=[^>]*aria-label="Server Person, available, active")[^>]*>.*fui-Avatar__initials.*SP.*fui-PresenceBadge/s,
+    );
+    expect(firstRender).toMatch(
+      /<div(?=[^>]*class="fui-AvatarGroup fui-AvatarGroup--stack fui-AvatarGroup--size-40 ssr-avatar-group")(?=[^>]*aria-label="Server team")(?=[^>]*role="group")[^>]*>.*<div class="fui-AvatarGroupItem".*<button[^>]*aria-label="View more people\."[^>]*aria-expanded="true".*<div[^>]*role="dialog"[^>]*aria-label="Overflow".*<ul[^>]*role="list">.*<li class="fui-AvatarGroupItem fui-AvatarGroupItem--overflow"/s,
+    );
+    expect(firstRender).toMatch(
+      /<div(?=[^>]*class="fui-Tree fui-Tree--subtle fui-Tree--medium ssr-tree")(?=[^>]*role="tree")(?=[^>]*aria-multiselectable="true")(?=[^>]*aria-label="Server files")[^>]*>/,
+    );
+    expect(firstRender).toMatch(
+      /role="treeitem"[^>]*aria-expanded="true"[^>]*aria-level="1"[\s\S]*?role="group"[\s\S]*?aria-level="2"/,
+    );
+    expect(firstRender).toMatch(/role="treeitem"[^>]*aria-checked="true"[^>]*>.*Server readme/s);
+    expect(firstRender).toMatch(
+      /<div(?=[^>]*class="fui-Overflow fui-Overflow--horizontal ssr-overflow")(?=[^>]*aria-label="Server overflow")(?=[^>]*data-overflowing="false")[^>]*>/,
+    );
+    expect(firstRender).toContain('data-overflow-item="server-primary"');
+    expect(firstRender).toContain('data-overflow-divider="server-group"');
+    expect(firstRender).not.toContain('data-overflow-item="server-primary" hidden');
   });
 });

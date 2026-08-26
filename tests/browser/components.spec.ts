@@ -804,13 +804,17 @@ test('CompoundButton preserves submit, disabled, keyboard, RTL, and theme behavi
   await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
   await expect(before.locator('.fui-CompoundButton__icon')).toHaveCSS('margin-left', '12px');
   const primary = section.locator('.compound-primary');
-  const lightBackground = await primary.evaluate(
+  const backgroundBeforeThemeChange = await primary.evaluate(
     (element) => getComputedStyle(element).backgroundColor,
   );
-  await page.getByRole('button', { name: 'Use light theme' }).click();
-  expect(await primary.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(
-    lightBackground,
-  );
+  const themeToggle = page.getByRole('button', { name: /Use (?:light|dark) theme/ });
+  const main = page.locator('main');
+  const themeBeforeChange = await main.getAttribute('class');
+  await themeToggle.click();
+  await expect(main).not.toHaveAttribute('class', themeBeforeChange!);
+  await expect
+    .poll(() => primary.evaluate((element) => getComputedStyle(element).backgroundColor))
+    .not.toBe(backgroundBeforeThemeChange);
 });
 
 test('CompoundButton removes transitions for reduced motion', async ({ page, browserName }) => {
@@ -1832,6 +1836,566 @@ test('Card reduced motion collapses authored transitions', async ({ page, browse
     'transition-duration',
     /^(?:1e-05|0\.00001)s$/,
   );
+});
+
+test('Accordion preserves disclosure state, relationships, disabled behavior, and layout', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#accordion');
+  const single = section.locator('.accordion-single');
+  const overview = single.getByRole('button', { name: 'Overview' });
+  const details = single.getByRole('button', { name: 'Details' });
+  const disabled = single.getByRole('button', { name: 'Disabled section' });
+
+  await expect(overview).toHaveAttribute('aria-expanded', 'true');
+  await expect(overview).toHaveAttribute('aria-disabled', 'true');
+  await expect(single.getByRole('region', { name: 'Overview' })).toBeVisible();
+  await details.click();
+  await expect(overview).toHaveAttribute('aria-expanded', 'false');
+  await expect(details).toHaveAttribute('aria-expanded', 'true');
+  await expect(single.getByRole('region', { name: 'Details' })).toBeVisible();
+  await expect(disabled).toBeDisabled();
+
+  const multiple = section.locator('.accordion-multiple');
+  const first = multiple.getByRole('button', { name: 'First collapsible item' });
+  const second = multiple.getByRole('button', { name: 'ⓘ Second collapsible item' });
+  await expect(first).toHaveAttribute('aria-expanded', 'true');
+  await second.click();
+  await expect(multiple.getByRole('region')).toHaveCount(2);
+  await first.click();
+  await second.click();
+  await expect(multiple.getByRole('region')).toHaveCount(0);
+
+  await expect(first).toHaveCSS('min-height', '32px');
+  await expect(second).toHaveCSS('font-size', '16px');
+  const detailsBox = await details.boundingBox();
+  const endIconBox = await details.locator('.fui-AccordionHeader__expandIcon').boundingBox();
+  expect(detailsBox).not.toBeNull();
+  expect(endIconBox).not.toBeNull();
+  const trailingGap = detailsBox!.x + detailsBox!.width - (endIconBox!.x + endIconBox!.width);
+  expect(trailingGap).toBeGreaterThanOrEqual(8);
+  expect(trailingGap).toBeLessThanOrEqual(20);
+});
+
+test('Accordion respects RTL chevrons and reduced motion', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Computed motion coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+
+  const overview = page.locator('#accordion').getByRole('button', { name: 'Overview' });
+  const details = page.locator('#accordion').getByRole('button', { name: 'Details' });
+  await details.click();
+  const chevron = overview.locator('.fui-AccordionHeader__chevron');
+  await expect(chevron).toHaveCSS('transform', 'matrix(-1, 0, 0, -1, 0, 0)');
+  await expect(chevron).toHaveCSS('transition-duration', /^(?:1e-05|0\.00001)s$/);
+});
+
+test('Tabs preserve selection, roving focus, disabled state, appearances, and layout', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#tabs');
+  const project = section.getByRole('tablist', { name: 'Project sections' });
+  const overview = project.getByRole('tab', { name: 'Overview' });
+  const activity = project.getByRole('tab', { name: 'Activity' });
+  const settings = project.getByRole('tab', { name: 'Settings' });
+
+  await expect(overview).toHaveAttribute('aria-selected', 'true');
+  await expect(overview).toHaveAttribute('tabindex', '0');
+  await expect(settings).toBeDisabled();
+  await activity.focus();
+  await expect(overview).toHaveAttribute('aria-selected', 'true');
+  await page.keyboard.press('ArrowRight');
+  await expect(overview).toBeFocused();
+  await page.keyboard.press('End');
+  await expect(activity).toBeFocused();
+  await activity.click();
+  await expect(activity).toHaveAttribute('aria-selected', 'true');
+  await expect(section.getByText('Selected tab: activity')).toBeVisible();
+
+  const automatic = section.getByRole('tablist', { name: 'Automatic sections' });
+  const mentions = automatic.getByRole('tab', { name: 'Mentions' });
+  await mentions.focus();
+  await expect(mentions).toHaveAttribute('aria-selected', 'true');
+  await page.keyboard.press('ArrowDown');
+  await expect(automatic.getByRole('tab', { name: 'Files' })).toBeFocused();
+  await expect(automatic.getByRole('tab', { name: 'Files' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+
+  const circular = section.getByRole('tablist', { name: 'Circular navigation' });
+  const home = circular.getByRole('tab', { name: 'Home' });
+  const notification = circular.getByRole('tab', { name: 'Notifications' });
+  await expect(home).toHaveCSS('border-radius', '10000px');
+  await expect(home.locator('.fui-Tab__content')).toHaveCSS('font-size', '16px');
+  await expect(notification.locator('.fui-Tab__icon')).toHaveCSS('width', '24px');
+});
+
+test('Tabs preserve RTL indicators and reduced-motion safeguards', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Computed motion coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+
+  const vertical = page
+    .locator('#tabs')
+    .getByRole('tablist', { name: 'Automatic sections' })
+    .getByRole('tab', { name: 'Activity' });
+  const styles = await vertical.evaluate((element) => {
+    const after = getComputedStyle(element, '::after');
+    return {
+      insetInlineStart: after.insetInlineStart,
+      transitionDuration: after.transitionDuration,
+    };
+  });
+  expect(styles.insetInlineStart).toBe('0px');
+  expect(styles.transitionDuration).toMatch(/^(?:0s|1e-05s|0\.00001s)$/);
+});
+
+test('Breadcrumb preserves semantics, current state, focus modes, sizes, and RTL dividers', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#breadcrumb');
+  const project = section.getByRole('navigation', { name: 'Project breadcrumb' });
+  const workspace = project.getByRole('link', { name: 'Workspace' });
+  const current = project.getByRole('button', { name: 'Fluent Vue' });
+  await expect(project.locator('ol')).toHaveAttribute('role', 'list');
+  await expect(workspace).toHaveAttribute('href', '#workspace');
+  await expect(workspace.locator('.fui-BreadcrumbButton__icon')).toHaveCSS('width', '16px');
+  await expect(current).toHaveAttribute('aria-current', 'page');
+  await expect(current).toHaveAttribute('aria-disabled', 'true');
+  await expect(current).toHaveCSS('font-weight', '600');
+
+  const arrow = section.getByRole('navigation', { name: 'Arrow breadcrumb' });
+  const home = arrow.getByRole('link', { name: 'Home' });
+  const disabled = arrow.getByRole('button', { name: 'Disabled', exact: true });
+  const focusableDisabled = arrow.getByRole('button', { name: 'Focusable disabled' });
+  const currentPage = arrow.getByRole('button', { name: 'Current page' });
+  await expect(home).toHaveAttribute('tabindex', '0');
+  await expect(disabled).toBeDisabled();
+  await expect(disabled).toHaveAttribute('tabindex', '-1');
+  await expect(focusableDisabled).toHaveAttribute('tabindex', '-1');
+  await home.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(focusableDisabled).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await expect(currentPage).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await expect(home).toBeFocused();
+  await expect(home).toHaveCSS('height', '40px');
+  await expect(arrow.locator('.fui-BreadcrumbDivider').first()).toHaveCSS('font-size', '20px');
+
+  const rtlDivider = section
+    .getByRole('navigation', { name: 'RTL breadcrumb' })
+    .locator('.fui-BreadcrumbDivider__icon');
+  await expect(rtlDivider).toHaveCSS('transform', 'matrix(-1, 0, 0, 1, 0, 0)');
+});
+
+test('Breadcrumb preserves reduced-motion and forced-color safeguards', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Computed media-style coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce', forcedColors: 'active' });
+  await page.goto('/');
+
+  const button = page
+    .locator('#breadcrumb')
+    .getByRole('navigation', { name: 'Project breadcrumb' })
+    .getByRole('link', { name: 'Workspace' });
+  await expect(button).toHaveCSS('transition-duration', /^(?:1e-05|0\.00001)s$/);
+  await expect(button).toHaveCSS('color', 'rgb(0, 0, 0)');
+});
+
+test('List preserves semantics, selection, actions, and composite navigation', async ({ page }) => {
+  await page.goto('/');
+
+  const section = page.locator('#list');
+  const content = section.getByRole('list', { name: 'Continents' });
+  await expect(content.getByRole('listitem')).toHaveCount(3);
+  await expect(content).toHaveCSS('list-style-type', 'none');
+
+  const people = section.getByRole('listbox', { name: 'People list' });
+  const ada = people.getByRole('option', { name: 'Ada' });
+  const grace = people.getByRole('option', { name: 'Grace' });
+  const linus = people.getByRole('option', { name: 'Linus' });
+  await expect(people).toHaveAttribute('aria-multiselectable', 'true');
+  await expect(ada).toHaveAttribute('aria-selected', 'true');
+  await grace.click();
+  await expect(grace).toHaveAttribute('aria-selected', 'true');
+  await expect(section.getByText('Selected people: Ada, Grace')).toBeVisible();
+  await expect(linus).toHaveAttribute('aria-disabled', 'true');
+  await linus.dispatchEvent('click');
+  await expect(linus).toHaveAttribute('aria-selected', 'false');
+
+  await ada.focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(grace).toBeFocused();
+  await page.keyboard.press('End');
+  await expect(linus).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(linus).toBeFocused();
+
+  const projects = section.getByRole('grid', { name: 'Project actions' });
+  const rows = projects.getByRole('row');
+  await expect(rows).toHaveCount(2);
+  await rows.first().focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(rows.first().getByRole('button', { name: 'Open' })).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await expect(rows.first().getByRole('button', { name: 'More Roadmap actions' })).toBeFocused();
+  await page.keyboard.press('ArrowLeft');
+  await expect(rows.first().getByRole('button', { name: 'Open' })).toBeFocused();
+  await page.keyboard.press('ArrowLeft');
+  await expect(rows.first()).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('Escape');
+  await expect(rows.first()).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(rows.nth(1)).toBeFocused();
+});
+
+test('List preserves forced-color focus and selected checkmark safeguards', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Computed forced-color coverage is Chromium-only.');
+  await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/');
+
+  const ada = page
+    .locator('#list')
+    .getByRole('listbox', { name: 'People list' })
+    .getByRole('option', { name: 'Ada' });
+  await ada.focus();
+  await expect(ada).toHaveCSS('outline-style', 'solid');
+  await expect(ada.locator('.fui-ListItem__checkmarkIndicator')).toHaveCSS(
+    'background-color',
+    'rgba(5, 0, 73, 0.8)',
+  );
+});
+
+test('Listbox preserves active-descendant navigation, controlled state, and released semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#listbox');
+  const single = section.getByRole('listbox', { name: 'Favorite animal' });
+  const cat = single.getByRole('option', { name: 'Cat' });
+  const dog = single.getByRole('option', { name: 'Dog' });
+  const horse = single.getByRole('option', { name: 'Horse · unavailable' });
+
+  await expect(single).toHaveAttribute('tabindex', '0');
+  await expect(single).toHaveAttribute('aria-activedescendant', (await dog.getAttribute('id'))!);
+  await expect(dog).toHaveAttribute('aria-selected', 'true');
+  await expect(horse).toHaveAttribute('aria-disabled', 'true');
+  await single.focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(single).toHaveAttribute('aria-activedescendant', (await horse.getAttribute('id'))!);
+  await page.keyboard.press('Enter');
+  await expect(dog).toHaveAttribute('aria-selected', 'true');
+  await page.keyboard.press('End');
+  await expect(single).toHaveAttribute(
+    'aria-activedescendant',
+    (await single.getByRole('option', { name: 'Dolphin' }).getAttribute('id'))!,
+  );
+  await page.keyboard.press('Home');
+  await expect(single).toHaveAttribute('aria-activedescendant', (await cat.getAttribute('id'))!);
+  await page.keyboard.press(' ');
+  await expect(cat).toHaveAttribute('aria-selected', 'true');
+  await expect(dog).toHaveAttribute('aria-selected', 'false');
+
+  const multiple = section.getByRole('menu', { name: 'Companion animals' });
+  const multipleDog = multiple.getByRole('menuitemcheckbox', { name: 'Dog' });
+  const multipleBird = multiple.getByRole('menuitemcheckbox', { name: 'Bird' });
+  const multipleRabbit = multiple.getByRole('menuitemcheckbox', { name: 'Rabbit · unavailable' });
+  await expect(multiple).not.toHaveAttribute('aria-multiselectable');
+  await expect(multipleDog).toHaveAttribute('aria-checked', 'true');
+  await multipleBird.click();
+  await expect(multipleBird).toHaveAttribute('aria-checked', 'true');
+  await expect(section.getByText('Selected companions: dog, bird')).toBeVisible();
+  await multipleRabbit.click({ force: true });
+  await expect(multipleRabbit).toHaveAttribute('aria-checked', 'false');
+
+  const controlled = section.getByRole('listbox', { name: 'Deployment region' });
+  const west = controlled.getByRole('option', { name: 'West Europe' });
+  const east = controlled.getByRole('option', { name: 'East US' });
+  await expect(controlled).toHaveAttribute('aria-required', 'true');
+  await expect(controlled).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
+  await east.click();
+  await expect(west).toHaveAttribute('aria-selected', 'true');
+  await expect(east).toHaveAttribute('aria-selected', 'false');
+  await expect(section.getByText('Controlled attempt: east')).toBeVisible();
+
+  await page.locator('main').evaluate((main) => main.setAttribute('dir', 'rtl'));
+  const checkIcon = multipleDog.locator('.fui-Option__checkIcon');
+  await expect(checkIcon).toHaveCSS('margin-right', '-2px');
+  expect(
+    Number.parseFloat(await checkIcon.evaluate((element) => getComputedStyle(element).marginLeft)),
+  ).toBeGreaterThan(0);
+});
+
+test('Popover toggles, dismisses, and restores focus', async ({ page }) => {
+  await page.goto('/');
+  const section = page.locator('#popover');
+  const trigger = section.getByRole('button', { name: 'Show details' });
+  await trigger.click();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  const surface = page.locator(`#${await trigger.getAttribute('aria-controls')}`);
+  await expect(surface).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  await expect(trigger).toBeFocused();
+  await trigger.click();
+  await page.mouse.click(8, 8);
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('Dropdown preserves popup keyboard, selection, Field, and controlled semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#dropdown');
+  const single = section.getByRole('combobox', { name: 'Favorite animal' });
+  await expect(single).toHaveAttribute('aria-required', 'true');
+  await expect(single).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
+  await expect(single).toHaveAttribute('aria-expanded', 'false');
+  await single.click();
+  await expect(single).toHaveAttribute('aria-expanded', 'true');
+  const singlePopup = page.locator(`#${await single.getAttribute('aria-controls')}`);
+  const cat = singlePopup.getByRole('option', { name: 'Cat' });
+  const dog = singlePopup.getByRole('option', { name: 'Dog' });
+  const horse = singlePopup.getByRole('option', { name: 'Horse · unavailable' });
+  await expect(singlePopup).toHaveAttribute('role', 'listbox');
+  await expect(single).toHaveAttribute('aria-activedescendant', (await dog.getAttribute('id'))!);
+  await expect(dog).toHaveAttribute('aria-selected', 'true');
+  await expect(horse).toHaveAttribute('aria-disabled', 'true');
+  await single.press('ArrowDown');
+  await expect(single).toHaveAttribute('aria-activedescendant', (await horse.getAttribute('id'))!);
+  await single.press('Enter');
+  await expect(single).toHaveAttribute('aria-expanded', 'false');
+  await expect(single).toContainText('Dog');
+  await single.press('c');
+  await expect(single).toHaveAttribute('aria-expanded', 'true');
+  await expect(single).toHaveAttribute('aria-activedescendant', (await cat.getAttribute('id'))!);
+  await single.press('Enter');
+  await expect(single).toContainText('Cat');
+  await expect(section.getByText('Selected animal: cat')).toBeVisible();
+  await section.getByRole('button', { name: 'Clear selection' }).click();
+  await expect(single).toBeFocused();
+  await expect(single).toContainText('Choose an animal');
+  await expect(section.getByText('Selected animal: none')).toBeVisible();
+
+  const multiple = section.getByRole('combobox', { name: 'Companion animals' });
+  await multiple.click();
+  const multiplePopup = page.locator(`#${await multiple.getAttribute('aria-controls')}`);
+  const multipleDog = multiplePopup.getByRole('menuitemcheckbox', { name: 'Dog' });
+  const multipleRabbit = multiplePopup.getByRole('menuitemcheckbox', {
+    name: 'Rabbit · unavailable',
+  });
+  await expect(multiplePopup).toHaveAttribute('role', 'menu');
+  await expect(multipleDog).toHaveAttribute('aria-checked', 'false');
+  await multipleDog.click();
+  await expect(multiple).toHaveAttribute('aria-expanded', 'true');
+  await expect(multipleDog).toHaveAttribute('aria-checked', 'true');
+  await expect(section.getByText('Selected companions: cat, dog')).toBeVisible();
+  await multipleRabbit.click({ force: true });
+  await expect(multipleRabbit).toHaveAttribute('aria-checked', 'false');
+  await multiple.press('Escape');
+  await expect(multiple).toHaveAttribute('aria-expanded', 'false');
+
+  const controlled = section.getByRole('combobox', { name: 'Controlled deployment region' });
+  await controlled.click();
+  const controlledPopup = page.locator(`#${await controlled.getAttribute('aria-controls')}`);
+  await controlledPopup.getByRole('option', { name: 'East US' }).click();
+  await expect(controlled).toContainText('Locked West Europe');
+  await expect(section.getByText('Controlled attempt: east')).toBeVisible();
+
+  await page.locator('main').evaluate((main) => main.setAttribute('dir', 'rtl'));
+  await multiple.click();
+  const checkIcon = multiplePopup
+    .getByRole('menuitemcheckbox', { name: 'Cat' })
+    .locator('.fui-Option__checkIcon');
+  await expect(checkIcon).toHaveCSS('margin-right', '-2px');
+});
+
+test('Combobox supports editing, filtering, keyboard selection, and Field semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#combobox');
+  const control = section.getByRole('combobox', { name: 'Search animal' });
+  await expect(control).toHaveAttribute('aria-required', 'true');
+  await expect(control).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
+  await control.fill('do');
+  await expect(control).toHaveAttribute('aria-expanded', 'true');
+  const popup = page.locator(`#${await control.getAttribute('aria-controls')}`);
+  const dog = popup.getByRole('option', { name: 'Dog' });
+  await expect(dog).toBeVisible();
+  await control.press('Enter');
+  await expect(control).toHaveValue('Dog');
+  await expect(control).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('Dropdown popup matches trigger width, placement, and outside dismissal', async ({ page }) => {
+  await page.goto('/');
+
+  const section = page.locator('#dropdown');
+  const single = section.getByRole('combobox', { name: 'Favorite animal' });
+  await single.click();
+  const popup = page.locator(`#${await single.getAttribute('aria-controls')}`);
+  const triggerBox = await single.locator('..').boundingBox();
+  const popupBox = await popup.boundingBox();
+  expect(triggerBox).not.toBeNull();
+  expect(popupBox).not.toBeNull();
+  expect(Math.abs((popupBox?.width ?? 0) - (triggerBox?.width ?? 0))).toBeLessThanOrEqual(1);
+  expect(popupBox?.y ?? 0).toBeGreaterThanOrEqual(triggerBox?.y ?? 0);
+  await page.evaluate(() => {
+    document.body.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+  });
+  await expect(single).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('Listbox preserves forced-color focus and selection safeguards', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Computed forced-color coverage is Chromium-only.');
+  await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/');
+
+  const listbox = page.locator('#listbox').getByRole('listbox', { name: 'Favorite animal' });
+  await listbox.focus();
+  const activeId = await listbox.getAttribute('aria-activedescendant');
+  const activeOption = page.locator(`#${activeId}`);
+  const focusOverlay = await activeOption.evaluate((element) => {
+    const after = getComputedStyle(element, '::after');
+    return { borderStyle: after.borderStyle, borderWidth: after.borderWidth };
+  });
+  expect(focusOverlay.borderStyle).toBe('solid');
+  expect(focusOverlay.borderWidth).toBe('2px');
+
+  const selectedCheck = listbox
+    .getByRole('option', { name: 'Dog' })
+    .locator('.fui-Option__checkIcon');
+  await expect(selectedCheck).toHaveCSS('color', 'rgb(0, 0, 0)');
+});
+
+test('Avatar preserves fallbacks, group layouts, and overflow interaction', async ({ page }) => {
+  await page.goto('/');
+
+  const section = page.locator('#avatar');
+  const ada = section.getByRole('img', { name: 'Ada Lovelace' }).first();
+  await expect(ada.locator('.fui-Avatar__initials')).toHaveText('AL');
+  await expect(ada).toHaveCSS('width', '32px');
+
+  const active = section.getByRole('img', { name: 'Linus Torvalds, available, active' });
+  await expect(active).toHaveClass(/fui-Avatar--active-ring-shadow/);
+  await expect(active.locator('.fui-PresenceBadge')).toBeVisible();
+
+  const stack = section.getByRole('group', { name: 'Engineering team' });
+  await expect(stack).toHaveClass(/fui-AvatarGroup--stack/);
+  const trigger = stack.getByRole('button', { name: 'View more people.' });
+  await trigger.click();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  const surface = stack.getByRole('dialog', { name: 'Overflow' });
+  await expect(surface).toBeFocused();
+  await expect(surface.getByRole('listitem')).toHaveCount(3);
+  await page.keyboard.press('Escape');
+  await expect(surface).toBeHidden();
+  await expect(trigger).toBeFocused();
+  await expect(section.getByText('Overflow popover: closed')).toBeVisible();
+
+  const pie = section.getByRole('group', { name: 'Project contributors' });
+  await expect(pie).toHaveClass(/fui-AvatarGroup--pie/);
+  await expect(pie).toHaveCSS('width', '48px');
+  await expect(pie).toHaveCSS('height', '48px');
+  const pieItems = pie.locator(':scope > .fui-AvatarGroupItem');
+  await expect(pieItems).toHaveCount(3);
+  await expect(pieItems.nth(0)).toHaveCSS('position', 'absolute');
+  await expect(pieItems.nth(1)).toHaveCSS('transform', 'matrix(0.5, 0, 0, 0.5, 0, 0)');
+  await expect(pieItems.nth(2)).toHaveCSS('transform', 'matrix(0.5, 0, 0, 0.5, 0, 0)');
+  await expect(pie.getByRole('button', { name: 'View more people.' })).toHaveText('');
+});
+
+test('Persona preserves media mapping, text hierarchy, and layouts', async ({ page }) => {
+  await page.goto('/');
+
+  const section = page.locator('#persona');
+  const ada = section.locator('.fui-Persona').filter({ hasText: 'Ada Lovelace' });
+  await expect(ada.locator('.fui-Avatar')).toHaveCSS('width', '32px');
+  await expect(ada.locator('.fui-Persona__secondaryText')).toHaveText('Mathematician');
+  await expect(ada.locator('.fui-Persona__quaternaryText')).toHaveText('Available');
+
+  const grace = section.locator('.fui-Persona').filter({ hasText: 'Grace Hopper' });
+  await expect(grace).toHaveClass(/fui-Persona--size-extra-large/);
+  await expect(grace.locator('.fui-Avatar')).toHaveCSS('width', '40px');
+
+  const before = section.locator('.fui-Persona').filter({ hasText: 'Katherine Johnson' });
+  await expect(before).toHaveClass(/fui-Persona--text-position-before/);
+  expect(
+    await before
+      .locator(':scope > .fui-Persona__media')
+      .evaluate((media) => !media.nextElementSibling),
+  ).toBe(true);
+
+  const below = section.locator('.fui-Persona').filter({ hasText: 'Dorothy Vaughan' });
+  await expect(below).toHaveClass(/fui-Persona--text-position-below/);
+  await expect(below).toHaveCSS('justify-items', 'center');
+
+  const presenceOnly = section.locator('.fui-Persona').filter({ hasText: 'Margaret Hamilton' });
+  await expect(presenceOnly).toHaveClass(/fui-Persona--presence-only/);
+  await expect(presenceOnly.locator('.fui-Avatar')).toHaveCount(0);
+  await expect(
+    presenceOnly.getByRole('img', { name: 'do not disturb out of office' }),
+  ).toBeVisible();
+
+  await page.locator('main').evaluate((main) => main.setAttribute('dir', 'rtl'));
+  await expect(ada.locator('.fui-Persona__media')).toHaveCSS('margin-right', '0px');
+  await expect(ada.locator('.fui-Persona__media')).toHaveCSS('margin-left', '8px');
+  await expect(before.locator('.fui-Persona__media')).toHaveCSS('margin-right', '8px');
+  await expect(before.locator('.fui-Persona__media')).toHaveCSS('margin-left', '0px');
+});
+
+test('Persona preserves forced-color text treatment', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Computed forced-color coverage is Chromium-only.');
+  await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/');
+
+  const primary = page.locator('#persona .fui-Persona__primaryText').first();
+  await expect(primary).toHaveCSS('color', 'rgb(0, 0, 0)');
+});
+
+test('Avatar preserves forced-color and reduced-motion safeguards', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Computed media-style coverage is Chromium-only.');
+  await page.emulateMedia({ reducedMotion: 'reduce', forcedColors: 'active' });
+  await page.goto('/');
+
+  const active = page.locator('#avatar').getByRole('img', {
+    name: 'Linus Torvalds, available, active',
+  });
+  await expect(active).toHaveCSS('transition-duration', '0s');
+  const trigger = page
+    .locator('#avatar')
+    .getByRole('group', { name: 'Engineering team' })
+    .getByRole('button', { name: 'View more people.' });
+  await expect(trigger).toHaveCSS('border-style', 'solid');
 });
 
 test('Radio uses native common-name selection and arrow keys across engines', async ({ page }) => {

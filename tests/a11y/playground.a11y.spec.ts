@@ -211,6 +211,236 @@ test('Card fixtures expose group names and native selectable checkbox semantics'
   await expect(page.locator('#card .card-disabled')).toHaveAttribute('aria-disabled', 'true');
 });
 
+test('Accordion fixtures expose disclosure relationships and disabled semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const accordion = page.locator('#accordion .accordion-single');
+  const overview = accordion.getByRole('button', { name: 'Overview' });
+  const details = accordion.getByRole('button', { name: 'Details' });
+  const disabled = accordion.getByRole('button', { name: 'Disabled section' });
+
+  await expect(overview).toHaveAttribute('aria-expanded', 'true');
+  await expect(overview).toHaveAttribute('aria-controls', /^fui-accordion-panel-/);
+  await expect(accordion.getByRole('region', { name: 'Overview' })).toBeVisible();
+  await expect(details).toHaveAttribute('aria-expanded', 'false');
+  await expect(disabled).toBeDisabled();
+});
+
+test('Tab fixtures expose selection, orientation, disabled, and automatic activation semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#tabs');
+  const projectTabs = section.getByRole('tablist', { name: 'Project sections' });
+  await expect(projectTabs).toHaveAttribute('aria-orientation', 'horizontal');
+  await expect(projectTabs.getByRole('tab', { name: 'Overview' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+  await expect(projectTabs.getByRole('tab', { name: 'Settings' })).toBeDisabled();
+  await expect(projectTabs.getByRole('tab', { name: 'Settings' })).not.toHaveAttribute(
+    'aria-selected',
+  );
+
+  const automatic = section.getByRole('tablist', { name: 'Automatic sections' });
+  await expect(automatic).toHaveAttribute('aria-orientation', 'vertical');
+  await automatic.getByRole('tab', { name: 'Mentions' }).focus();
+  await expect(automatic.getByRole('tab', { name: 'Mentions' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+
+  await expect(section.getByRole('tab', { name: 'Notifications' })).toBeVisible();
+});
+
+test('Breadcrumb fixtures expose navigation, list, current, disabled, and names', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const project = page.getByRole('navigation', { name: 'Project breadcrumb' });
+  await expect(project.locator('ol')).toHaveAttribute('role', 'list');
+  await expect(project.getByRole('link', { name: 'Workspace' })).toHaveAttribute(
+    'href',
+    '#workspace',
+  );
+  await expect(project.getByRole('button', { name: 'Fluent Vue' })).toHaveAttribute(
+    'aria-current',
+    'page',
+  );
+  await expect(project.getByRole('button', { name: 'Fluent Vue' })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
+  await expect(project.locator('.fui-BreadcrumbDivider')).toHaveCount(2);
+
+  const arrow = page.getByRole('navigation', { name: 'Arrow breadcrumb' });
+  await expect(arrow.getByRole('button', { name: 'Disabled', exact: true })).toBeDisabled();
+  await expect(arrow.getByRole('button', { name: 'Focusable disabled' })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
+  await expect(page.getByRole('navigation', { name: 'RTL breadcrumb' })).toBeVisible();
+});
+
+test('List fixtures expose list, listbox, grid, selection, and disabled semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const content = page.getByRole('list', { name: 'Continents' });
+  await expect(content.getByRole('listitem')).toHaveCount(3);
+
+  const people = page.getByRole('listbox', { name: 'People list' });
+  await expect(people).toHaveAttribute('aria-multiselectable', 'true');
+  await expect(people.getByRole('option', { name: 'Ada' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+  await expect(people.getByRole('checkbox')).toHaveCount(3);
+  await expect(people.getByRole('checkbox').first()).toHaveAttribute('aria-checked', 'true');
+  await expect(people.getByRole('option', { name: 'Linus' })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
+
+  const projects = page.getByRole('grid', { name: 'Project actions' });
+  await expect(projects.getByRole('row')).toHaveCount(2);
+  await expect(projects.getByRole('button', { name: 'More Roadmap actions' })).toBeVisible();
+});
+
+test('Listbox fixtures expose names, active descendants, groups, and released selection semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#listbox');
+  const single = section.getByRole('listbox', { name: 'Favorite animal' });
+  const singleOptions = single.getByRole('option');
+  await expect(singleOptions).toHaveCount(5);
+  await expect(single).toHaveAttribute(
+    'aria-activedescendant',
+    (await singleOptions.nth(1).getAttribute('id'))!,
+  );
+  await expect(singleOptions.nth(1)).toHaveAttribute('aria-selected', 'true');
+  await expect(single.getByRole('option', { name: 'Horse · unavailable' })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
+  const labelledGroup = single.getByRole('group', { name: 'Land animals' });
+  await expect(labelledGroup).toHaveAttribute('aria-labelledby', /^fui-option-group-label-.+$/);
+
+  const multiple = section.getByRole('menu', { name: 'Companion animals' });
+  await expect(multiple).not.toHaveAttribute('aria-multiselectable');
+  await expect(multiple.getByRole('menuitemcheckbox')).toHaveCount(4);
+  await expect(multiple.getByRole('menuitemcheckbox', { name: 'Dog' })).toHaveAttribute(
+    'aria-checked',
+    'true',
+  );
+
+  const fieldListbox = section.getByRole('listbox', { name: 'Deployment region' });
+  await expect(fieldListbox).toHaveAttribute('aria-required', 'true');
+  await expect(fieldListbox).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
+});
+
+test('Combobox fixtures expose editable names, popup relationships, and Field state', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const control = page.locator('#combobox').getByRole('combobox', { name: 'Search animal' });
+  await expect(control).toHaveAttribute('aria-labelledby', /^fui-field-.+__label$/);
+  await expect(control).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
+  await expect(control).toHaveAttribute('aria-required', 'true');
+  await control.fill('do');
+  const popup = page.locator(`#${await control.getAttribute('aria-controls')}`);
+  await expect(popup).toHaveAttribute('role', 'listbox');
+});
+
+test('Popover fixtures expose trigger relationships and surface semantics', async ({ page }) => {
+  await page.goto('/');
+  const section = page.locator('#popover');
+  const trigger = section.getByRole('button', { name: 'Show details' });
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  await trigger.click();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  const surface = page.locator(`#${await trigger.getAttribute('aria-controls')}`);
+  await expect(surface).toHaveRole('dialog');
+  await expect(surface).toContainText('Popover surface');
+});
+
+test('Dropdown fixtures expose names, popup relationships, Field state, and released selection semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#dropdown');
+  const single = section.getByRole('combobox', { name: 'Favorite animal' });
+  await expect(single).toHaveAttribute('aria-required', 'true');
+  await expect(single).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
+  await expect(single).toHaveAttribute('aria-haspopup', 'listbox');
+  await single.click();
+  const singlePopup = page.locator(`#${await single.getAttribute('aria-controls')}`);
+  await expect(singlePopup).toHaveAttribute('role', 'listbox');
+  await expect(single).toHaveAttribute(
+    'aria-activedescendant',
+    (await singlePopup.getByRole('option', { name: 'Dog' }).getAttribute('id'))!,
+  );
+  await expect(singlePopup.getByRole('group', { name: 'Land animals' })).toHaveAttribute(
+    'aria-labelledby',
+    /^fui-option-group-label-.+$/,
+  );
+  await expect(singlePopup.getByRole('option', { name: 'Horse · unavailable' })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
+
+  await page.keyboard.press('Escape');
+  const multiple = section.getByRole('combobox', { name: 'Companion animals' });
+  await multiple.click();
+  const multiplePopup = page.locator(`#${await multiple.getAttribute('aria-controls')}`);
+  await expect(multiplePopup).toHaveAttribute('role', 'menu');
+  await expect(multiplePopup.getByRole('menuitemcheckbox')).toHaveCount(4);
+  await expect(multiplePopup.getByRole('menuitemcheckbox', { name: 'Cat' })).toHaveAttribute(
+    'aria-checked',
+    'true',
+  );
+  await expect(multiplePopup).not.toHaveAttribute('tabindex');
+});
+
+test('Avatar fixtures expose image names, group semantics, and overflow list structure', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#avatar');
+  await expect(section.getByRole('img', { name: 'Ada Lovelace' }).first()).toBeVisible();
+  await expect(section.getByRole('img', { name: 'Anonymous person' })).toBeVisible();
+  await expect(section.getByRole('group', { name: 'Design team' })).toBeVisible();
+
+  const engineering = section.getByRole('group', { name: 'Engineering team' });
+  const trigger = engineering.getByRole('button', { name: 'View more people.' });
+  await trigger.click();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  const overflow = engineering.getByRole('dialog', { name: 'Overflow' });
+  await expect(overflow.getByRole('list')).toBeVisible();
+  await expect(overflow.getByRole('listitem')).toHaveCount(3);
+});
+
+test('Persona fixtures expose Avatar and presence names without adding composite roles', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#persona');
+  await expect(section.getByRole('img', { name: 'Ada Lovelace, available' })).toBeVisible();
+  await expect(section.getByRole('img', { name: 'do not disturb out of office' })).toBeVisible();
+  await expect(section.locator('.fui-Persona[role]')).toHaveCount(0);
+  await expect(section.getByText('Rear admiral and computer scientist')).toBeVisible();
+});
+
 test('Skeleton fixtures expose default and explicitly overridden loading semantics', async ({
   page,
 }) => {

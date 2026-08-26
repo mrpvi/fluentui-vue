@@ -1,0 +1,113 @@
+.fui-Menu {
+  display: inline-block;
+}
+.fui-MenuTrigger {
+  cursor: pointer;
+}
+.fui-MenuPopover {
+  z-index: 1200;
+  min-width: 180px;
+  max-width: min(320px, calc(100vw - 8px));
+  padding: 4px;
+  border: 1px solid var(--fui-color-neutral-stroke-1);
+  border-radius: var(--fui-border-radius-medium);
+  background: var(--fui-color-neutral-background-1);
+  box-shadow: var(--fui-shadow-16);
+  color: var(--fui-color-neutral-foreground-1);
+}
+.fui-MenuList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  outline: none;
+}
+.fui-MenuItem {
+  position: relative;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 36px;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--fui-border-radius-small);
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+}
+.fui-MenuItem__icon,
+.fui-MenuItem__checkmark {
+  display: inline-flex;
+  width: 20px;
+  justify-content: center;
+}
+.fui-MenuItem__content {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fui-MenuItem__secondary {
+  margin-inline-start: 16px;
+  color: var(--fui-color-neutral-foreground-3);
+  font-size: var(--fui-font-size-base-200);
+}
+.fui-MenuItem__subtext {
+  grid-column: 2 / -1;
+  color: var(--fui-color-neutral-foreground-3);
+  font-size: var(--fui-font-size-base-200);
+}
+.fui-MenuItem__submenu {
+  margin-inline-start: auto;
+}
+.fui-MenuItem--active,
+.fui-MenuItem:hover {
+  background: var(--fui-color-neutral-background-1-hover);
+}
+.fui-MenuItem:focus-visible {
+  outline: 2px solid var(--fui-color-stroke-focus-2);
+  outline-offset: -2px;
+}
+.fui-MenuItem--disabled {
+  color: var(--fui-color-neutral-foreground-disabled);
+  cursor: default;
+}
+.fui-MenuItem--disabled:hover {
+  background: transparent;
+}
+.fui-MenuDivider {
+  height: 1px;
+  margin: 4px 8px;
+  background: var(--fui-color-neutral-stroke-2);
+}
+.fui-MenuGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.fui-MenuGroupHeader {
+  padding: 8px;
+  color: var(--fui-color-neutral-foreground-3);
+  font-size: var(--fui-font-size-base-200);
+  font-weight: 600;
+}
+.fui-MenuSplitGroup {
+  display: flex;
+  gap: 2px;
+}
+@media (forced-colors: active) {
+  .fui-MenuPopover {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    forced-color-adjust: none;
+  }
+  .fui-MenuItem--active,
+  .fui-MenuItem:hover {
+    background: Highlight;
+    color: HighlightText;
+  }
+  .fui-MenuDivider {
+    background: CanvasText;
+  }
+}

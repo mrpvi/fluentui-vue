@@ -1,0 +1,70 @@
+.fui-Toolbar {
+  display: flex;
+  align-items: center;
+  padding: var(--fui-spacing-vertical-xs) var(--fui-spacing-horizontal-s);
+}
+
+.fui-Toolbar--small {
+  padding: 0 var(--fui-spacing-horizontal-xs);
+}
+.fui-Toolbar--large {
+  padding: var(--fui-spacing-vertical-xs) var(--fui-spacing-horizontal-xl);
+}
+.fui-Toolbar--vertical {
+  flex-direction: column;
+  width: fit-content;
+}
+
+.fui-ToolbarGroup,
+.fui-ToolbarRadioGroup {
+  display: flex;
+  align-items: center;
+}
+.fui-ToolbarGroup--vertical {
+  flex-direction: column;
+  width: fit-content;
+}
+
+.fui-ToolbarButton {
+  min-width: auto;
+}
+.fui-ToolbarButton--vertical {
+  flex-direction: column;
+}
+.fui-ToolbarButton--vertical .fui-Button__icon {
+  margin: 0;
+  font-size: 24px;
+}
+
+.fui-ToolbarDivider {
+  align-self: stretch;
+  width: auto;
+  height: var(--fui-stroke-width-thin);
+  margin: var(--fui-spacing-vertical-xs) var(--fui-spacing-horizontal-m);
+  background-color: var(--fui-color-neutral-stroke-2);
+  flex: 0 0 auto;
+}
+.fui-ToolbarDivider--vertical {
+  width: var(--fui-stroke-width-thin);
+  height: auto;
+  min-height: 20px;
+  margin: 0 var(--fui-spacing-horizontal-m);
+}
+
+.fui-ToolbarRadioButton--checked {
+  color: var(--fui-color-neutral-foreground-2-selected);
+  background-color: var(--fui-color-subtle-background-selected);
+}
+.fui-ToolbarRadioButton--checked .fui-Button__icon {
+  color: var(--fui-color-neutral-foreground-2-brand-selected);
+}
+
+@media (forced-colors: active) {
+  .fui-ToolbarDivider {
+    background-color: CanvasText;
+  }
+  .fui-ToolbarRadioButton--checked {
+    color: HighlightText;
+    background-color: Highlight;
+  }
+}
