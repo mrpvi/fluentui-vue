@@ -1,0 +1,180 @@
+.fui-TagGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacingHorizontalXS);
+}
+
+.fui-Tag,
+.fui-InteractionTagPrimary,
+.fui-InteractionTagSecondary {
+  appearance: none;
+  border: var(--strokeWidthThin) solid var(--colorTransparentStroke);
+  box-sizing: border-box;
+  color: var(--colorNeutralForeground2);
+  font-family: inherit;
+}
+
+.fui-Tag {
+  align-items: center;
+  display: inline-grid;
+  grid-template-areas: 'media primary dismiss' 'media secondary dismiss';
+  padding: 0;
+  width: fit-content;
+}
+
+.fui-Tag--rounded,
+.fui-InteractionTag--rounded,
+.fui-InteractionTagPrimary--rounded,
+.fui-InteractionTagSecondary--rounded {
+  border-radius: var(--borderRadiusMedium);
+}
+.fui-Tag--circular,
+.fui-InteractionTag--circular,
+.fui-InteractionTagPrimary--circular,
+.fui-InteractionTagSecondary--circular {
+  border-radius: var(--borderRadiusCircular);
+}
+.fui-Tag--medium,
+.fui-InteractionTag--medium {
+  height: 32px;
+}
+.fui-Tag--small,
+.fui-InteractionTag--small {
+  height: 24px;
+}
+.fui-Tag--extra-small,
+.fui-InteractionTag--extra-small {
+  height: 20px;
+}
+.fui-Tag--filled,
+.fui-InteractionTagPrimary--filled,
+.fui-InteractionTagSecondary--filled {
+  background: var(--colorNeutralBackground3);
+}
+.fui-Tag--outline,
+.fui-InteractionTagPrimary--outline,
+.fui-InteractionTagSecondary--outline {
+  background: var(--colorSubtleBackground);
+  border-color: var(--colorNeutralStroke1);
+}
+.fui-Tag--brand,
+.fui-InteractionTagPrimary--brand,
+.fui-InteractionTagSecondary--brand {
+  background: var(--colorBrandBackground2);
+  color: var(--colorBrandForeground2);
+}
+.fui-Tag--selected,
+.fui-InteractionTag--selected > button {
+  background: var(--colorBrandBackground);
+  border-color: var(--colorBrandStroke1);
+  color: var(--colorNeutralForegroundOnBrand);
+}
+.fui-Tag--disabled,
+.fui-InteractionTag--disabled > button {
+  background: var(--colorNeutralBackgroundDisabled);
+  color: var(--colorNeutralForegroundDisabled);
+  cursor: not-allowed;
+}
+
+.fui-Tag__media,
+.fui-Tag__icon {
+  grid-area: media;
+  display: flex;
+  padding-inline-start: 5px;
+}
+.fui-Tag__primaryText {
+  grid-area: primary;
+  padding-inline: 4px;
+  white-space: nowrap;
+}
+.fui-Tag__secondaryText {
+  grid-area: secondary;
+  padding-inline: 4px;
+  font-size: var(--fontSizeBase200);
+  white-space: nowrap;
+}
+.fui-Tag__dismissIcon {
+  grid-area: dismiss;
+  display: flex;
+  padding-inline: 4px 7px;
+}
+.fui-Tag__dismissIcon svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+.fui-Tag:not(:has(.fui-Tag__media, .fui-Tag__icon)) {
+  padding-inline-start: 5px;
+}
+.fui-Tag:not(:has(.fui-Tag__dismissIcon)) {
+  padding-inline-end: 5px;
+}
+
+.fui-InteractionTag {
+  align-items: stretch;
+  display: inline-flex;
+  width: fit-content;
+}
+.fui-InteractionTagPrimary,
+.fui-InteractionTagSecondary {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.fui-InteractionTagPrimary {
+  align-items: center;
+  display: grid;
+  grid-template-areas: 'media primary' 'media secondary';
+  padding-inline: 7px;
+}
+.fui-InteractionTagPrimary--withSecondary {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  padding-inline-end: 5px;
+}
+.fui-InteractionTagPrimary__media,
+.fui-InteractionTagPrimary__icon {
+  grid-area: media;
+  display: flex;
+  padding-inline-end: 6px;
+}
+.fui-InteractionTagPrimary__primaryText {
+  grid-area: primary;
+  white-space: nowrap;
+}
+.fui-InteractionTagPrimary__secondaryText {
+  grid-area: secondary;
+  font-size: var(--fontSizeBase200);
+  white-space: nowrap;
+}
+.fui-InteractionTagSecondary {
+  align-items: center;
+  display: inline-flex;
+  border-inline-start: 0;
+  justify-content: center;
+  padding-inline: 6px;
+}
+.fui-InteractionTagSecondary svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+.fui-InteractionTagPrimary:focus-visible,
+.fui-InteractionTagSecondary:focus-visible,
+.fui-Tag:focus-visible {
+  outline: var(--strokeWidthThick) solid var(--colorStrokeFocus2);
+  outline-offset: 1px;
+}
+
+@media (forced-colors: active) {
+  .fui-Tag--selected,
+  .fui-InteractionTag--selected > button {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+  .fui-Tag--disabled,
+  .fui-InteractionTag--disabled > button {
+    color: GrayText;
+  }
+}

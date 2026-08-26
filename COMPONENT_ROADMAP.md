@@ -201,13 +201,13 @@ The ARIA announcer should precede notifications so dynamic messages can be annou
 
 ## Phase 11 — Tags and pickers
 
-47. ❌ **Tag family**
+47. ✅ **Tag family** — definition-of-done gates complete for `@fluentui/react-tags@9.9.5`
     - `FTag`
     - `FTagGroup`
     - `FInteractionTag`
     - `FInteractionTagPrimary`
     - `FInteractionTagSecondary`
-48. ❌ **TagPicker family**
+48. ✅ **TagPicker family** — definition-of-done gates complete for `@fluentui/react-tag-picker@9.10.3`
     - `FTagPicker`
     - `FTagPickerControl`
     - `FTagPickerInput`

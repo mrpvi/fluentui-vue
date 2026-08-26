@@ -53,6 +53,23 @@ import { FSpinButton } from './components/SpinButton';
 import { FSwitch } from './components/Switch';
 import { FTab } from './components/Tab';
 import { FTabList } from './components/TabList';
+import {
+  FInteractionTag,
+  FInteractionTagPrimary,
+  FInteractionTagSecondary,
+  FTag,
+  FTagGroup,
+} from './components/Tag';
+import {
+  FTagPicker,
+  FTagPickerButton,
+  FTagPickerControl,
+  FTagPickerGroup,
+  FTagPickerInput,
+  FTagPickerList,
+  FTagPickerOption,
+  FTagPickerOptionGroup,
+} from './components/TagPicker';
 import { FText } from './components/Text';
 import { FTextarea } from './components/Textarea';
 import { FToggleButton } from './components/ToggleButton';
@@ -161,6 +178,19 @@ export const FluentVue: Plugin = {
     app.component('FSwitch', FSwitch);
     app.component('FTab', FTab);
     app.component('FTabList', FTabList);
+    app.component('FTag', FTag);
+    app.component('FTagGroup', FTagGroup);
+    app.component('FInteractionTag', FInteractionTag);
+    app.component('FInteractionTagPrimary', FInteractionTagPrimary);
+    app.component('FInteractionTagSecondary', FInteractionTagSecondary);
+    app.component('FTagPicker', FTagPicker);
+    app.component('FTagPickerControl', FTagPickerControl);
+    app.component('FTagPickerInput', FTagPickerInput);
+    app.component('FTagPickerButton', FTagPickerButton);
+    app.component('FTagPickerList', FTagPickerList);
+    app.component('FTagPickerOption', FTagPickerOption);
+    app.component('FTagPickerOptionGroup', FTagPickerOptionGroup);
+    app.component('FTagPickerGroup', FTagPickerGroup);
     app.component('FText', FText);
     app.component('FTextarea', FTextarea);
     app.component('FToggleButton', FToggleButton);

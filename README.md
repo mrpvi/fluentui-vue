@@ -71,11 +71,11 @@ const name = ref('');
 
 ### Forms and inputs
 
-`FField`, `FLabel`, `FInput`, `FTextarea`, `FCheckbox`, `FSwitch`, `FRadio`, `FRadioGroup`, `FSelect`, `FSearchBox`, `FSlider`, `FSpinButton`, `FRating`, `FRatingItem`, `FRatingDisplay`, `FListbox`, `FOption`, `FOptionGroup`, `FDropdown`, `FCombobox`
+`FField`, `FLabel`, `FInput`, `FTextarea`, `FCheckbox`, `FSwitch`, `FRadio`, `FRadioGroup`, `FSelect`, `FSearchBox`, `FSlider`, `FSpinButton`, `FRating`, `FRatingItem`, `FRatingDisplay`, `FListbox`, `FOption`, `FOptionGroup`, `FDropdown`, `FCombobox`, `FTagPicker`, `FTagPickerControl`, `FTagPickerInput`, `FTagPickerButton`, `FTagPickerList`, `FTagPickerOption`, `FTagPickerOptionGroup`, `FTagPickerGroup`
 
 ### Content and layout
 
-`FText`, `FDivider`, `FImage`, `FCard`, `FCardHeader`, `FCardPreview`, `FCardFooter`, `FAccordion`, `FAccordionItem`, `FAccordionHeader`, `FAccordionPanel`, `FTabList`, `FTab`, `FBreadcrumb`, `FBreadcrumbItem`, `FBreadcrumbButton`, `FBreadcrumbDivider`, `FList`, `FListItem`, `FAvatar`, `FAvatarGroup`, `FAvatarGroupItem`, `FAvatarGroupPopover`, `FPersona`
+`FText`, `FDivider`, `FImage`, `FCard`, `FCardHeader`, `FCardPreview`, `FCardFooter`, `FAccordion`, `FAccordionItem`, `FAccordionHeader`, `FAccordionPanel`, `FTabList`, `FTab`, `FBreadcrumb`, `FBreadcrumbItem`, `FBreadcrumbButton`, `FBreadcrumbDivider`, `FList`, `FListItem`, `FAvatar`, `FAvatarGroup`, `FAvatarGroupItem`, `FAvatarGroupPopover`, `FPersona`, `FTag`, `FTagGroup`, `FInteractionTag`, `FInteractionTagPrimary`, `FInteractionTagSecondary`
 
 ### Toolbars
 

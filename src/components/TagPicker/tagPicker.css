@@ -1,0 +1,173 @@
+.fui-TagPicker {
+  display: contents;
+}
+.fui-TagPickerControl {
+  align-items: center;
+  box-sizing: border-box;
+  column-gap: var(--spacingHorizontalXXS);
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 250px;
+  padding-inline: var(--spacingHorizontalM) 40px;
+  position: relative;
+  border-radius: var(--borderRadiusMedium);
+  min-height: 32px;
+}
+.fui-TagPickerControl--large {
+  min-height: 40px;
+}
+.fui-TagPickerControl--extra-large {
+  min-height: 44px;
+}
+.fui-TagPickerControl--outline {
+  background: var(--colorNeutralBackground1);
+  border: var(--strokeWidthThin) solid var(--colorNeutralStroke1);
+  border-bottom-color: var(--colorNeutralStrokeAccessible);
+}
+.fui-TagPickerControl--filled-lighter {
+  background: var(--colorNeutralBackground1);
+  border: var(--strokeWidthThin) solid var(--colorTransparentStroke);
+}
+.fui-TagPickerControl--filled-darker {
+  background: var(--colorNeutralBackground3);
+  border: var(--strokeWidthThin) solid var(--colorTransparentStroke);
+}
+.fui-TagPickerControl--underline {
+  border-bottom: var(--strokeWidthThin) solid var(--colorNeutralStrokeAccessible);
+  border-radius: 0;
+}
+.fui-TagPickerControl--disabled {
+  color: var(--colorNeutralForegroundDisabled);
+  border-color: var(--colorNeutralStrokeDisabled);
+  cursor: not-allowed;
+}
+.fui-TagPickerControl::after {
+  content: '';
+  position: absolute;
+  inset-inline: -1px;
+  bottom: -1px;
+  height: 2px;
+  background: var(--colorCompoundBrandStroke);
+  transform: scaleX(0);
+  transition: transform var(--durationNormal) var(--curveDecelerateMid);
+}
+.fui-TagPickerControl:focus-within::after {
+  transform: scaleX(1);
+}
+.fui-TagPickerControl__aside {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  inset-inline-end: var(--spacingHorizontalM);
+  position: absolute;
+  top: 0;
+}
+.fui-TagPickerControl__expandIcon {
+  align-items: center;
+  color: var(--colorNeutralStrokeAccessible);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+.fui-TagPickerControl__expandIcon svg {
+  fill: currentColor;
+  height: 20px;
+  width: 20px;
+}
+.fui-TagPickerInput {
+  background: transparent;
+  border: 0;
+  color: var(--colorNeutralForeground1);
+  flex: 1 1 80px;
+  font: inherit;
+  min-width: 60px;
+  outline: 0;
+  padding: 4px 0;
+}
+.fui-TagPickerButton {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  flex: 1;
+  font: inherit;
+  min-height: 30px;
+  padding: 0;
+  text-align: start;
+}
+.fui-TagPickerButton--placeholder {
+  color: var(--colorNeutralForeground4);
+}
+.fui-TagPickerList {
+  background: var(--colorNeutralBackground1);
+  border: var(--strokeWidthThin) solid var(--colorTransparentStroke);
+  border-radius: var(--borderRadiusMedium);
+  box-shadow: var(--shadow16);
+  box-sizing: border-box;
+  max-height: min(80vh, 320px);
+  overflow-y: auto;
+  padding: var(--spacingVerticalXS);
+  z-index: 1000000;
+}
+.fui-TagPickerList--inline {
+  margin-top: 2px;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+}
+.fui-TagPickerOption {
+  align-items: center;
+  border-radius: var(--borderRadiusMedium);
+  cursor: pointer;
+  display: grid;
+  gap: 2px 8px;
+  grid-template-columns: auto 1fr;
+  min-height: 32px;
+  padding: 6px 10px;
+}
+.fui-TagPickerOption:hover,
+.fui-TagPickerOption--active {
+  background: var(--colorNeutralBackground1Hover);
+}
+.fui-TagPickerOption--selected {
+  color: var(--colorBrandForeground1);
+}
+.fui-TagPickerOption--disabled {
+  color: var(--colorNeutralForegroundDisabled);
+  cursor: not-allowed;
+}
+.fui-TagPickerOption__media {
+  grid-row: span 2;
+}
+.fui-TagPickerOption__secondaryContent {
+  color: var(--colorNeutralForeground3);
+  font-size: var(--fontSizeBase200);
+  grid-column: 2;
+}
+.fui-TagPickerOptionGroup + .fui-TagPickerOptionGroup {
+  border-top: var(--strokeWidthThin) solid var(--colorNeutralStroke2);
+  margin-top: 4px;
+  padding-top: 4px;
+}
+.fui-TagPickerOptionGroup__label {
+  color: var(--colorNeutralForeground3);
+  font-size: var(--fontSizeBase200);
+  font-weight: var(--fontWeightSemibold);
+  padding: 6px 10px;
+}
+.fui-TagPickerGroup {
+  display: contents;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fui-TagPickerControl::after {
+    transition-duration: 0.01ms;
+  }
+}
+@media (forced-colors: active) {
+  .fui-TagPickerControl--disabled {
+    border-color: GrayText;
+  }
+  .fui-TagPickerOption--active {
+    outline: 1px solid Highlight;
+  }
+}

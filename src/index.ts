@@ -52,6 +52,8 @@ export * from './components/SpinButton';
 export * from './components/Switch';
 export * from './components/Tab';
 export * from './components/TabList';
+export * from './components/Tag';
+export * from './components/TagPicker';
 export * from './components/Text';
 export * from './components/Textarea';
 export * from './components/ToggleButton';
