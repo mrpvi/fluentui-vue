@@ -20,6 +20,7 @@ export * from './components/Checkbox';
 export * from './components/CompoundButton';
 export * from './components/CounterBadge';
 export * from './components/Divider';
+export * from './components/Dropdown';
 export * from './components/Field';
 export * from './components/Image';
 export * from './components/Input';

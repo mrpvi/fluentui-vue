@@ -22,6 +22,7 @@ import {
   FCompoundButton,
   FCounterBadge,
   FDivider,
+  FDropdown,
   FField,
   FImage,
   FInput,
@@ -486,6 +487,32 @@ export const SsrFixture = defineComponent({
               h(FOption, { value: 'cat' }, () => 'Server Cat'),
               h(FOption, { value: 'dog' }, () => 'Server Dog'),
             ],
+          },
+        ),
+        h(
+          FField,
+          {
+            label: 'Server dropdown companion',
+            hint: 'Choose one dropdown companion.',
+            required: true,
+          },
+          {
+            default: () =>
+              h(
+                FDropdown,
+                {
+                  class: 'ssr-dropdown',
+                  defaultValue: 'Server Cat',
+                  defaultSelectedOptions: ['cat'],
+                  inlinePopup: true,
+                },
+                {
+                  default: () => [
+                    h(FOption, { value: 'cat' }, () => 'Server Cat'),
+                    h(FOption, { value: 'dog' }, () => 'Server Dog'),
+                  ],
+                },
+              ),
           },
         ),
         h(FAvatar, {

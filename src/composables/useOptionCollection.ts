@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, shallowReactive } from 'vue';
 
 export interface OptionCollectionItem {
   disabled: boolean;
@@ -29,7 +29,7 @@ function compareDocumentOrder(first: HTMLElement, second: HTMLElement) {
 }
 
 export function useOptionCollection() {
-  const registrations = new Map<HTMLElement, OptionCollectionRegistration>();
+  const registrations = shallowReactive(new Map<HTMLElement, OptionCollectionRegistration>());
   const activeOptionId = ref<string>();
 
   function getOptions(): OptionCollectionItem[] {
@@ -68,7 +68,10 @@ export function useOptionCollection() {
     }
   }
 
-  function moveActiveOption(action: 'first' | 'last' | 'next' | 'previous', scroll = true) {
+  function moveActiveOption(
+    action: 'first' | 'last' | 'next' | 'page-next' | 'page-previous' | 'previous',
+    scroll = true,
+  ) {
     const options = getOptions();
     if (options.length === 0) {
       activeOptionId.value = undefined;
@@ -85,7 +88,11 @@ export function useOptionCollection() {
             ? 0
             : action === 'next'
               ? Math.min(currentIndex + 1, options.length - 1)
-              : Math.max(currentIndex - 1, 0);
+              : action === 'page-next'
+                ? Math.min(currentIndex + 10, options.length - 1)
+                : action === 'page-previous'
+                  ? Math.max(currentIndex - 10, 0)
+                  : Math.max(currentIndex - 1, 0);
 
     setActiveOption(options[nextIndex]?.id, scroll);
   }

@@ -59,6 +59,7 @@ import {
   FCompoundButton,
   FCounterBadge,
   FDivider,
+  FDropdown,
   FField,
   FImage,
   FInput,
@@ -110,6 +111,9 @@ import {
   type CompoundButtonShape,
   type CompoundButtonSize,
   type DividerAppearance,
+  type DropdownAppearance,
+  type DropdownPositioning,
+  type DropdownSize,
   type FluentTheme,
   type ImageFit,
   type ImageShape,
@@ -181,6 +185,11 @@ const listNavigationMode: ListNavigationMode = 'items';
 const listSelectionMode: ListSelectionMode = 'multiselect';
 const selectedListItems = ref<ListValue[]>(['packed-one']);
 const selectedOptions = ref<string[]>(['packed-cat']);
+const dropdownAppearance: DropdownAppearance = 'filled-lighter';
+const dropdownPositioning: DropdownPositioning = 'auto';
+const dropdownSize: DropdownSize = 'large';
+const dropdownValue = ref('Packed Cat');
+const dropdownOptions = ref<string[]>(['packed-cat']);
 const personaSize: PersonaSize = 'large';
 const personaTextPosition: PersonaTextPosition = 'after';
 const presenceStatus: PresenceBadgeStatus = 'available';
@@ -488,6 +497,33 @@ createApp({
                       ],
                     },
                   ),
+                ],
+              },
+            ),
+        },
+      ),
+      h(
+        FField,
+        { label: 'Packed dropdown companion', hint: 'Choose a packed companion.', required: true },
+        {
+          default: () =>
+            h(
+              FDropdown,
+              {
+                modelValue: dropdownValue.value,
+                'onUpdate:modelValue': value => (dropdownValue.value = value),
+                selectedOptions: dropdownOptions.value,
+                'onUpdate:selectedOptions': value => (dropdownOptions.value = value),
+                appearance: dropdownAppearance,
+                positioning: dropdownPositioning,
+                size: dropdownSize,
+                clearable: true,
+                inlinePopup: true,
+              },
+              {
+                default: () => [
+                  h(FOption, { value: 'packed-cat' }, () => 'Packed Cat'),
+                  h(FOption, { value: 'packed-dog' }, () => 'Packed Dog'),
                 ],
               },
             ),

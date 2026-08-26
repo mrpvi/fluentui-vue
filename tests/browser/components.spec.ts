@@ -2146,6 +2146,94 @@ test('Listbox preserves active-descendant navigation, controlled state, and rele
   ).toBeGreaterThan(0);
 });
 
+test('Dropdown preserves popup keyboard, selection, Field, and controlled semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#dropdown');
+  const single = section.getByRole('combobox', { name: 'Favorite animal' });
+  await expect(single).toHaveAttribute('aria-required', 'true');
+  await expect(single).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
+  await expect(single).toHaveAttribute('aria-expanded', 'false');
+  await single.click();
+  await expect(single).toHaveAttribute('aria-expanded', 'true');
+  const singlePopup = page.locator(`#${await single.getAttribute('aria-controls')}`);
+  const cat = singlePopup.getByRole('option', { name: 'Cat' });
+  const dog = singlePopup.getByRole('option', { name: 'Dog' });
+  const horse = singlePopup.getByRole('option', { name: 'Horse · unavailable' });
+  await expect(singlePopup).toHaveAttribute('role', 'listbox');
+  await expect(single).toHaveAttribute('aria-activedescendant', (await dog.getAttribute('id'))!);
+  await expect(dog).toHaveAttribute('aria-selected', 'true');
+  await expect(horse).toHaveAttribute('aria-disabled', 'true');
+  await single.press('ArrowDown');
+  await expect(single).toHaveAttribute('aria-activedescendant', (await horse.getAttribute('id'))!);
+  await single.press('Enter');
+  await expect(single).toHaveAttribute('aria-expanded', 'false');
+  await expect(single).toContainText('Dog');
+  await single.press('c');
+  await expect(single).toHaveAttribute('aria-expanded', 'true');
+  await expect(single).toHaveAttribute('aria-activedescendant', (await cat.getAttribute('id'))!);
+  await single.press('Enter');
+  await expect(single).toContainText('Cat');
+  await expect(section.getByText('Selected animal: cat')).toBeVisible();
+  await section.getByRole('button', { name: 'Clear selection' }).click();
+  await expect(single).toBeFocused();
+  await expect(single).toContainText('Choose an animal');
+  await expect(section.getByText('Selected animal: none')).toBeVisible();
+
+  const multiple = section.getByRole('combobox', { name: 'Companion animals' });
+  await multiple.click();
+  const multiplePopup = page.locator(`#${await multiple.getAttribute('aria-controls')}`);
+  const multipleDog = multiplePopup.getByRole('menuitemcheckbox', { name: 'Dog' });
+  const multipleRabbit = multiplePopup.getByRole('menuitemcheckbox', {
+    name: 'Rabbit · unavailable',
+  });
+  await expect(multiplePopup).toHaveAttribute('role', 'menu');
+  await expect(multipleDog).toHaveAttribute('aria-checked', 'false');
+  await multipleDog.click();
+  await expect(multiple).toHaveAttribute('aria-expanded', 'true');
+  await expect(multipleDog).toHaveAttribute('aria-checked', 'true');
+  await expect(section.getByText('Selected companions: cat, dog')).toBeVisible();
+  await multipleRabbit.click({ force: true });
+  await expect(multipleRabbit).toHaveAttribute('aria-checked', 'false');
+  await multiple.press('Escape');
+  await expect(multiple).toHaveAttribute('aria-expanded', 'false');
+
+  const controlled = section.getByRole('combobox', { name: 'Controlled deployment region' });
+  await controlled.click();
+  const controlledPopup = page.locator(`#${await controlled.getAttribute('aria-controls')}`);
+  await controlledPopup.getByRole('option', { name: 'East US' }).click();
+  await expect(controlled).toContainText('Locked West Europe');
+  await expect(section.getByText('Controlled attempt: east')).toBeVisible();
+
+  await page.locator('main').evaluate((main) => main.setAttribute('dir', 'rtl'));
+  await multiple.click();
+  const checkIcon = multiplePopup
+    .getByRole('menuitemcheckbox', { name: 'Cat' })
+    .locator('.fui-Option__checkIcon');
+  await expect(checkIcon).toHaveCSS('margin-right', '-2px');
+});
+
+test('Dropdown popup matches trigger width, placement, and outside dismissal', async ({ page }) => {
+  await page.goto('/');
+
+  const section = page.locator('#dropdown');
+  const single = section.getByRole('combobox', { name: 'Favorite animal' });
+  await single.click();
+  const popup = page.locator(`#${await single.getAttribute('aria-controls')}`);
+  const triggerBox = await single.locator('..').boundingBox();
+  const popupBox = await popup.boundingBox();
+  expect(triggerBox).not.toBeNull();
+  expect(popupBox).not.toBeNull();
+  expect(Math.abs((popupBox?.width ?? 0) - (triggerBox?.width ?? 0))).toBeLessThanOrEqual(1);
+  expect(popupBox?.y ?? 0).toBeGreaterThanOrEqual(triggerBox?.y ?? 0);
+  await page.evaluate(() => {
+    document.body.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+  });
+  await expect(single).toHaveAttribute('aria-expanded', 'false');
+});
+
 test('Listbox preserves forced-color focus and selection safeguards', async ({
   page,
   browserName,

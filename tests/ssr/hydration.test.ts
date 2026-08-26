@@ -289,6 +289,34 @@ describe('hydration', () => {
     expect(multiselectOptions[0]?.getAttribute('aria-checked')).toBe('true');
     expect(multiselectOptions[1]?.getAttribute('aria-checked')).toBe('true');
 
+    const dropdown = container.querySelector<HTMLElement>('.ssr-dropdown');
+    const dropdownTrigger = dropdown?.querySelector<HTMLButtonElement>('.fui-Dropdown__button');
+    expect(dropdownTrigger?.getAttribute('role')).toBe('combobox');
+    expect(dropdownTrigger?.getAttribute('aria-expanded')).toBe('false');
+    expect(dropdownTrigger?.getAttribute('aria-required')).toBe('true');
+    expect(dropdownTrigger?.getAttribute('aria-labelledby')).toBe(
+      dropdown?.closest('.fui-Field')?.querySelector<HTMLElement>('label')?.id,
+    );
+    expect(dropdownTrigger?.getAttribute('aria-describedby')).toBe(
+      dropdown?.closest('.fui-Field')?.querySelector<HTMLElement>('.fui-Field__hint')?.id,
+    );
+    expect(dropdownTrigger?.textContent).toContain('Server Cat');
+    dropdownTrigger?.click();
+    await nextTick();
+    await nextTick();
+    const dropdownPopup = dropdown?.querySelector<HTMLElement>('.fui-Dropdown__listbox');
+    const dropdownOptions = [
+      ...(dropdownPopup?.querySelectorAll<HTMLElement>('[role="option"]') ?? []),
+    ];
+    expect(dropdownTrigger?.getAttribute('aria-expanded')).toBe('true');
+    expect(dropdownPopup?.classList.contains('fui-Dropdown__listbox--closed')).toBe(false);
+    expect(dropdownOptions).toHaveLength(2);
+    expect(dropdownTrigger?.getAttribute('aria-activedescendant')).toBe(dropdownOptions[0]?.id);
+    dropdownOptions[1]?.click();
+    await nextTick();
+    expect(dropdownTrigger?.getAttribute('aria-expanded')).toBe('false');
+    expect(dropdownTrigger?.textContent).toContain('Server Dog');
+
     const card = container.querySelector<HTMLElement>('.ssr-card');
     const cardCheckbox = card?.querySelector<HTMLInputElement>('input[type="checkbox"]');
     expect(card?.getAttribute('role')).toBe('group');

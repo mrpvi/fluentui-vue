@@ -23,6 +23,7 @@ import {
   FCompoundButton,
   FCounterBadge,
   FDivider,
+  FDropdown,
   FField,
   FImage,
   FInput,
@@ -87,6 +88,10 @@ const automaticTab = ref('activity');
 const selectedListItems = ref<Array<string | number>>(['Ada']);
 const selectedListboxOptions = ref(['dog']);
 const selectedListboxAttempt = ref<string[]>([]);
+const selectedDropdownOptions = ref(['dog']);
+const selectedDropdownValue = ref('Dog');
+const multiselectDropdownOptions = ref(['cat']);
+const controlledDropdownAttempt = ref<string[]>([]);
 const avatarOverflowOpen = ref(false);
 const toggleControlled = ref(true);
 const toggleSubmitCount = ref(0);
@@ -137,8 +142,8 @@ function ratingItemLabel(value: number) {
           Native Button, ToggleButton, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider,
           Image, Badge, Spinner, ProgressBar, SpinButton, SearchBox, Switch, Radio, RadioGroup,
           Select, Skeleton, Slider, Rating, RatingDisplay, Card, Accordion, Tabs, Breadcrumb, List,
-          Listbox, Avatar, and Persona components translated from Fluent UI React v9 to Vue props,
-          slots, emits, and semantic HTML.
+          Listbox, Dropdown, Avatar, and Persona components translated from Fluent UI React v9 to
+          Vue props, slots, emits, and semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -1658,6 +1663,92 @@ function ratingItemLabel(value: number) {
       </div>
     </section>
 
+    <section id="dropdown">
+      <h2>Dropdown</h2>
+      <div class="dropdown-samples">
+        <div>
+          <h3>Field, groups, and clearable selection</h3>
+          <FField
+            class="dropdown-field"
+            label="Favorite animal"
+            hint="Type a prefix or use Arrow keys to move through the popup."
+            required
+          >
+            <FDropdown
+              v-model="selectedDropdownValue"
+              v-model:selected-options="selectedDropdownOptions"
+              class="dropdown-single"
+              clearable
+              placeholder="Choose an animal"
+            >
+              <FOptionGroup label="Land animals">
+                <FOption value="cat">Cat</FOption>
+                <FOption value="dog">Dog</FOption>
+                <FOption value="horse" disabled>Horse · unavailable</FOption>
+              </FOptionGroup>
+              <FOptionGroup label="Water animals">
+                <FOption value="fish">Fish</FOption>
+                <FOption value="dolphin">Dolphin</FOption>
+              </FOptionGroup>
+            </FDropdown>
+          </FField>
+          <small>Selected animal: {{ selectedDropdownOptions[0] || 'none' }}</small>
+        </div>
+        <div>
+          <h3>Multiselect and inline popup</h3>
+          <FDropdown
+            v-model:selected-options="multiselectDropdownOptions"
+            class="dropdown-multiselect"
+            default-value="Cat"
+            multiselect
+            inline-popup
+            placeholder="Choose companions"
+            aria-label="Companion animals"
+          >
+            <FOption value="cat">Cat</FOption>
+            <FOption value="dog">Dog</FOption>
+            <FOption value="bird">Bird</FOption>
+            <FOption value="rabbit" disabled>Rabbit · unavailable</FOption>
+          </FDropdown>
+          <small>Selected companions: {{ multiselectDropdownOptions.join(', ') || 'none' }}</small>
+        </div>
+        <div>
+          <h3>Appearances, sizes, and controlled rollback</h3>
+          <div class="dropdown-variants">
+            <FDropdown
+              class="dropdown-small"
+              size="small"
+              appearance="filled-lighter"
+              default-value="Small filled"
+              aria-label="Small filled dropdown"
+            >
+              <FOption value="small">Small filled</FOption>
+            </FDropdown>
+            <FDropdown
+              class="dropdown-large"
+              size="large"
+              appearance="underline"
+              default-value="Large underline"
+              aria-label="Large underline dropdown"
+            >
+              <FOption value="large">Large underline</FOption>
+            </FDropdown>
+            <FDropdown
+              class="dropdown-controlled"
+              model-value="Locked West Europe"
+              :selected-options="['west']"
+              aria-label="Controlled deployment region"
+              @update:selected-options="controlledDropdownAttempt = $event"
+            >
+              <FOption value="west">West Europe</FOption>
+              <FOption value="east">East US</FOption>
+            </FDropdown>
+          </div>
+          <small>Controlled attempt: {{ controlledDropdownAttempt.join(', ') || 'none' }}</small>
+        </div>
+      </div>
+    </section>
+
     <section id="avatar">
       <h2>Avatar</h2>
       <div class="avatar-samples">
@@ -2832,6 +2923,28 @@ section {
 
 .listbox-field {
   align-content: start;
+}
+
+.dropdown-samples {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.dropdown-samples > div,
+.dropdown-variants {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+}
+
+.dropdown-samples h3 {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-300);
+}
+
+.dropdown-field,
+.dropdown-samples .fui-Dropdown {
+  width: 100%;
 }
 
 .avatar-samples {

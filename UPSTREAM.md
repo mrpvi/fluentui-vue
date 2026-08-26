@@ -34,6 +34,7 @@ This package is a native Vue adaptation of selected Microsoft Fluent UI React v9
 | Avatar family     | `@fluentui/react-avatar`     |           9.11.6 | `packages/react-components/react-avatar/library/src/components`                |
 | Persona           | `@fluentui/react-persona`    |            9.7.8 | `packages/react-components/react-persona/library/src/components/Persona`       |
 | Listbox family    | `@fluentui/react-combobox`   |           9.17.5 | `packages/react-components/react-combobox/library/src/components`              |
+| Dropdown          | `@fluentui/react-combobox`   |           9.17.5 | `packages/react-components/react-combobox/library/src/components/Dropdown`     |
 | Rating family     | `@fluentui/react-rating`     |            9.4.4 | `packages/react-components/react-rating/library/src/components`                |
 
 Source repository: https://github.com/microsoft/fluentui

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, provide, ref, useAttrs } from 'vue';
+import { computed, inject, onMounted, provide, ref, useAttrs } from 'vue';
 import { useFieldControlProps } from '../../composables/useFieldControlProps';
 import { useIsPropProvided } from '../../composables/useIsPropProvided';
 import {
@@ -21,17 +21,37 @@ const props = withDefaults(defineProps<ListboxProps>(), {
 const emit = defineEmits<ListboxEmits>();
 defineSlots<ListboxSlots>();
 const attrs = useAttrs();
+const parentListbox = inject(listboxContextKey, undefined);
 const root = ref<HTMLDivElement | null>(null);
 const internalSelectedOptions = ref([...(props.defaultSelectedOptions ?? [])]);
 const isControlled = useIsPropProvided('modelValue');
-const selectedOptions = computed(() =>
+const localSelectedOptions = computed(() =>
   isControlled ? [...(props.modelValue ?? [])] : internalSelectedOptions.value,
 );
-const multiselect = computed(() => props.multiselect);
-const focusVisible = ref(false);
+const localMultiselect = computed(() => props.multiselect);
+const localFocusVisible = ref(false);
 const pointerFocus = ref(false);
 const collection = useOptionCollection();
-const activeOptionId = collection.activeOptionId;
+const managedContext = computed(() => (props.popup ? parentListbox : undefined));
+const selectedOptions = computed(
+  () => managedContext.value?.selectedOptions.value ?? localSelectedOptions.value,
+);
+const multiselect = computed(
+  () => managedContext.value?.multiselect.value ?? localMultiselect.value,
+);
+const focusVisible = computed({
+  get: () => managedContext.value?.focusVisible.value ?? localFocusVisible.value,
+  set: (value: boolean) => {
+    if (managedContext.value) {
+      managedContext.value.focusVisible.value = value;
+    } else {
+      localFocusVisible.value = value;
+    }
+  },
+});
+const activeOptionId = computed(
+  () => managedContext.value?.activeOptionId.value ?? collection.activeOptionId.value,
+);
 const fieldControlProps = useFieldControlProps(
   () => ({ ...attrs, id: attrs.id as string | undefined }),
   { supportsRequired: false },
@@ -54,6 +74,11 @@ const rootAttrs = computed(() => {
 });
 
 function selectOption(event: MouseEvent | KeyboardEvent, option: OptionCollectionItem) {
+  if (managedContext.value) {
+    managedContext.value.selectOption(event, option);
+    return;
+  }
+
   if (option.disabled || event.defaultPrevented) {
     return;
   }
@@ -111,13 +136,29 @@ function handleKeydown(event: KeyboardEvent) {
   if (action) {
     event.preventDefault();
     focusVisible.value = true;
-    collection.moveActiveOption(action);
+    if (managedContext.value) {
+      const options = collection.getOptions();
+      const currentIndex = options.findIndex((option) => option.id === activeOptionId.value);
+      const nextIndex =
+        action === 'first'
+          ? 0
+          : action === 'last'
+            ? options.length - 1
+            : currentIndex < 0
+              ? 0
+              : action === 'next'
+                ? Math.min(currentIndex + 1, options.length - 1)
+                : Math.max(currentIndex - 1, 0);
+      managedContext.value.setActiveOption(options[nextIndex]?.id, true);
+    } else {
+      collection.moveActiveOption(action);
+    }
     return;
   }
 
   if (event.key === 'Enter' || event.key === ' ') {
-    const activeOption = collection.activeOptionId.value
-      ? collection.getOptionById(collection.activeOptionId.value)
+    const activeOption = activeOptionId.value
+      ? collection.getOptionById(activeOptionId.value)
       : undefined;
     if (activeOption) {
       selectOption(event, activeOption);
@@ -145,8 +186,12 @@ function handleFocus(event: FocusEvent) {
   focusVisible.value = !pointerFocus.value;
   pointerFocus.value = false;
 
-  if (focusVisible.value && collection.activeOptionId.value) {
-    collection.setActiveOption(collection.activeOptionId.value, true);
+  if (focusVisible.value && activeOptionId.value) {
+    (
+      managedContext.value ?? {
+        setActiveOption: collection.setActiveOption,
+      }
+    ).setActiveOption(activeOptionId.value, true);
   }
 }
 
@@ -161,19 +206,25 @@ function handleBlur(event: FocusEvent) {
 }
 
 provide(listboxContextKey, {
-  activeOptionId: collection.activeOptionId,
+  activeOptionId: managedContext.value?.activeOptionId ?? collection.activeOptionId,
   focusVisible,
   multiselect,
   selectedOptions,
-  getOptionById: collection.getOptionById,
-  getOptionsMatchingText: collection.getOptionsMatchingText,
-  getOptionsMatchingValue: collection.getOptionsMatchingValue,
-  registerOption: collection.registerOption,
+  getOptionById: managedContext.value?.getOptionById ?? collection.getOptionById,
+  getOptionsMatchingText:
+    managedContext.value?.getOptionsMatchingText ?? collection.getOptionsMatchingText,
+  getOptionsMatchingValue:
+    managedContext.value?.getOptionsMatchingValue ?? collection.getOptionsMatchingValue,
+  registerOption: managedContext.value?.registerOption ?? collection.registerOption,
   selectOption,
-  setActiveOption: collection.setActiveOption,
+  setActiveOption: managedContext.value?.setActiveOption ?? collection.setActiveOption,
 });
 
 onMounted(() => {
+  if (props.popup) {
+    return;
+  }
+
   if (props.disableAutoFocus) {
     return;
   }
@@ -206,7 +257,7 @@ defineExpose({
     :class="['fui-Listbox', { 'fui-Listbox--multiselect': multiselect }, attrs.class]"
     :style="attrs.style"
     :role="multiselect ? 'menu' : 'listbox'"
-    tabindex="0"
+    :tabindex="popup ? undefined : 0"
     :aria-activedescendant="activeOptionId"
     @blur="handleBlur"
     @focus="handleFocus"

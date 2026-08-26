@@ -7,6 +7,8 @@ export interface ListboxProps {
   disableAutoFocus?: boolean;
   /** Enables released multiple-selection menu semantics and checkbox option indicators. */
   multiselect?: boolean;
+  /** Internal popup mode used by FDropdown and FCombobox to keep focus on their trigger. */
+  popup?: boolean;
 }
 
 export interface ListboxOptionSelectData {

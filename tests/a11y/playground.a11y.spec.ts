@@ -346,6 +346,45 @@ test('Listbox fixtures expose names, active descendants, groups, and released se
   await expect(fieldListbox).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
 });
 
+test('Dropdown fixtures expose names, popup relationships, Field state, and released selection semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#dropdown');
+  const single = section.getByRole('combobox', { name: 'Favorite animal' });
+  await expect(single).toHaveAttribute('aria-required', 'true');
+  await expect(single).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
+  await expect(single).toHaveAttribute('aria-haspopup', 'listbox');
+  await single.click();
+  const singlePopup = page.locator(`#${await single.getAttribute('aria-controls')}`);
+  await expect(singlePopup).toHaveAttribute('role', 'listbox');
+  await expect(single).toHaveAttribute(
+    'aria-activedescendant',
+    (await singlePopup.getByRole('option', { name: 'Dog' }).getAttribute('id'))!,
+  );
+  await expect(singlePopup.getByRole('group', { name: 'Land animals' })).toHaveAttribute(
+    'aria-labelledby',
+    /^fui-option-group-label-.+$/,
+  );
+  await expect(singlePopup.getByRole('option', { name: 'Horse · unavailable' })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
+
+  await page.keyboard.press('Escape');
+  const multiple = section.getByRole('combobox', { name: 'Companion animals' });
+  await multiple.click();
+  const multiplePopup = page.locator(`#${await multiple.getAttribute('aria-controls')}`);
+  await expect(multiplePopup).toHaveAttribute('role', 'menu');
+  await expect(multiplePopup.getByRole('menuitemcheckbox')).toHaveCount(4);
+  await expect(multiplePopup.getByRole('menuitemcheckbox', { name: 'Cat' })).toHaveAttribute(
+    'aria-checked',
+    'true',
+  );
+  await expect(multiplePopup).not.toHaveAttribute('tabindex');
+});
+
 test('Avatar fixtures expose image names, group semantics, and overflow list structure', async ({
   page,
 }) => {

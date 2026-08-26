@@ -179,6 +179,15 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /<div(?=[^>]*aria-label="Server companions")(?=[^>]*class="fui-Listbox fui-Listbox--multiselect ssr-multiselect-listbox")(?=[^>]*role="menu")(?=[^>]*tabindex="0")[^>]*>.*<div(?=[^>]*class="fui-Option[^>]*fui-Option--multiselect[^>]*fui-Option--selected")(?=[^>]*role="menuitemcheckbox")(?=[^>]*aria-checked="true")[^>]*>.*Server Cat.*<div(?=[^>]*role="menuitemcheckbox")(?=[^>]*aria-checked="false")[^>]*>.*Server Dog/s,
     );
+    expect(firstRender).toContain(
+      'class="fui-Dropdown fui-Dropdown--outline fui-Dropdown--medium ssr-dropdown"',
+    );
+    expect(firstRender).toMatch(
+      /<button(?=[^>]*id="fui-field-[^"]+__control")(?=[^>]*aria-labelledby="fui-field-[^"]+__label")(?=[^>]*aria-describedby="fui-field-[^"]+__hint")(?=[^>]*aria-required="true")(?=[^>]*class="fui-Dropdown__button")(?=[^>]*role="combobox")(?=[^>]*aria-expanded="false")(?=[^>]*aria-haspopup="listbox")[^>]*>.*Server Cat.*<\/button>/s,
+    );
+    expect(firstRender).toMatch(
+      /class="fui-Listbox fui-Dropdown__listbox fui-Dropdown__listbox--closed fui-Dropdown__listbox--inline"[^>]*role="listbox"[^>]*>.*Server Cat.*Server Dog/s,
+    );
     expect(firstRender).toMatch(
       /<span(?=[^>]*class="fui-Avatar[^>]*fui-Avatar--size-48[^>]*fui-Avatar--active[^>]*ssr-avatar")(?=[^>]*role="img")(?=[^>]*aria-label="Server Person, available, active")[^>]*>.*fui-Avatar__initials.*SP.*fui-PresenceBadge/s,
     );

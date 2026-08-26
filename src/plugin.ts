@@ -21,6 +21,7 @@ import { FCheckbox } from './components/Checkbox';
 import { FCompoundButton } from './components/CompoundButton';
 import { FCounterBadge } from './components/CounterBadge';
 import { FDivider } from './components/Divider';
+import { FDropdown } from './components/Dropdown';
 import { FField } from './components/Field';
 import { FImage } from './components/Image';
 import { FInput } from './components/Input';
@@ -79,6 +80,7 @@ export const FluentVue: Plugin = {
     app.component('FCompoundButton', FCompoundButton);
     app.component('FCounterBadge', FCounterBadge);
     app.component('FDivider', FDivider);
+    app.component('FDropdown', FDropdown);
     app.component('FField', FField);
     app.component('FImage', FImage);
     app.component('FPersona', FPersona);
