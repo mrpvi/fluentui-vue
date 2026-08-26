@@ -116,6 +116,15 @@ Pinned source commits:
 - Tooltip 9.2.0 reviewed published declarations, compiled implementation, styles, positioning defaults, visibility delays, relationships, Escape handling, appearance variants, arrow rendering, and accessibility contract. Vue translates the single-child React trigger composition to a typed default slot, keeps controlled and uncontrolled visibility, delayed hover/focus behavior, `label`/`description`/`inaccessible` relationships, Teleport or inline rendering, Escape dismissal, fixed client-side anchoring, and deterministic SSR markup without bundling React positioning or Tabster runtimes.
 - Dialog 9.18.4 reviewed published declarations, compound component implementations, modal types, trigger actions, backdrop behavior, focus management, body scroll locking, inert focus trapping, styles, and accessibility contract. Vue translates React providers and motion slots to a private injection context, typed compound slots, native focus movement, Teleport rendering, controlled/uncontrolled `modelValue` state, and deterministic lifecycle cleanup.
 - Drawer family 9.13.3 reviewed published declarations, overlay and inline implementations, position and size variants, modal behavior, backdrop dismissal, focus trapping and restoration, scroll-state separators, styles, and accessibility contract. Vue translates React motion slots and providers to a private injection context, typed compound slots, native focus movement, Teleport rendering for overlay drawers, inline composition, controlled/uncontrolled `modelValue` state, and deterministic lifecycle cleanup.
+- Menu family 9.25.4 reviewed published declarations, trigger and popover behavior, open-on-hover/context interactions, positioning, dismissal, keyboard navigation, typeahead, selectable item semantics, groups, dividers, links, and split groups. Vue translates React providers, slot objects, motion, and Tabster behavior to a private typed injection context, native focus movement, Teleport or inline rendering, controlled/uncontrolled `modelValue` state, and serializable checked-value maps.
+
+#### Menu provenance
+
+- Registry tarball: `https://registry.npmjs.org/@fluentui/react-menu/-/react-menu-9.25.4.tgz`
+
+#### Menu adaptation
+
+- React slot objects and motion/runtime dependencies are translated to fixed semantic Vue roots, typed slots, native keyboard focus movement, and CSS positioning. Submenu-safe-zone behavior and complex positioning middleware remain intentionally out of scope until the repository adds a shared submenu positioning foundation.
 
 #### Drawer provenance
 

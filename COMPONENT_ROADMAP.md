@@ -149,7 +149,7 @@ Before these components, establish shared internal foundations for:
 
 ## Phase 9 — Menu and toolbar
 
-39. ❌ **Menu family**
+39. ✅ **Menu family** — definition-of-done gates complete for `@fluentui/react-menu@9.25.4`
     - `FMenu`
     - `FMenuTrigger`
     - `FMenuPopover`

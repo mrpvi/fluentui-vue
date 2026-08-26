@@ -76,6 +76,21 @@ import {
   FInlineDrawer,
   FOverlayDrawer,
 } from './components/Drawer';
+import {
+  FMenu,
+  FMenuDivider,
+  FMenuGroup,
+  FMenuGroupHeader,
+  FMenuItem,
+  FMenuItemCheckbox,
+  FMenuItemLink,
+  FMenuItemRadio,
+  FMenuItemSwitch,
+  FMenuList,
+  FMenuPopover,
+  FMenuSplitGroup,
+  FMenuTrigger,
+} from './components/Menu';
 
 export const FluentVue: Plugin = {
   install(app: App) {
@@ -154,5 +169,18 @@ export const FluentVue: Plugin = {
     app.component('FDrawerHeaderNavigation', FDrawerHeaderNavigation);
     app.component('FDrawerBody', FDrawerBody);
     app.component('FDrawerFooter', FDrawerFooter);
+    app.component('FMenu', FMenu);
+    app.component('FMenuTrigger', FMenuTrigger);
+    app.component('FMenuPopover', FMenuPopover);
+    app.component('FMenuList', FMenuList);
+    app.component('FMenuItem', FMenuItem);
+    app.component('FMenuItemLink', FMenuItemLink);
+    app.component('FMenuItemCheckbox', FMenuItemCheckbox);
+    app.component('FMenuItemRadio', FMenuItemRadio);
+    app.component('FMenuItemSwitch', FMenuItemSwitch);
+    app.component('FMenuDivider', FMenuDivider);
+    app.component('FMenuGroup', FMenuGroup);
+    app.component('FMenuGroupHeader', FMenuGroupHeader);
+    app.component('FMenuSplitGroup', FMenuSplitGroup);
   },
 };

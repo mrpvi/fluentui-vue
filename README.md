@@ -83,7 +83,7 @@ const name = ref('');
 
 ### Overlays
 
-`FPortal`, `FPopover`, `FPopoverTrigger`, `FPopoverSurface`, `FTooltip`, `FDialog`, `FDialogTrigger`, `FDialogSurface`, `FDialogBody`, `FDialogTitle`, `FDialogContent`, `FDialogActions`, `FDrawer`, `FOverlayDrawer`, `FInlineDrawer`, `FDrawerHeader`, `FDrawerHeaderTitle`, `FDrawerHeaderNavigation`, `FDrawerBody`, `FDrawerFooter`
+`FPortal`, `FPopover`, `FPopoverTrigger`, `FPopoverSurface`, `FTooltip`, `FDialog`, `FDialogTrigger`, `FDialogSurface`, `FDialogBody`, `FDialogTitle`, `FDialogContent`, `FDialogActions`, `FDrawer`, `FOverlayDrawer`, `FInlineDrawer`, `FDrawerHeader`, `FDrawerHeaderTitle`, `FDrawerHeaderNavigation`, `FDrawerBody`, `FDrawerFooter`, `FMenu`, `FMenuTrigger`, `FMenuPopover`, `FMenuList`, `FMenuItem`, `FMenuItemLink`, `FMenuItemCheckbox`, `FMenuItemRadio`, `FMenuItemSwitch`, `FMenuDivider`, `FMenuGroup`, `FMenuGroupHeader`, `FMenuSplitGroup`
 
 ## Themes
 
