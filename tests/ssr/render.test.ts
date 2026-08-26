@@ -182,6 +182,15 @@ describe('SSR rendering', () => {
     expect(firstRender).toContain(
       'class="fui-Dropdown fui-Dropdown--outline fui-Dropdown--medium ssr-dropdown"',
     );
+    expect(firstRender).toContain(
+      'class="fui-Combobox fui-Combobox--outline fui-Combobox--medium ssr-combobox"',
+    );
+    expect(firstRender).toContain('aria-label="Server animal search"');
+    expect(firstRender).toContain('fui-Combobox__listbox');
+    expect(firstRender).toContain('fui-Combobox__listbox--inline');
+    expect(firstRender).toContain('fui-Combobox__listbox--closed');
+    expect(firstRender).toContain('Server Cat');
+    expect(firstRender).toContain('Server Dog');
     expect(firstRender).toMatch(
       /<button(?=[^>]*id="fui-field-[^"]+__control")(?=[^>]*aria-labelledby="fui-field-[^"]+__label")(?=[^>]*aria-describedby="fui-field-[^"]+__hint")(?=[^>]*aria-required="true")(?=[^>]*class="fui-Dropdown__button")(?=[^>]*role="combobox")(?=[^>]*aria-expanded="false")(?=[^>]*aria-haspopup="listbox")[^>]*>.*Server Cat.*<\/button>/s,
     );

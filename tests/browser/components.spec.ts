@@ -2215,6 +2215,25 @@ test('Dropdown preserves popup keyboard, selection, Field, and controlled semant
   await expect(checkIcon).toHaveCSS('margin-right', '-2px');
 });
 
+test('Combobox supports editing, filtering, keyboard selection, and Field semantics', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#combobox');
+  const control = section.getByRole('combobox', { name: 'Search animal' });
+  await expect(control).toHaveAttribute('aria-required', 'true');
+  await expect(control).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
+  await control.fill('do');
+  await expect(control).toHaveAttribute('aria-expanded', 'true');
+  const popup = page.locator(`#${await control.getAttribute('aria-controls')}`);
+  const dog = popup.getByRole('option', { name: 'Dog' });
+  await expect(dog).toBeVisible();
+  await control.press('Enter');
+  await expect(control).toHaveValue('Dog');
+  await expect(control).toHaveAttribute('aria-expanded', 'false');
+});
+
 test('Dropdown popup matches trigger width, placement, and outside dismissal', async ({ page }) => {
   await page.goto('/');
 

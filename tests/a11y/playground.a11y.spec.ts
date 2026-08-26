@@ -346,6 +346,19 @@ test('Listbox fixtures expose names, active descendants, groups, and released se
   await expect(fieldListbox).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
 });
 
+test('Combobox fixtures expose editable names, popup relationships, and Field state', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const control = page.locator('#combobox').getByRole('combobox', { name: 'Search animal' });
+  await expect(control).toHaveAttribute('aria-labelledby', /^fui-field-.+__label$/);
+  await expect(control).toHaveAttribute('aria-describedby', /^fui-field-.+__hint$/);
+  await expect(control).toHaveAttribute('aria-required', 'true');
+  await control.fill('do');
+  const popup = page.locator(`#${await control.getAttribute('aria-controls')}`);
+  await expect(popup).toHaveAttribute('role', 'listbox');
+});
+
 test('Dropdown fixtures expose names, popup relationships, Field state, and released selection semantics', async ({
   page,
 }) => {

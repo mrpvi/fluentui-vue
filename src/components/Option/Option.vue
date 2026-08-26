@@ -71,6 +71,10 @@ const optionText = computed(() =>
 const optionValue = computed(() => props.value ?? optionText.value);
 const selected = computed(() => listbox.selectedOptions.value.includes(optionValue.value));
 const active = computed(() => listbox.activeOptionId.value === id.value);
+const hidden = computed(() => {
+  const filter = listbox.filterText?.value.trim().toLocaleLowerCase();
+  return Boolean(filter && !optionText.value.toLocaleLowerCase().includes(filter));
+});
 const rootAttrs = computed(() => {
   const {
     class: _class,
@@ -152,6 +156,7 @@ defineExpose({
     :aria-checked="listbox.multiselect.value ? selected : undefined"
     :aria-disabled="disabled || undefined"
     :aria-selected="listbox.multiselect.value ? undefined : selected"
+    :hidden="hidden || undefined"
     @click="handleClick"
   >
     <span

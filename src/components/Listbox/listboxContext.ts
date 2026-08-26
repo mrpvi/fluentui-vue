@@ -6,6 +6,7 @@ import type {
 
 export interface ListboxContextValue {
   activeOptionId: Ref<string | undefined>;
+  filterText?: Ref<string>;
   focusVisible: Ref<boolean>;
   multiselect: ComputedRef<boolean>;
   selectedOptions: ComputedRef<string[]>;

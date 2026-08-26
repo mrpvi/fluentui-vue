@@ -18,6 +18,7 @@ export * from './components/CardHeader';
 export * from './components/CardPreview';
 export * from './components/Checkbox';
 export * from './components/CompoundButton';
+export * from './components/Combobox';
 export * from './components/CounterBadge';
 export * from './components/Divider';
 export * from './components/Dropdown';

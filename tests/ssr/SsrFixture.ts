@@ -20,6 +20,7 @@ import {
   FCardPreview,
   FCheckbox,
   FCompoundButton,
+  FCombobox,
   FCounterBadge,
   FDivider,
   FDropdown,
@@ -101,6 +102,22 @@ export const SsrFixture = defineComponent({
           {
             default: () => 'Server compound action',
             icon: () => h('svg', { viewBox: '0 0 40 40' }),
+          },
+        ),
+        h(
+          FCombobox,
+          {
+            class: 'ssr-combobox',
+            defaultValue: 'Server Dog',
+            defaultSelectedOptions: ['dog'],
+            inlinePopup: true,
+            'aria-label': 'Server animal search',
+          },
+          {
+            default: () => [
+              h(FOption, { value: 'cat' }, () => 'Server Cat'),
+              h(FOption, { value: 'dog' }, () => 'Server Dog'),
+            ],
           },
         ),
         h(

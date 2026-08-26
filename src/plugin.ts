@@ -19,6 +19,7 @@ import { FCardHeader } from './components/CardHeader';
 import { FCardPreview } from './components/CardPreview';
 import { FCheckbox } from './components/Checkbox';
 import { FCompoundButton } from './components/CompoundButton';
+import { FCombobox } from './components/Combobox';
 import { FCounterBadge } from './components/CounterBadge';
 import { FDivider } from './components/Divider';
 import { FDropdown } from './components/Dropdown';
@@ -78,6 +79,7 @@ export const FluentVue: Plugin = {
     app.component('FSelect', FSelect);
     app.component('FCheckbox', FCheckbox);
     app.component('FCompoundButton', FCompoundButton);
+    app.component('FCombobox', FCombobox);
     app.component('FCounterBadge', FCounterBadge);
     app.component('FDivider', FDivider);
     app.component('FDropdown', FDropdown);

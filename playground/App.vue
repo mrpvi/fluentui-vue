@@ -21,6 +21,7 @@ import {
   FCardPreview,
   FCheckbox,
   FCompoundButton,
+  FCombobox,
   FCounterBadge,
   FDivider,
   FDropdown,
@@ -1660,6 +1661,30 @@ function ratingItemLabel(value: number) {
           </FField>
           <small>Controlled attempt: {{ selectedListboxAttempt.join(', ') || 'none' }}</small>
         </div>
+      </div>
+    </section>
+
+    <section id="combobox">
+      <h2>Combobox</h2>
+      <div class="combobox-samples">
+        <FField label="Search animal" hint="Type to filter available animals." required>
+          <FCombobox class="combobox-search" placeholder="Search animals">
+            <FOption value="cat">Cat</FOption>
+            <FOption value="dog">Dog</FOption>
+            <FOption value="horse" disabled>Horse · unavailable</FOption>
+          </FCombobox>
+        </FField>
+        <FCombobox
+          class="combobox-inline"
+          inline-popup
+          multiselect
+          :default-selected-options="['cat']"
+          aria-label="Companion search"
+        >
+          <FOption value="cat">Cat</FOption>
+          <FOption value="dog">Dog</FOption>
+          <FOption value="bird">Bird</FOption>
+        </FCombobox>
       </div>
     </section>
 
