@@ -32,6 +32,9 @@ import {
   FList,
   FListbox,
   FListItem,
+  FOverflow,
+  FOverflowDivider,
+  FOverflowItem,
   FOption,
   FOptionGroup,
   FPersona,
@@ -57,6 +60,9 @@ import {
   FText,
   FTextarea,
   FToggleButton,
+  FTree,
+  FTreeItem,
+  FTreeItemLayout,
 } from '../../src';
 
 export const SsrFixture = defineComponent({
@@ -581,6 +587,57 @@ export const SsrFixture = defineComponent({
           {
             secondaryText: () => 'Server role',
             tertiaryText: () => 'Server location',
+          },
+        ),
+        h(
+          FTree,
+          {
+            class: 'ssr-tree',
+            defaultOpenItems: ['server-src'],
+            selectionMode: 'multiselect',
+            defaultCheckedItems: ['server-readme'],
+            'aria-label': 'Server files',
+          },
+          {
+            default: () => [
+              h(
+                FTreeItem,
+                { itemType: 'branch', value: 'server-src' },
+                {
+                  default: () => [
+                    h(FTreeItemLayout, {}, () => 'Server source'),
+                    h(
+                      FTree,
+                      {},
+                      {
+                        default: () =>
+                          h(FTreeItem, { itemType: 'leaf', value: 'server-index' }, () =>
+                            h(FTreeItemLayout, {}, () => 'Server index'),
+                          ),
+                      },
+                    ),
+                  ],
+                },
+              ),
+              h(FTreeItem, { itemType: 'leaf', value: 'server-readme' }, () =>
+                h(FTreeItemLayout, {}, () => 'Server readme'),
+              ),
+            ],
+          },
+        ),
+        h(
+          FOverflow,
+          { class: 'ssr-overflow', 'aria-label': 'Server overflow' },
+          {
+            default: () => [
+              h(
+                FOverflowItem,
+                { id: 'server-primary', groupId: 'server-group' },
+                () => 'Server primary action',
+              ),
+              h(FOverflowDivider, { groupId: 'server-group' }, () => '|'),
+              h(FOverflowItem, { id: 'server-secondary' }, () => 'Server secondary action'),
+            ],
           },
         ),
         h(FLink, { href: '#details' }, () => 'View details'),

@@ -81,6 +81,10 @@ const name = ref('');
 
 `FToolbar`, `FToolbarButton`, `FToolbarToggleButton`, `FToolbarRadioButton`, `FToolbarRadioGroup`, `FToolbarGroup`, `FToolbarDivider`
 
+### Hierarchical and responsive layout
+
+`FTree`, `FTreeItem`, `FTreeItemLayout`, `FTreeItemPersonaLayout`, `FFlatTree`, `FFlatTreeItem`, `FOverflow`, `FOverflowItem`, `FOverflowDivider`
+
 ### Feedback and status
 
 `FBadge`, `FCounterBadge`, `FPresenceBadge`, `FSpinner`, `FProgressBar`, `FSkeleton`, `FSkeletonItem`, `FAriaLiveAnnouncer`, `FMessageBar`, `FMessageBarTitle`, `FMessageBarBody`, `FMessageBarActions`, `FMessageBarGroup`, `FToaster`, `FToast`, `FToastTrigger`, `FToastTitle`, `FToastBody`, `FToastFooter`, `FInfoLabel`, `FInfoButton`

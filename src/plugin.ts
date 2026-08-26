@@ -24,6 +24,8 @@ import { FCounterBadge } from './components/CounterBadge';
 import { FDivider } from './components/Divider';
 import { FDropdown } from './components/Dropdown';
 import { FField } from './components/Field';
+import { FFlatTree } from './components/FlatTree';
+import { FFlatTreeItem } from './components/FlatTreeItem';
 import { FImage } from './components/Image';
 import { FInput } from './components/Input';
 import { FLabel } from './components/Label';
@@ -45,6 +47,9 @@ import { FListbox } from './components/Listbox';
 import { FListItem } from './components/ListItem';
 import { FOption } from './components/Option';
 import { FOptionGroup } from './components/OptionGroup';
+import { FOverflow } from './components/Overflow';
+import { FOverflowDivider } from './components/OverflowDivider';
+import { FOverflowItem } from './components/OverflowItem';
 import { FSkeleton } from './components/Skeleton';
 import { FSkeletonItem } from './components/SkeletonItem';
 import { FSlider } from './components/Slider';
@@ -95,6 +100,10 @@ import { FText } from './components/Text';
 import { FTextarea } from './components/Textarea';
 import { FToggleButton } from './components/ToggleButton';
 import { FTooltip } from './components/Tooltip';
+import { FTree } from './components/Tree';
+import { FTreeItem } from './components/TreeItem';
+import { FTreeItemLayout } from './components/TreeItemLayout';
+import { FTreeItemPersonaLayout } from './components/TreeItemPersonaLayout';
 import {
   FDialog,
   FDialogActions,
@@ -233,6 +242,8 @@ export const FluentVue: Plugin = {
     app.component('FDivider', FDivider);
     app.component('FDropdown', FDropdown);
     app.component('FField', FField);
+    app.component('FFlatTree', FFlatTree);
+    app.component('FFlatTreeItem', FFlatTreeItem);
     app.component('FImage', FImage);
     app.component('FPersona', FPersona);
     app.component('FPortal', FPortal);
@@ -254,6 +265,9 @@ export const FluentVue: Plugin = {
     app.component('FListItem', FListItem);
     app.component('FOption', FOption);
     app.component('FOptionGroup', FOptionGroup);
+    app.component('FOverflow', FOverflow);
+    app.component('FOverflowDivider', FOverflowDivider);
+    app.component('FOverflowItem', FOverflowItem);
     app.component('FSkeleton', FSkeleton);
     app.component('FSkeletonItem', FSkeletonItem);
     app.component('FSlider', FSlider);
@@ -296,6 +310,10 @@ export const FluentVue: Plugin = {
     app.component('FTextarea', FTextarea);
     app.component('FToggleButton', FToggleButton);
     app.component('FTooltip', FTooltip);
+    app.component('FTree', FTree);
+    app.component('FTreeItem', FTreeItem);
+    app.component('FTreeItemLayout', FTreeItemLayout);
+    app.component('FTreeItemPersonaLayout', FTreeItemPersonaLayout);
     app.component('FDialog', FDialog);
     app.component('FDialogActions', FDialogActions);
     app.component('FDialogBody', FDialogBody);

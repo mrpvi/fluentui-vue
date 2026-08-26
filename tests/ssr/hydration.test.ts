@@ -88,7 +88,7 @@ describe('hydration', () => {
     expect(select?.getAttribute('aria-describedby')).not.toBeNull();
     expect(select?.closest('.fui-Select')?.querySelector('.fui-Select__icon')).not.toBeNull();
 
-    const dividers = [...container.querySelectorAll<HTMLElement>('[role="separator"]')];
+    const dividers = [...container.querySelectorAll<HTMLElement>('.fui-Divider[role="separator"]')];
     expect(dividers).toHaveLength(3);
     expect(dividers[0]?.getAttribute('aria-labelledby')).toBeNull();
     expect(dividers[0]?.getAttribute('aria-label')).toBe('Contentless boundary');
@@ -354,6 +354,22 @@ describe('hydration', () => {
     expect(fieldSpinButton?.getAttribute('aria-describedby')).toBe(
       fieldSpinButton?.closest('.fui-Field')?.querySelector<HTMLElement>('.fui-Field__hint')?.id,
     );
+
+    const tree = container.querySelector<HTMLElement>('.ssr-tree');
+    expect(tree?.getAttribute('role')).toBe('tree');
+    expect(tree?.getAttribute('aria-multiselectable')).toBe('true');
+    const treeItems = [...(tree?.querySelectorAll<HTMLElement>('[role="treeitem"]') ?? [])];
+    expect(treeItems).toHaveLength(3);
+    expect(treeItems[0]?.getAttribute('aria-expanded')).toBe('true');
+    expect(treeItems[1]?.getAttribute('aria-level')).toBe('2');
+    expect(treeItems[2]?.getAttribute('aria-checked')).toBe('true');
+    expect(tree?.querySelector('[role="group"]')).not.toBeNull();
+
+    const overflow = container.querySelector<HTMLElement>('.ssr-overflow');
+    expect(overflow?.getAttribute('data-overflowing')).toBe('false');
+    expect(overflow?.querySelectorAll('[data-overflow-item]')).toHaveLength(2);
+    expect(overflow?.querySelector('[data-overflow-divider]')).not.toBeNull();
+    expect(overflow?.querySelector('[hidden]')).toBeNull();
 
     const delayedSpinner = container.querySelector<HTMLElement>('.ssr-delayed-spinner');
     expect(delayedSpinner).not.toBeNull();

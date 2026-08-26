@@ -206,5 +206,18 @@ describe('SSR rendering', () => {
     expect(firstRender).toMatch(
       /<div(?=[^>]*class="fui-AvatarGroup fui-AvatarGroup--stack fui-AvatarGroup--size-40 ssr-avatar-group")(?=[^>]*aria-label="Server team")(?=[^>]*role="group")[^>]*>.*<div class="fui-AvatarGroupItem".*<button[^>]*aria-label="View more people\."[^>]*aria-expanded="true".*<div[^>]*role="dialog"[^>]*aria-label="Overflow".*<ul[^>]*role="list">.*<li class="fui-AvatarGroupItem fui-AvatarGroupItem--overflow"/s,
     );
+    expect(firstRender).toMatch(
+      /<div(?=[^>]*class="fui-Tree fui-Tree--subtle fui-Tree--medium ssr-tree")(?=[^>]*role="tree")(?=[^>]*aria-multiselectable="true")(?=[^>]*aria-label="Server files")[^>]*>/,
+    );
+    expect(firstRender).toMatch(
+      /role="treeitem"[^>]*aria-expanded="true"[^>]*aria-level="1"[\s\S]*?role="group"[\s\S]*?aria-level="2"/,
+    );
+    expect(firstRender).toMatch(/role="treeitem"[^>]*aria-checked="true"[^>]*>.*Server readme/s);
+    expect(firstRender).toMatch(
+      /<div(?=[^>]*class="fui-Overflow fui-Overflow--horizontal ssr-overflow")(?=[^>]*aria-label="Server overflow")(?=[^>]*data-overflowing="false")[^>]*>/,
+    );
+    expect(firstRender).toContain('data-overflow-item="server-primary"');
+    expect(firstRender).toContain('data-overflow-divider="server-group"');
+    expect(firstRender).not.toContain('data-overflow-item="server-primary" hidden');
   });
 });

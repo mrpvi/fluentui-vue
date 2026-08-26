@@ -1,0 +1,27 @@
+.fui-TreeItem {
+  display: block;
+  min-width: 0;
+  outline: none;
+}
+
+.fui-TreeItem:focus-visible > .fui-TreeItemLayout,
+.fui-TreeItem:focus-visible > .fui-TreeItemPersonaLayout {
+  box-shadow:
+    0 0 0 1px var(--fui-color-stroke-focus-1) inset,
+    0 0 0 2px var(--fui-color-stroke-focus-2) inset;
+}
+
+.fui-TreeItem--disabled {
+  color: var(--fui-color-neutral-foreground-disabled);
+  cursor: not-allowed;
+}
+
+.fui-TreeItem > .fui-Tree,
+.fui-TreeItem > [role='group'] {
+  margin-inline-start: 0;
+}
+
+.fui-TreeItem:not(.fui-TreeItem--open) > .fui-Tree,
+.fui-TreeItem:not(.fui-TreeItem--open) > [role='group'] {
+  display: none;
+}
