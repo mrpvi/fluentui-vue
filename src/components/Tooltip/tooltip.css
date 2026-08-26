@@ -1,0 +1,58 @@
+.fui-Tooltip {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.fui-Tooltip__trigger {
+  display: inline-block;
+  max-width: 100%;
+}
+
+.fui-Tooltip__content {
+  z-index: 1001;
+  box-sizing: border-box;
+  display: none;
+  max-width: 240px;
+  padding: 4px 11px 6px;
+  border: 1px solid transparent;
+  border-radius: var(--fui-border-radius-medium);
+  background: var(--fui-color-neutral-background-1);
+  color: var(--fui-color-neutral-foreground-1);
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-200);
+  line-height: var(--fui-line-height-base-200);
+  filter: drop-shadow(0 0 2px var(--fui-color-neutral-shadow-ambient))
+    drop-shadow(0 4px 8px var(--fui-color-neutral-shadow-key));
+}
+
+.fui-Tooltip__content--visible {
+  display: block;
+}
+
+.fui-Tooltip__content--inverted {
+  background: var(--fui-color-neutral-background-static);
+  color: var(--fui-color-neutral-foreground-static-inverted);
+}
+
+.fui-Tooltip__arrow {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  left: 50%;
+  bottom: -5px;
+  transform: translateX(-50%) rotate(45deg);
+  border-right: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  background: inherit;
+}
+
+@media (forced-colors: active) {
+  .fui-Tooltip__content {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    filter: none;
+    forced-color-adjust: none;
+  }
+}

@@ -55,6 +55,7 @@ export * from './components/TabList';
 export * from './components/Text';
 export * from './components/Textarea';
 export * from './components/ToggleButton';
+export * from './components/Tooltip';
 export { FluentVue } from './plugin';
 export type { FluentTheme } from './types';
 

@@ -113,11 +113,11 @@ Listbox and Option come first because Dropdown and Combobox depend on their opti
 ## Phase 8 — Overlay foundations
 
 34. ✅ **Portal → `FPortal`** — foundation complete for SSR-safe Teleport rendering
-35. ❌ **Popover family**
+35. ✅ **Popover family** — definition-of-done gates complete for `@fluentui/react-popover@9.13.0`
     - `FPopover`
     - `FPopoverTrigger`
     - `FPopoverSurface`
-36. ❌ **Tooltip → `FTooltip`**
+36. ✅ **Tooltip → `FTooltip`** — definition-of-done gates complete for `@fluentui/react-tooltip@9.2.0`
 37. ❌ **Dialog family**
     - `FDialog`
     - `FDialogTrigger`

@@ -83,7 +83,7 @@ const name = ref('');
 
 ### Overlays
 
-`FPortal`, `FPopover`, `FPopoverTrigger`, `FPopoverSurface`
+`FPortal`, `FPopover`, `FPopoverTrigger`, `FPopoverSurface`, `FTooltip`
 
 ## Themes
 

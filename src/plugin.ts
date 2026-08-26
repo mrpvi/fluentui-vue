@@ -56,6 +56,7 @@ import { FTabList } from './components/TabList';
 import { FText } from './components/Text';
 import { FTextarea } from './components/Textarea';
 import { FToggleButton } from './components/ToggleButton';
+import { FTooltip } from './components/Tooltip';
 
 export const FluentVue: Plugin = {
   install(app: App) {
@@ -118,5 +119,6 @@ export const FluentVue: Plugin = {
     app.component('FText', FText);
     app.component('FTextarea', FTextarea);
     app.component('FToggleButton', FToggleButton);
+    app.component('FTooltip', FTooltip);
   },
 };
