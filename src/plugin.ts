@@ -57,6 +57,15 @@ import { FText } from './components/Text';
 import { FTextarea } from './components/Textarea';
 import { FToggleButton } from './components/ToggleButton';
 import { FTooltip } from './components/Tooltip';
+import {
+  FDialog,
+  FDialogActions,
+  FDialogBody,
+  FDialogContent,
+  FDialogSurface,
+  FDialogTitle,
+  FDialogTrigger,
+} from './components/Dialog';
 
 export const FluentVue: Plugin = {
   install(app: App) {
@@ -120,5 +129,12 @@ export const FluentVue: Plugin = {
     app.component('FTextarea', FTextarea);
     app.component('FToggleButton', FToggleButton);
     app.component('FTooltip', FTooltip);
+    app.component('FDialog', FDialog);
+    app.component('FDialogActions', FDialogActions);
+    app.component('FDialogBody', FDialogBody);
+    app.component('FDialogContent', FDialogContent);
+    app.component('FDialogSurface', FDialogSurface);
+    app.component('FDialogTitle', FDialogTitle);
+    app.component('FDialogTrigger', FDialogTrigger);
   },
 };

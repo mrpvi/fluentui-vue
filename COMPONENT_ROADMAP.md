@@ -118,7 +118,7 @@ Listbox and Option come first because Dropdown and Combobox depend on their opti
     - `FPopoverTrigger`
     - `FPopoverSurface`
 36. ✅ **Tooltip → `FTooltip`** — definition-of-done gates complete for `@fluentui/react-tooltip@9.2.0`
-37. ❌ **Dialog family**
+37. ✅ **Dialog family** — definition-of-done gates complete for `@fluentui/react-dialog@9.18.4`
     - `FDialog`
     - `FDialogTrigger`
     - `FDialogSurface`

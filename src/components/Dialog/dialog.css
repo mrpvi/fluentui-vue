@@ -1,0 +1,109 @@
+.fui-DialogSurfaceHost {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.fui-DialogBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.42);
+}
+
+.fui-DialogBackdrop--transparent {
+  background: transparent;
+}
+
+.fui-DialogSurface {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: min(640px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid var(--fui-color-neutral-stroke-1);
+  border-radius: var(--fui-border-radius-large);
+  background: var(--fui-color-neutral-background-1);
+  color: var(--fui-color-neutral-foreground-1);
+  box-shadow: var(--fui-shadow-64);
+}
+
+.fui-DialogSurface:focus-visible {
+  outline: 2px solid var(--fui-color-stroke-focus-2);
+  outline-offset: 2px;
+}
+
+.fui-DialogSurface--non-modal {
+  box-shadow: var(--fui-shadow-16);
+}
+
+.fui-DialogBody,
+.fui-DialogContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fui-DialogTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 16px;
+  font-family: var(--fui-font-family-base);
+  font-size: var(--fui-font-size-base-500);
+  line-height: var(--fui-line-height-base-500);
+}
+
+.fui-DialogTitle__action {
+  margin-inline-start: auto;
+}
+
+.fui-DialogActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.fui-DialogActions--start {
+  justify-content: flex-start;
+}
+
+.fui-DialogActions--end {
+  justify-content: flex-end;
+}
+
+.fui-DialogActions--fluid > * {
+  flex: 1;
+}
+
+@media (max-width: 480px) {
+  .fui-DialogSurfaceHost {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .fui-DialogSurface {
+    width: 100%;
+    max-height: 100vh;
+    border-radius: var(--fui-border-radius-large) var(--fui-border-radius-large) 0 0;
+  }
+}
+
+@media (forced-colors: active) {
+  .fui-DialogSurface {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .fui-DialogBackdrop {
+    background: CanvasText;
+    opacity: 0.5;
+  }
+}
