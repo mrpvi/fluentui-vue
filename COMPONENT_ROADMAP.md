@@ -221,7 +221,7 @@ TagPicker should come after Tag, Combobox, Listbox, Popover, and keyboard-select
 
 ## Phase 12 — Data components
 
-49. ❌ **Table family**
+49. ✅ **Table family** — semantic table adaptation complete for `@fluentui/react-table@9.19.20`
     - `FTable`
     - `FTableHeader`
     - `FTableHeaderCell`
@@ -232,7 +232,7 @@ TagPicker should come after Tag, Combobox, Listbox, Popover, and keyboard-select
     - `FTableCellLayout`
     - `FTableCellActions`
     - `FTableResizeHandle`
-50. ❌ **DataGrid family**
+50. ✅ **DataGrid family** — selection, sorting, keyboard navigation, and practical resizing complete for `@fluentui/react-table@9.19.20`
     - `FDataGrid`
     - `FDataGridHeader`
     - `FDataGridHeaderCell`

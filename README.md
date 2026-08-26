@@ -75,7 +75,7 @@ const name = ref('');
 
 ### Content and layout
 
-`FText`, `FDivider`, `FImage`, `FCard`, `FCardHeader`, `FCardPreview`, `FCardFooter`, `FAccordion`, `FAccordionItem`, `FAccordionHeader`, `FAccordionPanel`, `FTabList`, `FTab`, `FBreadcrumb`, `FBreadcrumbItem`, `FBreadcrumbButton`, `FBreadcrumbDivider`, `FList`, `FListItem`, `FAvatar`, `FAvatarGroup`, `FAvatarGroupItem`, `FAvatarGroupPopover`, `FPersona`, `FTag`, `FTagGroup`, `FInteractionTag`, `FInteractionTagPrimary`, `FInteractionTagSecondary`
+`FText`, `FDivider`, `FImage`, `FTable`, `FTableHeader`, `FTableHeaderCell`, `FTableBody`, `FTableRow`, `FTableCell`, `FTableSelectionCell`, `FTableCellLayout`, `FTableCellActions`, `FTableResizeHandle`, `FDataGrid`, `FDataGridHeader`, `FDataGridHeaderCell`, `FDataGridBody`, `FDataGridRow`, `FDataGridCell`, `FDataGridSelectionCell`, `FCard`, `FCardHeader`, `FCardPreview`, `FCardFooter`, `FAccordion`, `FAccordionItem`, `FAccordionHeader`, `FAccordionPanel`, `FTabList`, `FTab`, `FBreadcrumb`, `FBreadcrumbItem`, `FBreadcrumbButton`, `FBreadcrumbDivider`, `FList`, `FListItem`, `FAvatar`, `FAvatarGroup`, `FAvatarGroupItem`, `FAvatarGroupPopover`, `FPersona`, `FTag`, `FTagGroup`, `FInteractionTag`, `FInteractionTagPrimary`, `FInteractionTagSecondary`
 
 ### Toolbars
 

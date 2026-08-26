@@ -50,6 +50,8 @@ export * from './components/Slider';
 export * from './components/Spinner';
 export * from './components/SpinButton';
 export * from './components/Switch';
+export * from './components/Table';
+export * from './components/DataGrid';
 export * from './components/Tab';
 export * from './components/TabList';
 export * from './components/Tag';

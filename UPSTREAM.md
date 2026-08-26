@@ -2,6 +2,7 @@
 
 This package is a native Vue adaptation of selected Microsoft Fluent UI React v9 components. It does not embed React or wrap the React packages.
 
+<<<<<<< HEAD
 | Vue component     | Upstream npm package         | Version reviewed | Upstream source                                                                |
 | ----------------- | ---------------------------- | ---------------: | ------------------------------------------------------------------------------ |
 | Button            | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/Button`         |
@@ -47,6 +48,49 @@ This package is a native Vue adaptation of selected Microsoft Fluent UI React v9
 | Rating family     | `@fluentui/react-rating`     |            9.4.4 | `packages/react-components/react-rating/library/src/components`                |
 | Tag family        | `@fluentui/react-tags`       |            9.9.5 | `packages/react-components/react-tags/library/src/components`                  |
 | TagPicker family  | `@fluentui/react-tag-picker` |           9.10.3 | `packages/react-components/react-tag-picker/library/src/components`            |
+=======
+| Vue component         | Upstream npm package         | Version reviewed | Upstream source                                                                |
+| --------------------- | ---------------------------- | ---------------: | ------------------------------------------------------------------------------ |
+| Button                | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/Button`         |
+| ToggleButton          | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/ToggleButton`   |
+| CompoundButton        | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/CompoundButton` |
+| Input                 | `@fluentui/react-input`      |            9.8.6 | `packages/react-components/react-input/library/src/components/Input`           |
+| Checkbox              | `@fluentui/react-checkbox`   |            9.6.4 | `packages/react-components/react-checkbox/library/src/components/Checkbox`     |
+| Text                  | `@fluentui/react-text`       |           9.6.19 | `packages/react-components/react-text/library/src/components/Text`             |
+| Label                 | `@fluentui/react-label`      |            9.4.4 | `packages/react-components/react-label/library/src/components/Label`           |
+| Field                 | `@fluentui/react-field`      |            9.5.4 | `packages/react-components/react-field/library/src/components/Field`           |
+| Textarea              | `@fluentui/react-textarea`   |            9.7.6 | `packages/react-components/react-textarea/library/src/components/Textarea`     |
+| Link                  | `@fluentui/react-link`       |            9.8.4 | `packages/react-components/react-link/library/src/components/Link`             |
+| Divider               | `@fluentui/react-divider`    |            9.7.4 | `packages/react-components/react-divider/library/src/components/Divider`       |
+| Image                 | `@fluentui/react-image`      |            9.4.4 | `packages/react-components/react-image/library/src/components/Image`           |
+| Badge family          | `@fluentui/react-badge`      |            9.5.5 | `packages/react-components/react-badge/library/src/components`                 |
+| Spinner               | `@fluentui/react-spinner`    |            9.8.5 | `packages/react-components/react-spinner/library/src/components/Spinner`       |
+| ProgressBar           | `@fluentui/react-progress`   |            9.5.4 | `packages/react-components/react-progress/library/src/components/ProgressBar`  |
+| Switch                | `@fluentui/react-switch`     |            9.7.5 | `packages/react-components/react-switch/library/src/components/Switch`         |
+| Radio family          | `@fluentui/react-radio`      |            9.6.5 | `packages/react-components/react-radio/library/src/components`                 |
+| Select                | `@fluentui/react-select`     |            9.5.5 | `packages/react-components/react-select/library/src/components/Select`         |
+| SpinButton            | `@fluentui/react-spinbutton` |            9.6.5 | `packages/react-components/react-spinbutton/library/src/components/SpinButton` |
+| SearchBox             | `@fluentui/react-search`     |            9.4.6 | `packages/react-components/react-search/library/src/components/SearchBox`      |
+| Skeleton family       | `@fluentui/react-skeleton`   |            9.7.5 | `packages/react-components/react-skeleton/library/src/components`              |
+| Slider                | `@fluentui/react-slider`     |            9.6.5 | `packages/react-components/react-slider/library/src/components/Slider`         |
+| Card family           | `@fluentui/react-card`       |            9.7.2 | `packages/react-components/react-card/library/src/components`                  |
+| Accordion family      | `@fluentui/react-accordion`  |           9.12.3 | `packages/react-components/react-accordion/library/src/components`             |
+| Tabs family           | `@fluentui/react-tabs`       |           9.12.4 | `packages/react-components/react-tabs/library/src/components`                  |
+| Breadcrumb family     | `@fluentui/react-breadcrumb` |            9.4.5 | `packages/react-components/react-breadcrumb/library/src/components`            |
+| List family           | `@fluentui/react-list`       |           9.6.18 | `packages/react-components/react-list/library/src/components`                  |
+| Avatar family         | `@fluentui/react-avatar`     |           9.11.6 | `packages/react-components/react-avatar/library/src/components`                |
+| Persona               | `@fluentui/react-persona`    |            9.7.8 | `packages/react-components/react-persona/library/src/components/Persona`       |
+| Listbox family        | `@fluentui/react-combobox`   |           9.17.5 | `packages/react-components/react-combobox/library/src/components`              |
+| Dropdown              | `@fluentui/react-combobox`   |           9.17.5 | `packages/react-components/react-combobox/library/src/components/Dropdown`     |
+| Combobox              | `@fluentui/react-combobox`   |           9.17.5 | `packages/react-components/react-combobox/library/src/components/Combobox`     |
+| Portal                | `@fluentui/react-portal`     |            9.4.0 | `packages/react-components/react-portal/library/src/components/Portal`         |
+| Popover family        | `@fluentui/react-popover`    |           9.13.0 | `packages/react-components/react-popover/library/src/components`               |
+| Tooltip               | `@fluentui/react-tooltip`    |            9.2.0 | `packages/react-components/react-tooltip/library/src/components`               |
+| Dialog                | `@fluentui/react-dialog`     |           9.18.4 | `packages/react-components/react-dialog/library/src/components`                |
+| Drawer family         | `@fluentui/react-drawer`     |           9.13.3 | `packages/react-components/react-drawer/library/src/components`                |
+| Rating family         | `@fluentui/react-rating`     |            9.4.4 | `packages/react-components/react-rating/library/src/components`                |
+| Table/DataGrid family | `@fluentui/react-table`      |          9.19.20 | `packages/react-components/react-table/library/src/components`                 |
+>>>>>>> 388f0ba (feat(table): complete table and datagrid families)
 
 Source repository: https://github.com/microsoft/fluentui
 
@@ -125,6 +169,9 @@ Pinned source commits:
 - Tooltip 9.2.0 reviewed published declarations, compiled implementation, styles, positioning defaults, visibility delays, relationships, Escape handling, appearance variants, arrow rendering, and accessibility contract. Vue translates the single-child React trigger composition to a typed default slot, keeps controlled and uncontrolled visibility, delayed hover/focus behavior, `label`/`description`/`inaccessible` relationships, Teleport or inline rendering, Escape dismissal, fixed client-side anchoring, and deterministic SSR markup without bundling React positioning or Tabster runtimes.
 - Dialog 9.18.4 reviewed published declarations, compound component implementations, modal types, trigger actions, backdrop behavior, focus management, body scroll locking, inert focus trapping, styles, and accessibility contract. Vue translates React providers and motion slots to a private injection context, typed compound slots, native focus movement, Teleport rendering, controlled/uncontrolled `modelValue` state, and deterministic lifecycle cleanup.
 - Drawer family 9.13.3 reviewed published declarations, overlay and inline implementations, position and size variants, modal behavior, backdrop dismissal, focus trapping and restoration, scroll-state separators, styles, and accessibility contract. Vue translates React motion slots and providers to a private injection context, typed compound slots, native focus movement, Teleport rendering for overlay drawers, inline composition, controlled/uncontrolled `modelValue` state, and deterministic lifecycle cleanup.
+- Table/DataGrid family 9.19.20 registry source (`gitHead`): `b5ec47fc035849b21b35d6f6054d60c0a64ff3db`
+- Table/DataGrid family 9.19.20 registry tarball: `https://registry.npmjs.org/@fluentui/react-table/-/react-table-9.19.20.tgz` (SHA-1 `3632561cc4850d76b293a1bd3284b4591bd72a80`, registry integrity `sha512-nYe36ZuiGuo6ECfkoKq11Wey0LiWnda6UnuKKuqMg6Hwq3m1DuyGStQbsM+el1Q/yttG3cjLU+6KzxxYT2eWxw==`)
+- Table/DataGrid reviewed published declarations, component implementations, contexts, feature hooks, raw styles, tests, and stories for semantic Table parts and DataGrid sorting, selection, focus navigation, and column sizing. Vue translates React render callbacks, contexts, Tabster, and selection utilities to typed slots, private injection contexts, native DOM focus movement, serializable array-valued selection, and keyboard/pointer resize events. Virtualization, React-specific feature hooks, and automatic container-width distribution remain intentionally out of scope.
 - Menu family 9.25.4 reviewed published declarations, trigger and popover behavior, open-on-hover/context interactions, positioning, dismissal, keyboard navigation, typeahead, selectable item semantics, groups, dividers, links, and split groups. Vue translates React providers, slot objects, motion, and Tabster behavior to a private typed injection context, native focus movement, Teleport or inline rendering, controlled/uncontrolled `modelValue` state, and serializable checked-value maps.
 - Tag family 9.9.5 registry source (`gitHead`): `b5ec47fc035849b21b35d6f6054d60c0a64ff3db`; registry tarball: `https://registry.npmjs.org/@fluentui/react-tags/-/react-tags-9.9.5.tgz` (SHA-1 `00714d0648ee68f3689cfb567130a349aee68bfd`, registry integrity `sha512-BDl+/Rlbl6KoSGoJ3e+rPUUjRgfTq0s2zdeXJDuH8WZxoKZChH7/TrxCXAVWSf5sL/rIU0nTsS/oRmxrzggdDw==`). Reviewed published declarations, component/state/render modules, contexts, raw styles, and package metadata for Tag, TagGroup, InteractionTag, InteractionTagPrimary, and InteractionTagSecondary. Vue translates React slot objects and Tabster focus helpers to typed slots, private injection contexts, native buttons/spans, DOM-order circular focus, array-valued `v-model`, and cancelable dismiss/select events.
 - TagPicker family 9.10.3 registry source (`gitHead`): `b5ec47fc035849b21b35d6f6054d60c0a64ff3db`; registry tarball: `https://registry.npmjs.org/@fluentui/react-tag-picker/-/react-tag-picker-9.10.3.tgz` (SHA-1 `f4f6951ab34dea524a748a89e5733567e1519266`, registry integrity `sha512-oCi+ZRf7tec5/uRiYYLcQl4x8CjQ64cOE+Ny4EGRIX3frAsapSCrjHTKhu+hXdRbGR6uYJpGLdvZf4jbdrfhUg==`). Reviewed published declarations, TagPicker contexts, Combobox/Listbox-derived state, active-descendant handling, input/button triggers, control sizing, option/group composition, selected-tag grouping, positioning, filtering, styles, and package metadata. Vue reuses the repository's DOM-ordered option collection and Teleport positioning patterns with typed private context, native focus and keyboard handling, controlled/uncontrolled array selection and open state, deterministic listener/observer cleanup, and no React, Floating UI, or Tabster runtime.

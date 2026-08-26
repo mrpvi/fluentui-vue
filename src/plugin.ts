@@ -51,6 +51,27 @@ import { FSlider } from './components/Slider';
 import { FSpinner } from './components/Spinner';
 import { FSpinButton } from './components/SpinButton';
 import { FSwitch } from './components/Switch';
+import {
+  FTable,
+  FTableHeader,
+  FTableHeaderCell,
+  FTableBody,
+  FTableRow,
+  FTableCell,
+  FTableSelectionCell,
+  FTableCellLayout,
+  FTableCellActions,
+  FTableResizeHandle,
+} from './components/Table';
+import {
+  FDataGrid,
+  FDataGridHeader,
+  FDataGridHeaderCell,
+  FDataGridBody,
+  FDataGridRow,
+  FDataGridCell,
+  FDataGridSelectionCell,
+} from './components/DataGrid';
 import { FTab } from './components/Tab';
 import { FTabList } from './components/TabList';
 import {
@@ -239,6 +260,23 @@ export const FluentVue: Plugin = {
     app.component('FSpinner', FSpinner);
     app.component('FSpinButton', FSpinButton);
     app.component('FSwitch', FSwitch);
+    app.component('FTable', FTable);
+    app.component('FTableHeader', FTableHeader);
+    app.component('FTableHeaderCell', FTableHeaderCell);
+    app.component('FTableBody', FTableBody);
+    app.component('FTableRow', FTableRow);
+    app.component('FTableCell', FTableCell);
+    app.component('FTableSelectionCell', FTableSelectionCell);
+    app.component('FTableCellLayout', FTableCellLayout);
+    app.component('FTableCellActions', FTableCellActions);
+    app.component('FTableResizeHandle', FTableResizeHandle);
+    app.component('FDataGrid', FDataGrid);
+    app.component('FDataGridHeader', FDataGridHeader);
+    app.component('FDataGridHeaderCell', FDataGridHeaderCell);
+    app.component('FDataGridBody', FDataGridBody);
+    app.component('FDataGridRow', FDataGridRow);
+    app.component('FDataGridCell', FDataGridCell);
+    app.component('FDataGridSelectionCell', FDataGridSelectionCell);
     app.component('FTab', FTab);
     app.component('FTabList', FTabList);
     app.component('FTag', FTag);

@@ -1,0 +1,176 @@
+.fui-Table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--colorNeutralForeground1);
+  font-family: var(--fontFamilyBase);
+  font-size: var(--fontSizeBase300);
+}
+.fui-Table[role='table'] {
+  display: flex;
+  flex-direction: column;
+}
+.fui-TableHeader[role='rowgroup'],
+.fui-TableBody[role='rowgroup'] {
+  display: flex;
+  flex-direction: column;
+}
+.fui-TableRow {
+  border-bottom: 1px solid var(--colorNeutralStroke2);
+}
+.fui-TableRow[role='row'] {
+  display: flex;
+  align-items: stretch;
+}
+.fui-TableRow--brand {
+  background: var(--colorBrandBackground2);
+}
+.fui-TableRow--neutral {
+  background: var(--colorNeutralBackground3);
+}
+.fui-TableHeaderCell,
+.fui-TableCell {
+  box-sizing: border-box;
+  padding: 0 12px;
+  text-align: start;
+}
+.fui-TableHeaderCell {
+  height: 44px;
+  font-weight: var(--fontWeightSemibold);
+  position: relative;
+}
+.fui-TableCell {
+  height: 44px;
+}
+.fui-TableHeaderCell[role='columnheader'],
+.fui-TableCell[role='cell'],
+.fui-TableSelectionCell[role='gridcell'] {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+}
+.fui-Table--small .fui-TableHeaderCell,
+.fui-Table--small .fui-TableCell {
+  height: 36px;
+  padding-inline: 8px;
+}
+.fui-Table--extra-small .fui-TableHeaderCell,
+.fui-Table--extra-small .fui-TableCell {
+  height: 32px;
+  padding-inline: 8px;
+  font-size: var(--fontSizeBase200);
+}
+.fui-TableHeaderCell__button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: 6px;
+  inline-size: 100%;
+  padding: 0;
+  text-align: start;
+}
+.fui-TableHeaderCell__button:focus-visible {
+  outline: 2px solid var(--colorStrokeFocus2);
+  outline-offset: 2px;
+}
+.fui-TableHeaderCell__sortIcon {
+  margin-inline-start: auto;
+}
+.fui-TableHeaderCell__aside {
+  margin-inline-start: auto;
+}
+.fui-TableSelectionCell {
+  box-sizing: border-box;
+  inline-size: 44px;
+  min-inline-size: 44px;
+  padding: 0 12px;
+  text-align: center;
+}
+.fui-TableSelectionCell--subtle .fui-TableSelectionCell__input {
+  opacity: 0;
+}
+.fui-TableRow:hover .fui-TableSelectionCell--subtle .fui-TableSelectionCell__input,
+.fui-TableRow:focus-within .fui-TableSelectionCell--subtle .fui-TableSelectionCell__input,
+.fui-TableSelectionCell--subtle .fui-TableSelectionCell__input:checked {
+  opacity: 1;
+}
+.fui-TableSelectionCell--invisible {
+  visibility: hidden;
+}
+.fui-TableCellLayout {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  min-inline-size: 0;
+}
+.fui-TableCellLayout__media {
+  display: inline-flex;
+  flex: none;
+}
+.fui-TableCellLayout__content {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+.fui-TableCellLayout__main,
+.fui-TableCellLayout__description {
+  display: block;
+}
+.fui-TableCellLayout__description {
+  color: var(--colorNeutralForeground2);
+  font-size: var(--fontSizeBase200);
+}
+.fui-TableCellLayout--primary .fui-TableCellLayout__main {
+  font-weight: var(--fontWeightSemibold);
+}
+.fui-TableCellLayout--truncate .fui-TableCellLayout__main,
+.fui-TableCellLayout--truncate .fui-TableCellLayout__description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fui-TableCellActions {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+  margin-inline-start: auto;
+  opacity: 0;
+}
+.fui-TableRow:hover .fui-TableCellActions,
+.fui-TableRow:focus-within .fui-TableCellActions,
+.fui-TableCellActions--visible {
+  opacity: 1;
+}
+.fui-TableResizeHandle {
+  block-size: 100%;
+  cursor: col-resize;
+  inline-size: 8px;
+  inset-inline-end: -4px;
+  position: absolute;
+  top: 0;
+  touch-action: none;
+}
+.fui-TableResizeHandle::after {
+  background: transparent;
+  content: '';
+  inline-size: 2px;
+  inset-block: 4px;
+  inset-inline-start: 3px;
+  position: absolute;
+}
+.fui-TableResizeHandle:hover::after,
+.fui-TableResizeHandle:focus-visible::after {
+  background: var(--colorBrandStroke1);
+}
+@media (forced-colors: active) {
+  .fui-TableRow {
+    border-color: CanvasText;
+  }
+  .fui-TableResizeHandle:hover::after,
+  .fui-TableResizeHandle:focus-visible::after {
+    background: Highlight;
+  }
+}
