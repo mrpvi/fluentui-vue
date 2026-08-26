@@ -35,6 +35,9 @@ import {
   FOption,
   FOptionGroup,
   FPersona,
+  FPopover,
+  FPopoverSurface,
+  FPopoverTrigger,
   FPresenceBadge,
   FProgressBar,
   FRating,
@@ -117,6 +120,16 @@ export const SsrFixture = defineComponent({
             default: () => [
               h(FOption, { value: 'cat' }, () => 'Server Cat'),
               h(FOption, { value: 'dog' }, () => 'Server Dog'),
+            ],
+          },
+        ),
+        h(
+          FPopover,
+          { class: 'ssr-popover', defaultOpen: true, inlinePopup: true },
+          {
+            default: () => [
+              h(FPopoverTrigger, {}, () => 'Server popover trigger'),
+              h(FPopoverSurface, {}, () => 'Server popover surface'),
             ],
           },
         ),

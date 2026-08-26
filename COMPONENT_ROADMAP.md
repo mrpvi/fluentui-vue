@@ -106,7 +106,7 @@ Avatar should be implemented before Persona because Persona composes avatar, tex
     - `FOption`
     - `FOptionGroup`
 32. ✅ **Dropdown → `FDropdown`** — definition-of-done gates complete for `@fluentui/react-combobox@9.17.5`
-33. ❌ **Combobox → `FCombobox`**
+33. ✅ **Combobox → `FCombobox`** — definition-of-done gates complete for `@fluentui/react-combobox@9.17.5`
 
 Listbox and Option come first because Dropdown and Combobox depend on their option model, keyboard navigation, active-descendant behavior, and selection state.
 

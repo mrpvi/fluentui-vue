@@ -2146,6 +2146,22 @@ test('Listbox preserves active-descendant navigation, controlled state, and rele
   ).toBeGreaterThan(0);
 });
 
+test('Popover toggles, dismisses, and restores focus', async ({ page }) => {
+  await page.goto('/');
+  const section = page.locator('#popover');
+  const trigger = section.getByRole('button', { name: 'Show details' });
+  await trigger.click();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  const surface = page.locator(`#${await trigger.getAttribute('aria-controls')}`);
+  await expect(surface).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  await expect(trigger).toBeFocused();
+  await trigger.click();
+  await page.mouse.click(8, 8);
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+});
+
 test('Dropdown preserves popup keyboard, selection, Field, and controlled semantics', async ({
   page,
 }) => {

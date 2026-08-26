@@ -81,6 +81,10 @@ const name = ref('');
 
 `FBadge`, `FCounterBadge`, `FPresenceBadge`, `FSpinner`, `FProgressBar`, `FSkeleton`, `FSkeletonItem`
 
+### Overlays
+
+`FPortal`, `FPopover`, `FPopoverTrigger`, `FPopoverSurface`
+
 ## Themes
 
 Light tokens are applied by default. Add `.fui-theme-dark` to an ancestor to use the included dark theme.

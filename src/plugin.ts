@@ -29,6 +29,7 @@ import { FInput } from './components/Input';
 import { FLabel } from './components/Label';
 import { FPersona } from './components/Persona';
 import { FPortal } from './components/Portal';
+import { FPopover, FPopoverSurface, FPopoverTrigger } from './components/Popover';
 import { FPresenceBadge } from './components/PresenceBadge';
 import { FProgressBar } from './components/ProgressBar';
 import { FRadio } from './components/Radio';
@@ -88,6 +89,9 @@ export const FluentVue: Plugin = {
     app.component('FImage', FImage);
     app.component('FPersona', FPersona);
     app.component('FPortal', FPortal);
+    app.component('FPopover', FPopover);
+    app.component('FPopoverSurface', FPopoverSurface);
+    app.component('FPopoverTrigger', FPopoverTrigger);
     app.component('FPresenceBadge', FPresenceBadge);
     app.component('FProgressBar', FProgressBar);
     app.component('FRadio', FRadio);

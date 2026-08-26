@@ -359,6 +359,18 @@ test('Combobox fixtures expose editable names, popup relationships, and Field st
   await expect(popup).toHaveAttribute('role', 'listbox');
 });
 
+test('Popover fixtures expose trigger relationships and surface semantics', async ({ page }) => {
+  await page.goto('/');
+  const section = page.locator('#popover');
+  const trigger = section.getByRole('button', { name: 'Show details' });
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  await trigger.click();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  const surface = page.locator(`#${await trigger.getAttribute('aria-controls')}`);
+  await expect(surface).toHaveRole('dialog');
+  await expect(surface).toContainText('Popover surface');
+});
+
 test('Dropdown fixtures expose names, popup relationships, Field state, and released selection semantics', async ({
   page,
 }) => {

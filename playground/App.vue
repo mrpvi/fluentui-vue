@@ -36,6 +36,9 @@ import {
   FOption,
   FOptionGroup,
   FPersona,
+  FPopover,
+  FPopoverSurface,
+  FPopoverTrigger,
   FPresenceBadge,
   FProgressBar,
   FRating,
@@ -143,8 +146,8 @@ function ratingItemLabel(value: number) {
           Native Button, ToggleButton, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider,
           Image, Badge, Spinner, ProgressBar, SpinButton, SearchBox, Switch, Radio, RadioGroup,
           Select, Skeleton, Slider, Rating, RatingDisplay, Card, Accordion, Tabs, Breadcrumb, List,
-          Listbox, Dropdown, Avatar, and Persona components translated from Fluent UI React v9 to
-          Vue props, slots, emits, and semantic HTML.
+          Listbox, Dropdown, Combobox, Popover, Avatar, and Persona components translated from
+          Fluent UI React v9 to Vue props, slots, emits, and semantic HTML.
         </p>
       </div>
       <FButton appearance="subtle" @click="dark = !dark">
@@ -1774,6 +1777,25 @@ function ratingItemLabel(value: number) {
       </div>
     </section>
 
+    <section id="popover">
+      <h2>Popover</h2>
+      <div class="popover-samples">
+        <FPopover>
+          <FPopoverTrigger>Show details</FPopoverTrigger>
+          <FPopoverSurface>
+            <strong>Popover surface</strong>
+            <p>Anchored content rendered through the overlay foundation.</p>
+          </FPopoverSurface>
+        </FPopover>
+        <FPopover inline-popup default-open>
+          <FPopoverTrigger as="button">Inline popover</FPopoverTrigger>
+          <FPopoverSurface aria-label="Inline popover details">
+            Inline content remains in document flow.
+          </FPopoverSurface>
+        </FPopover>
+      </div>
+    </section>
+
     <section id="avatar">
       <h2>Avatar</h2>
       <div class="avatar-samples">
@@ -2968,6 +2990,17 @@ section {
 }
 
 .dropdown-field,
+.popover-samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.popover-samples p {
+  margin-block: 8px 0;
+}
+
 .dropdown-samples .fui-Dropdown {
   width: 100%;
 }

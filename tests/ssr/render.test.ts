@@ -191,6 +191,9 @@ describe('SSR rendering', () => {
     expect(firstRender).toContain('fui-Combobox__listbox--closed');
     expect(firstRender).toContain('Server Cat');
     expect(firstRender).toContain('Server Dog');
+    expect(firstRender).toContain('ssr-popover');
+    expect(firstRender).toContain('Server popover trigger');
+    expect(firstRender).toContain('Server popover surface');
     expect(firstRender).toMatch(
       /<button(?=[^>]*id="fui-field-[^"]+__control")(?=[^>]*aria-labelledby="fui-field-[^"]+__label")(?=[^>]*aria-describedby="fui-field-[^"]+__hint")(?=[^>]*aria-required="true")(?=[^>]*class="fui-Dropdown__button")(?=[^>]*role="combobox")(?=[^>]*aria-expanded="false")(?=[^>]*aria-haspopup="listbox")[^>]*>.*Server Cat.*<\/button>/s,
     );
