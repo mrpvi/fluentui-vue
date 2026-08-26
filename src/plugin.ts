@@ -50,12 +50,7 @@ import { FOptionGroup } from './components/OptionGroup';
 import { FOverflow } from './components/Overflow';
 import { FOverflowDivider } from './components/OverflowDivider';
 import { FOverflowItem } from './components/OverflowItem';
-import {
-  FAlphaSlider,
-  FColorArea,
-  FColorPicker,
-  FColorSlider,
-} from './components/ColorPicker';
+import { FAlphaSlider, FColorArea, FColorPicker, FColorSlider } from './components/ColorPicker';
 import {
   FColorSwatch,
   FEmptySwatch,
