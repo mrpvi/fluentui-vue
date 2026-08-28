@@ -52,6 +52,8 @@
   ],
   "scripts": {
     "dev": "vite",
+    "build:playground": "vite build --config vite.config.playground.ts",
+    "preview:playground": "vite preview --config vite.config.playground.ts",
     "tokens:generate": "node scripts/generate-theme-tokens.mjs",
     "tokens:check": "node scripts/generate-theme-tokens.mjs --check",
     "format": "prettier --write .",

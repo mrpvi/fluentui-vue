@@ -149,7 +149,7 @@ function ratingItemLabel(value: number) {
   <main :class="['playground', dark ? 'fui-theme-dark' : 'fui-theme-light']">
     <header class="hero">
       <div>
-        <p class="eyebrow">fluentui-vue · 0.1.0</p>
+        <p class="eyebrow">fluentui-vue · 1.0.0</p>
         <h1>Native Fluent components for Vue 3</h1>
         <p>
           Native Button, ToggleButton, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider,
