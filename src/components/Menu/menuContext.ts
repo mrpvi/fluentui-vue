@@ -39,7 +39,13 @@ export interface MenuContextValue {
   focusPrevious: (current?: HTMLElement | null) => void;
   focusByCharacter: (character: string) => void;
   checkedValues: ComputedRef<Record<string, string[]>>;
-  toggleChecked: (event: Event, name: string, value: string, checked: boolean) => void;
+  toggleChecked: (
+    event: Event,
+    name: string,
+    value: string,
+    checked: boolean,
+    exclusive?: boolean,
+  ) => void;
   closeAfterItem: (event: Event, persist?: boolean) => void;
 }
 
@@ -47,6 +53,12 @@ export const menuContextKey: InjectionKey<MenuContextValue> = Symbol('fui-menu')
 
 export interface MenuListContextValue {
   checkedValues: ComputedRef<Record<string, string[]>>;
-  toggleChecked: (event: Event, name: string, value: string, checked: boolean) => void;
+  toggleChecked: (
+    event: Event,
+    name: string,
+    value: string,
+    checked: boolean,
+    exclusive?: boolean,
+  ) => void;
 }
 export const menuListContextKey: InjectionKey<MenuListContextValue> = Symbol('fui-menu-list');

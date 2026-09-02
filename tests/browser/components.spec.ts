@@ -2294,6 +2294,54 @@ test('Listbox preserves forced-color focus and selection safeguards', async ({
   await expect(selectedCheck).toHaveCSS('color', 'rgb(0, 0, 0)');
 });
 
+test('Menu preview supports positioning, selection, keyboard dismissal, and context opening', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('#menu');
+  await expect(section.getByRole('heading', { name: 'Menu', level: 2 })).toBeVisible();
+
+  const actionsTrigger = section.getByRole('button', { name: 'Open actions' });
+  await actionsTrigger.click();
+  const actions = page.getByRole('menu', { name: 'Document actions' });
+  await expect(actions).toBeVisible();
+  await expect(actions.locator('xpath=..')).toHaveCSS('position', 'fixed');
+  await expect(actions.getByRole('menuitem', { name: /New document/ })).toBeFocused();
+  await expect(actions.getByRole('menuitem', { name: /Restore previous version/ })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
+  await page.keyboard.press('Escape');
+  await expect(actions).toHaveCount(0);
+  await expect(actionsTrigger).toBeFocused();
+
+  const viewTrigger = section.getByRole('button', { name: 'Choose view' });
+  await viewTrigger.click();
+  const preferences = page.getByRole('menu', { name: 'View preferences' });
+  const owner = preferences.getByRole('menuitemcheckbox', { name: 'Show owner' });
+  await expect(owner).toHaveAttribute('aria-checked', 'false');
+  await owner.click();
+  await expect(owner).toHaveAttribute('aria-checked', 'true');
+  await expect(section.getByText(/Visible: status, owner/)).toBeVisible();
+
+  const nameSort = preferences.getByRole('menuitemradio', { name: 'Name' });
+  await nameSort.click();
+  await expect(nameSort).toHaveAttribute('aria-checked', 'true');
+  await expect(preferences.getByRole('menuitemradio', { name: 'Most recent' })).toHaveAttribute(
+    'aria-checked',
+    'false',
+  );
+  await expect(section.getByText(/Sort: name/)).toBeVisible();
+  await page.keyboard.press('Escape');
+
+  const contextTrigger = section.getByRole('button', { name: 'Right-click for options' });
+  await contextTrigger.click();
+  await expect(page.getByRole('menu', { name: 'Context actions' })).toHaveCount(0);
+  await contextTrigger.click({ button: 'right' });
+  await expect(page.getByRole('menu', { name: 'Context actions' })).toBeVisible();
+});
+
 test('Avatar preserves fallbacks, group layouts, and overflow interaction', async ({ page }) => {
   await page.goto('/');
 
@@ -2959,6 +3007,63 @@ test('SearchBox reduced motion removes perceptible focus-border transitions', as
   }));
   expect(Number.parseFloat(transition.delay)).toBeLessThanOrEqual(0.00001);
   expect(Number.parseFloat(transition.duration)).toBeLessThanOrEqual(0.00001);
+});
+
+test('Checkbox keeps its brand indicator and shows focus outside the control', async ({
+  page,
+  browserName,
+}) => {
+  await page.goto('/');
+
+  const input = page.getByLabel('Accept terms');
+  const root = input.locator('xpath=..');
+  const indicator = root.locator('.fui-Checkbox__indicator');
+
+  await input.check();
+  await expect(root).toHaveClass(/fui-Checkbox--checked/);
+  await expect(root).toHaveCSS('box-shadow', 'none');
+
+  const pointerFocus = await root.evaluate((element) => {
+    const after = getComputedStyle(element, '::after');
+    return { content: after.content, borderStyle: after.borderStyle };
+  });
+  expect(pointerFocus).toEqual({ content: 'none', borderStyle: 'none' });
+
+  const checkedColors = await indicator.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      backgroundColor: style.backgroundColor,
+      borderColor: style.borderColor,
+    };
+  });
+  expect(checkedColors.borderColor).toBe(checkedColors.backgroundColor);
+  expect(checkedColors.borderColor).not.toBe('rgb(0, 0, 0)');
+
+  if (browserName !== 'webkit') {
+    await input.blur();
+    const focusStart = page.locator('[data-checkbox-focus-start]');
+    await root.evaluate((element) => {
+      const button = document.createElement('button');
+      button.dataset.checkboxFocusStart = '';
+      element.before(button);
+    });
+    await focusStart.focus();
+    await page.keyboard.press('Tab');
+    await expect(input).toBeFocused();
+    const keyboardFocus = await root.evaluate((element) => {
+      const after = getComputedStyle(element, '::after');
+      return {
+        borderStyle: after.borderStyle,
+        borderWidth: after.borderWidth,
+        left: after.left,
+        top: after.top,
+      };
+    });
+    expect(keyboardFocus.borderStyle).toBe('solid');
+    expect(keyboardFocus.borderWidth).toBe('2px');
+    expect(Number.parseFloat(keyboardFocus.left)).toBeLessThan(0);
+    expect(Number.parseFloat(keyboardFocus.top)).toBeLessThan(0);
+  }
 });
 
 test('native form reset restores uncontrolled Input and Checkbox defaults', async ({ page }) => {

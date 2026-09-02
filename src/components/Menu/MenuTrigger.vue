@@ -16,6 +16,7 @@ if (!injectedContext) throw new Error('FMenuTrigger must be used inside FMenu.')
 const context = injectedContext;
 onMounted(() => context.registerTrigger(root.value));
 function click(event: MouseEvent) {
+  if (event.defaultPrevented) return;
   context.requestOpen(!context.open.value, event, 'menuTriggerClick');
 }
 function keydown(event: KeyboardEvent) {
