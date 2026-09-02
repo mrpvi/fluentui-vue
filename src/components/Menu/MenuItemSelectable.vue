@@ -54,8 +54,9 @@ onMounted(() => {
 onBeforeUnmount(() => unregister?.());
 function activate(event: MouseEvent | KeyboardEvent) {
   if (props.disabled || event.defaultPrevented) return;
-  const next = props.checked === undefined ? !checked.value : !props.checked;
-  context.toggleChecked(event, props.name, props.value, next);
+  const isRadio = props.selectableRole === 'menuitemradio';
+  const next = isRadio || (props.checked === undefined ? !checked.value : !props.checked);
+  context.toggleChecked(event, props.name, props.value, next, isRadio);
   context.closeAfterItem(event, props.persistOnClick);
 }
 function click(event: MouseEvent) {

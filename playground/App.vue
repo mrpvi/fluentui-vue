@@ -38,6 +38,17 @@ import {
   FList,
   FListbox,
   FListItem,
+  FMenu,
+  FMenuDivider,
+  FMenuGroup,
+  FMenuGroupHeader,
+  FMenuItem,
+  FMenuItemCheckbox,
+  FMenuItemLink,
+  FMenuItemRadio,
+  FMenuList,
+  FMenuPopover,
+  FMenuTrigger,
   FOption,
   FOptionGroup,
   FPersona,
@@ -105,6 +116,12 @@ const selectedDropdownOptions = ref(['dog']);
 const selectedDropdownValue = ref('Dog');
 const multiselectDropdownOptions = ref(['cat']);
 const controlledDropdownAttempt = ref<string[]>([]);
+const menuCheckedValues = ref<Record<string, string[]>>({
+  view: ['status'],
+  sort: ['recent'],
+});
+const controlledMenuOpen = ref(false);
+const controlledMenuEvent = ref('No open change yet.');
 const avatarOverflowOpen = ref(false);
 const toggleControlled = ref(true);
 const toggleSubmitCount = ref(0);
@@ -143,6 +160,11 @@ function submitSpinForm(event: Event) {
 function ratingItemLabel(value: number) {
   return `${value} stars`;
 }
+
+function updateControlledMenu(open: boolean) {
+  controlledMenuOpen.value = open;
+  controlledMenuEvent.value = open ? 'Menu opened.' : 'Menu closed.';
+}
 </script>
 
 <template>
@@ -155,7 +177,7 @@ function ratingItemLabel(value: number) {
           Native Button, ToggleButton, Input, Checkbox, Text, Label, Field, Textarea, Link, Divider,
           Image, Badge, Spinner, ProgressBar, SpinButton, SearchBox, Switch, Radio, RadioGroup,
           Select, Skeleton, Slider, Rating, RatingDisplay, Card, Accordion, Tabs, Breadcrumb, List,
-          Listbox, Dropdown, Combobox, Popover, Avatar, and Persona components translated from
+          Listbox, Dropdown, Combobox, Popover, Menu, Avatar, and Persona components translated from
           Fluent UI React v9 to Vue props, slots, emits, and semantic HTML.
         </p>
       </div>
@@ -1827,12 +1849,106 @@ function ratingItemLabel(value: number) {
             <p>Anchored content rendered through the overlay foundation.</p>
           </FPopoverSurface>
         </FPopover>
-        <FPopover inline-popup default-open>
+        <FPopover inline-popup>
           <FPopoverTrigger as="button">Inline popover</FPopoverTrigger>
           <FPopoverSurface aria-label="Inline popover details">
             Inline content remains in document flow.
           </FPopoverSurface>
         </FPopover>
+      </div>
+    </section>
+
+    <section id="menu">
+      <h2>Menu</h2>
+      <div class="menu-samples">
+        <div>
+          <h3>Actions and groups</h3>
+          <FMenu has-icons>
+            <FMenuTrigger class="menu-trigger">Open actions</FMenuTrigger>
+            <FMenuPopover>
+              <FMenuList aria-label="Document actions">
+                <FMenuGroup aria-label="Editing">
+                  <FMenuGroupHeader>Editing</FMenuGroupHeader>
+                  <FMenuItem secondary-content="Ctrl+N">
+                    <template #icon>＋</template>
+                    New document
+                  </FMenuItem>
+                  <FMenuItem secondary-content="Ctrl+O">
+                    <template #icon>↗</template>
+                    Open document
+                  </FMenuItem>
+                  <FMenuItem disabled>
+                    <template #icon>↻</template>
+                    Restore previous version
+                  </FMenuItem>
+                </FMenuGroup>
+                <FMenuDivider />
+                <FMenuItemLink href="#popover">
+                  <template #icon>ⓘ</template>
+                  View Popover examples
+                </FMenuItemLink>
+              </FMenuList>
+            </FMenuPopover>
+          </FMenu>
+          <small>Use Arrow keys, Home, End, or type a letter to move through items.</small>
+        </div>
+
+        <div>
+          <h3>Selectable items</h3>
+          <FMenu v-model:checked-values="menuCheckedValues" has-checkmarks persist-on-item-click>
+            <FMenuTrigger class="menu-trigger">Choose view</FMenuTrigger>
+            <FMenuPopover>
+              <FMenuList aria-label="View preferences">
+                <FMenuGroup aria-label="Visible details">
+                  <FMenuGroupHeader>Visible details</FMenuGroupHeader>
+                  <FMenuItemCheckbox name="view" value="status">Show status</FMenuItemCheckbox>
+                  <FMenuItemCheckbox name="view" value="owner">Show owner</FMenuItemCheckbox>
+                </FMenuGroup>
+                <FMenuDivider />
+                <FMenuGroup aria-label="Sort order">
+                  <FMenuGroupHeader>Sort order</FMenuGroupHeader>
+                  <FMenuItemRadio name="sort" value="recent">Most recent</FMenuItemRadio>
+                  <FMenuItemRadio name="sort" value="name">Name</FMenuItemRadio>
+                </FMenuGroup>
+              </FMenuList>
+            </FMenuPopover>
+          </FMenu>
+          <small>
+            Visible: {{ menuCheckedValues.view?.join(', ') || 'none' }} · Sort:
+            {{ menuCheckedValues.sort?.[0] || 'none' }}
+          </small>
+        </div>
+
+        <div>
+          <h3>Controlled and alternate opening</h3>
+          <div class="menu-trigger-row">
+            <FMenu :open="controlledMenuOpen" @update:open="updateControlledMenu">
+              <FMenuTrigger class="menu-trigger">Controlled menu</FMenuTrigger>
+              <FMenuPopover>
+                <FMenuList aria-label="Controlled actions">
+                  <FMenuItem>Review changes</FMenuItem>
+                  <FMenuItem>Share document</FMenuItem>
+                </FMenuList>
+              </FMenuPopover>
+            </FMenu>
+            <FButton size="small" @click="updateControlledMenu(!controlledMenuOpen)">
+              {{ controlledMenuOpen ? 'Close' : 'Open' }} externally
+            </FButton>
+          </div>
+          <FMenu open-on-context>
+            <FMenuTrigger class="menu-context-trigger" @click.prevent>
+              Right-click for options
+            </FMenuTrigger>
+            <FMenuPopover>
+              <FMenuList aria-label="Context actions">
+                <FMenuItem>Copy</FMenuItem>
+                <FMenuItem>Rename</FMenuItem>
+                <FMenuItem>Delete</FMenuItem>
+              </FMenuList>
+            </FMenuPopover>
+          </FMenu>
+          <small>{{ controlledMenuEvent }}</small>
+        </div>
       </div>
     </section>
 
@@ -3039,6 +3155,62 @@ section {
 
 .popover-samples p {
   margin-block: 8px 0;
+}
+
+.menu-samples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1.5rem;
+}
+
+.menu-samples > div {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 0.75rem;
+}
+
+.menu-samples h3 {
+  margin: 0;
+  color: var(--fui-color-neutral-foreground-2);
+  font-size: var(--fui-font-size-base-300);
+}
+
+.menu-trigger,
+.menu-context-trigger {
+  box-sizing: border-box;
+  min-height: 32px;
+  padding: 5px var(--fui-spacing-horizontal-m);
+  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
+  border-radius: var(--fui-border-radius-medium);
+  background: var(--fui-color-neutral-background-1);
+  color: var(--fui-color-neutral-foreground-1);
+  font: inherit;
+  font-weight: var(--fui-font-weight-semibold);
+}
+
+.menu-trigger:hover,
+.menu-context-trigger:hover {
+  border-color: var(--fui-color-neutral-stroke-1-hover);
+  background: var(--fui-color-neutral-background-1-hover);
+}
+
+.menu-trigger:focus-visible,
+.menu-context-trigger:focus-visible {
+  outline: 2px solid var(--fui-color-stroke-focus-2);
+  outline-offset: 2px;
+}
+
+.menu-trigger-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.menu-context-trigger {
+  border-style: dashed;
+  font-weight: var(--fui-font-weight-regular);
 }
 
 .dropdown-samples .fui-Dropdown {

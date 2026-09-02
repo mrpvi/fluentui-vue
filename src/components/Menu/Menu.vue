@@ -59,7 +59,9 @@ function requestOpen(next: boolean, event: Event, type: MenuEmits['openChange'][
   if (next === open.value) return;
   if (next && typeof document !== 'undefined') {
     previouslyFocused =
-      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      document.activeElement instanceof HTMLElement && document.activeElement !== document.body
+        ? document.activeElement
+        : trigger.value;
   }
   if (!controlledByModel && !controlledByOpen) internalOpen.value = next;
   emit('update:modelValue', next);
@@ -109,10 +111,18 @@ function registerItem(item: import('./menuContext').MenuItemRecord) {
     items.value = items.value.filter((entry) => entry.id !== item.id);
   };
 }
-function toggleChecked(event: Event, name: string, value: string, checked: boolean) {
+function toggleChecked(
+  event: Event,
+  name: string,
+  value: string,
+  checked: boolean,
+  exclusive = false,
+) {
   const current = checkedValues.value[name] ?? [];
   const nextValues = checked
-    ? [...new Set([...current, value])]
+    ? exclusive
+      ? [value]
+      : [...new Set([...current, value])]
     : current.filter((entry) => entry !== value);
   const next = { ...checkedValues.value, [name]: nextValues };
   if (!controlledCheckedValues) internalCheckedValues.value = next;
@@ -124,6 +134,8 @@ function closeAfterItem(event: Event, persist = false) {
 }
 function updatePosition() {
   if (!open.value || inline.value || !trigger.value || !popover.value) return;
+  popover.value.style.visibility = 'hidden';
+  popover.value.hidden = false;
   const triggerRect = trigger.value.getBoundingClientRect();
   const surfaceRect = popover.value.getBoundingClientRect();
   const gap = 4;
@@ -145,6 +157,7 @@ function updatePosition() {
     bottom: above ? `${Math.max(4, window.innerHeight - triggerRect.top + gap)}px` : 'auto',
     maxWidth: 'calc(100vw - 8px)',
   };
+  popover.value.style.visibility = '';
 }
 function handleDocumentPointerdown(event: PointerEvent) {
   if (!open.value) return;
@@ -158,7 +171,7 @@ function handleDocumentKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape') {
     event.preventDefault();
     requestOpen(false, event, 'menuPopoverKeyDown');
-    nextTick(() => previouslyFocused?.focus());
+    nextTick(() => (previouslyFocused ?? trigger.value)?.focus());
     return;
   }
   if (!list.value) return;
@@ -224,6 +237,7 @@ watch(open, async (value, previous) => {
   if (value) {
     await nextTick();
     updatePosition();
+    await nextTick();
     focusFirst();
   } else {
     surfaceStyle.value = {};

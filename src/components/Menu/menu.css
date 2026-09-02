@@ -60,7 +60,6 @@
 .fui-MenuItem__submenu {
   margin-inline-start: auto;
 }
-.fui-MenuItem--active,
 .fui-MenuItem:hover {
   background: var(--fui-color-neutral-background-1-hover);
 }
@@ -102,7 +101,6 @@
     color: CanvasText;
     forced-color-adjust: none;
   }
-  .fui-MenuItem--active,
   .fui-MenuItem:hover {
     background: Highlight;
     color: HighlightText;

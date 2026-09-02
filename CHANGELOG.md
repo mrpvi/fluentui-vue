@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The project follows [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] - 2026-09-02
+
+### Added
+
+- Added representative Menu playground examples covering actions, groups, icons, links, disabled items, shortcuts, checkbox and radio selection, controlled state, and context-menu activation.
+
+### Fixed
+
+- Fixed Menu popover registration, fixed-position measurement, initial item focus timing, Escape focus restoration, consumer-cancelable trigger clicks, and exclusive radio selection across Chromium, Firefox, and WebKit.
+- Matched Fluent UI React Menu styling by reserving the neutral background for hover while keeping a distinct keyboard focus outline.
+- Removed the Checkbox's black inset focus border while preserving its brand-colored checked indicator and an accessible external keyboard focus outline.
+
 ## [1.0.0] - 2026-08-28
 
 ### Added
@@ -51,4 +63,6 @@ The project follows [Semantic Versioning](https://semver.org/).
 - ESM, CommonJS, TypeScript declarations, and a standalone stylesheet.
 - Unit, Chromium, Firefox, WebKit, visual-regression, packed-package, and clean-consumer verification.
 
+[1.0.1]: https://github.com/mrpvi/fluentui-vue/releases/tag/v1.0.1
+[1.0.0]: https://github.com/mrpvi/fluentui-vue/releases/tag/v1.0.0
 [0.1.0]: https://github.com/mrpvi/fluentui-vue/releases/tag/v0.1.0
