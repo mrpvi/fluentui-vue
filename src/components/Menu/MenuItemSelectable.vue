@@ -64,8 +64,8 @@ function click(event: MouseEvent) {
 }
 function keydown(event: KeyboardEvent) {
   if (event.key === 'Enter' || event.key === ' ') {
-    activate(event);
     event.preventDefault();
+    activate(event);
   }
 }
 </script>
@@ -76,7 +76,7 @@ function keydown(event: KeyboardEvent) {
     :id="id"
     ref="root"
     v-bind="attrs"
-    class="fui-MenuItem fui-MenuItem--selectable"
+    class="fui-MenuItem"
     :class="{ 'fui-MenuItem--active': active, 'fui-MenuItem--disabled': props.disabled }"
     :role="props.selectableRole ?? 'menuitemcheckbox'"
     :aria-disabled="props.disabled || undefined"
@@ -88,9 +88,7 @@ function keydown(event: KeyboardEvent) {
     <span class="fui-MenuItem__checkmark" aria-hidden="true"
       ><slot name="checkmark"><span v-if="checked">✓</span></slot></span
     >
-    <span v-if="$slots.icon || context.hasIcons.value" class="fui-MenuItem__icon" aria-hidden="true"
-      ><slot name="icon"
-    /></span>
+    <span class="fui-MenuItem__icon" aria-hidden="true"><slot name="icon" /></span>
     <span class="fui-MenuItem__content"><slot /></span>
     <span v-if="props.secondaryContent || $slots.secondaryContent" class="fui-MenuItem__secondary"
       ><slot name="secondaryContent">{{ props.secondaryContent }}</slot></span

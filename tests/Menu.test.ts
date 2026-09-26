@@ -6,7 +6,6 @@ import {
   FMenuItem,
   FMenuItemCheckbox,
   FMenuItemRadio,
-  FMenuItemSwitch,
   FMenuList,
   FMenuPopover,
   FMenuTrigger,
@@ -15,106 +14,6 @@ import {
 afterEach(() => vi.restoreAllMocks());
 
 describe('Menu family', () => {
-  for (const component of [FMenuItemCheckbox, FMenuItemRadio, FMenuItemSwitch]) {
-    it(`${component.name} omits unused icons and forwards named slots`, async () => {
-      const wrapper = mount(FMenu, {
-        props: { inline: true, defaultOpen: true },
-        slots: {
-          default: () =>
-            h(FMenuList, null, {
-              default: () => [
-                h(component, { name: 'view', value: 'plain' }, { default: () => 'Plain' }),
-                h(
-                  component,
-                  { name: 'view', value: 'custom', defaultChecked: true },
-                  {
-                    default: () => 'Custom',
-                    icon: () => h('svg', { 'data-icon': '' }),
-                    checkmark: () => h('span', { 'data-check': '' }, '✓'),
-                    secondaryContent: () => 'Ctrl+K',
-                  },
-                ),
-              ],
-            }),
-        },
-      });
-      const [plain, custom] = wrapper.findAll('.fui-MenuItem--selectable');
-      expect(plain!.find('.fui-MenuItem__icon').exists()).toBe(false);
-      expect(plain!.find('.fui-MenuItem__checkmark').exists()).toBe(true);
-      expect(custom!.find('.fui-MenuItem__icon [data-icon]').exists()).toBe(true);
-      expect(custom!.get('.fui-MenuItem__checkmark [data-check]').text()).toBe('✓');
-      expect(custom!.get('.fui-MenuItem__secondary').text()).toBe('Ctrl+K');
-      expect(custom!.attributes('aria-checked')).toBe('true');
-      expect(custom!.attributes('role')).toBe(
-        component === FMenuItemRadio ? 'menuitemradio' : 'menuitemcheckbox',
-      );
-      await wrapper.setProps({ hasIcons: true });
-      expect(plain!.get('.fui-MenuItem__icon').text()).toBe('');
-      await wrapper.setProps({ hasIcons: false });
-      expect(plain!.find('.fui-MenuItem__icon').exists()).toBe(false);
-      wrapper.unmount();
-    });
-  }
-
-  it.each(['Enter', ' '])(
-    'activates selectable items with %s unless the event is prevented',
-    async (key) => {
-      const wrapper = mount(FMenu, {
-        props: { inline: true, defaultOpen: true },
-        slots: {
-          default: () =>
-            h(FMenuItemCheckbox, { name: 'view', value: 'grid' }, { default: () => 'Grid' }),
-        },
-      });
-      const item = wrapper.get('[role="menuitemcheckbox"]');
-      await item.trigger('keydown', { key });
-      expect(item.attributes('aria-checked')).toBe('true');
-      const prevented = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
-      prevented.preventDefault();
-      item.element.dispatchEvent(prevented);
-      await nextTick();
-      expect(item.attributes('aria-checked')).toBe('true');
-      wrapper.unmount();
-    },
-  );
-
-  it.each([undefined, 'ltr'] as const)(
-    'preserves local RTL through Teleport with popup override %s',
-    async (override) => {
-      const wrapper = mount(FMenu, {
-        attachTo: document.body,
-        attrs: { style: 'direction: rtl' },
-        props: { defaultOpen: true },
-        slots: {
-          default: () => [
-            h(FMenuTrigger, null, { default: () => 'Options' }),
-            h(FMenuPopover, override ? { dir: override } : {}, {
-              default: () =>
-                h(FMenuList, null, {
-                  default: () =>
-                    h(
-                      FMenuItemCheckbox,
-                      { name: 'view', value: 'grid' },
-                      { default: () => 'Grid' },
-                    ),
-                }),
-            }),
-          ],
-        },
-      });
-      await nextTick();
-      await nextTick();
-      const popover = document.body.querySelector('.fui-MenuPopover') as HTMLElement;
-      expect(popover.dir).toBe(override ?? 'rtl');
-      expect(popover.style.position).toBe('fixed');
-      expect(wrapper.element.contains(popover)).toBe(false);
-      await wrapper.setProps({ style: 'direction: ltr' });
-      await nextTick();
-      expect(popover.dir).toBe('ltr');
-      wrapper.unmount();
-    },
-  );
-
   it('opens from the trigger and renders an accessible menu', async () => {
     const wrapper = mount(FMenu, {
       attachTo: document.body,
@@ -216,48 +115,6 @@ describe('Menu family', () => {
     expect(popover.style.left).toBe('40px');
     expect(popover.style.top).toBe('56px');
     expect(popover.style.minWidth).toBe('220px');
-  });
-
-  it.each([
-    ['ltr', 'above', 400],
-    ['rtl', 'above', 320],
-    ['ltr', 'before', 216],
-    ['rtl', 'before', 504],
-    ['ltr', 'after', 504],
-    ['rtl', 'after', 216],
-  ] as const)('positions %s popovers logically %s', async (direction, positioning, left) => {
-    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
-      this: HTMLElement,
-    ) {
-      return this.classList.contains('fui-MenuTrigger')
-        ? new DOMRect(400, 200, 100, 32)
-        : new DOMRect(0, 0, 180, 120);
-    });
-    const wrapper = mount(FMenu, {
-      attachTo: document.body,
-      attrs: { style: `direction: ${direction}` },
-      props: { defaultOpen: true, positioning },
-      slots: {
-        default: () => [
-          h(FMenuTrigger, null, { default: () => 'Options' }),
-          h(
-            FMenuPopover,
-            { style: `direction: ${direction}` },
-            {
-              default: () =>
-                h(FMenuList, null, {
-                  default: () => h(FMenuItem, null, { default: () => 'Edit' }),
-                }),
-            },
-          ),
-        ],
-      },
-    });
-    await nextTick();
-    await nextTick();
-    const popover = document.body.querySelector('.fui-MenuPopover') as HTMLElement;
-    expect(popover.style.left).toBe(`${left}px`);
-    wrapper.unmount();
   });
 
   it('keeps inline popovers mounted in document flow', async () => {

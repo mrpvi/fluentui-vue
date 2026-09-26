@@ -46,7 +46,6 @@ import {
   FMenuItemCheckbox,
   FMenuItemLink,
   FMenuItemRadio,
-  FMenuItemSwitch,
   FMenuList,
   FMenuPopover,
   FMenuTrigger,
@@ -1918,37 +1917,6 @@ function updateControlledMenu(open: boolean) {
             Visible: {{ menuCheckedValues.view?.join(', ') || 'none' }} · Sort:
             {{ menuCheckedValues.sort?.[0] || 'none' }}
           </small>
-        </div>
-
-        <div>
-          <h3>Selectable icons and shortcuts</h3>
-          <FMenu has-icons persist-on-item-click>
-            <FMenuTrigger class="menu-trigger">Choose display options</FMenuTrigger>
-            <FMenuPopover style="width: 280px">
-              <FMenuList aria-label="Display options">
-                <FMenuItemCheckbox
-                  name="display"
-                  value="status"
-                  default-checked
-                  secondary-content="Ctrl+S"
-                >
-                  <template #icon>◉</template>
-                  Status
-                </FMenuItemCheckbox>
-                <FMenuItemRadio name="density" value="compact" default-checked>
-                  <template #icon>▤</template>
-                  <template #secondaryContent>Ctrl+D</template>
-                  Compact
-                </FMenuItemRadio>
-                <FMenuItemSwitch name="display" value="notifications">
-                  <template #icon>♧</template>
-                  <template #secondaryContent>Ctrl+M</template>
-                  Notifications with a deliberately long label
-                </FMenuItemSwitch>
-                <FMenuItemCheckbox name="display" value="owner">Owner</FMenuItemCheckbox>
-              </FMenuList>
-            </FMenuPopover>
-          </FMenu>
         </div>
 
         <div>

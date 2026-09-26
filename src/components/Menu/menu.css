@@ -47,27 +47,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.fui-MenuItem--selectable {
-  display: flex;
-  gap: 4px;
-}
-.fui-MenuItem--selectable > .fui-MenuItem__checkmark {
-  width: 16px;
-  height: 16px;
-  align-items: center;
-  flex-shrink: 0;
-}
-.fui-MenuItem--selectable > .fui-MenuItem__icon {
-  flex-shrink: 0;
-}
-.fui-MenuItem--selectable > .fui-MenuItem__content {
-  flex: 1;
-  padding-inline: 2px;
-  text-align: start;
-}
-.fui-MenuItem--selectable > .fui-MenuItem__secondary {
-  flex-shrink: 0;
-}
 .fui-MenuItem__secondary {
   margin-inline-start: 16px;
   color: var(--fui-color-neutral-foreground-3);

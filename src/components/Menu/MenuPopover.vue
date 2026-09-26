@@ -21,7 +21,6 @@ onBeforeUnmount(() => context.registerPopover(null));
     <component
       :is="props.as"
       ref="root"
-      :dir="context.direction.value"
       v-bind="attrs"
       class="fui-MenuPopover"
       :style="[context.surfaceStyle.value, attrs.style]"

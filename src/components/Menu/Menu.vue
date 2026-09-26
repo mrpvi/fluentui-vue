@@ -1,15 +1,5 @@
 <script setup lang="ts">
-import {
-  computed,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  onUpdated,
-  provide,
-  ref,
-  useAttrs,
-  watch,
-} from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, provide, ref, useAttrs, watch } from 'vue';
 import { useIsPropProvided } from '../../composables/useIsPropProvided';
 import type { MenuEmits, MenuProps, MenuSlots } from './Menu.types';
 import { menuContextKey } from './menuContext';
@@ -57,8 +47,6 @@ const closeOnScroll = computed(() => props.closeOnScroll);
 const persistOnItemClick = computed(() => props.persistOnItemClick);
 const hasIcons = computed(() => props.hasIcons);
 const hasCheckmarks = computed(() => props.hasCheckmarks);
-const root = ref<HTMLElement | null>(null);
-const direction = ref<'ltr' | 'rtl'>();
 const trigger = ref<HTMLElement | null>(null);
 const popover = ref<HTMLElement | null>(null);
 const list = ref<HTMLElement | null>(null);
@@ -86,7 +74,7 @@ function focusableItems() {
 }
 function setActiveItem(id: string | undefined, focus = false) {
   activeItemId.value = id;
-  if (focus) items.value.find((item) => item.id === id)?.element.focus({ preventScroll: true });
+  if (focus) items.value.find((item) => item.id === id)?.element.focus();
 }
 function focusFirst() {
   const item = focusableItems()[0];
@@ -145,15 +133,6 @@ function closeAfterItem(event: Event, persist = false) {
   if (!persist && !props.persistOnItemClick) requestOpen(false, event, 'menuItemClick');
 }
 function updatePosition() {
-  const source = trigger.value ?? root.value;
-  if (source) {
-    const nextDirection = getComputedStyle(source).direction === 'rtl' ? 'rtl' : 'ltr';
-    if (direction.value !== nextDirection) {
-      direction.value = nextDirection;
-      nextTick(updatePosition);
-      return;
-    }
-  }
   if (!open.value || inline.value || !trigger.value || !popover.value) return;
   popover.value.style.visibility = 'hidden';
   popover.value.hidden = false;
@@ -166,25 +145,18 @@ function updatePosition() {
       triggerRect.bottom + surfaceRect.height + gap > window.innerHeight);
   const before = props.positioning === 'before';
   const after = props.positioning === 'after';
-  const rtl = getComputedStyle(popover.value).direction === 'rtl';
-  const left =
-    before || after
-      ? before !== rtl
-        ? triggerRect.left - surfaceRect.width - gap
-        : triggerRect.right + gap
-      : rtl
-        ? triggerRect.right - surfaceRect.width
-        : triggerRect.left;
-  const nextStyle = {
+  const left = before
+    ? triggerRect.left - surfaceRect.width - gap
+    : after
+      ? triggerRect.right + gap
+      : triggerRect.left;
+  surfaceStyle.value = {
     position: 'fixed',
     left: `${Math.max(4, left)}px`,
     top: above ? 'auto' : `${triggerRect.bottom + gap}px`,
     bottom: above ? `${Math.max(4, window.innerHeight - triggerRect.top + gap)}px` : 'auto',
     maxWidth: 'calc(100vw - 8px)',
   };
-  if (Object.entries(nextStyle).some(([key, value]) => surfaceStyle.value[key] !== value)) {
-    surfaceStyle.value = nextStyle;
-  }
   popover.value.style.visibility = '';
 }
 function handleDocumentPointerdown(event: PointerEvent) {
@@ -227,7 +199,6 @@ provide(menuContextKey, {
   positioning,
   mountNode,
   surfaceStyle,
-  direction,
   openOnHover,
   openOnContext,
   hoverDelay,
@@ -273,9 +244,7 @@ watch(open, async (value, previous) => {
     if (previous) nextTick(() => previouslyFocused?.isConnected && previouslyFocused.focus());
   }
 });
-onUpdated(updatePosition);
 onMounted(() => {
-  updatePosition();
   document.addEventListener('pointerdown', handleDocumentPointerdown);
   document.addEventListener('keydown', handleDocumentKeydown);
   window.addEventListener('resize', updatePosition);
@@ -301,7 +270,7 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="root" v-bind="attrs" class="fui-Menu"><slot /></div>
+  <div v-bind="attrs" class="fui-Menu"><slot /></div>
 </template>
 
 <style>
