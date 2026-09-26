@@ -26,7 +26,12 @@ export default defineConfig({
     },
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: {
+        ...devices['Desktop Firefox'],
+        launchOptions: {
+          firefoxUserPrefs: process.env.CI ? { 'security.sandbox.content.level': 0 } : undefined,
+        },
+      },
     },
     {
       name: 'webkit',
