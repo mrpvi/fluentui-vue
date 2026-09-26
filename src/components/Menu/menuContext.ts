@@ -15,6 +15,7 @@ export interface MenuContextValue {
   positioning: ComputedRef<string>;
   mountNode: ComputedRef<string | HTMLElement>;
   surfaceStyle: Ref<Record<string, string>>;
+  direction: Ref<'ltr' | 'rtl' | undefined>;
   openOnHover: ComputedRef<boolean>;
   openOnContext: ComputedRef<boolean>;
   hoverDelay: ComputedRef<number>;
