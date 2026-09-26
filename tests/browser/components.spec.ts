@@ -1557,7 +1557,7 @@ test('Slider keyboard behavior, controlled updates, and disabled state use nativ
   await page.keyboard.press('PageDown');
   expect(Number(await volume.inputValue())).toBeGreaterThanOrEqual(0);
 
-  const controlled = page.getByRole('slider', { name: 'Brightness' });
+  const controlled = page.locator('#slider').getByRole('slider', { name: 'Brightness' });
   await expect(controlled).toHaveValue('35');
   await controlled.focus();
   await page.keyboard.press('ArrowRight');
