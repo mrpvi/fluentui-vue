@@ -6,12 +6,15 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-09-26
+
 ### Fixed
 
 - Matched Fluent UI React selectable Menu spacing with a fixed checkmark, flexible label, and optional icon slot, keeping checkbox, radio, and switch items aligned in LTR and RTL layouts.
 - Forwarded icon, custom checkmark, and secondary-content slots through selectable Menu item wrappers while preserving single-row shortcuts and long-label truncation.
 - Preserved local RTL direction in teleported Menu popovers, honored explicit popover direction overrides, and mirrored inline-start alignment and before/after positioning.
 - Fixed Space and Enter activation for selectable Menu items and prevented initial item focus from unexpectedly scrolling the page.
+- Updated the exported `packageVersion` to match the release and removed leftover merge-conflict markers and duplicate rows from the packaged upstream provenance document.
 
 ### Added
 
@@ -76,7 +79,8 @@ The project follows [Semantic Versioning](https://semver.org/).
 - ESM, CommonJS, TypeScript declarations, and a standalone stylesheet.
 - Unit, Chromium, Firefox, WebKit, visual-regression, packed-package, and clean-consumer verification.
 
-[Unreleased]: https://github.com/mrpvi/fluentui-vue/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/mrpvi/fluentui-vue/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/mrpvi/fluentui-vue/releases/tag/v1.0.2
 [1.0.1]: https://github.com/mrpvi/fluentui-vue/releases/tag/v1.0.1
 [1.0.0]: https://github.com/mrpvi/fluentui-vue/releases/tag/v1.0.0
 [0.1.0]: https://github.com/mrpvi/fluentui-vue/releases/tag/v0.1.0
