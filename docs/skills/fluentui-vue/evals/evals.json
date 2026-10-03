@@ -1,0 +1,39 @@
+{
+  "skill_name": "fluentui-vue",
+  "evals": [
+    {
+      "id": "setup-theme",
+      "prompt": "Add @mrpvi/fluentui-vue to an existing Vue 3.5 TypeScript app. Show the entry file and a complete App.vue with a primary button and one section using the dark Fluent theme. State the checks you would run. Do not change files; return code and brief notes.",
+      "expected_output": "Root imports, one shared stylesheet import, valid FButton registration, a fui-theme-dark ancestor, and consumer checks without a React provider.",
+      "assertions": [
+        "Exactly one shared stylesheet import is shown across the entry and App.vue.",
+        "FButton is imported from @mrpvi/fluentui-vue and uses appearance=primary.",
+        "The dark section has a fui-theme-dark ancestor and does not use a React FluentProvider.",
+        "The answer identifies consumer typecheck/build and keyboard checks without claiming they ran."
+      ]
+    },
+    {
+      "id": "field-selection",
+      "prompt": "In a Vue 3.5 application using @mrpvi/fluentui-vue, build a labelled required customer-name field and a multi-select combobox of related customers. Keep stored customer IDs separate from typed search text. Return a complete Vue SFC with initialized state and briefly explain controlled versus default state. The shared stylesheet is already imported.",
+      "expected_output": "FField/FInput composition, labelled combobox, string text model and string-array selected-options model, explicit option value/text, and correct controlled/default guidance.",
+      "assertions": [
+        "The required customer-name FField wraps FInput in its default slot.",
+        "The combobox has a label and binds string text through v-model separately from a string[] v-model:selected-options.",
+        "FOption has a stored value and explicit human-readable text.",
+        "The answer distinguishes initialized controlled refs from uncontrolled default props and does not mix both for one channel."
+      ]
+    },
+    {
+      "id": "compound-overlay",
+      "prompt": "Using @mrpvi/fluentui-vue in Vue 3.5, show a menu action that opens a dialog and a toast after a simulated successful save. Return complete parent/child SFCs if needed. Avoid nested buttons; explain keyboard/focus checks. The shared stylesheet is already imported.",
+      "expected_output": "Correct menu and dialog roots/parts, native trigger semantics, toaster ancestor with descendant controller injection, dialog kept outside the dismissed menu subtree, and a stable focus-return plan.",
+      "assertions": [
+        "Menu and dialog parts have the corresponding root ancestors, with the dialog outside the dismissing menu subtree.",
+        "Native trigger buttons contain no nested buttons and the menu trigger uses type=button.",
+        "useToastController runs in a descendant component of FToaster and dispatchToast receives content followed by options.",
+        "For the checked package version, FDialogSurface mounts conditionally with the open model so focus registration works on first open and reopen.",
+        "The answer supplies a stable focus-return plan and explicitly checks keyboard handoff, Tab containment, and Escape."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "positive-01",
+    "split": "train",
+    "should_trigger": true,
+    "query": "Add @mrpvi/fluentui-vue to my existing Vue 3.5 dashboard without changing its router."
+  },
+  {
+    "id": "positive-02",
+    "split": "train",
+    "should_trigger": true,
+    "query": "Our app uses fluentui-vue. The buttons render but have no theme colors after installation."
+  },
+  {
+    "id": "positive-03",
+    "split": "train",
+    "should_trigger": true,
+    "query": "This page imports FCombobox from @mrpvi/fluentui-vue. Keep selected IDs separate from the search string."
+  },
+  {
+    "id": "positive-04",
+    "split": "train",
+    "should_trigger": true,
+    "query": "Port this Fluent UI React dialog to Vue using @mrpvi/fluentui-vue, including keyboard behavior."
+  },
+  {
+    "id": "positive-05",
+    "split": "train",
+    "should_trigger": true,
+    "query": "I wrapped my fluentui-vue page in a dark class, but its menu is still light. Fix the app setup."
+  },
+  {
+    "id": "positive-06",
+    "split": "train",
+    "should_trigger": true,
+    "query": "Wire required labels and validation feedback with FField and FInput from @mrpvi/fluentui-vue."
+  },
+  {
+    "id": "positive-07",
+    "split": "validation",
+    "should_trigger": true,
+    "query": "package.json includes @mrpvi/fluentui-vue. Add a saved notification after the customer update succeeds."
+  },
+  {
+    "id": "positive-08",
+    "split": "validation",
+    "should_trigger": true,
+    "query": "In our fluentui-vue app, my FDataGridBody scoped slot item is unknown and wrapping the body loses the rows."
+  },
+  {
+    "id": "positive-09",
+    "split": "validation",
+    "should_trigger": true,
+    "query": "Add an account details popup to this page; it already imports FButton from @mrpvi/fluentui-vue."
+  },
+  {
+    "id": "positive-10",
+    "split": "validation",
+    "should_trigger": true,
+    "query": "Why does useToastController throw when I put FToaster in the same fluentui-vue component?"
+  },
+  {
+    "id": "negative-01",
+    "split": "train",
+    "should_trigger": false,
+    "query": "Use @fluentui/react-components to build a React settings dialog; do not port it to Vue."
+  },
+  {
+    "id": "negative-02",
+    "split": "train",
+    "should_trigger": false,
+    "query": "Add a PrimeVue MultiSelect to this Vue app. We do not use fluentui-vue."
+  },
+  {
+    "id": "negative-03",
+    "split": "train",
+    "should_trigger": false,
+    "query": "Make this plain CSS landing page look like Fluent Design without adding a component library."
+  },
+  {
+    "id": "negative-04",
+    "split": "train",
+    "should_trigger": false,
+    "query": "Fix the REST endpoint that feeds our Vue customer form; leave the UI unchanged."
+  },
+  {
+    "id": "negative-05",
+    "split": "train",
+    "should_trigger": false,
+    "query": "Configure Fluent Web Components custom elements in a Vue application."
+  },
+  {
+    "id": "negative-06",
+    "split": "train",
+    "should_trigger": false,
+    "query": "Release a new npm version of @mrpvi/fluentui-vue and update its CI publishing workflow."
+  },
+  {
+    "id": "negative-07",
+    "split": "validation",
+    "should_trigger": false,
+    "query": "Fix the internal FMenu implementation and add library regression tests in the fluentui-vue repository."
+  },
+  {
+    "id": "negative-08",
+    "split": "validation",
+    "should_trigger": false,
+    "query": "Review the accessibility of this native HTML form without replacing its controls with Vue components."
+  },
+  {
+    "id": "negative-09",
+    "split": "validation",
+    "should_trigger": false,
+    "query": "Refactor the React useState calls in this Fluent UI page; keep it React."
+  },
+  {
+    "id": "negative-10",
+    "split": "validation",
+    "should_trigger": false,
+    "query": "Explain the TypeScript unknown error in this standalone CSV parser. It has no UI dependencies."
+  }
+]

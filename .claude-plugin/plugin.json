@@ -1,0 +1,13 @@
+{
+  "name": "fluentui-vue",
+  "displayName": "Fluent UI Vue Consumer Skill",
+  "version": "1.0.0",
+  "description": "Consumer guidance for building Vue applications with @mrpvi/fluentui-vue.",
+  "author": {
+    "name": "Ali Parvizi"
+  },
+  "repository": "https://github.com/mrpvi/fluentui-vue",
+  "license": "MIT",
+  "keywords": ["vue", "vue3", "fluent-ui", "fluentui-vue", "components"],
+  "skills": ["./docs/skills/"]
+}
