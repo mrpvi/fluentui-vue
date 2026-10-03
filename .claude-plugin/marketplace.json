@@ -1,0 +1,14 @@
+{
+  "name": "fluentui-vue-marketplace",
+  "description": "Claude Code plugins for building Vue applications with Fluent UI Vue.",
+  "owner": {
+    "name": "Ali Parvizi"
+  },
+  "plugins": [
+    {
+      "name": "fluentui-vue",
+      "source": "./",
+      "description": "Consumer guidance for building Vue applications with @mrpvi/fluentui-vue."
+    }
+  ]
+}

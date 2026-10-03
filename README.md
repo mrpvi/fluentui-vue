@@ -130,6 +130,61 @@ Applications can override the exported `--color*`, `--font*`, and related CSS cu
 
 Public exports and generated TypeScript declarations provide the detailed component API surface.
 
+## AI coding-agent skill
+
+This repository includes a consumer-focused Agent Skill for coding agents building
+applications with `@mrpvi/fluentui-vue`. It covers Vue-native component APIs,
+stylesheet setup, forms and selection models, compound components, theming,
+accessibility, and popup behavior.
+
+### Claude Code plugin
+
+Add the repository marketplace and install the plugin for user-level Claude Code
+sessions:
+
+```bash
+claude plugin marketplace add mrpvi/fluentui-vue
+claude plugin install fluentui-vue@fluentui-vue-marketplace
+```
+
+The skill can be invoked explicitly as `/fluentui-vue:fluentui-vue`; Claude may
+also select it automatically for matching consumer application tasks. Installing
+the plugin does not install the npm package in an application.
+
+To test the plugin from a local checkout without changing persistent Claude
+settings:
+
+```bash
+claude --plugin-dir /path/to/fluentui-vue
+```
+
+### Other compatible agents
+
+For agents supported by the [`skills` CLI](https://skills.sh/), install the skill
+from this repository with:
+
+```bash
+npx skills add mrpvi/fluentui-vue --skill fluentui-vue --full-depth
+```
+
+`--full-depth` is required because the canonical skill is stored under
+`docs/skills/`. To inspect the available skills before installing:
+
+```bash
+npx skills add mrpvi/fluentui-vue --list --full-depth
+```
+
+For other compatible agents, copy the complete
+[`docs/skills/fluentui-vue/`](./docs/skills/fluentui-vue/) directory, including
+`SKILL.md`, `references/`, and `evals/`, to the consuming project's
+`.agents/skills/fluentui-vue/` directory or the target client's supported skill
+directory. Discovery conventions vary by agent; keep the relative reference
+files beside `SKILL.md`.
+
+The canonical skill is also available from the
+[GitHub repository](https://github.com/mrpvi/fluentui-vue/tree/main/docs/skills/fluentui-vue).
+The npm package's published files do not include `docs/` or the Claude manifests.
+
 ## Development
 
 ```bash
