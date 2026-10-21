@@ -1545,6 +1545,11 @@ test('Slider keyboard behavior, controlled updates, and disabled state use nativ
   await expect(volume).toHaveValue('40');
   await volume.focus();
   await page.keyboard.press('ArrowRight');
+  const volumeRoot = volume.locator('xpath=..');
+  await expect(volumeRoot).toHaveCSS('box-shadow', 'none');
+  await expect(volumeRoot).toHaveCSS('outline-style', 'none');
+  await expect(volumeRoot).toHaveCSS('margin-inline-start', '0px');
+  await expect(volumeRoot.locator('.fui-Slider__thumb')).toHaveCSS('outline-style', 'solid');
   await expect(volume).toHaveValue('45');
   await page.keyboard.press('ArrowLeft');
   await expect(volume).toHaveValue('40');
@@ -1660,7 +1665,7 @@ test('Slider horizontal, vertical, progress, and RTL geometry match the Fluent l
   expect(horizontalThumbBox!.width).toBe(20);
   expect(horizontalThumbBox!.height).toBe(20);
   expect(horizontalThumbBox!.x + horizontalThumbBox!.width / 2).toBeCloseTo(
-    horizontalRailBox!.x + horizontalRailBox!.width * 0.25 + horizontalThumbBox!.width * 0.125,
+    horizontalRailBox!.x + horizontalRailBox!.width * 0.25,
     0,
   );
   await expect(horizontalRoot).toHaveCSS('--fui-Slider--progress', '25%');
@@ -1683,7 +1688,7 @@ test('Slider horizontal, vertical, progress, and RTL geometry match the Fluent l
   expect(verticalRailBox!.height).toBe(140);
   expect(verticalRailBox!.width).toBe(4);
   expect(verticalThumbBox!.y + verticalThumbBox!.height / 2).toBeCloseTo(
-    verticalRailBox!.y + verticalRailBox!.height * 0.75 + verticalThumbBox!.height * 0.375,
+    verticalRailBox!.y + verticalRailBox!.height * 0.75,
     0,
   );
   await expect(vertical).toHaveAttribute('orient', 'vertical');
@@ -1700,10 +1705,38 @@ test('Slider horizontal, vertical, progress, and RTL geometry match the Fluent l
   expect(rtlRailBox).not.toBeNull();
   expect(rtlThumbBox).not.toBeNull();
   expect(rtlThumbBox!.x + rtlThumbBox!.width / 2).toBeCloseTo(
-    rtlRailBox!.x + rtlRailBox!.width * 0.75 - rtlThumbBox!.width * 0.125,
+    rtlRailBox!.x + rtlRailBox!.width * 0.75,
     0,
   );
   await expect(rtlRoot).toHaveCSS('--fui-Slider--direction', '270deg');
+
+  for (const root of [horizontalRoot, rtlRoot]) {
+    await root.evaluate((element) => element.setAttribute('dir', 'rtl'));
+    await expect(root).toHaveCSS('--fui-Slider--direction', '270deg');
+    await root.evaluate((element) => element.setAttribute('dir', 'ltr'));
+    await expect(root).toHaveCSS('--fui-Slider--direction', '90deg');
+  }
+
+  for (const root of [horizontalRoot, verticalRoot, rtlRoot]) {
+    const isVertical = await root.evaluate((element) =>
+      element.classList.contains('fui-Slider--vertical'),
+    );
+    for (const value of [0, 50, 100]) {
+      await root.locator('input').fill(String(value));
+      const rail = (await root.locator('.fui-Slider__rail').boundingBox())!;
+      const thumb = (await root.locator('.fui-Slider__thumb').boundingBox())!;
+      expect(thumb.x + thumb.width / 2).toBeCloseTo(
+        rail.x + rail.width * (isVertical ? 0.5 : value / 100),
+        0,
+      );
+      expect(thumb.y + thumb.height / 2).toBeCloseTo(
+        rail.y + rail.height * (isVertical ? 1 - value / 100 : 0.5),
+        0,
+      );
+    }
+  }
+  await expect(page.locator('.slider-rtl-surface')).toHaveCSS('border-top-width', '0px');
+  await expect(page.locator('.slider-reset-demo')).toHaveCSS('border-top-width', '0px');
 });
 
 test('Slider reduced motion removes authored transition durations', async ({

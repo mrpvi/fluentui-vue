@@ -238,6 +238,7 @@ describe('FSlider', () => {
       ]),
     );
     expect(horizontal.get('input').attributes('dir')).toBe('rtl');
+    expect(horizontal.attributes('dir')).toBe('rtl');
     expect(horizontal.attributes('style')).not.toContain('--fui-Slider--direction');
     expect(vertical.classes()).toEqual(
       expect.arrayContaining([

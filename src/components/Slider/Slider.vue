@@ -208,7 +208,11 @@ defineExpose({
 </script>
 
 <template>
-  <div :class="rootClasses" :style="rootStyle">
+  <div
+    :class="rootClasses"
+    :style="rootStyle"
+    :dir="typeof attrs.dir === 'string' ? attrs.dir : undefined"
+  >
     <input
       v-bind="inputAttrs"
       :id="inputId"
