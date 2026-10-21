@@ -94,6 +94,7 @@ const searchQuery = ref('Fluent Vue');
 const controlledSearch = 'Locked query';
 const searchEventLog = ref('No search interaction yet.');
 const dark = ref(false);
+const rtl = ref(false);
 const switchEnabled = ref(false);
 const controlledSwitch = ref(true);
 const controlledRadio = ref('beta');
@@ -169,7 +170,10 @@ function updateControlledMenu(open: boolean) {
 </script>
 
 <template>
-  <main :class="['playground', dark ? 'fui-theme-dark' : 'fui-theme-light']">
+  <main
+    :class="['playground', dark ? 'fui-theme-dark' : 'fui-theme-light']"
+    :dir="rtl ? 'rtl' : 'ltr'"
+  >
     <header class="hero">
       <div>
         <p class="eyebrow">fluentui-vue · 1.0.0</p>
@@ -182,9 +186,14 @@ function updateControlledMenu(open: boolean) {
           Fluent UI React v9 to Vue props, slots, emits, and semantic HTML.
         </p>
       </div>
-      <FButton appearance="subtle" @click="dark = !dark">
-        {{ dark ? 'Use light theme' : 'Use dark theme' }}
-      </FButton>
+      <div class="hero__actions">
+        <FButton appearance="subtle" @click="dark = !dark">
+          {{ dark ? 'Use light theme' : 'Use dark theme' }}
+        </FButton>
+        <FButton appearance="subtle" :aria-pressed="rtl" @click="rtl = !rtl">
+          {{ rtl ? 'Use LTR' : 'Use RTL' }}
+        </FButton>
+      </div>
     </header>
 
     <section id="color-controls">
@@ -3033,6 +3042,12 @@ function updateControlledMenu(open: boolean) {
   max-width: 46rem;
 }
 
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 h1,
 h2,
 p {
@@ -3442,7 +3457,6 @@ section {
 .slider-rtl-surface {
   padding: 1rem;
   background: var(--fui-color-neutral-background-2);
-  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
 }
 
 .slider-reset-demo {
@@ -3452,7 +3466,6 @@ section {
   gap: 1rem;
   width: min(100%, 40rem);
   padding: 1rem;
-  border: var(--fui-stroke-width-thin) solid var(--fui-color-neutral-stroke-1);
 }
 
 .spinner-group h3,

@@ -2,8 +2,6 @@
 
 This package is a native Vue adaptation of selected Microsoft Fluent UI React v9 components. It does not embed React or wrap the React packages.
 
-<<<<<<< HEAD
-
 | Vue component         | Upstream npm package         | Version reviewed | Upstream source                                                                |
 | --------------------- | ---------------------------- | ---------------: | ------------------------------------------------------------------------------ |
 | Button                | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/Button`         |
@@ -49,50 +47,7 @@ This package is a native Vue adaptation of selected Microsoft Fluent UI React v9
 | Rating family         | `@fluentui/react-rating`     |            9.4.4 | `packages/react-components/react-rating/library/src/components`                |
 | Tag family            | `@fluentui/react-tags`       |            9.9.5 | `packages/react-components/react-tags/library/src/components`                  |
 | TagPicker family      | `@fluentui/react-tag-picker` |           9.10.3 | `packages/react-components/react-tag-picker/library/src/components`            |
-| =======               |
-| Vue component         | Upstream npm package         | Version reviewed | Upstream source                                                                |
-| --------------------- | ---------------------------- | ---------------: | ------------------------------------------------------------------------------ |
-| Button                | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/Button`         |
-| ToggleButton          | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/ToggleButton`   |
-| CompoundButton        | `@fluentui/react-button`     |           9.11.0 | `packages/react-components/react-button/library/src/components/CompoundButton` |
-| Input                 | `@fluentui/react-input`      |            9.8.6 | `packages/react-components/react-input/library/src/components/Input`           |
-| Checkbox              | `@fluentui/react-checkbox`   |            9.6.4 | `packages/react-components/react-checkbox/library/src/components/Checkbox`     |
-| Text                  | `@fluentui/react-text`       |           9.6.19 | `packages/react-components/react-text/library/src/components/Text`             |
-| Label                 | `@fluentui/react-label`      |            9.4.4 | `packages/react-components/react-label/library/src/components/Label`           |
-| Field                 | `@fluentui/react-field`      |            9.5.4 | `packages/react-components/react-field/library/src/components/Field`           |
-| Textarea              | `@fluentui/react-textarea`   |            9.7.6 | `packages/react-components/react-textarea/library/src/components/Textarea`     |
-| Link                  | `@fluentui/react-link`       |            9.8.4 | `packages/react-components/react-link/library/src/components/Link`             |
-| Divider               | `@fluentui/react-divider`    |            9.7.4 | `packages/react-components/react-divider/library/src/components/Divider`       |
-| Image                 | `@fluentui/react-image`      |            9.4.4 | `packages/react-components/react-image/library/src/components/Image`           |
-| Badge family          | `@fluentui/react-badge`      |            9.5.5 | `packages/react-components/react-badge/library/src/components`                 |
-| Spinner               | `@fluentui/react-spinner`    |            9.8.5 | `packages/react-components/react-spinner/library/src/components/Spinner`       |
-| ProgressBar           | `@fluentui/react-progress`   |            9.5.4 | `packages/react-components/react-progress/library/src/components/ProgressBar`  |
-| Switch                | `@fluentui/react-switch`     |            9.7.5 | `packages/react-components/react-switch/library/src/components/Switch`         |
-| Radio family          | `@fluentui/react-radio`      |            9.6.5 | `packages/react-components/react-radio/library/src/components`                 |
-| Select                | `@fluentui/react-select`     |            9.5.5 | `packages/react-components/react-select/library/src/components/Select`         |
-| SpinButton            | `@fluentui/react-spinbutton` |            9.6.5 | `packages/react-components/react-spinbutton/library/src/components/SpinButton` |
-| SearchBox             | `@fluentui/react-search`     |            9.4.6 | `packages/react-components/react-search/library/src/components/SearchBox`      |
-| Skeleton family       | `@fluentui/react-skeleton`   |            9.7.5 | `packages/react-components/react-skeleton/library/src/components`              |
-| Slider                | `@fluentui/react-slider`     |            9.6.5 | `packages/react-components/react-slider/library/src/components/Slider`         |
-| Card family           | `@fluentui/react-card`       |            9.7.2 | `packages/react-components/react-card/library/src/components`                  |
-| Accordion family      | `@fluentui/react-accordion`  |           9.12.3 | `packages/react-components/react-accordion/library/src/components`             |
-| Tabs family           | `@fluentui/react-tabs`       |           9.12.4 | `packages/react-components/react-tabs/library/src/components`                  |
-| Breadcrumb family     | `@fluentui/react-breadcrumb` |            9.4.5 | `packages/react-components/react-breadcrumb/library/src/components`            |
-| List family           | `@fluentui/react-list`       |           9.6.18 | `packages/react-components/react-list/library/src/components`                  |
-| Avatar family         | `@fluentui/react-avatar`     |           9.11.6 | `packages/react-components/react-avatar/library/src/components`                |
-| Persona               | `@fluentui/react-persona`    |            9.7.8 | `packages/react-components/react-persona/library/src/components/Persona`       |
-| Listbox family        | `@fluentui/react-combobox`   |           9.17.5 | `packages/react-components/react-combobox/library/src/components`              |
-| Dropdown              | `@fluentui/react-combobox`   |           9.17.5 | `packages/react-components/react-combobox/library/src/components/Dropdown`     |
-| Combobox              | `@fluentui/react-combobox`   |           9.17.5 | `packages/react-components/react-combobox/library/src/components/Combobox`     |
-| Portal                | `@fluentui/react-portal`     |            9.4.0 | `packages/react-components/react-portal/library/src/components/Portal`         |
-| Popover family        | `@fluentui/react-popover`    |           9.13.0 | `packages/react-components/react-popover/library/src/components`               |
-| Tooltip               | `@fluentui/react-tooltip`    |            9.2.0 | `packages/react-components/react-tooltip/library/src/components`               |
-| Dialog                | `@fluentui/react-dialog`     |           9.18.4 | `packages/react-components/react-dialog/library/src/components`                |
-| Drawer family         | `@fluentui/react-drawer`     |           9.13.3 | `packages/react-components/react-drawer/library/src/components`                |
-| Rating family         | `@fluentui/react-rating`     |            9.4.4 | `packages/react-components/react-rating/library/src/components`                |
 | Table/DataGrid family | `@fluentui/react-table`      |          9.19.20 | `packages/react-components/react-table/library/src/components`                 |
-
-> > > > > > > 388f0ba (feat(table): complete table and datagrid families)
 
 Source repository: https://github.com/microsoft/fluentui
 
