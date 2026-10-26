@@ -540,8 +540,9 @@ test('PresenceBadge preserves status labels, OOO, sizes, and icon accessibility'
 
 test('Spinner preserves dimensions, layout, labels, roots, delay, and nonfocusability', async ({
   page,
-  browserName,
 }) => {
+  await page.clock.install({ time: new Date('2026-01-01T00:00:00Z') });
+  await page.clock.pauseAt(new Date('2026-01-01T00:00:01Z'));
   await page.goto('/');
 
   const section = page.locator('#spinner');
@@ -620,15 +621,13 @@ test('Spinner preserves dimensions, layout, labels, roots, delay, and nonfocusab
   await expect(delayed).toHaveAttribute('aria-labelledby', /^fui-spinner-.+__label$/);
   const delayedIndicator = delayed.locator('.fui-Spinner__spinner');
   const delayedLabel = delayed.locator('.fui-Spinner__label');
-  if ((await delayedIndicator.count()) === 0) {
-    await expect(delayedLabel).toHaveCount(0);
-    await expect(delayedIndicator).toBeVisible({ timeout: 8_000 });
-  } else {
-    test.info().annotations.push({
-      type: 'timing-note',
-      description: `${browserName} reached the delayed spinner after its timer elapsed under the full parallel browser suite.`,
-    });
-  }
+  await expect(delayedIndicator).toHaveCount(0);
+  await expect(delayedLabel).toHaveCount(0);
+  await page.clock.runFor(2999);
+  await expect(delayedIndicator).toHaveCount(0);
+  await expect(delayedLabel).toHaveCount(0);
+  await page.clock.runFor(1);
+  await expect(delayedIndicator).toBeVisible();
   await expect(delayedLabel).toHaveText('Delayed spinner');
   const delayedLabelId = await delayedLabel.getAttribute('id');
   expect(delayedLabelId).not.toBeNull();
