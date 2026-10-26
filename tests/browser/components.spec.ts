@@ -1,4 +1,10 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+async function enableRtl(page: Page) {
+  await page.getByRole('button', { name: 'Use RTL', exact: true }).click();
+  await expect(page.locator('main')).toHaveAttribute('dir', 'rtl');
+  await expect(page.locator('main')).toHaveCSS('direction', 'rtl');
+}
 
 test('playground loads without console errors or page failures', async ({ page }) => {
   const errors: string[] = [];
@@ -32,7 +38,7 @@ test('Text renders semantic, truncated, and direction-aware output', async ({ pa
 
   const aligned = page.locator('.text-align-sample');
   await expect(aligned).toHaveCSS('text-align', 'end');
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
   await expect(aligned).toHaveCSS('text-align', 'end');
 });
 
@@ -98,7 +104,7 @@ test('Field horizontal layout uses logical spacing in RTL', async ({ page }) => 
   await expect(label).toHaveCSS('margin-right', '12px');
   await expect(label).toHaveCSS('margin-left', '0px');
 
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
   await expect(label).toHaveCSS('margin-left', '12px');
   await expect(label).toHaveCSS('margin-right', '0px');
 });
@@ -216,7 +222,7 @@ test('Link preserves disabled focus, keyboard, and visual behavior', async ({ pa
   await page.keyboard.press('Enter');
   expect(await page.locator('main').getAttribute('class')).not.toBe(spanTheme);
 
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
   await expect(spanAction).toHaveCSS('text-align', 'start');
 });
 
@@ -299,7 +305,7 @@ test('Divider start and end alignment follow RTL logical layout', async ({ page 
   expect(ltrPlanningContent!.x).toBeLessThan(ltrPlanningRoot!.x + ltrPlanningRoot!.width / 2);
   expect(ltrCompleteContent!.x).toBeGreaterThan(ltrCompleteRoot!.x + ltrCompleteRoot!.width / 2);
 
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
 
   const rtlPlanningContent = await planning.locator('.fui-Divider__wrapper').boundingBox();
   const rtlCompleteContent = await complete.locator('.fui-Divider__wrapper').boundingBox();
@@ -657,7 +663,7 @@ test('Spinner RTL reverses horizontal label placement and tail styles where expo
     animationName: getComputedStyle(element).animationName,
   }));
 
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
   const rtlLabel = await label.boundingBox();
   const rtlIndicator = await indicator.boundingBox();
   expect(rtlLabel).not.toBeNull();
@@ -801,7 +807,7 @@ test('CompoundButton preserves submit, disabled, keyboard, RTL, and theme behavi
 
   const before = section.locator('.compound-icon-before');
   await expect(before.locator('.fui-CompoundButton__icon')).toHaveCSS('margin-right', '12px');
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
   await expect(before.locator('.fui-CompoundButton__icon')).toHaveCSS('margin-left', '12px');
   const primary = section.locator('.compound-primary');
   const backgroundBeforeThemeChange = await primary.evaluate(
@@ -1047,7 +1053,7 @@ test('Rating supports half values, pointer preview, read-only, disabled, Field, 
   const firstItem = marigold.locator('.fui-RatingItem').first();
   const ltrBox = await firstItem.boundingBox();
   expect(ltrBox).not.toBeNull();
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
   const rtlItems = await marigold
     .locator('.fui-RatingItem')
     .evaluateAll((items) => items.map((item) => item.getBoundingClientRect().x));
@@ -1322,7 +1328,7 @@ test('Switch preserves exact geometry, label positions, first-line alignment, an
 
   const thumb = medium.locator('.fui-Switch__thumb');
   await expect(thumb).toHaveCSS('transform', 'matrix(1, 0, 0, 1, 20, 0)');
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
   await expect(thumb).toHaveCSS('transform', 'matrix(1, 0, 0, 1, -20, 0)');
 });
 
@@ -1523,7 +1529,7 @@ test('Skeleton wave follows RTL and reduced motion stops both animations', async
     await pulse.evaluate((element) => getComputedStyle(element, '::after').animationIterationCount),
   ).toBe('1');
 
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
   const rtlWave = await wave.evaluate((element) => {
     const style = getComputedStyle(element, '::after');
     return {
@@ -1916,7 +1922,7 @@ test('Accordion respects RTL chevrons and reduced motion', async ({ page, browse
   test.skip(browserName !== 'chromium', 'Computed motion coverage is Chromium-only.');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
 
   const overview = page.locator('#accordion').getByRole('button', { name: 'Overview' });
   const details = page.locator('#accordion').getByRole('button', { name: 'Details' });
@@ -1976,7 +1982,7 @@ test('Tabs preserve RTL indicators and reduced-motion safeguards', async ({
   test.skip(browserName !== 'chromium', 'Computed motion coverage is Chromium-only.');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
 
   const vertical = page
     .locator('#tabs')
@@ -2171,7 +2177,7 @@ test('Listbox preserves active-descendant navigation, controlled state, and rele
   await expect(east).toHaveAttribute('aria-selected', 'false');
   await expect(section.getByText('Controlled attempt: east')).toBeVisible();
 
-  await page.locator('main').evaluate((main) => main.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
   const checkIcon = multipleDog.locator('.fui-Option__checkIcon');
   await expect(checkIcon).toHaveCSS('margin-right', '-2px');
   expect(
@@ -2256,7 +2262,7 @@ test('Dropdown preserves popup keyboard, selection, Field, and controlled semant
   await expect(controlled).toContainText('Locked West Europe');
   await expect(section.getByText('Controlled attempt: east')).toBeVisible();
 
-  await page.locator('main').evaluate((main) => main.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
   await multiple.click();
   const checkIcon = multiplePopup
     .getByRole('menuitemcheckbox', { name: 'Cat' })
@@ -2444,7 +2450,7 @@ test('Persona preserves media mapping, text hierarchy, and layouts', async ({ pa
     presenceOnly.getByRole('img', { name: 'do not disturb out of office' }),
   ).toBeVisible();
 
-  await page.locator('main').evaluate((main) => main.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
   await expect(ada.locator('.fui-Persona__media')).toHaveCSS('margin-right', '0px');
   await expect(ada.locator('.fui-Persona__media')).toHaveCSS('margin-left', '8px');
   await expect(before.locator('.fui-Persona__media')).toHaveCSS('margin-right', '8px');
@@ -2613,7 +2619,7 @@ test('Radio generated names, IDs, Field semantics, layouts, RTL, disabled, and f
   expect(ltrLabel).not.toBeNull();
   expect(ltrIndicator!.x).toBeLessThan(ltrLabel!.x);
 
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
   const rtlIndicator = await indicator.boundingBox();
   const rtlLabel = await label.boundingBox();
   expect(rtlIndicator).not.toBeNull();
@@ -2713,7 +2719,7 @@ test('Select icon placement follows RTL logical direction', async ({ page }) => 
   expect(ltrIconBox).not.toBeNull();
   expect(ltrIconBox!.x).toBeGreaterThan(ltrSelectBox!.x + ltrSelectBox!.width / 2);
 
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
   const rtlSelectBox = await select.boundingBox();
   const rtlIconBox = await icon.boundingBox();
   expect(rtlSelectBox).not.toBeNull();
@@ -2858,7 +2864,7 @@ test('SpinButton uses logical button placement in RTL', async ({ page }) => {
   expect(ltrButton).not.toBeNull();
   expect(ltrButton!.x).toBeGreaterThan(ltrRoot!.x + ltrRoot!.width / 2);
 
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
   const rtlRoot = await root.boundingBox();
   const rtlButton = await increment.boundingBox();
   expect(rtlRoot).not.toBeNull();
@@ -3010,7 +3016,9 @@ test('SearchBox RTL uses logical spacing and keeps trailing content on the inlin
   expect(ltrBefore!.x).toBeLessThan(ltrInput!.x);
   expect(ltrAfter!.x).toBeGreaterThan(ltrInput!.x);
 
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
+  await input.focus();
+  await expect(after).toHaveClass(/fui-SearchBox__contentAfter--visible/);
   const rtlInput = await input.boundingBox();
   const rtlBefore = await before.boundingBox();
   const rtlAfter = await after.boundingBox();
@@ -3117,7 +3125,7 @@ test('native form reset restores uncontrolled Input and Checkbox defaults', asyn
 
 test('RTL uses logical spacing and positioning', async ({ page }) => {
   await page.goto('/');
-  await page.locator('html').evaluate((element) => element.setAttribute('dir', 'rtl'));
+  await enableRtl(page);
 
   const createButton = page.getByRole('button', { name: 'Create' });
   const buttonIcon = createButton.locator('.fui-Button__icon');
